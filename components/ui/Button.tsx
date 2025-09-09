@@ -11,6 +11,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
+  withTiming,
 } from "react-native-reanimated";
 import Text, { TextProps } from "./Text";
 
@@ -33,8 +34,10 @@ export default function Button({
   textProps,
 }: Props) {
   const scale = useSharedValue(1);
+  const opacity = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
+    opacity: opacity.value,
   }));
 
   const variantStyles: Record<
@@ -119,14 +122,17 @@ export default function Button({
   ] as TextProps["style"];
 
   const springConfig = { stiffness: 500, damping: 30, mass: 0.9 } as const;
+  const opacityTiming = { duration: 120 } as const;
   const handlePressIn: NonNullable<PressableProps["onPressIn"]> = (e) => {
     pressableProps?.onPressIn?.(e);
-    scale.value = withSpring(0.95, springConfig);
+    scale.value = withSpring(0.96, springConfig);
+    opacity.value = withTiming(0.9, opacityTiming);
   };
 
   const handlePressOut: NonNullable<PressableProps["onPressOut"]> = (e) => {
     pressableProps?.onPressOut?.(e);
     scale.value = withSpring(1, springConfig);
+    opacity.value = withTiming(1, opacityTiming);
   };
 
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
