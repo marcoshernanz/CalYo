@@ -1,6 +1,6 @@
 import { Redirect } from "expo-router";
 
-export const isSignedIn = true;
+export const isSignedIn = false;
 
 export default function Index() {
   if (isSignedIn) {
