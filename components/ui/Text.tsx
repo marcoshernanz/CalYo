@@ -50,7 +50,7 @@ function normalizeWeight(
   return 100;
 }
 
-export function Text(props: RNTextProps) {
+function TextWrapper(props: RNTextProps) {
   const flat = StyleSheet.flatten(props.style) || {};
   const weight = normalizeWeight(flat.fontWeight as any);
   const styleKey = flat.fontStyle === "italic" ? "italic" : "normal";
@@ -62,13 +62,23 @@ export function Text(props: RNTextProps) {
     <RNText
       {...props}
       style={[
-        rest,
         {
           fontFamily,
           color: getColor("foreground"),
           ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
         },
+        rest,
       ]}
     />
   );
+}
+
+export interface TextProps extends RNTextProps {
+  children: React.ReactNode;
+  size?: "16" | "18" | "20" | "24" | "30" | "36" | "48";
+}
+
+export default function Text({ size, ...rest }: TextProps) {
+  const fontSize = size ? parseInt(size) : 18;
+  return <TextWrapper {...rest} style={[{ fontSize }, rest.style]} />;
 }

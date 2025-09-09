@@ -1,11 +1,8 @@
-import { StyleSheet, View } from "react-native";
+import React from "react";
+import { StyleSheet, View, ViewProps } from "react-native";
 
-interface Props {
-  children: React.ReactNode;
-}
-
-export default function Header({ children }: Props) {
-  return <View style={styles.header}>{children}</View>;
+export default function Header(rest: ViewProps) {
+  return <View {...rest} style={[styles.header, rest.style]} />;
 }
 
 const styles = StyleSheet.create({

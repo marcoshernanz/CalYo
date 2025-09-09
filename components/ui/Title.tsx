@@ -1,14 +1,14 @@
+import React from "react";
 import { StyleSheet } from "react-native";
-import { Text } from "./Text";
+import Text, { TextProps } from "./Text";
 
-interface Props {
-  children: React.ReactNode;
-}
-
-export default function Title({ children }: Props) {
-  return <Text style={styles.title}>{children}</Text>;
+export default function Title(rest: TextProps) {
+  return <Text {...rest} style={[styles.title, rest.style]} />;
 }
 
 const styles = StyleSheet.create({
-  title: {},
+  title: {
+    fontSize: 36,
+    fontWeight: 700,
+  },
 });

@@ -1,12 +1,9 @@
+import React from "react";
 import { StyleSheet } from "react-native";
-import { Text } from "./Text";
+import Text, { TextProps } from "./Text";
 
-interface Props {
-  children: React.ReactNode;
-}
-
-export default function Description({ children }: Props) {
-  return <Text style={styles.description}>{children}</Text>;
+export default function Description(rest: TextProps) {
+  return <Text {...rest} style={[styles.description, rest.style]} />;
 }
 
 const styles = StyleSheet.create({
