@@ -1,24 +1,118 @@
 import React from "react";
 import getColor from "@/lib/utils/getColor";
-import { Pressable, PressableProps, StyleSheet } from "react-native";
+import {
+  Pressable,
+  PressableProps,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+} from "react-native";
 import Text, { TextProps } from "./Text";
 
+type Variant = "primary" | "secondary" | "ghost" | "outline" | "text";
+type Size = "sm" | "md" | "lg" | "xl";
+
 interface Props {
+  variant?: Variant;
+  size?: Size;
   children: React.ReactNode;
   pressableProps?: Omit<PressableProps, "children">;
   textProps?: Omit<TextProps, "children">;
 }
 
-export default function Button({ children, pressableProps, textProps }: Props) {
+export default function Button({
+  variant = "primary",
+  size = "md",
+  children,
+  pressableProps,
+  textProps,
+}: Props) {
+  const variantStyles: Record<
+    Variant,
+    { container?: ViewStyle; text?: TextStyle }
+  > = {
+    primary: {
+      container: {
+        backgroundColor: getColor("foreground"),
+      },
+      text: {
+        color: getColor("background"),
+        fontWeight: "600",
+      },
+    },
+    secondary: {},
+    ghost: {},
+    outline: {},
+    text: {
+      text: {
+        color: getColor("foreground"),
+        fontWeight: 700,
+        borderBottomWidth: 1,
+        borderBottomColor: getColor("foreground"),
+        paddingBottom: 1,
+      },
+    },
+  };
+
+  const sizeStyles: Record<
+    Size,
+    {
+      container?: ViewStyle;
+      text?: TextStyle;
+      textDefaults?: Partial<TextProps>;
+    }
+  > = {
+    sm: {},
+    md: {
+      textDefaults: {
+        size: "18",
+      },
+    },
+    lg: {
+      container: {
+        height: 66,
+      },
+      textDefaults: {
+        size: "20",
+      },
+    },
+    xl: {},
+  };
+
   const incomingStyle = pressableProps?.style;
-  const composedStyle: PressableProps["style"] =
+  const variantStyle = variantStyles[variant] ?? {};
+  const sizeStyle = sizeStyles[size] ?? {};
+
+  const composedContainerStyle: PressableProps["style"] =
     typeof incomingStyle === "function"
-      ? (state) => [styles.button, incomingStyle(state)]
-      : [styles.button, incomingStyle];
+      ? (state) => [
+          styles.baseContainer,
+          variantStyle.container,
+          sizeStyle.container,
+          incomingStyle(state),
+        ]
+      : [
+          styles.baseContainer,
+          variantStyle.container,
+          sizeStyle.container,
+          incomingStyle,
+        ];
+
+  const defaultTextPropsFromSize = sizeStyle.textDefaults ?? {};
+  const composedTextStyle = [
+    styles.baseText,
+    variantStyle.text,
+    sizeStyle.text,
+    textProps?.style,
+  ] as TextProps["style"];
 
   return (
-    <Pressable {...pressableProps} style={composedStyle}>
-      <Text {...textProps} size="20" style={[styles.text, textProps?.style]}>
+    <Pressable {...pressableProps} style={composedContainerStyle}>
+      <Text
+        {...defaultTextPropsFromSize}
+        {...textProps}
+        style={composedTextStyle}
+      >
         {children}
       </Text>
     </Pressable>
@@ -26,15 +120,10 @@ export default function Button({ children, pressableProps, textProps }: Props) {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: getColor("foreground"),
-    height: 66,
+  baseContainer: {
     borderRadius: 999,
     justifyContent: "center",
     alignItems: "center",
   },
-  text: {
-    color: getColor("background"),
-    fontWeight: 600,
-  },
+  baseText: {},
 });
