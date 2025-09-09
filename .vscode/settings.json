@@ -4,5 +4,6 @@
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
   },
-  "cSpell.words": ["calyo"]
+  "cSpell.words": ["calyo"],
+  "java.configuration.updateBuildConfiguration": "disabled"
 }
