@@ -7,6 +7,11 @@ import {
   ViewStyle,
   TextStyle,
 } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
 import Text, { TextProps } from "./Text";
 
 type Variant = "primary" | "secondary" | "ghost" | "outline" | "text";
@@ -27,6 +32,11 @@ export default function Button({
   pressableProps,
   textProps,
 }: Props) {
+  const scale = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
   const variantStyles: Record<
     Variant,
     { container?: ViewStyle; text?: TextStyle }
@@ -37,7 +47,7 @@ export default function Button({
       },
       text: {
         color: getColor("background"),
-        fontWeight: "600",
+        fontWeight: 600,
       },
     },
     secondary: {},
@@ -86,12 +96,14 @@ export default function Button({
   const composedContainerStyle: PressableProps["style"] =
     typeof incomingStyle === "function"
       ? (state) => [
+          animatedStyle,
           styles.baseContainer,
           variantStyle.container,
           sizeStyle.container,
           incomingStyle(state),
         ]
       : [
+          animatedStyle,
           styles.baseContainer,
           variantStyle.container,
           sizeStyle.container,
@@ -106,8 +118,26 @@ export default function Button({
     textProps?.style,
   ] as TextProps["style"];
 
+  const springConfig = { stiffness: 500, damping: 30, mass: 0.9 } as const;
+  const handlePressIn: NonNullable<PressableProps["onPressIn"]> = (e) => {
+    pressableProps?.onPressIn?.(e);
+    scale.value = withSpring(0.95, springConfig);
+  };
+
+  const handlePressOut: NonNullable<PressableProps["onPressOut"]> = (e) => {
+    pressableProps?.onPressOut?.(e);
+    scale.value = withSpring(1, springConfig);
+  };
+
+  const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
   return (
-    <Pressable {...pressableProps} style={composedContainerStyle}>
+    <AnimatedPressable
+      {...pressableProps}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      style={composedContainerStyle}
+    >
       <Text
         {...defaultTextPropsFromSize}
         {...textProps}
@@ -115,7 +145,7 @@ export default function Button({
       >
         {children}
       </Text>
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
