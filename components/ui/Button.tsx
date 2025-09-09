@@ -18,7 +18,7 @@ export default function Button({ children, pressableProps, textProps }: Props) {
 
   return (
     <Pressable {...pressableProps} style={composedStyle}>
-      <Text {...textProps} style={[styles.text, textProps?.style]}>
+      <Text {...textProps} size="20" style={[styles.text, textProps?.style]}>
         {children}
       </Text>
     </Pressable>
@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: getColor("background"),
-    fontSize: 20,
-    fontWeight: "600",
+    fontWeight: 600,
   },
 });

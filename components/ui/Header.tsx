@@ -6,5 +6,7 @@ export default function Header(rest: ViewProps) {
 }
 
 const styles = StyleSheet.create({
-  header: {},
+  header: {
+    gap: 8,
+  },
 });
