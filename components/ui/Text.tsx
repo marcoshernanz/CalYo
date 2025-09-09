@@ -78,7 +78,7 @@ export interface TextProps extends RNTextProps {
   size?: "16" | "18" | "20" | "24" | "30" | "36" | "48";
 }
 
-export default function Text({ size, ...rest }: TextProps) {
+export default function Text({ size = "18", ...rest }: TextProps) {
   const fontSize = size ? parseInt(size) : 18;
   return <TextWrapper {...rest} style={[{ fontSize }, rest.style]} />;
 }
