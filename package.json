@@ -3,10 +3,11 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
+    "dev": "APP_VARIANT=development npx expo start",
+    "prebuild": "APP_VARIANT=development npx expo prebuild",
+    "android": "APP_VARIANT=development expo run:android",
+    "ios": "APP_VARIANT=development expo run:ios",
+    "eas:prod": "eas build --profile production",
     "lint": "expo lint"
   },
   "dependencies": {
