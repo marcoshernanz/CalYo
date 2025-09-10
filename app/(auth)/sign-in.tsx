@@ -4,18 +4,18 @@ import TextInput from "@/components/ui/TextInput";
 import Title from "@/components/ui/Title";
 import { useRouter } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
-import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
 
 export default function SignIn() {
   const router = useRouter();
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-      keyboardVerticalOffset={Platform.OS === "ios" ? -30 : -15}
-    >
-      <SafeArea>
+    <SafeArea>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior="padding"
+        keyboardVerticalOffset={8}
+      >
         <Button
           variant="secondary"
           style={styles.closeButton}
@@ -33,8 +33,8 @@ export default function SignIn() {
           />
         </View>
         <Button size="lg">Comenzar</Button>
-      </SafeArea>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeArea>
   );
 }
 
