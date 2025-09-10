@@ -9,6 +9,7 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Text from "../ui/Text";
 import GoogleLogo from "@/assets/svg/google-logo.svg";
 import { useRouter } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props {
   ref: React.Ref<BottomSheetModal>;
@@ -18,6 +19,7 @@ interface Props {
 
 export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   const handleAppleLogin = () => {};
 
@@ -35,7 +37,9 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
       handleComponent={null}
       backgroundStyle={{ borderRadius: 25 }}
     >
-      <BottomSheetView style={styles.container}>
+      <BottomSheetView
+        style={[styles.container, { paddingBottom: insets.bottom }]}
+      >
         <View style={styles.headerContainer}>
           <Title size="24">Iniciar Sesión</Title>
           <View style={styles.closeButtonContainer}>
@@ -130,8 +134,8 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     gap: 20,
-    paddingHorizontal: 24,
-    paddingVertical: 40,
+    paddingHorizontal: 16,
+    paddingVertical: 30,
   },
   button: {
     justifyContent: "center",
