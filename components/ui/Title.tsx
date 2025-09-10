@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import Text, { TextProps, TextSize } from "./Text";
+import Text, { TextProps, FontSize } from "./Text";
 
 interface Props extends TextProps {
-  size?: TextSize;
+  size?: FontSize;
 }
 
-export default function Title({ size = "36", ...rest }: Props) {
+export default function Title({ size = "32", ...rest }: Props) {
   return <Text {...rest} size={size} style={[styles.title, rest.style]} />;
 }
 
