@@ -26,7 +26,7 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
     <BottomSheetModal ref={ref} onAnimate={onAnimate} handleComponent={null}>
       <BottomSheetView style={styles.container}>
         <View style={styles.headerContainer}>
-          <Title size="28">Iniciar Sesión</Title>
+          <Title size="24">Iniciar Sesión</Title>
           <View style={styles.closeButtonContainer}>
             <Button
               size="sm"
@@ -50,7 +50,9 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
               size={28}
               color={getColor("background")}
             />
-            <Text style={styles.buttonPrimaryText}>Continuar con Apple</Text>
+            <Text size="16" style={styles.buttonPrimaryText}>
+              Continuar con Apple
+            </Text>
           </Button>
           <Button
             size="lg"
@@ -58,13 +60,10 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
             style={styles.button}
             onPress={handleGoogleLogin}
           >
-            {/* <FontAwesome5
-              name="google"
-              size={24}
-              color={getColor("foreground")}
-            /> */}
             <GoogleLogo height={24} width={24} />
-            <Text style={styles.buttonOutlineText}>Continuar con Google</Text>
+            <Text size="16" style={styles.buttonOutlineText}>
+              Continuar con Google
+            </Text>
           </Button>
           <Button
             size="lg"
@@ -72,8 +71,10 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
             style={styles.button}
             onPress={handleEmailLogin}
           >
-            <MailIcon size={26} color={getColor("foreground")} />
-            <Text style={styles.buttonOutlineText}>Continuar con Email</Text>
+            <MailIcon size={24} color={getColor("foreground")} />
+            <Text size="16" style={styles.buttonOutlineText}>
+              Continuar con Email
+            </Text>
           </Button>
         </View>
       </BottomSheetView>
@@ -84,14 +85,14 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: getColor("background"),
-    borderTopRightRadius: 25,
+    borderTopRightRadius: 500, // TODO
     borderTopLeftRadius: 25,
   },
   headerContainer: {
     height: 75,
     justifyContent: "center",
     alignItems: "center",
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: getColor("mutedForeground"),
   },
   closeButtonContainer: {

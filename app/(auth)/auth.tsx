@@ -46,8 +46,10 @@ export default function AuthScreen() {
       <View style={styles.footerContainer}>
         <Button size="lg">Comenzar</Button>
         <View style={styles.footerText}>
-          <Text style={{ textAlign: "center" }}>¿Ya tienes cuenta?</Text>
-          <Button variant="text" onPress={handlePresentModalPress}>
+          <Text size="16" style={{ textAlign: "center" }}>
+            ¿Ya tienes cuenta?
+          </Text>
+          <Button size="md" variant="text" onPress={handlePresentModalPress}>
             Iniciar Sesión
           </Button>
         </View>
@@ -73,15 +75,16 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingVertical: 50,
+    paddingVertical: 40,
   },
   image: {
     flex: 1,
-    backgroundColor: "#f00",
+    backgroundColor: "red",
     borderRadius: 20,
   },
   footerContainer: {
     gap: 10,
+    paddingBottom: 15,
   },
   footerText: {
     flexDirection: "row",

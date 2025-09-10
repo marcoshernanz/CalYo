@@ -78,6 +78,9 @@ export default function Button({
       },
     },
     text: {
+      container: {
+        height: "auto",
+      },
       text: {
         color: getColor("foreground"),
         fontWeight: 700,
@@ -101,29 +104,28 @@ export default function Button({
         height: 40,
       },
       textDefaults: {
-        size: "16",
+        size: "14",
       },
     },
     md: {
       container: {
-        height: 52,
+        height: 48,
+      },
+      textDefaults: {
+        size: "16",
+      },
+    },
+    lg: {
+      container: {
+        height: 64,
       },
       textDefaults: {
         size: "18",
       },
     },
-    lg: {
-      container: {
-        height: 66,
-      },
-      textDefaults: {
-        size: "20",
-      },
-    },
     xl: {},
   };
 
-  // Style passed directly as prop (formerly pressableProps.style)
   const variantStyle = variantStyles[variant] ?? {};
   const sizeStyle = sizeStyles[size] ?? {};
 
@@ -132,15 +134,15 @@ export default function Button({
       ? (state) => [
           animatedStyle,
           styles.baseContainer,
-          variantStyle.container,
           sizeStyle.container,
+          variantStyle.container,
           incomingStyle(state),
         ]
       : [
           animatedStyle,
           styles.baseContainer,
-          variantStyle.container,
           sizeStyle.container,
+          variantStyle.container,
           incomingStyle,
         ];
 
