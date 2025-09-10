@@ -23,7 +23,12 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
   const handleEmailLogin = () => {};
 
   return (
-    <BottomSheetModal ref={ref} onAnimate={onAnimate} handleComponent={null}>
+    <BottomSheetModal
+      ref={ref}
+      onAnimate={onAnimate}
+      handleComponent={null}
+      backgroundStyle={{ borderRadius: 25 }}
+    >
       <BottomSheetView style={styles.container}>
         <View style={styles.headerContainer}>
           <Title size="24">Iniciar Sesión</Title>
@@ -85,7 +90,7 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: getColor("background"),
-    borderTopRightRadius: 500, // TODO
+    borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
   },
   headerContainer: {
