@@ -3,7 +3,7 @@ import SafeArea from "@/components/ui/SafeArea";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
 import { StyleSheet, View, TouchableWithoutFeedback } from "react-native";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import LoginSheet from "@/components/auth/LoginSheet";
 import Animated, {
@@ -15,9 +15,16 @@ import Animated, {
 export default function AuthScreen() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const overlayOpacity = useSharedValue(0);
+  const [pointerEvents, setPointerEvents] = useState<"auto" | "none">("none");
 
   const handleAnimate = (fromIndex: number, toIndex: number) => {
-    overlayOpacity.value = withTiming(toIndex === 0 ? 0.75 : 0);
+    if (toIndex === -1) {
+      setPointerEvents("none");
+      overlayOpacity.value = withTiming(0);
+    } else {
+      setPointerEvents("auto");
+      overlayOpacity.value = withTiming(0.75);
+    }
   };
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -51,7 +58,10 @@ export default function AuthScreen() {
       <TouchableWithoutFeedback
         onPress={() => bottomSheetModalRef.current?.close()}
       >
-        <Animated.View style={[styles.overlay, animatedStyle]} />
+        <Animated.View
+          style={[styles.overlay, animatedStyle]}
+          pointerEvents={pointerEvents}
+        />
       </TouchableWithoutFeedback>
       <LoginSheet ref={bottomSheetModalRef} onAnimate={handleAnimate} />
     </SafeArea>
