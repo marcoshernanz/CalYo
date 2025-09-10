@@ -22,8 +22,12 @@ export default function LoginSheet({ ref, onAnimate }: Props) {
         </View>
         <View style={styles.contentContainer}>
           <Button size="lg">X</Button>
-          <Button size="lg">X</Button>
-          <Button size="lg">X</Button>
+          <Button size="lg" variant="outline">
+            X
+          </Button>
+          <Button size="lg" variant="outline">
+            X
+          </Button>
         </View>
       </BottomSheetView>
     </BottomSheetModal>
@@ -49,6 +53,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     top: 0,
+    justifyContent: "center",
+    alignItems: "center",
   },
   contentContainer: {
     gap: 20,

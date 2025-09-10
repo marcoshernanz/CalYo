@@ -50,12 +50,20 @@ export default function Button({
       },
       text: {
         color: getColor("background"),
-        fontWeight: 600,
       },
     },
     secondary: {},
     ghost: {},
-    outline: {},
+    outline: {
+      container: {
+        borderWidth: 1,
+        borderColor: getColor("foreground"),
+        backgroundColor: getColor("background"),
+      },
+      text: {
+        color: getColor("foreground"),
+      },
+    },
     text: {
       text: {
         color: getColor("foreground"),
@@ -161,5 +169,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  baseText: {},
+  baseText: {
+    fontWeight: 600,
+  },
 });
