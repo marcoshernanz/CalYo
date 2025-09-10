@@ -7,6 +7,7 @@
     "prebuild": "APP_VARIANT=development npx expo prebuild",
     "android": "APP_VARIANT=development expo run:android",
     "ios": "APP_VARIANT=development expo run:ios",
+    "eas:dev": "eas build --profile development",
     "eas:prod": "eas build --profile production",
     "lint": "expo lint"
   },
@@ -42,7 +43,8 @@
     "react-native-svg": "^15.13.0",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
-    "zod": "^4.1.5"
+    "zod": "^4.1.5",
+    "expo-dev-client": "~5.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
