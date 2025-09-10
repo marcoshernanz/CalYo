@@ -47,10 +47,7 @@ export default function AuthScreen() {
         <Button size="lg">Comenzar</Button>
         <View style={styles.footerText}>
           <Text style={{ textAlign: "center" }}>¿Ya tienes cuenta?</Text>
-          <Button
-            variant="text"
-            pressableProps={{ onPress: handlePresentModalPress }}
-          >
+          <Button variant="text" onPress={handlePresentModalPress}>
             Iniciar Sesión
           </Button>
         </View>
