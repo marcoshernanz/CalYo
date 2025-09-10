@@ -4,13 +4,15 @@ import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import Button from "@/components/ui/Button";
 import Title from "@/components/ui/Title";
 import getColor from "@/lib/utils/getColor";
+import { XIcon } from "lucide-react-native";
 
 interface Props {
   ref: React.Ref<BottomSheetModal>;
   onAnimate?: (fromIndex: number, toIndex: number) => void;
+  onClose?: () => void;
 }
 
-export default function LoginSheet({ ref, onAnimate }: Props) {
+export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
   return (
     <BottomSheetModal ref={ref} onAnimate={onAnimate} handleComponent={null}>
       <BottomSheetView style={styles.container}>
@@ -20,9 +22,9 @@ export default function LoginSheet({ ref, onAnimate }: Props) {
             <Button
               size="sm"
               variant="secondary"
-              pressableProps={{ style: styles.closeButton }}
+              pressableProps={{ style: styles.closeButton, onPress: onClose }}
             >
-              X
+              <XIcon size={22} />
             </Button>
           </View>
         </View>

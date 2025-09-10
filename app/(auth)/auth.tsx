@@ -63,7 +63,11 @@ export default function AuthScreen() {
           pointerEvents={pointerEvents}
         />
       </TouchableWithoutFeedback>
-      <LoginSheet ref={bottomSheetModalRef} onAnimate={handleAnimate} />
+      <LoginSheet
+        ref={bottomSheetModalRef}
+        onAnimate={handleAnimate}
+        onClose={() => bottomSheetModalRef.current?.close()}
+      />
     </SafeArea>
   );
 }
