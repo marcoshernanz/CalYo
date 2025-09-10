@@ -30,6 +30,7 @@ import {
 } from "@expo-google-fonts/inter";
 import { useEffect } from "react";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -66,16 +67,18 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <BottomSheetModalProvider>
-          <AppContextProvider>
-            <StatusBar style="light" />
-            <Stack
-              screenOptions={{
-                headerShown: false,
-              }}
-            />
-          </AppContextProvider>
-        </BottomSheetModalProvider>
+        <KeyboardProvider>
+          <BottomSheetModalProvider>
+            <AppContextProvider>
+              <StatusBar style="light" />
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                }}
+              />
+            </AppContextProvider>
+          </BottomSheetModalProvider>
+        </KeyboardProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

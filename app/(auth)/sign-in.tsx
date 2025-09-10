@@ -4,7 +4,8 @@ import TextInput from "@/components/ui/TextInput";
 import Title from "@/components/ui/Title";
 import { useRouter } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
-import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import { StyleSheet, View } from "react-native";
 
 export default function SignIn() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function SignIn() {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior="padding"
-        keyboardVerticalOffset={8}
+        keyboardVerticalOffset={10}
       >
         <Button
           variant="secondary"
