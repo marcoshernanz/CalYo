@@ -29,6 +29,7 @@ import {
   Inter_900Black_Italic,
 } from "@expo-google-fonts/inter";
 import { useEffect } from "react";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -65,14 +66,16 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <AppContextProvider>
-          <StatusBar style="light" />
-          <Stack
-            screenOptions={{
-              headerShown: false,
-            }}
-          />
-        </AppContextProvider>
+        <BottomSheetModalProvider>
+          <AppContextProvider>
+            <StatusBar style="light" />
+            <Stack
+              screenOptions={{
+                headerShown: false,
+              }}
+            />
+          </AppContextProvider>
+        </BottomSheetModalProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
