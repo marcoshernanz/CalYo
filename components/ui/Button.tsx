@@ -52,7 +52,14 @@ export default function Button({
         color: getColor("background"),
       },
     },
-    secondary: {},
+    secondary: {
+      container: {
+        backgroundColor: getColor("secondary"),
+      },
+      text: {
+        color: getColor("secondaryForeground"),
+      },
+    },
     ghost: {},
     outline: {
       container: {
@@ -83,8 +90,18 @@ export default function Button({
       textDefaults?: Partial<TextProps>;
     }
   > = {
-    sm: {},
+    sm: {
+      container: {
+        height: 40,
+      },
+      textDefaults: {
+        size: "16",
+      },
+    },
     md: {
+      container: {
+        height: 52,
+      },
       textDefaults: {
         size: "18",
       },

@@ -17,7 +17,13 @@ export default function LoginSheet({ ref, onAnimate }: Props) {
         <View style={styles.headerContainer}>
           <Title size="28">Iniciar Sesión</Title>
           <View style={styles.closeButtonContainer}>
-            <Button>X</Button>
+            <Button
+              size="sm"
+              variant="secondary"
+              pressableProps={{ style: styles.closeButton }}
+            >
+              X
+            </Button>
           </View>
         </View>
         <View style={styles.contentContainer}>
@@ -55,6 +61,10 @@ const styles = StyleSheet.create({
     top: 0,
     justifyContent: "center",
     alignItems: "center",
+  },
+  closeButton: {
+    borderRadius: 9999,
+    aspectRatio: 1,
   },
   contentContainer: {
     gap: 20,
