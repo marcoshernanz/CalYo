@@ -1,13 +1,17 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import Text, { TextProps } from "./Text";
+import Text, { TextProps, TextSize } from "./Text";
 
-export default function Title(rest: TextProps) {
-  return <Text {...rest} size="36" style={[styles.title, rest.style]} />;
+interface Props extends TextProps {
+  size?: TextSize;
+}
+
+export default function Title({ size = "36", ...rest }: Props) {
+  return <Text {...rest} size={size} style={[styles.title, rest.style]} />;
 }
 
 const styles = StyleSheet.create({
   title: {
-    fontWeight: 700,
+    fontWeight: 600,
   },
 });

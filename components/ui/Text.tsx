@@ -73,9 +73,11 @@ function TextWrapper(props: RNTextProps) {
   );
 }
 
+export type TextSize = "16" | "18" | "20" | "24" | "30" | "36" | "48";
+
 export interface TextProps extends RNTextProps {
   children: React.ReactNode;
-  size?: "16" | "18" | "20" | "24" | "30" | "36" | "48";
+  size?: TextSize;
 }
 
 export default function Text({ size = "18", ...rest }: TextProps) {
