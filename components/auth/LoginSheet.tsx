@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import Button from "@/components/ui/Button";
 import Title from "@/components/ui/Title";
@@ -8,6 +8,7 @@ import { MailIcon, XIcon } from "lucide-react-native";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Text from "../ui/Text";
 import GoogleLogo from "@/assets/svg/google-logo.svg";
+import { useRouter } from "expo-router";
 
 interface Props {
   ref: React.Ref<BottomSheetModal>;
@@ -16,11 +17,16 @@ interface Props {
 }
 
 export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
+  const router = useRouter();
+
   const handleAppleLogin = () => {};
 
   const handleGoogleLogin = () => {};
 
-  const handleEmailLogin = () => {};
+  const handleEmailLogin = () => {
+    onClose?.();
+    router.navigate("/sign-in");
+  };
 
   return (
     <BottomSheetModal
@@ -44,29 +50,38 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
           </View>
         </View>
         <View style={styles.contentContainer}>
+          {Platform.OS === "ios" && (
+            <Button
+              size="lg"
+              variant="primary"
+              style={styles.button}
+              onPress={handleAppleLogin}
+            >
+              <FontAwesome5
+                name="apple"
+                size={28}
+                color={getColor("background")}
+              />
+              <Text size="16" style={styles.buttonPrimaryText}>
+                Continuar con Apple
+              </Text>
+            </Button>
+          )}
           <Button
             size="lg"
-            variant="primary"
-            style={styles.button}
-            onPress={handleAppleLogin}
-          >
-            <FontAwesome5
-              name="apple"
-              size={28}
-              color={getColor("background")}
-            />
-            <Text size="16" style={styles.buttonPrimaryText}>
-              Continuar con Apple
-            </Text>
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
+            variant={Platform.OS === "android" ? "primary" : "outline"}
             style={styles.button}
             onPress={handleGoogleLogin}
           >
             <GoogleLogo height={24} width={24} />
-            <Text size="16" style={styles.buttonOutlineText}>
+            <Text
+              size="16"
+              style={
+                Platform.OS === "android"
+                  ? styles.buttonPrimaryText
+                  : styles.buttonOutlineText
+              }
+            >
               Continuar con Google
             </Text>
           </Button>
