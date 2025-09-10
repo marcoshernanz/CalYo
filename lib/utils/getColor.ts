@@ -4,6 +4,7 @@ const colors = {
   mutedForeground: [107, 114, 128], // #6b7280
   secondary: [229, 231, 235], // #e5e7eb
   secondaryForeground: [107, 114, 128], // #030712
+  destructive: [239, 68, 68], // #ef4444
 } as const;
 
 type ColorName = keyof typeof colors;
