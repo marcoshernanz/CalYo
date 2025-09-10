@@ -18,20 +18,22 @@ import Text, { TextProps } from "./Text";
 type Variant = "primary" | "secondary" | "ghost" | "outline" | "text";
 type Size = "sm" | "md" | "lg" | "xl";
 
-interface Props {
+interface Props extends Omit<PressableProps, "children"> {
   variant?: Variant;
   size?: Size;
-  children: React.ReactNode;
-  pressableProps?: Omit<PressableProps, "children">;
   textProps?: Omit<TextProps, "children">;
+  children: React.ReactNode;
 }
 
 export default function Button({
   variant = "primary",
   size = "md",
   children,
-  pressableProps,
   textProps,
+  style: incomingStyle,
+  onPressIn,
+  onPressOut,
+  ...restPressable
 }: Props) {
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
@@ -117,7 +119,7 @@ export default function Button({
     xl: {},
   };
 
-  const incomingStyle = pressableProps?.style;
+  // Style passed directly as prop (formerly pressableProps.style)
   const variantStyle = variantStyles[variant] ?? {};
   const sizeStyle = sizeStyles[size] ?? {};
 
@@ -149,13 +151,13 @@ export default function Button({
   const springConfig = { stiffness: 500, damping: 30, mass: 0.9 } as const;
   const opacityTiming = { duration: 120 } as const;
   const handlePressIn: NonNullable<PressableProps["onPressIn"]> = (e) => {
-    pressableProps?.onPressIn?.(e);
+    onPressIn?.(e);
     scale.value = withSpring(0.96, springConfig);
     opacity.value = withTiming(0.9, opacityTiming);
   };
 
   const handlePressOut: NonNullable<PressableProps["onPressOut"]> = (e) => {
-    pressableProps?.onPressOut?.(e);
+    onPressOut?.(e);
     scale.value = withSpring(1, springConfig);
     opacity.value = withTiming(1, opacityTiming);
   };
@@ -164,7 +166,7 @@ export default function Button({
 
   return (
     <AnimatedPressable
-      {...pressableProps}
+      {...restPressable}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       style={composedContainerStyle}
