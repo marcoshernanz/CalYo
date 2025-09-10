@@ -2,7 +2,7 @@ import Button from "@/components/ui/Button";
 import SafeArea from "@/components/ui/SafeArea";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, TouchableWithoutFeedback } from "react-native";
 import { useRef } from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import LoginSheet from "@/components/auth/LoginSheet";
@@ -48,10 +48,11 @@ export default function AuthScreen() {
           </Button>
         </View>
       </View>
-      <Animated.View
-        style={[styles.overlay, animatedStyle]}
-        pointerEvents="none"
-      />
+      <TouchableWithoutFeedback
+        onPress={() => bottomSheetModalRef.current?.close()}
+      >
+        <Animated.View style={[styles.overlay, animatedStyle]} />
+      </TouchableWithoutFeedback>
       <LoginSheet ref={bottomSheetModalRef} onAnimate={handleAnimate} />
     </SafeArea>
   );
