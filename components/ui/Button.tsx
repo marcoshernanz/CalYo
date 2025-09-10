@@ -35,6 +35,10 @@ export default function Button({
   onPressOut,
   ...restPressable
 }: Props) {
+  const childArray = React.Children.toArray(children);
+  const shouldWrapInText =
+    childArray.length > 0 &&
+    childArray.every((c) => typeof c === "string" || typeof c === "number");
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
@@ -171,13 +175,17 @@ export default function Button({
       onPressOut={handlePressOut}
       style={composedContainerStyle}
     >
-      <Text
-        {...defaultTextPropsFromSize}
-        {...textProps}
-        style={composedTextStyle}
-      >
-        {children}
-      </Text>
+      {shouldWrapInText ? (
+        <Text
+          {...defaultTextPropsFromSize}
+          {...textProps}
+          style={composedTextStyle}
+        >
+          {children}
+        </Text>
+      ) : (
+        children
+      )}
     </AnimatedPressable>
   );
 }
