@@ -4,31 +4,37 @@ import TextInput from "@/components/ui/TextInput";
 import Title from "@/components/ui/Title";
 import { useRouter } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
-import { StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 
 export default function SignIn() {
   const router = useRouter();
 
   return (
-    <SafeArea>
-      <Button
-        variant="secondary"
-        style={styles.closeButton}
-        onPress={() => router.back()}
-      >
-        <ArrowLeftIcon />
-      </Button>
-      <View style={styles.container}>
-        <Title>Iniciar Sesión</Title>
-        <TextInput
-          label="Email"
-          placeholder="example@example.com"
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-      </View>
-      <Button size="lg">Comenzar</Button>
-    </SafeArea>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === "ios" ? -30 : -15}
+    >
+      <SafeArea>
+        <Button
+          variant="secondary"
+          style={styles.closeButton}
+          onPress={() => router.back()}
+        >
+          <ArrowLeftIcon />
+        </Button>
+        <View style={styles.container}>
+          <Title>Iniciar Sesión</Title>
+          <TextInput
+            label="Email"
+            placeholder="example@example.com"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+        </View>
+        <Button size="lg">Comenzar</Button>
+      </SafeArea>
+    </KeyboardAvoidingView>
   );
 }
 
