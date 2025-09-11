@@ -1,6 +1,7 @@
 import Button from "@/components/ui/Button";
 import Description from "@/components/ui/Description";
 import Header from "@/components/ui/Header";
+import OTPInput from "@/components/ui/OTPInput";
 import SafeArea from "@/components/ui/SafeArea";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
@@ -38,7 +39,10 @@ export default function ConfirmEmailScreen() {
               </Text>
             </Description>
           </Header>
+
+          <OTPInput />
         </View>
+
         <Button size="lg" onPress={handleSubmit}>
           Continuar
         </Button>
