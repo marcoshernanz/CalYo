@@ -1,0 +1,1 @@
+- [ ] Set timer after resending email otp
