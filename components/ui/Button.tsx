@@ -86,7 +86,6 @@ export default function Button({
         fontWeight: 700,
         borderBottomWidth: 1,
         borderBottomColor: getColor("foreground"),
-        paddingBottom: 1,
       },
     },
   };
