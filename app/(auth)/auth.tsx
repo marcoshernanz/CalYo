@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    gap: 6,
+    gap: 4,
   },
   overlay: {
     backgroundColor: "black",
