@@ -1,1 +1,3 @@
 - [ ] Set timer after resending email otp
+- [ ] OTPInput flash error
+- [ ] Confirm email handle submit
