@@ -5,9 +5,16 @@ import {
   TextInputProps,
   View,
 } from "react-native";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Text from "./Text";
-import { useSharedValue, withTiming } from "react-native-reanimated";
+import Animated, {
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle,
+  withRepeat,
+  withSequence,
+  withDelay,
+} from "react-native-reanimated";
 import getColor from "@/lib/utils/getColor";
 
 export type OTPInputHandle = {
@@ -32,9 +39,34 @@ export default function OTPInput({
 
   const inputRef = useRef<TextInput>(null);
 
+  const isFocusedShared = useSharedValue(0);
+
   const focusedInputIndex = text.length;
 
-  const isFocusedShared = useSharedValue(0);
+  const showCaret = Boolean(isFocused) && text.length !== length;
+
+  const caretOpacity = useSharedValue(0);
+
+  const animatedCaretStyle = useAnimatedStyle(() => ({
+    opacity: caretOpacity.value,
+  }));
+
+  useEffect(() => {
+    if (showCaret) {
+      caretOpacity.value = withRepeat(
+        withSequence(
+          withTiming(1, { duration: 100 }),
+          withDelay(400, withTiming(1, { duration: 0 })),
+          withTiming(0, { duration: 100 }),
+          withDelay(400, withTiming(0, { duration: 0 }))
+        ),
+        -1,
+        true
+      );
+    } else {
+      caretOpacity.value = 0;
+    }
+  }, [caretOpacity, showCaret]);
 
   const handleTextChange = (value: string) => {
     if (/[^\d]/.test(value)) return;
@@ -68,7 +100,6 @@ export default function OTPInput({
             Boolean(isFocused) &&
             (index === focusedInputIndex ||
               (index === length - 1 && text.length === length));
-          const showCaret = isFocusedInput && text.length !== length;
 
           return (
             <Pressable
@@ -79,9 +110,9 @@ export default function OTPInput({
               <Text size="28" style={styles.text}>
                 {char}
               </Text>
-              {showCaret && (
+              {showCaret && index === focusedInputIndex && (
                 <View style={styles.caretContainer}>
-                  <View style={styles.caret} />
+                  <Animated.View style={[styles.caret, animatedCaretStyle]} />
                 </View>
               )}
             </Pressable>
@@ -133,7 +164,7 @@ const styles = StyleSheet.create({
   },
   caret: {
     width: 2,
-    height: 28,
+    height: 32,
     backgroundColor: getColor("foreground"),
   },
   input: {
