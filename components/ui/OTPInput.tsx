@@ -63,11 +63,12 @@ export default function OTPInput({
       {Array(length)
         .fill(0)
         .map((_, index) => {
+          const char = text[index] || "";
           const isFocusedInput =
             Boolean(isFocused) &&
             (index === focusedInputIndex ||
               (index === length - 1 && text.length === length));
-          const char = text[index] || "";
+          const showCaret = isFocusedInput && text.length !== length;
 
           return (
             <Pressable
@@ -78,6 +79,11 @@ export default function OTPInput({
               <Text size="28" style={styles.text}>
                 {char}
               </Text>
+              {showCaret && (
+                <View style={styles.caretContainer}>
+                  <View style={styles.caret} />
+                </View>
+              )}
             </Pressable>
           );
         })}
@@ -119,6 +125,16 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: 700,
+  },
+  caretContainer: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  caret: {
+    width: 2,
+    height: 28,
+    backgroundColor: getColor("foreground"),
   },
   input: {
     ...StyleSheet.absoluteFillObject,
