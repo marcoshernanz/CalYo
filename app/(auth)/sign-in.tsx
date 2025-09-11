@@ -6,7 +6,7 @@ import { useRouter } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { StyleSheet, View } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { z } from "zod";
 
 export default function SignInScreen() {
@@ -29,12 +29,6 @@ export default function SignInScreen() {
 
     router.navigate("/confirm-email");
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 100);
-  }, []);
 
   return (
     <SafeArea>
@@ -60,6 +54,7 @@ export default function SignInScreen() {
             value={email}
             onChangeText={setEmail}
             ref={inputRef}
+            autoFocus
           />
         </View>
         <Button size="lg" onPress={handleSubmit}>
