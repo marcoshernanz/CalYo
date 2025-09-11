@@ -40,7 +40,14 @@ export default function ConfirmEmailScreen() {
             </Description>
           </Header>
 
-          <OTPInput />
+          <OTPInput onFilled={handleSubmit} autoFocus />
+
+          <View style={styles.footerText}>
+            <Description>¿No has recibido el código?</Description>
+            <Button size="md" variant="text">
+              Reenviar
+            </Button>
+          </View>
         </View>
 
         <Button size="lg" onPress={handleSubmit}>
@@ -60,5 +67,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 20,
     gap: 32,
+  },
+  footerText: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
   },
 });
