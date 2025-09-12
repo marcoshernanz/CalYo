@@ -6,9 +6,5 @@ export default function AuthLayout() {
     return <Redirect href="/home" />;
   }
 
-  return (
-    <Stack screenOptions={{ headerShown: false }}>
-      {/* Unauthenticated screens go here */}
-    </Stack>
-  );
+  return <Stack screenOptions={{ headerShown: false }} />;
 }

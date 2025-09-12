@@ -38,7 +38,7 @@ export default function AuthScreen() {
   };
 
   const handleStart = () => {
-    router.navigate("/onboarding");
+    router.navigate("/onboarding/step1");
   };
 
   return (
