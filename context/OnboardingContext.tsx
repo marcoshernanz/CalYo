@@ -1,9 +1,19 @@
 import React, { createContext, useContext, useState } from "react";
 
 type OnboardingData = {
+  sex: "male" | "female" | null;
+  bornDate: Date | null;
   height: number | null;
   weight: number | null;
-  age: number | null;
+  weightTrend: "lose" | "maintain" | "gain" | "unsure" | null;
+  weeklyWorkouts: "0-2" | "3-5" | "6+" | null;
+  activityLevel: "low" | "medium" | "high" | null;
+  liftingExperience: "none" | "beginner" | "intermediate" | "advanced" | null;
+  cardioExperience: "none" | "beginner" | "intermediate" | "advanced" | null;
+  goal: "lose" | "maintain" | "gain" | null;
+  targetWeight: number | null;
+  weightChangeRate: number | null;
+  training: "none" | "lifting" | "cardio" | "both" | null;
 };
 
 interface OnboardingContextValue {
@@ -27,9 +37,19 @@ export default function OnboardingContextProvider({ children }: Props) {
   const [section, setSection] = useState(0);
   const [step, setStep] = useState(0);
   const [data, setData] = useState<OnboardingData>({
+    sex: null,
+    bornDate: null,
     height: null,
     weight: null,
-    age: null,
+    weightTrend: null,
+    weeklyWorkouts: null,
+    activityLevel: null,
+    liftingExperience: null,
+    cardioExperience: null,
+    goal: null,
+    targetWeight: null,
+    weightChangeRate: null,
+    training: null,
   });
 
   return (
