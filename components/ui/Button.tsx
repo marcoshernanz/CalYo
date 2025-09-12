@@ -100,7 +100,7 @@ export default function Button({
   > = {
     sm: {
       container: {
-        height: 40,
+        height: 48,
       },
       textDefaults: {
         size: "14",
@@ -108,7 +108,7 @@ export default function Button({
     },
     md: {
       container: {
-        height: 48,
+        height: 56,
       },
       textDefaults: {
         size: "16",
