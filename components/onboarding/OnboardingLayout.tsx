@@ -11,6 +11,8 @@ interface Props {
   header: string;
   numSteps: number;
   currentStep: number;
+  onBack?: () => void;
+  onNext?: () => void;
 }
 
 export default function OnboardingLayout({
@@ -19,6 +21,8 @@ export default function OnboardingLayout({
   header,
   numSteps,
   currentStep,
+  onBack,
+  onNext,
 }: Props) {
   return (
     <SafeArea style={styles.safeArea}>
@@ -47,10 +51,20 @@ export default function OnboardingLayout({
         <Title size="24">{title}</Title>
       </View>
       <View style={styles.footerContainer}>
-        <Button variant="secondary" size="md" style={styles.backButton}>
+        <Button
+          variant="secondary"
+          size="md"
+          style={styles.backButton}
+          onPress={onBack}
+        >
           <ArrowLeftIcon />
         </Button>
-        <Button variant="primary" size="md" style={styles.nextButton}>
+        <Button
+          variant="primary"
+          size="md"
+          style={styles.nextButton}
+          onPress={onNext}
+        >
           Siguiente
         </Button>
       </View>
