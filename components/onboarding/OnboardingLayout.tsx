@@ -7,8 +7,8 @@ import { ArrowLeftIcon } from "lucide-react-native";
 
 interface Props {
   children: React.ReactNode;
-  title: string;
-  header: string;
+  showHeader?: boolean;
+  header?: string;
   numSteps: number;
   currentStep: number;
   onBack?: () => void;
@@ -17,8 +17,8 @@ interface Props {
 
 export default function OnboardingLayout({
   children,
-  title,
-  header,
+  showHeader = true,
+  header = "",
   numSteps,
   currentStep,
   onBack,
@@ -26,29 +26,32 @@ export default function OnboardingLayout({
 }: Props) {
   return (
     <SafeArea style={styles.safeArea}>
-      <View style={styles.headerContainer}>
-        <Title size="20">{header}</Title>
-        <View style={styles.progressContainer}>
-          {Array(numSteps)
-            .fill(0)
-            .map((_, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.progressStep,
-                  {
-                    backgroundColor:
-                      index < currentStep
-                        ? getColor("foreground")
-                        : getColor("secondary"),
-                  },
-                ]}
-              />
-            ))}
+      {showHeader && (
+        <View style={styles.headerContainer}>
+          <Title size="20">{header}</Title>
+          <View style={styles.progressContainer}>
+            {Array(numSteps)
+              .fill(0)
+              .map((_, index) => (
+                <View
+                  key={index}
+                  style={[
+                    styles.progressStep,
+                    {
+                      backgroundColor:
+                        index < currentStep
+                          ? getColor("foreground")
+                          : getColor("secondary"),
+                    },
+                  ]}
+                />
+              ))}
+          </View>
         </View>
-      </View>
+      )}
       <View style={styles.mainContainer}>
-        <Title size="24">{title}</Title>
+        {/* <Title size="24">{title}</Title> */}
+        {children}
       </View>
       <View style={styles.footerContainer}>
         <Button
