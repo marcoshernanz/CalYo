@@ -14,8 +14,11 @@ import Animated, {
   withRepeat,
   withSequence,
   withDelay,
+  interpolateColor,
 } from "react-native-reanimated";
 import getColor from "@/lib/utils/getColor";
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export type OTPInputHandle = {
   focus: () => void;
@@ -47,9 +50,30 @@ export default function OTPInput({
 
   const caretOpacity = useSharedValue(0);
 
-  const animatedCaretStyle = useAnimatedStyle(() => ({
-    opacity: caretOpacity.value,
+  const error = useSharedValue(0);
+  const shake = useSharedValue(0);
+
+  const baseColor = getColor("mutedForeground");
+  const errorColor = getColor("destructive");
+
+  const animatedContainerStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: shake.value }],
   }));
+
+  const animatedBoxStyle = useAnimatedStyle(() => {
+    "worklet";
+    const color = interpolateColor(
+      error.value,
+      [0, 1],
+      [baseColor, errorColor]
+    );
+    return { borderColor: color };
+  });
+
+  const animatedCaretStyle = useAnimatedStyle(() => {
+    "worklet";
+    return { opacity: caretOpacity.value };
+  });
 
   useEffect(() => {
     if (showCaret) {
@@ -67,6 +91,37 @@ export default function OTPInput({
       caretOpacity.value = 0;
     }
   }, [caretOpacity, showCaret]);
+
+  useEffect(() => {
+    if (ref) {
+      const handle: OTPInputHandle = {
+        focus: () => {
+          inputRef.current?.focus();
+        },
+        flashError: () => {
+          error.value = withSequence(
+            withTiming(1, { duration: 200 }),
+            withDelay(100, withTiming(0, { duration: 200 }))
+          );
+
+          shake.value = withSequence(
+            withTiming(8, { duration: 50 }),
+            withTiming(-8, { duration: 50 }),
+            withTiming(8, { duration: 50 }),
+            withTiming(-8, { duration: 50 }),
+            withTiming(8, { duration: 50 }),
+            withTiming(0, { duration: 50 })
+          );
+        },
+      };
+
+      if (typeof ref === "function") {
+        ref(handle);
+      } else {
+        (ref as React.RefObject<OTPInputHandle>).current = handle;
+      }
+    }
+  }, [ref, error, shake]);
 
   const handleTextChange = (value: string) => {
     if (/[^\d]/.test(value)) return;
@@ -91,7 +146,7 @@ export default function OTPInput({
   };
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, animatedContainerStyle]}>
       {Array(length)
         .fill(0)
         .map((_, index) => {
@@ -102,10 +157,14 @@ export default function OTPInput({
               (index === length - 1 && text.length === length));
 
           return (
-            <Pressable
+            <AnimatedPressable
               key={index}
               onPress={() => inputRef.current?.focus()}
-              style={[styles.box, isFocusedInput && styles.focusedBox]}
+              style={[
+                styles.box,
+                isFocusedInput && styles.focusedBox,
+                animatedBoxStyle,
+              ]}
             >
               <Text size="28" style={styles.text}>
                 {char}
@@ -115,7 +174,7 @@ export default function OTPInput({
                   <Animated.View style={[styles.caret, animatedCaretStyle]} />
                 </View>
               )}
-            </Pressable>
+            </AnimatedPressable>
           );
         })}
       <TextInput
@@ -132,7 +191,7 @@ export default function OTPInput({
         {...props}
         style={[styles.input, props.style]}
       />
-    </View>
+    </Animated.View>
   );
 }
 
@@ -144,7 +203,6 @@ const styles = StyleSheet.create({
   },
   box: {
     flex: 1,
-    borderColor: getColor("mutedForeground"),
     borderWidth: 1,
     borderRadius: 12,
     alignItems: "center",
