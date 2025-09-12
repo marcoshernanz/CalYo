@@ -1,14 +1,10 @@
-import OnboardingLayout from "@/components/onboarding/OnboardingLayout";
+import Onboarding from "@/components/onboarding/Onboarding";
+import OnboardingContextProvider from "@/context/OnboardingContext";
 
-export default function Onboarding() {
+export default function OnboardingScreen() {
   return (
-    <OnboardingLayout
-      header="Crear cuenta"
-      title="What is your height?"
-      numSteps={10}
-      currentStep={3}
-    >
-      Step 1
-    </OnboardingLayout>
+    <OnboardingContextProvider>
+      <Onboarding />
+    </OnboardingContextProvider>
   );
 }
