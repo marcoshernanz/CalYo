@@ -1,19 +1,27 @@
 import Button from "@/components/ui/Button";
 import Description from "@/components/ui/Description";
 import Header from "@/components/ui/Header";
-import OTPInput from "@/components/ui/OTPInput";
+import OTPInput, { OTPInputHandle } from "@/components/ui/OTPInput";
 import SafeArea from "@/components/ui/SafeArea";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
 import { useRouter } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
+import { useRef } from "react";
 import { StyleSheet, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 export default function ConfirmEmailScreen() {
   const router = useRouter();
 
-  const handleSubmit = () => {};
+  const inputRef = useRef<OTPInputHandle>(null);
+
+  const handleSubmit = (code: string) => {
+    if (code.length !== 4) {
+      inputRef.current?.flashError();
+      return;
+    }
+  };
 
   return (
     <SafeArea>
@@ -40,7 +48,7 @@ export default function ConfirmEmailScreen() {
             </Description>
           </Header>
 
-          <OTPInput onFilled={handleSubmit} autoFocus />
+          <OTPInput ref={inputRef} onFilled={handleSubmit} autoFocus />
 
           <View style={styles.footerText}>
             <Description>¿No has recibido el código?</Description>
@@ -50,7 +58,7 @@ export default function ConfirmEmailScreen() {
           </View>
         </View>
 
-        <Button size="lg" onPress={handleSubmit}>
+        <Button size="lg" onPress={() => inputRef.current?.flashError()}>
           Continuar
         </Button>
       </KeyboardAvoidingView>
