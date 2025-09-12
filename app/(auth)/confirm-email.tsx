@@ -7,14 +7,20 @@ import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
 import { useRouter } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import createAccurateInterval from "@/lib/utils/createAccurateInterval";
+import getColor from "@/lib/utils/getColor";
 
 export default function ConfirmEmailScreen() {
   const router = useRouter();
 
   const inputRef = useRef<OTPInputHandle>(null);
+  const [resendIn, setResendIn] = useState(0);
+  const resendTimerRef = useRef<ReturnType<
+    typeof createAccurateInterval
+  > | null>(null);
 
   const handleSubmit = (code: string) => {
     if (code.length !== 4) {
@@ -22,6 +28,37 @@ export default function ConfirmEmailScreen() {
       return;
     }
   };
+
+  const startResendCountdown = () => {
+    if (resendIn > 0) return;
+
+    resendTimerRef.current?.stop?.();
+
+    setResendIn(59);
+    const timer = createAccurateInterval(() => {
+      setResendIn((prev) => {
+        const next = Math.max(0, prev - 1);
+        if (next === 0) {
+          timer.stop();
+          resendTimerRef.current = null;
+        }
+        return next;
+      });
+    }, 1000);
+
+    resendTimerRef.current = timer;
+    timer.start();
+  };
+
+  const handleResend = () => {
+    startResendCountdown();
+  };
+
+  useEffect(() => {
+    return () => {
+      resendTimerRef.current?.stop?.();
+    };
+  }, []);
 
   return (
     <SafeArea>
@@ -52,8 +89,20 @@ export default function ConfirmEmailScreen() {
 
           <View style={styles.footerText}>
             <Description>¿No has recibido el código?</Description>
-            <Button size="md" variant="text">
-              Reenviar
+            <Button
+              size="md"
+              variant="text"
+              disabled={resendIn > 0}
+              onPress={handleResend}
+              textProps={{
+                style: {
+                  color: resendIn > 0 ? getColor("mutedForeground") : undefined,
+                  borderBottomColor:
+                    resendIn > 0 ? getColor("mutedForeground") : undefined,
+                },
+              }}
+            >
+              {resendIn > 0 ? `Reenviar (${resendIn})` : "Reenviar"}
             </Button>
           </View>
         </View>

@@ -1,2 +1,0 @@
-- [ ] Set timer after resending email otp
-- [ ] OTPInput flash error
