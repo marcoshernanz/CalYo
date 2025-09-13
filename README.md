@@ -4,3 +4,4 @@
 - [ ] Email disabled button while input is empty
 - [ ] Onboarding section overview animation
 - [ ] App navigation animation
+- [ ] Select options animation
