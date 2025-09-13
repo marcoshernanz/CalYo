@@ -28,7 +28,7 @@ export default function OnboardingLayout({
     <SafeArea style={styles.safeArea}>
       {showHeader && (
         <View style={styles.headerContainer}>
-          <Title size="20">{header}</Title>
+          <Title size="18">{header}</Title>
           <View style={styles.progressContainer}>
             {Array(numSteps)
               .fill(0)
