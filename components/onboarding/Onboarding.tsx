@@ -26,7 +26,7 @@ type SectionType = {
 
 const sections: SectionType[] = [
   {
-    name: "Básicos",
+    name: "Fundamentos",
     steps: [
       <OnboardingBasicsSection key="basics-section" />,
       <OnboardingSex key="sex" />,
