@@ -1,10 +1,11 @@
 import Description from "@/components/ui/Description";
 import Header from "@/components/ui/Header";
 import Title from "@/components/ui/Title";
-import { StyleSheet, View } from "react-native";
+import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import Text from "@/components/ui/Text";
 import getColor from "@/lib/utils/getColor";
 import { CheckIcon } from "lucide-react-native";
+import { useState } from "react";
 
 const sections = [
   {
@@ -31,6 +32,20 @@ interface Props {
 export default function OnboardingSectionOverview({
   section: sectionNumber,
 }: Props) {
+  const [positions, setPositions] = useState<{ x: number; y: number }[]>([]);
+
+  const handleRowLayout = (index: number, event: LayoutChangeEvent) => {
+    const { x, y, height } = event.nativeEvent.layout;
+    const circleSize = 36;
+    setPositions((prev) => {
+      const next = [...prev];
+      next[index] = { x: x + circleSize / 2, y: y + height / 2 };
+      return next;
+    });
+  };
+
+  console.log(positions);
+
   return (
     <>
       <Header style={styles.header}>
@@ -38,10 +53,33 @@ export default function OnboardingSectionOverview({
         <Description>Tu programa personalizado te espera</Description>
       </Header>
       <View style={styles.container}>
+        {positions.length === sections.length &&
+          positions.slice(0, -1).map((pos, index) => {
+            const next = positions[index + 1];
+            return (
+              <View
+                key={`line-${index}`}
+                style={[
+                  styles.line,
+                  {
+                    left: pos.x,
+                    top: pos.y,
+                    transform: [{ translateX: "-50%" }],
+                    height: next.y - pos.y,
+                    backgroundColor:
+                      index < sectionNumber
+                        ? getColor("foreground")
+                        : getColor("secondary"),
+                  },
+                ]}
+              />
+            );
+          })}
         {sections.map((section, index) => (
           <View
             key={`${section.title}-${index}`}
             style={styles.sectionContainer}
+            onLayout={(event) => handleRowLayout(index, event)}
           >
             <View
               style={[
@@ -105,7 +143,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    gap: 24,
+    gap: 28,
+  },
+  line: {
+    position: "absolute",
+    width: 2,
   },
   sectionContainer: {
     flexDirection: "row",
@@ -116,12 +158,11 @@ const styles = StyleSheet.create({
     height: 36,
     width: 36,
     borderRadius: 999,
-    backgroundColor: getColor("secondary"),
     alignItems: "center",
     justifyContent: "center",
   },
   numberText: {
-    fontWeight: 500,
+    fontWeight: "500",
   },
   textContainer: {
     flex: 1,
