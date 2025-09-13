@@ -49,10 +49,7 @@ export default function OnboardingLayout({
           </View>
         </View>
       )}
-      <View style={styles.mainContainer}>
-        {/* <Title size="24">{title}</Title> */}
-        {children}
-      </View>
+      <View style={styles.mainContainer}>{children}</View>
       <View style={styles.footerContainer}>
         <Button
           variant="secondary"
