@@ -68,13 +68,33 @@ export default function Onboarding() {
   const sectionsSteps = currentSection.steps;
   const currentStep = currentSection.steps[step];
 
-  const handleNext = () => {};
+  const handleNext = () => {
+    if (step < sectionsSteps.length - 1) {
+      setStep(step + 1);
+    } else if (section < sections.length - 1) {
+      setSection(section + 1);
+      setStep(0);
+    } else {
+      console.log("Onboarding completed");
+    }
+  };
 
-  const handleBack = () => {};
+  const handleBack = () => {
+    if (step > 0) {
+      setStep(step - 1);
+    } else if (section > 0) {
+      const prevSection = sections[section - 1];
+      setSection(section - 1);
+      setStep(prevSection.steps.length - 1);
+    } else {
+      console.log("Already at the first step of the first section");
+    }
+  };
 
   return (
     <OnboardingLayout
       header={sectionName}
+      showHeader={step !== 0}
       numSteps={sectionsSteps.length}
       currentStep={step}
       onNext={handleNext}
