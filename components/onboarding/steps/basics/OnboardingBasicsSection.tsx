@@ -1,21 +1,5 @@
-import Description from "@/components/ui/Description";
-import Header from "@/components/ui/Header";
-import Title from "@/components/ui/Title";
-import { StyleSheet } from "react-native";
+import OnboardingSectionOverview from "../../OnboardingSectionOverview";
 
 export default function OnboardingBasicsSection() {
-  return (
-    <>
-      <Header style={styles.header}>
-        <Title>¡Empecemos!</Title>
-        <Description>Tu programa personalizado te espera</Description>
-      </Header>
-    </>
-  );
+  return <OnboardingSectionOverview section={0} />;
 }
-
-const styles = StyleSheet.create({
-  header: {
-    alignItems: "center",
-  },
-});
