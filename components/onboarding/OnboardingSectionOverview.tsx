@@ -4,6 +4,7 @@ import Title from "@/components/ui/Title";
 import { StyleSheet, View } from "react-native";
 import Text from "@/components/ui/Text";
 import getColor from "@/lib/utils/getColor";
+import { CheckIcon } from "lucide-react-native";
 
 const sections = [
   {
@@ -42,8 +43,38 @@ export default function OnboardingSectionOverview({
             key={`${section.title}-${index}`}
             style={styles.sectionContainer}
           >
-            <View style={styles.numberContainer}>
-              <Text style={styles.numberText}>{index + 1}</Text>
+            <View
+              style={[
+                styles.numberContainer,
+                {
+                  backgroundColor:
+                    index <= sectionNumber
+                      ? getColor("foreground")
+                      : getColor("secondary"),
+                },
+              ]}
+            >
+              {index >= sectionNumber ? (
+                <Text
+                  style={[
+                    styles.numberText,
+                    {
+                      color:
+                        index <= sectionNumber
+                          ? getColor("background")
+                          : getColor("foreground"),
+                    },
+                  ]}
+                >
+                  {index + 1}
+                </Text>
+              ) : (
+                <CheckIcon
+                  size={18}
+                  strokeWidth={2.5}
+                  color={getColor("background")}
+                />
+              )}
             </View>
             <View style={styles.textContainer}>
               <Title
@@ -90,7 +121,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   numberText: {
-    fontWeight: 600,
+    fontWeight: 500,
   },
   textContainer: {
     flex: 1,
