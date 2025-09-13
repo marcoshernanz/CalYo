@@ -1,5 +1,5 @@
-import Title from "@/components/ui/Title";
+import OnboardingSectionOverview from "../../OnboardingSectionOverview";
 
 export default function OnboardingProgramSection() {
-  return null;
+  return <OnboardingSectionOverview section={2} />;
 }

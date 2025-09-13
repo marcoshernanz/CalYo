@@ -1,3 +1,5 @@
+import OnboardingSectionOverview from "../../OnboardingSectionOverview";
+
 export default function OnboardingGoalSection() {
-  return null;
+  return <OnboardingSectionOverview section={1} />;
 }
