@@ -1,3 +1,9 @@
+import Title from "@/components/ui/Title";
+
 export default function OnboardingActivityLevel() {
-  return null;
+  return (
+    <>
+      <Title size="24">¿Cuál es tu nivel de actividad?</Title>
+    </>
+  );
 }
