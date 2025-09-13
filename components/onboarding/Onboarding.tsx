@@ -18,6 +18,7 @@ import OnboardingWeightChangeRate from "./steps/goal/OnboardingWeightChangeRate"
 import OnboardingWeightChangeResult from "./steps/goal/OnboardingWeightChangeResult";
 import OnboardingProgramSection from "./steps/program/OnboardingProgramSection";
 import OnboardingTraining from "./steps/program/OnboardingTraining";
+import { useRouter } from "expo-router";
 
 type SectionType = {
   name: string;
@@ -61,6 +62,7 @@ const sections: SectionType[] = [
 ];
 
 export default function Onboarding() {
+  const router = useRouter();
   const { section, setSection, step, setStep } = useOnboardingContext();
 
   const currentSection = sections[section];
@@ -87,7 +89,7 @@ export default function Onboarding() {
       setSection(section - 1);
       setStep(prevSection.steps.length - 1);
     } else {
-      console.log("Already at the first step of the first section");
+      router.navigate("/auth");
     }
   };
 
