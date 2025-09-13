@@ -4,4 +4,6 @@
 - [ ] Email disabled button while input is empty
 - [ ] Onboarding section overview animation
 - [ ] App navigation animation
-- [ ] Select options animation
+- [ ] Select options reveal animation
+- [ ] Select button scale bug
+- [ ] Select options select animation
