@@ -1,10 +1,16 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import Text, { TextProps } from "./Text";
+import Text, { TextProps, FontSize } from "./Text";
 import getColor from "@/lib/utils/getColor";
 
-export default function Description(rest: TextProps) {
-  return <Text {...rest} size="16" style={[styles.description, rest.style]} />;
+interface Props extends TextProps {
+  size?: FontSize;
+}
+
+export default function Description({ size = "16", ...rest }: Props) {
+  return (
+    <Text {...rest} size={size} style={[styles.description, rest.style]} />
+  );
 }
 
 const styles = StyleSheet.create({
