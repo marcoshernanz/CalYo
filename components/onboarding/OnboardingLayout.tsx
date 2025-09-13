@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
+    gap: 32,
   },
   footerContainer: {
     flexDirection: "row",
