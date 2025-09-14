@@ -44,8 +44,6 @@ export default function OnboardingSectionOverview({
     });
   };
 
-  console.log(positions);
-
   return (
     <>
       <Header style={styles.header}>
