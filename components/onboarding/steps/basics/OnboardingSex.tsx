@@ -1,9 +1,9 @@
-import Select from "@/components/ui/Select";
+import Select, { SelectOption } from "@/components/ui/Select";
 import Title from "@/components/ui/Title";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import { MarsIcon, VenusIcon } from "lucide-react-native";
 
-const options = [
+const options: SelectOption[] = [
   { name: "male", label: "Hombre", Icon: MarsIcon },
   { name: "female", label: "Mujer", Icon: VenusIcon },
 ];

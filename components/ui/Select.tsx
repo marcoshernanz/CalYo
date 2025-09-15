@@ -97,8 +97,14 @@ const styles = StyleSheet.create({
   },
 });
 
+export type SelectOption = {
+  name: string;
+  label: string;
+  Icon: LucideIcon;
+};
+
 interface Props {
-  options: { name: string; label: string; Icon: LucideIcon }[];
+  options: SelectOption[];
   selectedOptions?: string[];
   onSelectOption?: (optionName: string) => void;
 }
