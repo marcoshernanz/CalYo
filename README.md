@@ -5,3 +5,5 @@
 - [ ] Onboarding section overview animation
 - [ ] App navigation animation
 - [ ] Select options reveal animation
+
+- [ ] Allow components as icons for select component
