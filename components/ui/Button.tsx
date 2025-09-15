@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import getColor from "@/lib/utils/getColor";
 import {
   Pressable,
@@ -31,6 +31,7 @@ export default function Button({
   children,
   textProps,
   style: incomingStyle,
+  onPress,
   onPressIn,
   onPressOut,
   ...restPressable
@@ -155,23 +156,65 @@ export default function Button({
 
   const springConfig = { stiffness: 500, damping: 30, mass: 0.9 } as const;
   const opacityTiming = { duration: 120 } as const;
+  const MIN_PRESS_IN_MS = 120;
+  const pressStartRef = React.useRef<number | null>(null);
+  const outTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearOutTimer = () => {
+    if (outTimerRef.current) {
+      clearTimeout(outTimerRef.current);
+      outTimerRef.current = null;
+    }
+  };
+
+  const scheduleReleaseAnimation = (elapsedSincePressStart: number) => {
+    clearOutTimer();
+    const wait = Math.max(0, MIN_PRESS_IN_MS - elapsedSincePressStart);
+    outTimerRef.current = setTimeout(() => {
+      scale.value = withSpring(1, springConfig);
+      opacity.value = withTiming(1, opacityTiming);
+      outTimerRef.current = null;
+    }, wait);
+  };
+
   const handlePressIn: NonNullable<PressableProps["onPressIn"]> = (e) => {
     onPressIn?.(e);
+    clearOutTimer();
+    pressStartRef.current = Date.now();
     scale.value = withSpring(0.96, springConfig);
     opacity.value = withTiming(0.9, opacityTiming);
   };
 
   const handlePressOut: NonNullable<PressableProps["onPressOut"]> = (e) => {
     onPressOut?.(e);
-    scale.value = withSpring(1, springConfig);
-    opacity.value = withTiming(1, opacityTiming);
+    const now = Date.now();
+    const elapsed = pressStartRef.current
+      ? now - pressStartRef.current
+      : MIN_PRESS_IN_MS;
+    scheduleReleaseAnimation(elapsed);
   };
+
+  const handlePress: NonNullable<PressableProps["onPress"]> = (e) => {
+    onPress?.(e);
+    const now = Date.now();
+    const elapsed = pressStartRef.current
+      ? now - pressStartRef.current
+      : MIN_PRESS_IN_MS;
+    scheduleReleaseAnimation(elapsed);
+  };
+
+  useEffect(() => {
+    return () => {
+      clearOutTimer();
+    };
+  }, []);
 
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
   return (
     <AnimatedPressable
       {...restPressable}
+      onPress={handlePress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       style={composedContainerStyle}
