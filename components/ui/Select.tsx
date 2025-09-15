@@ -1,7 +1,6 @@
 import Button from "@/components/ui/Button";
 import Text from "@/components/ui/Text";
 import getColor from "@/lib/utils/getColor";
-import { LucideIcon } from "lucide-react-native";
 import { StyleSheet, View } from "react-native";
 import React, { useEffect } from "react";
 import Animated, {
@@ -14,9 +13,11 @@ import Animated, {
 
 const AnimatedText = Animated.createAnimatedComponent(Text);
 
+type IconProp = React.ReactElement | React.ComponentType<any>;
+
 interface OptionItemProps {
   label: string;
-  Icon: LucideIcon;
+  Icon: IconProp;
   isSelected: boolean;
   onPress?: () => void;
 }
@@ -56,7 +57,12 @@ function OptionItem({ label, Icon, isSelected, onPress }: OptionItemProps) {
     >
       <View style={styles.iconContainer}>
         <View style={styles.iconBackground}>
-          <Icon color={getColor("foreground")} />
+          {React.isValidElement(Icon)
+            ? Icon
+            : (() => {
+                const Cmp = Icon as React.ComponentType<any>;
+                return <Cmp color={getColor("foreground")} />;
+              })()}
         </View>
       </View>
       <AnimatedText style={[styles.text, animatedTextStyle]}>
@@ -100,7 +106,7 @@ const styles = StyleSheet.create({
 export type SelectOption = {
   name: string;
   label: string;
-  Icon: LucideIcon;
+  Icon: IconProp;
 };
 
 interface Props {

@@ -2,13 +2,17 @@ import Select, { SelectOption } from "@/components/ui/Select";
 import Title from "@/components/ui/Title";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import { ArrowDownIcon, ArrowUpIcon, MinusIcon } from "lucide-react-native";
-import QuestionMarkIcon from "@/components/icons/QuestionMarkIcon";
+import { IconQuestionMark } from "@tabler/icons-react-native";
 
 const options: SelectOption[] = [
   { name: "lose", label: "He perdido peso", Icon: ArrowDownIcon },
   { name: "gain", label: "He ganado peso", Icon: ArrowUpIcon },
   { name: "maintain", label: "Mi peso no ha cambiado", Icon: MinusIcon },
-  { name: "unsure", label: "No estoy seguro", Icon: QuestionMarkIcon },
+  {
+    name: "unsure",
+    label: "No estoy seguro",
+    Icon: <IconQuestionMark size={28} />,
+  },
 ];
 
 export default function OnboardingWeightTrend() {
