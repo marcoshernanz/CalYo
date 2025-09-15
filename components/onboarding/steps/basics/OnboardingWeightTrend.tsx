@@ -1,11 +1,41 @@
+import Select, { SelectOption } from "@/components/ui/Select";
 import Title from "@/components/ui/Title";
+import { useOnboardingContext } from "@/context/OnboardingContext";
+import { ArrowDownIcon, ArrowUpIcon, MinusIcon } from "lucide-react-native";
+import QuestionMarkIcon from "@/components/icons/QuestionMarkIcon";
+
+const options: SelectOption[] = [
+  { name: "lose", label: "He perdido peso", Icon: ArrowDownIcon },
+  { name: "gain", label: "He ganado peso", Icon: ArrowUpIcon },
+  { name: "maintain", label: "Mi peso no ha cambiado", Icon: MinusIcon },
+  { name: "unsure", label: "No estoy seguro", Icon: QuestionMarkIcon },
+];
 
 export default function OnboardingWeightTrend() {
+  const { data, setData } = useOnboardingContext();
+
+  const selectedOptions = data.weightTrend ? [data.weightTrend] : [];
+  const setSelectedOption = (name: string) => {
+    if (
+      name === "lose" ||
+      name === "maintain" ||
+      name === "gain" ||
+      name === "unsure"
+    ) {
+      setData((prev) => ({ ...prev, weightTrend: name }));
+    }
+  };
+
   return (
     <>
       <Title size="24">
         ¿Cómo ha evolucionado tu peso en las últimas semanas?
       </Title>
+      <Select
+        options={options}
+        selectedOptions={selectedOptions}
+        onSelectOption={setSelectedOption}
+      />
     </>
   );
 }
