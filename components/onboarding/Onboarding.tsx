@@ -6,7 +6,6 @@ import OnboardingBirthDate from "./steps/basics/OnboardingBirthDate";
 import OnboardingHeight from "./steps/basics/OnboardingHeight";
 import OnboardingWeight from "./steps/basics/OnboardingWeight";
 import OnboardingWeightTrend from "./steps/basics/OnboardingWeightTrend";
-import WeeklyWorkouts from "./steps/basics/WeeklyWorkouts";
 import OnboardingActivityLevel from "./steps/basics/OnboardingActivityLevel";
 import OnboardingLiftingExperience from "./steps/basics/OnboardingLiftingExperience";
 import OnboardingCardioExperience from "./steps/basics/OnboardingCardioExperience";
@@ -19,6 +18,7 @@ import OnboardingWeightChangeResult from "./steps/goal/OnboardingWeightChangeRes
 import OnboardingProgramSection from "./steps/program/OnboardingProgramSection";
 import OnboardingTraining from "./steps/program/OnboardingTraining";
 import { useRouter } from "expo-router";
+import OnboardingWeeklyWorkouts from "./steps/basics/OnboardingWeeklyWorkouts";
 
 type SectionType = {
   name: string;
@@ -35,7 +35,7 @@ const sections: SectionType[] = [
       <OnboardingHeight key="height" />,
       <OnboardingWeight key="weight" />,
       <OnboardingWeightTrend key="weight-trend" />,
-      <WeeklyWorkouts key="weekly-workouts" />,
+      <OnboardingWeeklyWorkouts key="weekly-workouts" />,
       <OnboardingActivityLevel key="activity-level" />,
       <OnboardingLiftingExperience key="lifting-experience" />,
       <OnboardingCardioExperience key="cardio-experience" />,
