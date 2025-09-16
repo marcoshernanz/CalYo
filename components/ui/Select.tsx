@@ -17,12 +17,19 @@ type IconProp = React.ReactElement | React.ComponentType<any>;
 
 interface OptionItemProps {
   label: string;
+  description?: string;
   Icon: IconProp;
   isSelected: boolean;
   onPress?: () => void;
 }
 
-function OptionItem({ label, Icon, isSelected, onPress }: OptionItemProps) {
+function OptionItem({
+  label,
+  description,
+  Icon,
+  isSelected,
+  onPress,
+}: OptionItemProps) {
   const progress = useSharedValue(isSelected ? 1 : 0);
 
   useEffect(() => {
@@ -41,11 +48,19 @@ function OptionItem({ label, Icon, isSelected, onPress }: OptionItemProps) {
     return { backgroundColor };
   });
 
-  const animatedTextStyle = useAnimatedStyle(() => {
+  const animatedLabelStyle = useAnimatedStyle(() => {
     const color = interpolateColor(
       progress.value,
       [0, 1],
       [getColor("foreground"), getColor("background")]
+    );
+    return { color };
+  });
+  const animatedDescriptionStyle = useAnimatedStyle(() => {
+    const color = interpolateColor(
+      progress.value,
+      [0, 1],
+      [getColor("foreground", 0.6), getColor("background", 0.75)]
     );
     return { color };
   });
@@ -65,9 +80,16 @@ function OptionItem({ label, Icon, isSelected, onPress }: OptionItemProps) {
               })()}
         </View>
       </View>
-      <AnimatedText style={[styles.text, animatedTextStyle]}>
-        {label}
-      </AnimatedText>
+      <View style={styles.labelContainer}>
+        <AnimatedText style={[styles.label, animatedLabelStyle]}>
+          {label}
+        </AnimatedText>
+        {description && (
+          <AnimatedText size="16" style={animatedDescriptionStyle}>
+            {description}
+          </AnimatedText>
+        )}
+      </View>
     </Button>
   );
 }
@@ -98,7 +120,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  text: {
+  labelContainer: {
+    gap: 2,
+  },
+  label: {
     fontWeight: 500,
   },
 });
@@ -106,6 +131,7 @@ const styles = StyleSheet.create({
 export type SelectOption = {
   name: string;
   label: string;
+  description?: string;
   Icon: IconProp;
 };
 
@@ -122,10 +148,11 @@ export default function Select({
 }: Props) {
   return (
     <View style={styles.container}>
-      {options.map(({ name, label, Icon }, index) => (
+      {options.map(({ name, label, description, Icon }, index) => (
         <OptionItem
           key={`option-${label}-${index}`}
           label={label}
+          description={description}
           Icon={Icon}
           isSelected={!!selectedOptions?.includes(name)}
           onPress={() => onSelectOption?.(name)}
