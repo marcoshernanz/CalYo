@@ -1,11 +1,27 @@
 import Select, { SelectOption } from "@/components/ui/Select";
 import Title from "@/components/ui/Title";
 import { useOnboardingContext } from "@/context/OnboardingContext";
+import { ArmchairIcon, FootprintsIcon, KayakIcon } from "lucide-react-native";
 
 const options: SelectOption[] = [
-  { name: "low", label: "Sedentario", description: "", Icon: <></> },
-  { name: "medium", label: "Algo Activo", description: "", Icon: <></> },
-  { name: "high", label: "Muy Activo", description: "", Icon: <></> },
+  {
+    name: "low",
+    label: "Sedentario",
+    description: "Normalmente menos de 5,000 pasos al día",
+    Icon: ArmchairIcon,
+  },
+  {
+    name: "medium",
+    label: "Algo Activo",
+    description: "Normalmente 5,000 - 10,000 pasos al día",
+    Icon: FootprintsIcon,
+  },
+  {
+    name: "high",
+    label: "Muy Activo",
+    description: "Normalmente más de 10,000 pasos al día",
+    Icon: KayakIcon,
+  },
 ];
 
 export default function OnboardingActivityLevel() {
