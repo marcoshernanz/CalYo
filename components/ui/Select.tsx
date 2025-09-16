@@ -71,17 +71,19 @@ function OptionItem({
       onPress={onPress}
     >
       <View style={styles.iconContainer}>
-        <View style={styles.iconBackground}>
-          {React.isValidElement(Icon)
-            ? Icon
-            : (() => {
-                const Cmp = Icon as React.ComponentType<any>;
-                return <Cmp color={getColor("foreground")} />;
-              })()}
-        </View>
+        {React.isValidElement(Icon)
+          ? Icon
+          : (() => {
+              const Cmp = Icon as React.ComponentType<any>;
+              return <Cmp color={getColor("foreground")} />;
+            })()}
       </View>
+
       <View style={styles.labelContainer}>
-        <AnimatedText size="16" style={[styles.label, animatedLabelStyle]}>
+        <AnimatedText
+          size="16"
+          style={[{ fontWeight: description ? 600 : 500 }, animatedLabelStyle]}
+        >
           {label}
         </AnimatedText>
         {description && (
@@ -101,18 +103,15 @@ const styles = StyleSheet.create({
   optionButton: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
-    height: 80,
+    minHeight: 80,
+    height: "auto",
     width: "100%",
     borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    gap: 12,
   },
   iconContainer: {
-    height: "100%",
-    aspectRatio: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  iconBackground: {
     backgroundColor: getColor("background"),
     height: 48,
     width: 48,
@@ -121,11 +120,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   labelContainer: {
+    flex: 1,
     gap: 2,
-    marginLeft: -4,
-  },
-  label: {
-    fontWeight: 600,
   },
 });
 
