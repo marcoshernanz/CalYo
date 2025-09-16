@@ -12,7 +12,7 @@ const options: SelectOption[] = [
   {
     name: "none",
     label: "Ninguna",
-    description: "No he levantado pesas antes",
+    description: "No levanto pesas",
     Icon: SignalZeroIcon,
   },
   {
