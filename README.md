@@ -5,3 +5,4 @@
 - [ ] Onboarding section overview animation
 - [ ] App navigation animation
 - [ ] Select options reveal animation
+- [ ] Select button lag on press animation
