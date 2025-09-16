@@ -81,11 +81,11 @@ function OptionItem({
         </View>
       </View>
       <View style={styles.labelContainer}>
-        <AnimatedText style={[styles.label, animatedLabelStyle]}>
+        <AnimatedText size="16" style={[styles.label, animatedLabelStyle]}>
           {label}
         </AnimatedText>
         {description && (
-          <AnimatedText size="16" style={animatedDescriptionStyle}>
+          <AnimatedText size="14" style={animatedDescriptionStyle}>
             {description}
           </AnimatedText>
         )}
@@ -122,9 +122,10 @@ const styles = StyleSheet.create({
   },
   labelContainer: {
     gap: 2,
+    marginLeft: -4,
   },
   label: {
-    fontWeight: 500,
+    fontWeight: 600,
   },
 });
 
