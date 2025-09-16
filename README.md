@@ -5,5 +5,3 @@
 - [ ] Onboarding section overview animation
 - [ ] App navigation animation
 - [ ] Select options reveal animation
-
-- [ ] Select description
