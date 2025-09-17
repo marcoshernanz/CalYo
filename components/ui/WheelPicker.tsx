@@ -1,5 +1,4 @@
 import {
-  Dimensions,
   FlatList,
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -17,7 +16,7 @@ interface Props {
 }
 
 export default function WheelPicker({ data, onValueChange }: Props) {
-  const itemHeight = 32;
+  const itemHeight = 40;
   const numVisibleItems = 5;
   const containerHeight = itemHeight * numVisibleItems;
 
@@ -37,7 +36,7 @@ export default function WheelPicker({ data, onValueChange }: Props) {
   };
 
   return (
-    <View style={{ height: containerHeight }}>
+    <View style={[styles.container, { height: containerHeight }]}>
       <View style={styles.indicatorContainer}>
         <LinearGradient
           colors={[getColor("background"), getColor("background", 0.5)]}
@@ -75,21 +74,24 @@ export default function WheelPicker({ data, onValueChange }: Props) {
 }
 
 const styles = StyleSheet.create({
-  gradient: {
-    flex: 1,
-    width: Dimensions.get("window").width,
-    zIndex: 1,
+  container: {
+    width: "100%",
   },
   indicatorContainer: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: "center",
     alignItems: "center",
   },
+  gradient: {
+    flex: 1,
+    width: "100%",
+    zIndex: 1,
+  },
   indicator: {
-    width: Dimensions.get("window").width,
+    width: "100%",
     borderTopWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    // borderColor: getColor("secondary"),
+    // borderColor: getColor("secondary"), TODO
     borderColor: getColor("foreground"),
   },
   textContainer: {
