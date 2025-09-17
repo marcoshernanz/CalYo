@@ -16,9 +16,15 @@ interface Props {
 }
 
 export default function WheelPicker({ data, onValueChange }: Props) {
-  const itemHeight = 40;
   const numVisibleItems = 5;
+  const itemHeight = 40;
   const containerHeight = itemHeight * numVisibleItems;
+
+  const paddedData = [
+    ...Array(Math.floor(numVisibleItems / 2)).fill(""),
+    ...data,
+    ...Array(Math.floor(numVisibleItems / 2)).fill(""),
+  ];
 
   const handleMomentumScrollEnd = (
     event: NativeSyntheticEvent<NativeScrollEvent>
@@ -28,8 +34,11 @@ export default function WheelPicker({ data, onValueChange }: Props) {
       (offsetY + containerHeight / 2 - itemHeight / 2) / itemHeight
     );
 
-    const clampedIndex = Math.max(0, Math.min(centeredIndex, data.length - 1));
-    const value = data[clampedIndex];
+    const clampedIndex = Math.max(
+      0,
+      Math.min(centeredIndex, paddedData.length - 1)
+    );
+    const value = paddedData[clampedIndex];
     if (value && onValueChange) {
       onValueChange(value);
     }
@@ -51,14 +60,14 @@ export default function WheelPicker({ data, onValueChange }: Props) {
         />
       </View>
       <FlatList
-        data={data}
+        data={paddedData}
         keyExtractor={(item, index) => `${item}-${index}`}
         snapToInterval={itemHeight}
         showsVerticalScrollIndicator={false}
+        overScrollMode="never"
         scrollEventThrottle={16}
-        decelerationRate="fast"
         onMomentumScrollEnd={handleMomentumScrollEnd}
-        getItemLayout={(data, index) => ({
+        getItemLayout={(_, index) => ({
           length: itemHeight,
           offset: itemHeight * index,
           index,
