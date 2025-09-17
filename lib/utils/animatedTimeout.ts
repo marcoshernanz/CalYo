@@ -1,6 +1,6 @@
 import { makeMutable } from "react-native-reanimated";
 
-const PENDING_TIMEOUTS = makeMutable<Record<string, boolean>>({});
+const PENDING_TIMEOUTS = makeMutable<Record<number, boolean>>({});
 const TIMEOUT_ID = makeMutable(0);
 
 export type AnimatedTimeoutID = number;
@@ -14,18 +14,23 @@ function removeFromPendingTimeouts(id: AnimatedTimeoutID): void {
   });
 }
 
-export function setAnimatedTimeout<F extends Function>(
-  callback: F,
+export function setAnimatedTimeout(
+  callback: () => void,
   delay: number
 ): AnimatedTimeoutID {
   "worklet";
   let startTimestamp: number;
 
   const currentId = TIMEOUT_ID.value;
-  PENDING_TIMEOUTS.value[currentId] = true;
+  PENDING_TIMEOUTS.modify((pendingTimeouts) => {
+    "worklet";
+    pendingTimeouts[currentId] = true;
+    return pendingTimeouts;
+  });
   TIMEOUT_ID.value += 1;
 
   const step = (newTimestamp: number) => {
+    "worklet";
     if (!PENDING_TIMEOUTS.value[currentId]) {
       return;
     }
