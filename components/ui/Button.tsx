@@ -18,6 +18,8 @@ import Text, { TextProps } from "./Text";
 type Variant = "primary" | "secondary" | "ghost" | "outline" | "text";
 type Size = "sm" | "md" | "lg" | "xl";
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 interface Props extends Omit<PressableProps, "children"> {
   variant?: Variant;
   size?: Size;
@@ -208,8 +210,6 @@ export default function Button({
       clearOutTimer();
     };
   }, []);
-
-  const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
   return (
     <AnimatedPressable
