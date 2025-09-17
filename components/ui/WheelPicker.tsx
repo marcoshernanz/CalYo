@@ -6,6 +6,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import Text from "./Text";
 import getColor from "@/lib/utils/getColor";
 
@@ -38,7 +39,17 @@ export default function WheelPicker({ data, onValueChange }: Props) {
   return (
     <View style={{ height: containerHeight }}>
       <View style={styles.indicatorContainer}>
+        <LinearGradient
+          colors={[getColor("background"), getColor("background", 0.5)]}
+          style={styles.gradient}
+          pointerEvents="none"
+        />
         <View style={[styles.indicator, { height: itemHeight }]}></View>
+        <LinearGradient
+          colors={[getColor("background", 0.5), getColor("background")]}
+          style={styles.gradient}
+          pointerEvents="none"
+        />
       </View>
       <FlatList
         data={data}
@@ -64,6 +75,11 @@ export default function WheelPicker({ data, onValueChange }: Props) {
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+    width: Dimensions.get("window").width,
+    zIndex: 1,
+  },
   indicatorContainer: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: "center",
