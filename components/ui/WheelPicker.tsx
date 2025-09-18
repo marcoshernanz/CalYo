@@ -49,13 +49,13 @@ export default function WheelPicker({ data, onValueChange }: Props) {
       <View style={[styles.innerContainer, { height: containerHeight }]}>
         <View style={styles.indicatorContainer}>
           <LinearGradient
-            colors={[getColor("background"), getColor("background", 0.5)]}
+            colors={[getColor("background"), getColor("background", 0.75)]}
             style={styles.gradient}
             pointerEvents="none"
           />
           <View style={[styles.indicator, { height: itemHeight }]}></View>
           <LinearGradient
-            colors={[getColor("background", 0.5), getColor("background")]}
+            colors={[getColor("background", 0.75), getColor("background")]}
             style={styles.gradient}
             pointerEvents="none"
           />
@@ -107,8 +107,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderTopWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    // borderColor: getColor("secondary"), TODO
-    borderColor: getColor("foreground"),
+    borderColor: getColor("mutedForeground"),
   },
   textContainer: {
     justifyContent: "center",
