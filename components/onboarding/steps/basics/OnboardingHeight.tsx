@@ -21,7 +21,7 @@ export default function OnboardingHeight() {
       <View style={style.pickerContainer}>
         <View style={style.segmentControlContainer}>
           <SegmentedControl
-            options={["Pies y Pulgadas", "Centímetros"]}
+            options={["Centímetros", "Pies y Pulgadas"]}
             selectedOption={
               data.measurementSystem === "metric"
                 ? "Centímetros"
