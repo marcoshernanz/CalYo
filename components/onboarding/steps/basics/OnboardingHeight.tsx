@@ -33,7 +33,5 @@ const style = StyleSheet.create({
     width: Dimensions.get("window").width,
     marginLeft: -16,
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
