@@ -1,12 +1,17 @@
 import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import Button from "./Button";
 import getColor from "@/lib/utils/getColor";
+import Text from "./Text";
 import { useEffect, useRef, useState } from "react";
 import Animated, {
+  interpolateColor,
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
   withSpring,
+  withTiming,
 } from "react-native-reanimated";
+import type { SharedValue } from "react-native-reanimated";
 
 interface Props {
   options: string[];
@@ -29,9 +34,11 @@ export default function SegmentedControl({
   const indicatorWidth = useSharedValue(0);
 
   const selectedIndex = options.indexOf(selectedOption);
+  const selectedIndexSV = useSharedValue(selectedIndex);
 
   useEffect(() => {
     if (selectedIndex < 0) return;
+    selectedIndexSV.value = selectedIndex;
 
     const allMeasured =
       optionsWidths.length === options.length &&
@@ -58,6 +65,7 @@ export default function SegmentedControl({
     indicatorLeft,
     indicatorWidth,
     options.length,
+    selectedIndexSV,
   ]);
 
   const indicatorStyle = useAnimatedStyle(() => ({
@@ -79,15 +87,7 @@ export default function SegmentedControl({
       <View style={styles.buttonsContainer}>
         <Animated.View
           pointerEvents="none"
-          style={[
-            {
-              height: 40,
-              position: "absolute",
-              backgroundColor: getColor("foreground"),
-              borderRadius: 999,
-            },
-            indicatorStyle,
-          ]}
+          style={[styles.indicator, indicatorStyle]}
         />
         {options.map((option, index) => (
           <Button
@@ -95,21 +95,46 @@ export default function SegmentedControl({
             size="sm"
             variant="ghost"
             onLayout={(event) => onOptionLayout(event, index)}
-            textProps={{
-              style: {
-                color:
-                  selectedOption === option
-                    ? getColor("background")
-                    : getColor("foreground"),
-              },
-            }}
             onPress={() => onChange(option)}
           >
-            {option}
+            <OptionLabel
+              label={option}
+              index={index}
+              selectedIndexSV={selectedIndexSV}
+            />
           </Button>
         ))}
       </View>
     </View>
+  );
+}
+
+const AnimatedText = Animated.createAnimatedComponent(Text);
+
+interface OptionLabelProps {
+  label: string;
+  index: number;
+  selectedIndexSV: SharedValue<number>;
+}
+
+function OptionLabel({ label, index, selectedIndexSV }: OptionLabelProps) {
+  const progress = useDerivedValue(() =>
+    withTiming(selectedIndexSV.value === index ? 1 : 0, { duration: 180 })
+  );
+
+  const animatedTextStyle = useAnimatedStyle(() => {
+    const color = interpolateColor(
+      progress.value,
+      [0, 1],
+      [getColor("foreground"), getColor("background")]
+    );
+    return { color };
+  });
+
+  return (
+    <AnimatedText size="14" style={[styles.optionText, animatedTextStyle]}>
+      {label}
+    </AnimatedText>
   );
 }
 
@@ -125,5 +150,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 999,
+  },
+  indicator: {
+    height: 40,
+    position: "absolute",
+    backgroundColor: getColor("foreground"),
+    borderRadius: 999,
+  },
+  optionText: {
+    fontWeight: 600,
   },
 });
