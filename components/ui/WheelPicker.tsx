@@ -15,14 +15,14 @@ interface Props {
   data: string[];
   onValueChange?: (value: string) => void;
   initialValue?: string;
-  innerContainerStyle?: ViewStyle;
+  itemStyle?: ViewStyle;
 }
 
 export default function WheelPicker({
   data,
   onValueChange,
   initialValue,
-  innerContainerStyle,
+  itemStyle,
 }: Props) {
   const numVisibleItems = 5;
   const itemHeight = 40;
@@ -63,13 +63,7 @@ export default function WheelPicker({
 
   return (
     <View style={styles.container}>
-      <View
-        style={[
-          styles.innerContainer,
-          { height: containerHeight },
-          innerContainerStyle,
-        ]}
-      >
+      <View style={[styles.innerContainer, { height: containerHeight }]}>
         <View style={styles.indicatorContainer}>
           <LinearGradient
             colors={[getColor("background"), getColor("background", 0.75)]}
@@ -98,7 +92,7 @@ export default function WheelPicker({
             index,
           })}
           renderItem={({ item }) => (
-            <View style={[styles.textContainer, { height: itemHeight }]}>
+            <View style={[styles.item, { height: itemHeight }, itemStyle]}>
               <Text style={styles.text}>{item}</Text>
             </View>
           )}
@@ -133,7 +127,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: getColor("mutedForeground"),
   },
-  textContainer: {
+  item: {
     justifyContent: "center",
     alignItems: "center",
   },
