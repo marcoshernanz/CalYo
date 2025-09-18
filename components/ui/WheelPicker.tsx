@@ -45,45 +45,52 @@ export default function WheelPicker({ data, onValueChange }: Props) {
   };
 
   return (
-    <View style={[styles.container, { height: containerHeight }]}>
-      <View style={styles.indicatorContainer}>
-        <LinearGradient
-          colors={[getColor("background"), getColor("background", 0.5)]}
-          style={styles.gradient}
-          pointerEvents="none"
-        />
-        <View style={[styles.indicator, { height: itemHeight }]}></View>
-        <LinearGradient
-          colors={[getColor("background", 0.5), getColor("background")]}
-          style={styles.gradient}
-          pointerEvents="none"
+    <View style={styles.container}>
+      <View style={[styles.innerContainer, { height: containerHeight }]}>
+        <View style={styles.indicatorContainer}>
+          <LinearGradient
+            colors={[getColor("background"), getColor("background", 0.5)]}
+            style={styles.gradient}
+            pointerEvents="none"
+          />
+          <View style={[styles.indicator, { height: itemHeight }]}></View>
+          <LinearGradient
+            colors={[getColor("background", 0.5), getColor("background")]}
+            style={styles.gradient}
+            pointerEvents="none"
+          />
+        </View>
+        <FlatList
+          data={paddedData}
+          keyExtractor={(item, index) => `${item}-${index}`}
+          snapToInterval={itemHeight}
+          showsVerticalScrollIndicator={false}
+          overScrollMode="never"
+          scrollEventThrottle={16}
+          onMomentumScrollEnd={handleMomentumScrollEnd}
+          getItemLayout={(_, index) => ({
+            length: itemHeight,
+            offset: itemHeight * index,
+            index,
+          })}
+          renderItem={({ item }) => (
+            <View style={[styles.textContainer, { height: itemHeight }]}>
+              <Text style={styles.text}>{item}</Text>
+            </View>
+          )}
         />
       </View>
-      <FlatList
-        data={paddedData}
-        keyExtractor={(item, index) => `${item}-${index}`}
-        snapToInterval={itemHeight}
-        showsVerticalScrollIndicator={false}
-        overScrollMode="never"
-        scrollEventThrottle={16}
-        onMomentumScrollEnd={handleMomentumScrollEnd}
-        getItemLayout={(_, index) => ({
-          length: itemHeight,
-          offset: itemHeight * index,
-          index,
-        })}
-        renderItem={({ item }) => (
-          <View style={[styles.textContainer, { height: itemHeight }]}>
-            <Text style={styles.text}>{item}</Text>
-          </View>
-        )}
-      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  innerContainer: {
     width: "100%",
   },
   indicatorContainer: {
