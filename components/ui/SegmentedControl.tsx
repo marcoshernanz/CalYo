@@ -25,10 +25,40 @@ export default function SegmentedControl({
 
   const indicatorInitializedRef = useRef(false);
 
-  const selectedIndex = options.indexOf(selectedOption);
-
   const indicatorLeft = useSharedValue(0);
   const indicatorWidth = useSharedValue(0);
+
+  const selectedIndex = options.indexOf(selectedOption);
+
+  useEffect(() => {
+    if (selectedIndex < 0) return;
+
+    const allMeasured =
+      optionsWidths.length === options.length &&
+      optionsWidths.every((w) => w > 0);
+    if (!allMeasured) return;
+
+    const width = optionsWidths[selectedIndex];
+    const left = optionsWidths
+      .slice(0, Math.max(0, selectedIndex))
+      .reduce((acc, w) => acc + w, 0);
+
+    const springConfig = { stiffness: 500, damping: 30, mass: 0.9 } as const;
+    if (!indicatorInitializedRef.current) {
+      indicatorInitializedRef.current = true;
+      indicatorWidth.value = width;
+      indicatorLeft.value = left;
+    } else {
+      indicatorWidth.value = withSpring(width, springConfig);
+      indicatorLeft.value = withSpring(left, springConfig);
+    }
+  }, [
+    selectedIndex,
+    optionsWidths,
+    indicatorLeft,
+    indicatorWidth,
+    options.length,
+  ]);
 
   const indicatorStyle = useAnimatedStyle(() => ({
     width: indicatorWidth.value,
@@ -43,48 +73,6 @@ export default function SegmentedControl({
       return newLayouts;
     });
   };
-
-  const handleChange = (option: string) => {
-    onChange(option);
-
-    const index = options.indexOf(option);
-
-    const width = optionsWidths[index] ?? 0;
-    const left = optionsWidths
-      .slice(0, Math.max(0, index))
-      .reduce((acc, w) => acc + w, 0);
-
-    const springConfig = { stiffness: 500, damping: 30, mass: 0.9 } as const;
-
-    indicatorWidth.value = withSpring(width, springConfig);
-    indicatorLeft.value = withSpring(left, springConfig);
-  };
-
-  useEffect(() => {
-    if (selectedIndex < 0) return;
-    if (indicatorInitializedRef.current) return;
-
-    const allMeasured =
-      optionsWidths.length === options.length &&
-      optionsWidths.every((w) => w > 0);
-    if (!allMeasured) return;
-
-    indicatorInitializedRef.current = true;
-
-    const width = optionsWidths[selectedIndex] ?? 0;
-    const left = optionsWidths
-      .slice(0, Math.max(0, selectedIndex))
-      .reduce((acc, w) => acc + w, 0);
-
-    indicatorWidth.value = width;
-    indicatorLeft.value = left;
-  }, [
-    optionsWidths,
-    selectedIndex,
-    options.length,
-    indicatorLeft,
-    indicatorWidth,
-  ]);
 
   return (
     <View style={styles.container}>
@@ -115,7 +103,7 @@ export default function SegmentedControl({
                     : getColor("foreground"),
               },
             }}
-            onPress={() => handleChange(option)}
+            onPress={() => onChange(option)}
           >
             {option}
           </Button>
