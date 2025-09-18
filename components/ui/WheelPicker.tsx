@@ -4,6 +4,7 @@ import {
   NativeSyntheticEvent,
   StyleSheet,
   View,
+  ViewStyle,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Text from "./Text";
@@ -13,9 +14,15 @@ interface Props {
   data: string[];
   onValueChange?: (value: string) => void;
   defaultValue?: string;
+  innerContainerStyle?: ViewStyle;
 }
 
-export default function WheelPicker({ data, onValueChange }: Props) {
+export default function WheelPicker({
+  data,
+  onValueChange,
+  defaultValue,
+  innerContainerStyle,
+}: Props) {
   const numVisibleItems = 5;
   const itemHeight = 40;
   const containerHeight = itemHeight * numVisibleItems;
@@ -46,7 +53,13 @@ export default function WheelPicker({ data, onValueChange }: Props) {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.innerContainer, { height: containerHeight }]}>
+      <View
+        style={[
+          styles.innerContainer,
+          { height: containerHeight },
+          innerContainerStyle,
+        ]}
+      >
         <View style={styles.indicatorContainer}>
           <LinearGradient
             colors={[getColor("background"), getColor("background", 0.75)]}
