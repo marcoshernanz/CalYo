@@ -103,7 +103,7 @@ export default function Button({
   > = {
     sm: {
       container: {
-        height: 48,
+        height: 40,
       },
       textDefaults: {
         size: "14",
@@ -239,6 +239,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: 16,
   },
   baseText: {
     fontWeight: 600,
