@@ -9,18 +9,19 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import Text from "./Text";
 import getColor from "@/lib/utils/getColor";
+import { useMemo } from "react";
 
 interface Props {
   data: string[];
   onValueChange?: (value: string) => void;
-  defaultValue?: string;
+  initialValue?: string;
   innerContainerStyle?: ViewStyle;
 }
 
 export default function WheelPicker({
   data,
   onValueChange,
-  defaultValue,
+  initialValue,
   innerContainerStyle,
 }: Props) {
   const numVisibleItems = 5;
@@ -32,6 +33,15 @@ export default function WheelPicker({
     ...data,
     ...Array(Math.floor(numVisibleItems / 2)).fill(""),
   ];
+
+  const initialScrollIndex = useMemo(() => {
+    if (!initialValue) return 0;
+
+    const index = data.indexOf(initialValue);
+    if (index === -1) return 0;
+
+    return index;
+  }, [data, initialValue]);
 
   const handleMomentumScrollEnd = (
     event: NativeSyntheticEvent<NativeScrollEvent>
@@ -81,6 +91,7 @@ export default function WheelPicker({
           overScrollMode="never"
           scrollEventThrottle={16}
           onMomentumScrollEnd={handleMomentumScrollEnd}
+          initialScrollIndex={initialScrollIndex}
           getItemLayout={(_, index) => ({
             length: itemHeight,
             offset: itemHeight * index,
