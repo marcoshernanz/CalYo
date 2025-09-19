@@ -16,7 +16,7 @@ interface Props {
   onValueChange?: (value: string) => void;
   initialValue?: string;
   itemStyle?: ViewStyle;
-  ref: React.Ref<FlatList<string>>;
+  ref?: React.Ref<FlatList<string>>;
 }
 
 export default function WheelPicker({
