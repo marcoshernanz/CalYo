@@ -83,6 +83,7 @@ export default function Button({
     text: {
       container: {
         height: "auto",
+        paddingHorizontal: 0,
       },
       text: {
         color: getColor("foreground"),
