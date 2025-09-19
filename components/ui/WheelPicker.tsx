@@ -16,6 +16,7 @@ interface Props {
   onValueChange?: (value: string) => void;
   initialValue?: string;
   itemStyle?: ViewStyle;
+  ref: React.Ref<FlatList<string>>;
 }
 
 export default function WheelPicker({
@@ -23,6 +24,7 @@ export default function WheelPicker({
   onValueChange,
   initialValue,
   itemStyle,
+  ref,
 }: Props) {
   const numVisibleItems = 5;
   const itemHeight = 40;
@@ -78,6 +80,7 @@ export default function WheelPicker({
           />
         </View>
         <FlatList
+          ref={ref}
           data={paddedData}
           keyExtractor={(item, index) => `${item}-${index}`}
           snapToInterval={itemHeight}
