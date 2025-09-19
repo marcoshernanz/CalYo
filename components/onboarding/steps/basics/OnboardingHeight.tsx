@@ -43,20 +43,18 @@ export default function OnboardingHeight() {
       measurementSystem: system === "Centímetros" ? "metric" : "imperial",
     }));
 
-    if (system === "Centímetros") {
-      const cm = Math.round(height);
-      const index = metricOptions.findIndex((option) => option === `${cm} cm`);
-      console.log(index);
-      metricWheelRef.current?.scrollToIndex({ index, animated: false });
-    } else {
-      const totalInches = cmToIn(height);
-      const { feet, inches } = inToFtIn(totalInches);
-      const index = imperialOptions.findIndex(
-        (option) => option === `${feet} ft ${inches} in`
-      );
-      console.log(index);
-      imperialWheelRef.current?.scrollToIndex({ index, animated: false });
-    }
+    // if (system === "Centímetros") {
+    //   const cm = Math.round(height);
+    //   const index = metricOptions.findIndex((option) => option === `${cm} cm`);
+    //   metricWheelRef.current?.scrollToIndex({ index, animated: false });
+    // } else {
+    //   const totalInches = cmToIn(height);
+    //   const { feet, inches } = inToFtIn(totalInches);
+    //   const index = imperialOptions.findIndex(
+    //     (option) => option === `${feet} ft ${inches} in`
+    //   );
+    //   imperialWheelRef.current?.scrollToIndex({ index, animated: false });
+    // }
   };
 
   const handleHeightChange = (value: string) => {
@@ -77,15 +75,15 @@ export default function OnboardingHeight() {
     setData((prev) => ({ ...prev, height }));
   };
 
-  const initialValue = useMemo(() => {
-    if (data.measurementSystem === "metric") {
-      return `${Math.round(height)} cm`;
-    }
+  const metricInitialValue = useMemo(() => {
+    return `${Math.round(height)} cm`;
+  }, [height]);
 
+  const imperialInitialValue = useMemo(() => {
     const totalInches = cmToIn(height);
     const { feet, inches } = inToFtIn(totalInches);
     return `${feet} ft ${inches} in`;
-  }, [data.measurementSystem, height]);
+  }, [height]);
 
   return (
     <>
@@ -114,7 +112,7 @@ export default function OnboardingHeight() {
               ref={metricWheelRef}
               data={metricOptions}
               onValueChange={handleHeightChange}
-              initialValue={initialValue}
+              initialValue={metricInitialValue}
             />
           </View>
           <View
@@ -127,7 +125,7 @@ export default function OnboardingHeight() {
               ref={imperialWheelRef}
               data={imperialOptions}
               onValueChange={handleHeightChange}
-              initialValue={initialValue}
+              initialValue={imperialInitialValue}
             />
           </View>
         </View>
