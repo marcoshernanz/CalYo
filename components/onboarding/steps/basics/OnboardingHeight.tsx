@@ -14,7 +14,9 @@ const defaultHeight = 170;
 
 export default function OnboardingHeight() {
   const { data, setData } = useOnboardingContext();
-  const wheelRef = useRef<FlatList<string>>(null);
+
+  const metricWheelRef = useRef<FlatList<string>>(null);
+  const imperialWheelRef = useRef<FlatList<string>>(null);
 
   const height = data.height ?? defaultHeight;
 
@@ -34,12 +36,6 @@ export default function OnboardingHeight() {
     });
   }, []);
 
-  const options = useMemo(() => {
-    return data.measurementSystem === "metric"
-      ? metricOptions
-      : imperialOptions;
-  }, [data.measurementSystem, metricOptions, imperialOptions]);
-
   const handleMeasurementSystemChange = (system: string) => {
     if (system !== "Centímetros" && system !== "Pies y Pulgadas") return;
     setData((prev) => ({
@@ -50,14 +46,16 @@ export default function OnboardingHeight() {
     if (system === "Centímetros") {
       const cm = Math.round(height);
       const index = metricOptions.findIndex((option) => option === `${cm} cm`);
-      wheelRef.current?.scrollToIndex({ index, animated: false });
+      console.log(index);
+      metricWheelRef.current?.scrollToIndex({ index, animated: false });
     } else {
       const totalInches = cmToIn(height);
       const { feet, inches } = inToFtIn(totalInches);
       const index = imperialOptions.findIndex(
         (option) => option === `${feet} ft ${inches} in`
       );
-      wheelRef.current?.scrollToIndex({ index, animated: false });
+      console.log(index);
+      imperialWheelRef.current?.scrollToIndex({ index, animated: false });
     }
   };
 
@@ -105,12 +103,34 @@ export default function OnboardingHeight() {
           />
         </View>
 
-        <WheelPicker
-          ref={wheelRef}
-          data={options}
-          onValueChange={handleHeightChange}
-          initialValue={initialValue}
-        />
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              display: data.measurementSystem === "metric" ? "flex" : "none",
+            }}
+          >
+            <WheelPicker
+              ref={metricWheelRef}
+              data={metricOptions}
+              onValueChange={handleHeightChange}
+              initialValue={initialValue}
+            />
+          </View>
+          <View
+            style={{
+              flex: 1,
+              display: data.measurementSystem === "imperial" ? "flex" : "none",
+            }}
+          >
+            <WheelPicker
+              ref={imperialWheelRef}
+              data={imperialOptions}
+              onValueChange={handleHeightChange}
+              initialValue={initialValue}
+            />
+          </View>
+        </View>
       </View>
     </>
   );
