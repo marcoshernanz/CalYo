@@ -6,3 +6,7 @@
 - [ ] App navigation animation
 - [ ] Select options reveal animation
 - [ ] Select button lag on press animation
+- [ ] Onboarding height keep value when changing measurement system
+- [ ] Optimize FlatList
+  - [ ] Wheel Picker
+  - [ ] Onboarding Height
