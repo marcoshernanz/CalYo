@@ -5,33 +5,40 @@ import { useOnboardingContext } from "@/context/OnboardingContext";
 import cmToIn from "@/lib/units/cmToIn";
 import inToCm from "@/lib/units/inToCm";
 import inToFtIn from "@/lib/units/inToFtIn";
-import { useMemo } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { useMemo, useRef } from "react";
+import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 
+const minHeight = 120;
+const maxHeight = 240;
 const defaultHeight = 170;
 
 export default function OnboardingHeight() {
   const { data, setData } = useOnboardingContext();
+  const wheelRef = useRef<FlatList<string>>(null);
 
   const height = data.height ?? defaultHeight;
 
-  const options = useMemo(() => {
-    const minHeight = 120;
-    const maxHeight = 240;
-    if (data.measurementSystem === "metric") {
-      return Array.from(
-        { length: maxHeight - minHeight + 1 },
-        (_, i) => `${minHeight + i} cm`
-      );
-    }
+  const metricOptions = useMemo(() => {
+    return Array.from(
+      { length: maxHeight - minHeight + 1 },
+      (_, i) => `${minHeight + i} cm`
+    );
+  }, []);
 
+  const imperialOptions = useMemo(() => {
     const minInches = Math.round(cmToIn(minHeight));
     const maxInches = Math.round(cmToIn(maxHeight));
     return Array.from({ length: maxInches - minInches + 1 }, (_, i) => {
       const { feet, inches } = inToFtIn(minInches + i);
       return `${feet} ft ${inches} in`;
     });
-  }, [data.measurementSystem]);
+  }, []);
+
+  const options = useMemo(() => {
+    return data.measurementSystem === "metric"
+      ? metricOptions
+      : imperialOptions;
+  }, [data.measurementSystem, metricOptions, imperialOptions]);
 
   const handleMeasurementSystemChange = (system: string) => {
     if (system !== "Centímetros" && system !== "Pies y Pulgadas") return;
@@ -39,6 +46,19 @@ export default function OnboardingHeight() {
       ...prev,
       measurementSystem: system === "Centímetros" ? "metric" : "imperial",
     }));
+
+    if (system === "Centímetros") {
+      const cm = Math.round(height);
+      const index = metricOptions.findIndex((option) => option === `${cm} cm`);
+      wheelRef.current?.scrollToIndex({ index, animated: false });
+    } else {
+      const totalInches = cmToIn(height);
+      const { feet, inches } = inToFtIn(totalInches);
+      const index = imperialOptions.findIndex(
+        (option) => option === `${feet} ft ${inches} in`
+      );
+      wheelRef.current?.scrollToIndex({ index, animated: false });
+    }
   };
 
   const handleHeightChange = (value: string) => {
@@ -55,13 +75,13 @@ export default function OnboardingHeight() {
     const feet = parseInt(match[1]);
     const inches = parseInt(match[2]);
     const totalInches = feet * 12 + inches;
-    const height = inToCm(totalInches);
+    const height = Math.round(inToCm(totalInches));
     setData((prev) => ({ ...prev, height }));
   };
 
   const initialValue = useMemo(() => {
     if (data.measurementSystem === "metric") {
-      return `${height} cm`;
+      return `${Math.round(height)} cm`;
     }
 
     const totalInches = cmToIn(height);
@@ -86,6 +106,7 @@ export default function OnboardingHeight() {
         </View>
 
         <WheelPicker
+          ref={wheelRef}
           data={options}
           onValueChange={handleHeightChange}
           initialValue={initialValue}
