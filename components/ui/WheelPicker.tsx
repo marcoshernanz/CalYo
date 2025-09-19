@@ -66,13 +66,13 @@ export default function WheelPicker({
       <View style={[styles.innerContainer, { height: containerHeight }]}>
         <View style={styles.indicatorContainer}>
           <LinearGradient
-            colors={[getColor("background"), getColor("background", 0.75)]}
+            colors={[getColor("background"), getColor("background", 0.6)]}
             style={styles.gradient}
             pointerEvents="none"
           />
-          <View style={[styles.indicator, { height: itemHeight }]}></View>
+          <View style={[styles.indicator, { height: itemHeight - 4 }]}></View>
           <LinearGradient
-            colors={[getColor("background", 0.75), getColor("background")]}
+            colors={[getColor("background", 0.6), getColor("background")]}
             style={styles.gradient}
             pointerEvents="none"
           />
