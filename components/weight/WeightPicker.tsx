@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, PixelRatio, StyleSheet, View } from "react-native";
 import Animated, {
   useAnimatedScrollHandler,
   useDerivedValue,
@@ -22,14 +22,24 @@ export default function WeightPicker({
   const height = 75;
   const bigLineHeight = 40;
   const smallLineHeight = 25;
-  const width = Dimensions.get("window").width - 32;
+  const width = PixelRatio.roundToNearestPixel(
+    Dimensions.get("window").width - 32
+  );
   const numBigLinesVisible = 5;
   const numBigLines = maxWeight - minWeight + 1;
   const numSmallLines = (numBigLines - 1) * 9;
-  const space = width / (numBigLinesVisible - 1) / 10;
-  const defaultOffset = (defaultWeight - minWeight) * space * 10;
+  const space = PixelRatio.roundToNearestPixel(
+    width / (numBigLinesVisible - 1) / 10
+  );
+  const defaultOffset = PixelRatio.roundToNearestPixel(
+    (defaultWeight - minWeight) * space * 10
+  );
+  const center = PixelRatio.roundToNearestPixel(width / 2);
+  const contentWidth = PixelRatio.roundToNearestPixel(
+    (numBigLines + 3) * space * 10
+  );
 
-  const panX = useSharedValue(width / 2 - defaultOffset);
+  const panX = useSharedValue(center - defaultOffset);
   const transform = useDerivedValue(() => [{ translateX: panX.value }]);
 
   const primaryLinesPath = useMemo(() => {
@@ -64,7 +74,7 @@ export default function WeightPicker({
   }, [numSmallLines, space]);
 
   const handleScroll = useAnimatedScrollHandler((event) => {
-    panX.value = -event.contentOffset.x + width / 2;
+    panX.value = -event.contentOffset.x + center;
   });
 
   return (
@@ -91,8 +101,9 @@ export default function WeightPicker({
         showsHorizontalScrollIndicator={false}
         overScrollMode="never"
         snapToInterval={space}
+        scrollEventThrottle={16}
       >
-        <View style={{ width: (numBigLines + 3) * space * 10 }} />
+        <View style={{ width: contentWidth }} />
       </Animated.ScrollView>
       <Canvas style={{ height, width: "100%" }}>
         <Group transform={transform}>
