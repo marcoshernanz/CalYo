@@ -25,6 +25,7 @@ import {
 } from "@shopify/react-native-skia";
 import { useMemo } from "react";
 import getColor from "@/lib/utils/getColor";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface Props {
   minWeight: number;
@@ -128,12 +129,26 @@ export default function WeightPicker({
         <View style={{ width: contentWidth }} />
       </Animated.ScrollView>
       <View style={[styles.innerContainer, { width, height }]}>
-        <View style={[styles.indicator, { height }]} />
-
         <AnimateableText
           animatedProps={animatedProps.weightText}
-          style={[styles.label, { bottom: height + 12 }]}
+          style={[styles.weightText, { bottom: height + 12 }]}
         />
+        <LinearGradient
+          colors={[getColor("background"), getColor("background", 0)]}
+          style={[styles.leftGradient, { width: width / 8, height: height }]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          pointerEvents="none"
+        />
+        <LinearGradient
+          colors={[getColor("background"), getColor("background", 0)]}
+          style={[styles.rightGradient, { width: width / 8, height: height }]}
+          start={{ x: 1, y: 0 }}
+          end={{ x: 0, y: 0 }}
+          pointerEvents="none"
+        />
+        <View style={[styles.indicator, { height }]} />
+
         <Canvas style={[styles.canvas, { height }]}>
           <Group transform={transform}>
             <Path
@@ -218,13 +233,23 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 2,
   },
-  label: {
+  weightText: {
     fontSize: 20,
     position: "absolute",
     fontWeight: 700,
     fontFamily: "Inter_700Bold",
     color: getColor("foreground"),
     ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
+  },
+  leftGradient: {
+    position: "absolute",
+    left: 0,
+    zIndex: 1,
+  },
+  rightGradient: {
+    position: "absolute",
+    right: 0,
+    zIndex: 1,
   },
   canvas: {
     width: "100%",
