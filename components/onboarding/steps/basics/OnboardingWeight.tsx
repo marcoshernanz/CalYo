@@ -19,6 +19,17 @@ export default function OnboardingWeight() {
     }));
   };
 
+  const formatLabel = (weight: number) => {
+    "worklet";
+    const roundedWeight = Math.round(weight * 10) / 10;
+
+    if (data.measurementSystem === "metric") {
+      return `${roundedWeight} kg`;
+    } else {
+      return `${roundedWeight} lbs`;
+    }
+  };
+
   return (
     <>
       <Title size="24">¿Cuanto pesas?</Title>
@@ -36,6 +47,7 @@ export default function OnboardingWeight() {
           minWeight={minWeight}
           maxWeight={maxWeight}
           defaultWeight={defaultWeight}
+          formatLabel={formatLabel}
         />
       </View>
     </>
@@ -47,6 +59,7 @@ const style = StyleSheet.create({
     position: "absolute",
     left: "50%",
     transform: [{ translateX: "-50%" }],
+    zIndex: 2,
   },
   pickerContainer: {
     flex: 1,
