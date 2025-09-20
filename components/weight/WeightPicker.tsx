@@ -1,6 +1,9 @@
 import { Dimensions, StyleSheet, View } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { useDerivedValue, useSharedValue } from "react-native-reanimated";
+import Animated, {
+  useAnimatedScrollHandler,
+  useDerivedValue,
+  useSharedValue,
+} from "react-native-reanimated";
 import { Canvas, Group, Path, Skia } from "@shopify/react-native-skia";
 import { useMemo } from "react";
 import getColor from "@/lib/utils/getColor";
@@ -24,16 +27,7 @@ export default function WeightPicker({
   const space = width / (numBigLinesVisible - 1) / 10;
 
   const panX = useSharedValue(0);
-  const startingPanX = useSharedValue(0);
   const transform = useDerivedValue(() => [{ translateX: panX.value }]);
-
-  const panGesture = Gesture.Pan()
-    .onUpdate((e) => {
-      panX.value = startingPanX.value + e.translationX;
-    })
-    .onEnd(() => {
-      startingPanX.value = panX.value;
-    });
 
   const linesPath = useMemo(() => {
     const path = Skia.Path.Make();
@@ -57,22 +51,47 @@ export default function WeightPicker({
     }
 
     return path;
-  }, [maxWeight, minWeight]);
+  }, [maxWeight, minWeight, space]);
+
+  const handleScroll = useAnimatedScrollHandler((event) => {
+    panX.value = -event.contentOffset.x + width / 2;
+  });
 
   return (
     <View style={styles.container}>
-      <GestureDetector gesture={panGesture}>
-        <Canvas style={{ height, width: "100%", backgroundColor: "red" }}>
-          <Group transform={transform}>
-            <Path
-              path={linesPath}
-              color={getColor("foreground")}
-              style="stroke"
-              strokeWidth={1}
-            />
-          </Group>
-        </Canvas>
-      </GestureDetector>
+      <View
+        style={{
+          backgroundColor: getColor("primary"),
+          width: 2,
+          height,
+          position: "absolute",
+          zIndex: 2,
+        }}
+      />
+      <Animated.ScrollView
+        onScroll={handleScroll}
+        horizontal
+        style={{
+          height: "100%",
+          position: "absolute",
+          zIndex: 1,
+        }}
+        showsHorizontalScrollIndicator={false}
+        overScrollMode="never"
+        snapToInterval={space}
+      >
+        <View style={{ width: 2000 }} />
+      </Animated.ScrollView>
+      <Canvas style={{ height, width: "100%" }}>
+        <Group transform={transform}>
+          <Path
+            path={linesPath}
+            color={getColor("foreground")}
+            style="stroke"
+            strokeWidth={1}
+          />
+        </Group>
+      </Canvas>
     </View>
   );
 }
