@@ -82,6 +82,7 @@ export default function WeightPicker({
       <Animated.ScrollView
         onScroll={handleScroll}
         horizontal
+        contentOffset={{ x: defaultOffset, y: 0 }}
         style={{
           height: "100%",
           position: "absolute",
