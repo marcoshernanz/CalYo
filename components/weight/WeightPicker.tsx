@@ -119,11 +119,7 @@ export default function WeightPicker({
         onScroll={handleScroll}
         horizontal
         contentOffset={{ x: defaultOffset, y: 0 }}
-        style={{
-          height: "100%",
-          position: "absolute",
-          zIndex: 1,
-        }}
+        style={styles.scrollView}
         showsHorizontalScrollIndicator={false}
         overScrollMode="never"
         snapToInterval={space}
@@ -131,39 +127,14 @@ export default function WeightPicker({
       >
         <View style={{ width: contentWidth }} />
       </Animated.ScrollView>
-      <View
-        style={{
-          width,
-          height,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: getColor("primary"),
-            width: 2,
-            height,
-            position: "absolute",
-            zIndex: 2,
-          }}
-        />
+      <View style={[styles.innerContainer, { width, height }]}>
+        <View style={[styles.indicator, { height }]} />
 
         <AnimateableText
           animatedProps={animatedProps.weightText}
-          style={{
-            bottom: height + 12,
-            fontSize: 20,
-            position: "absolute",
-            fontWeight: 700,
-            fontFamily: "Inter_700Bold",
-            color: getColor("foreground"),
-            ...(Platform.OS === "android"
-              ? { includeFontPadding: false }
-              : null),
-          }}
+          style={[styles.label, { bottom: height + 12 }]}
         />
-        <Canvas style={{ height, width: "100%" }}>
+        <Canvas style={[styles.canvas, { height }]}>
           <Group transform={transform}>
             <Path
               path={primaryLinesPath}
@@ -231,5 +202,31 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  scrollView: {
+    height: "100%",
+    position: "absolute",
+    zIndex: 1,
+  },
+  innerContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  indicator: {
+    backgroundColor: getColor("primary"),
+    width: 2,
+    position: "absolute",
+    zIndex: 2,
+  },
+  label: {
+    fontSize: 20,
+    position: "absolute",
+    fontWeight: 700,
+    fontFamily: "Inter_700Bold",
+    color: getColor("foreground"),
+    ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
+  },
+  canvas: {
+    width: "100%",
   },
 });
