@@ -1,5 +1,13 @@
-import { Dimensions, PixelRatio, StyleSheet, View } from "react-native";
+import AnimateableText from "react-native-animateable-text";
+import {
+  Dimensions,
+  PixelRatio,
+  Platform,
+  StyleSheet,
+  View,
+} from "react-native";
 import Animated, {
+  useAnimatedProps,
   useAnimatedScrollHandler,
   useDerivedValue,
   useSharedValue,
@@ -22,12 +30,14 @@ interface Props {
   minWeight: number;
   maxWeight: number;
   defaultWeight: number;
+  formatWeight: (weight: number) => string;
 }
 
 export default function WeightPicker({
   minWeight,
   maxWeight,
   defaultWeight,
+  formatWeight,
 }: Props) {
   const height = 75;
   const bigLineHeight = 40;
@@ -93,18 +103,18 @@ export default function WeightPicker({
     ],
   });
 
+  const animatedProps = {
+    weightText: useAnimatedProps(() => ({
+      text: String(
+        formatWeight(
+          -panX.value / space / 10 + minWeight + (numBigLinesVisible - 1) / 2
+        )
+      ),
+    })),
+  };
+
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          backgroundColor: getColor("primary"),
-          width: 2,
-          height,
-          position: "absolute",
-          zIndex: 2,
-        }}
-      />
-
       <Animated.ScrollView
         onScroll={handleScroll}
         horizontal
@@ -121,64 +131,97 @@ export default function WeightPicker({
       >
         <View style={{ width: contentWidth }} />
       </Animated.ScrollView>
-      <Canvas style={{ height, width: "100%" }}>
-        <Group transform={transform}>
-          <Path
-            path={primaryLinesPath}
-            color={getColor("mutedForeground")}
-            style="stroke"
-            strokeWidth={1}
-          />
-          <Path
-            path={secondaryLinesPath}
-            color={getColor("mutedForeground", 0.5)}
-            style="stroke"
-            strokeWidth={1}
-          />
-          {Array.from({ length: numBigLines }, (_, i) => {
-            const labelWidth = space * 10;
-            const label = String(minWeight + i);
+      <View
+        style={{
+          width,
+          height,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: getColor("primary"),
+            width: 2,
+            height,
+            position: "absolute",
+            zIndex: 2,
+          }}
+        />
 
-            const paragraph = (() => {
-              if (!fontManager) return null;
+        <AnimateableText
+          animatedProps={animatedProps.weightText}
+          style={{
+            bottom: height + 12,
+            fontSize: 20,
+            position: "absolute",
+            fontWeight: 700,
+            fontFamily: "Inter_700Bold",
+            color: getColor("foreground"),
+            ...(Platform.OS === "android"
+              ? { includeFontPadding: false }
+              : null),
+          }}
+        />
+        <Canvas style={{ height, width: "100%" }}>
+          <Group transform={transform}>
+            <Path
+              path={primaryLinesPath}
+              color={getColor("mutedForeground")}
+              style="stroke"
+              strokeWidth={1}
+            />
+            <Path
+              path={secondaryLinesPath}
+              color={getColor("mutedForeground", 0.5)}
+              style="stroke"
+              strokeWidth={1}
+            />
+            {Array.from({ length: numBigLines }, (_, i) => {
+              const labelWidth = space * 10;
+              const label = String(minWeight + i);
 
-              const paragraphStyle: SkParagraphStyle = {
-                textAlign: TextAlign.Center,
-              };
+              const paragraph = (() => {
+                if (!fontManager) return null;
 
-              const textStyle: SkTextStyle = {
-                color: Skia.Color(getColor("mutedForeground")),
-                fontFamilies: ["Inter"],
-                fontSize: 12,
-              };
+                const paragraphStyle: SkParagraphStyle = {
+                  textAlign: TextAlign.Center,
+                };
 
-              const paragraph = Skia.ParagraphBuilder.Make(
-                paragraphStyle,
-                fontManager
-              )
-                .pushStyle(textStyle)
-                .addText(label)
-                .build();
+                const textStyle: SkTextStyle = {
+                  color: Skia.Color(getColor("mutedForeground")),
+                  fontFamilies: ["Inter"],
+                  fontSize: 12,
+                };
 
-              paragraph.layout(labelWidth);
+                const paragraph = Skia.ParagraphBuilder.Make(
+                  paragraphStyle,
+                  fontManager
+                )
+                  .pushStyle(textStyle)
+                  .addText(label)
+                  .build();
 
-              return paragraph;
-            })();
+                paragraph.layout(labelWidth);
 
-            const paragraphHeight = paragraph?.getHeight() || 0;
+                return paragraph;
+              })();
 
-            return (
-              <Paragraph
-                key={`label-${i}-${label}`}
-                paragraph={paragraph}
-                x={i * space * 10 - labelWidth / 2}
-                y={height - bigLineHeight - 12 - paragraphHeight / 2}
-                width={labelWidth}
-              />
-            );
-          })}
-        </Group>
-      </Canvas>
+              const paragraphHeight = paragraph?.getHeight() || 0;
+
+              return (
+                <Paragraph
+                  key={`label-${i}-${label}`}
+                  paragraph={paragraph}
+                  x={i * space * 10 - labelWidth / 2}
+                  y={height - bigLineHeight - 12 - paragraphHeight / 2}
+                  width={labelWidth}
+                />
+              );
+            })}
+          </Group>
+        </Canvas>
+      </View>
     </View>
   );
 }
