@@ -4,7 +4,17 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated";
-import { Canvas, Group, Path, Skia } from "@shopify/react-native-skia";
+import {
+  Canvas,
+  Group,
+  Paragraph,
+  Path,
+  Skia,
+  SkParagraphStyle,
+  SkTextStyle,
+  TextAlign,
+  useFonts,
+} from "@shopify/react-native-skia";
 import { useMemo } from "react";
 import getColor from "@/lib/utils/getColor";
 
@@ -77,6 +87,12 @@ export default function WeightPicker({
     panX.value = -event.contentOffset.x + center;
   });
 
+  const fontManager = useFonts({
+    Inter: [
+      require("@/node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf"),
+    ],
+  });
+
   return (
     <View style={styles.container}>
       <View
@@ -119,6 +135,48 @@ export default function WeightPicker({
             style="stroke"
             strokeWidth={1}
           />
+          {Array.from({ length: numBigLines }, (_, i) => {
+            const labelWidth = space * 10;
+            const label = String(minWeight + i);
+
+            const paragraph = (() => {
+              if (!fontManager) return null;
+
+              const paragraphStyle: SkParagraphStyle = {
+                textAlign: TextAlign.Center,
+              };
+
+              const textStyle: SkTextStyle = {
+                color: Skia.Color(getColor("mutedForeground")),
+                fontFamilies: ["Inter"],
+                fontSize: 12,
+              };
+
+              const paragraph = Skia.ParagraphBuilder.Make(
+                paragraphStyle,
+                fontManager
+              )
+                .pushStyle(textStyle)
+                .addText(label)
+                .build();
+
+              paragraph.layout(labelWidth);
+
+              return paragraph;
+            })();
+
+            const paragraphHeight = paragraph?.getHeight() || 0;
+
+            return (
+              <Paragraph
+                key={`label-${i}-${label}`}
+                paragraph={paragraph}
+                x={i * space * 10 - labelWidth / 2}
+                y={height - bigLineHeight - 12 - paragraphHeight / 2}
+                width={labelWidth}
+              />
+            );
+          })}
         </Group>
       </Canvas>
     </View>
