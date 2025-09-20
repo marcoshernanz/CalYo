@@ -2,7 +2,7 @@ import SegmentedControl from "@/components/ui/SegmentedControl";
 import Title from "@/components/ui/Title";
 import WeightPicker from "@/components/weight/WeightPicker";
 import { useOnboardingContext } from "@/context/OnboardingContext";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 const minWeight = 30;
 const maxWeight = 300;
