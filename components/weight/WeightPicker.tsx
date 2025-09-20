@@ -19,39 +19,49 @@ export default function WeightPicker({
   maxWeight,
   defaultWeight,
 }: Props) {
-  const height = 80;
-  const bigLineHeight = 50;
-  const smallLineHeight = 40;
+  const height = 75;
+  const bigLineHeight = 40;
+  const smallLineHeight = 25;
   const width = Dimensions.get("window").width - 32;
   const numBigLinesVisible = 5;
+  const numBigLines = maxWeight - minWeight + 1;
+  const numSmallLines = (numBigLines - 1) * 9;
   const space = width / (numBigLinesVisible - 1) / 10;
+  const defaultOffset = (defaultWeight - minWeight) * space * 10;
 
-  const panX = useSharedValue(0);
+  const panX = useSharedValue(width / 2 - defaultOffset);
   const transform = useDerivedValue(() => [{ translateX: panX.value }]);
 
-  const linesPath = useMemo(() => {
+  const primaryLinesPath = useMemo(() => {
     const path = Skia.Path.Make();
-
-    const numBigLines = maxWeight - minWeight + 1;
 
     let xPos = 0;
 
     for (let i = 0; i < numBigLines; i++) {
       path.moveTo(xPos, height);
       path.lineTo(xPos, height - bigLineHeight);
+      xPos += space * 10;
+    }
+
+    return path;
+  }, [numBigLines, space]);
+
+  const secondaryLinesPath = useMemo(() => {
+    const path = Skia.Path.Make();
+
+    let xPos = space;
+
+    for (let i = 1; i <= numSmallLines; i++) {
+      path.moveTo(xPos, height);
+      path.lineTo(xPos, height - smallLineHeight);
       xPos += space;
-
-      if (i === numBigLines - 1) continue;
-
-      for (let j = 1; j < 10; j++) {
-        path.moveTo(xPos, height);
-        path.lineTo(xPos, height - smallLineHeight);
+      if (i % 9 === 0) {
         xPos += space;
       }
     }
 
     return path;
-  }, [maxWeight, minWeight, space]);
+  }, [numSmallLines, space]);
 
   const handleScroll = useAnimatedScrollHandler((event) => {
     panX.value = -event.contentOffset.x + width / 2;
@@ -68,6 +78,7 @@ export default function WeightPicker({
           zIndex: 2,
         }}
       />
+
       <Animated.ScrollView
         onScroll={handleScroll}
         horizontal
@@ -80,13 +91,19 @@ export default function WeightPicker({
         overScrollMode="never"
         snapToInterval={space}
       >
-        <View style={{ width: 2000 }} />
+        <View style={{ width: (numBigLines + 3) * space * 10 }} />
       </Animated.ScrollView>
       <Canvas style={{ height, width: "100%" }}>
         <Group transform={transform}>
           <Path
-            path={linesPath}
-            color={getColor("foreground")}
+            path={primaryLinesPath}
+            color={getColor("mutedForeground")}
+            style="stroke"
+            strokeWidth={1}
+          />
+          <Path
+            path={secondaryLinesPath}
+            color={getColor("mutedForeground", 0.5)}
             style="stroke"
             strokeWidth={1}
           />
