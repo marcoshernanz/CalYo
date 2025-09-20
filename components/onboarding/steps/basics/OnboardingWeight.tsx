@@ -19,7 +19,7 @@ export default function OnboardingWeight() {
     }));
   };
 
-  const formatLabel = (weight: number) => {
+  const formatWeight = (weight: number) => {
     "worklet";
     const roundedWeight = Math.round(weight * 10) / 10;
 
@@ -47,7 +47,7 @@ export default function OnboardingWeight() {
           minWeight={minWeight}
           maxWeight={maxWeight}
           defaultWeight={defaultWeight}
-          formatLabel={formatLabel}
+          formatWeight={formatWeight}
         />
       </View>
     </>
