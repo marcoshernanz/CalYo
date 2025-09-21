@@ -32,6 +32,7 @@ interface Props {
   maxWeight: number;
   initialWeight: number;
   highlightedWeight?: number;
+  highlightSide?: "left" | "right";
   formatWeight: (weight: number) => string;
   onChange?: (weight: number) => void;
 }
@@ -41,6 +42,7 @@ export default function WeightPicker({
   maxWeight,
   initialWeight,
   highlightedWeight,
+  highlightSide,
   formatWeight,
   onChange,
 }: Props) {
@@ -152,10 +154,18 @@ export default function WeightPicker({
         <View style={{ width: contentWidth }} />
       </Animated.ScrollView>
       <View style={[styles.innerContainer, { width, height }]}>
-        <AnimateableText
-          animatedProps={animatedProps.weightText}
-          style={[styles.weightText, { bottom: height + 12 }]}
-        />
+        {highlightSide && (
+          <View
+            style={[
+              styles.highlightSide,
+              {
+                height: smallLineHeight,
+                width: width / 2,
+              },
+              highlightSide === "left" ? { left: 0 } : { right: 0 },
+            ]}
+          />
+        )}
         <LinearGradient
           colors={[getColor("background"), getColor("background", 0)]}
           style={[styles.leftGradient, { width: width / 8, height: height }]}
@@ -171,6 +181,10 @@ export default function WeightPicker({
           pointerEvents="none"
         />
         <View style={[styles.indicator, { height }]} />
+        <AnimateableText
+          animatedProps={animatedProps.weightText}
+          style={[styles.weightText, { bottom: height + 12 }]}
+        />
 
         <Canvas style={[styles.canvas, { height }]}>
           <Group transform={transform}>
@@ -256,6 +270,11 @@ const styles = StyleSheet.create({
   innerContainer: {
     alignItems: "center",
     justifyContent: "center",
+  },
+  highlightSide: {
+    position: "absolute",
+    backgroundColor: getColor("primary", 0.5),
+    bottom: 0,
   },
   indicator: {
     backgroundColor: getColor("primary"),
