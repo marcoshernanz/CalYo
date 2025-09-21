@@ -30,7 +30,7 @@ import { LinearGradient } from "expo-linear-gradient";
 interface Props {
   minWeight: number;
   maxWeight: number;
-  defaultWeight: number;
+  initialWeight: number;
   formatWeight: (weight: number) => string;
   onChange?: (weight: number) => void;
 }
@@ -38,7 +38,7 @@ interface Props {
 export default function WeightPicker({
   minWeight,
   maxWeight,
-  defaultWeight,
+  initialWeight,
   formatWeight,
   onChange,
 }: Props) {
@@ -55,7 +55,7 @@ export default function WeightPicker({
     width / (numBigLinesVisible - 1) / 10
   );
   const defaultOffset = PixelRatio.roundToNearestPixel(
-    (defaultWeight - minWeight) * space * 10
+    (initialWeight - minWeight) * space * 10
   );
   const center = PixelRatio.roundToNearestPixel(width / 2);
   const contentWidth = PixelRatio.roundToNearestPixel(

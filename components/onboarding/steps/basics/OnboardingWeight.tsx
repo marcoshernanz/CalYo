@@ -14,11 +14,11 @@ export default function OnboardingWeight() {
 
   const weight = data.weight ?? defaultWeight;
 
-  const metricProps = useMemo(() => {
+  const metricProps = useMemo<React.ComponentProps<typeof WeightPicker>>(() => {
     return {
       minWeight: 30,
       maxWeight: 300,
-      defaultWeight: Math.round(weight * 10) / 10,
+      initialWeight: Math.round(weight * 10) / 10,
       formatWeight: (weight: number) => {
         "worklet";
         return `${weight} kg`;
@@ -29,11 +29,13 @@ export default function OnboardingWeight() {
     };
   }, [setData, weight]);
 
-  const imperialProps = useMemo(() => {
+  const imperialProps = useMemo<
+    React.ComponentProps<typeof WeightPicker>
+  >(() => {
     return {
       minWeight: 70,
       maxWeight: 700,
-      defaultWeight: Math.round(kgToLbs(weight) * 10) / 10,
+      initialWeight: Math.round(kgToLbs(weight) * 10) / 10,
       formatWeight: (weight: number) => {
         "worklet";
         return `${weight} lbs`;
