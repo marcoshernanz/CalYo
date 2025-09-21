@@ -31,6 +31,7 @@ interface Props {
   minWeight: number;
   maxWeight: number;
   initialWeight: number;
+  highlightedWeight?: number;
   formatWeight: (weight: number) => string;
   onChange?: (weight: number) => void;
 }
@@ -39,6 +40,7 @@ export default function WeightPicker({
   minWeight,
   maxWeight,
   initialWeight,
+  highlightedWeight,
   formatWeight,
   onChange,
 }: Props) {
@@ -99,6 +101,21 @@ export default function WeightPicker({
 
     return path;
   }, [numSmallLines, space]);
+
+  const highlightedLinePath = useMemo(() => {
+    const path = Skia.Path.Make();
+
+    if (!highlightedWeight) return path;
+
+    const xPos = (highlightedWeight - minWeight) * space * 10;
+    const lineHeight =
+      highlightedWeight % 1 === 0 ? bigLineHeight : smallLineHeight;
+
+    path.moveTo(xPos, height);
+    path.lineTo(xPos, height - lineHeight);
+
+    return path;
+  }, [highlightedWeight, minWeight, space]);
 
   const handleScroll = useAnimatedScrollHandler((event) => {
     panX.value = -event.contentOffset.x + center;
@@ -169,6 +186,12 @@ export default function WeightPicker({
               color={getColor("mutedForeground", 0.5)}
               style="stroke"
               strokeWidth={1}
+            />
+            <Path
+              path={highlightedLinePath}
+              color={getColor("primary")}
+              style="stroke"
+              strokeWidth={2}
             />
             {Array.from({ length: numBigLines }, (_, i) => {
               const labelWidth = space * 10;
