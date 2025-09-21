@@ -21,6 +21,7 @@ export default function OnboardingTargetWeight() {
       maxWeight: data.goal === "gain" ? 300 : initialWeight,
       initialWeight: Math.round(targetWeight * 10) / 10,
       highlightedWeight: initialWeight,
+      highlightSide: data.goal === "lose" ? "right" : "left",
       formatWeight: (weight: number) => {
         "worklet";
         return `${weight} kg`;
@@ -39,6 +40,7 @@ export default function OnboardingTargetWeight() {
       maxWeight: data.goal === "gain" ? 700 : initialWeightLbs,
       initialWeight: targetWeightLbs,
       highlightedWeight: initialWeightLbs,
+      highlightSide: data.goal === "lose" ? "right" : "left",
       formatWeight: (weight: number) => {
         "worklet";
         return `${weight} lbs`;
