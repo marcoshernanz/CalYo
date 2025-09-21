@@ -19,8 +19,8 @@ export default function OnboardingTargetWeight() {
     return {
       minWeight: data.goal === "lose" ? 30 : initialWeight,
       maxWeight: data.goal === "gain" ? 300 : initialWeight,
-      highlightedWeight: initialWeight,
       initialWeight: Math.round(targetWeight * 10) / 10,
+      highlightedWeight: initialWeight,
       formatWeight: (weight: number) => {
         "worklet";
         return `${weight} kg`;
@@ -38,12 +38,13 @@ export default function OnboardingTargetWeight() {
       minWeight: data.goal === "lose" ? 70 : initialWeightLbs,
       maxWeight: data.goal === "gain" ? 700 : initialWeightLbs,
       initialWeight: targetWeightLbs,
+      highlightedWeight: initialWeightLbs,
       formatWeight: (weight: number) => {
         "worklet";
         return `${weight} lbs`;
       },
       onChange: (weight: number) => {
-        setData((prev) => ({ ...prev, weight: lbsToKg(weight) }));
+        setData((prev) => ({ ...prev, targetWeight: lbsToKg(weight) }));
       },
     };
   }, [data.goal, initialWeightLbs, setData, targetWeightLbs]);
