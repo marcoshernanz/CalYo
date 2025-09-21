@@ -51,16 +51,15 @@ export default function WeightPicker({
   const numBigLinesVisible = 5;
   const numBigLines = maxWeight - minWeight + 1;
   const numSmallLines = (numBigLines - 1) * 9;
-  const space = PixelRatio.roundToNearestPixel(
-    width / (numBigLinesVisible - 1) / 10
-  );
+  // Quantize spacing to device pixel to avoid Android half-pixel drift
+  const rawSpace = width / ((numBigLinesVisible - 1) * 10);
+  const space = PixelRatio.roundToNearestPixel(rawSpace);
   const defaultOffset = PixelRatio.roundToNearestPixel(
     (initialWeight - minWeight) * space * 10
   );
   const center = PixelRatio.roundToNearestPixel(width / 2);
-  const contentWidth = PixelRatio.roundToNearestPixel(
-    (numBigLines + 3) * space * 10
-  );
+  // Ensure max contentOffset equals distance to last tick
+  const contentWidth = width + (numBigLines - 1) * space * 10;
 
   const panX = useSharedValue(center - defaultOffset);
   const transform = useDerivedValue(() => [{ translateX: panX.value }]);
