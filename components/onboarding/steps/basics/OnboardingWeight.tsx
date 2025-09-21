@@ -2,14 +2,48 @@ import SegmentedControl from "@/components/ui/SegmentedControl";
 import Title from "@/components/ui/Title";
 import WeightPicker from "@/components/weight/WeightPicker";
 import { useOnboardingContext } from "@/context/OnboardingContext";
+import kgToLbs from "@/lib/units/kgToLbs";
+import lbsToKg from "@/lib/units/lbsToKg";
+import { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
-const minWeight = 30;
-const maxWeight = 300;
 const defaultWeight = 80;
 
 export default function OnboardingWeight() {
   const { data, setData } = useOnboardingContext();
+
+  const weight = data.weight ?? defaultWeight;
+
+  const metricProps = useMemo(() => {
+    return {
+      minWeight: 30,
+      maxWeight: 300,
+      defaultWeight: Math.round(weight * 10) / 10,
+      formatWeight: (weight: number) => {
+        "worklet";
+        return `${weight} kg`;
+      },
+      onChange: (weight: number) => {
+        setData((prev) => ({ ...prev, weight }));
+      },
+    };
+  }, [setData, weight]);
+
+  const imperialProps = useMemo(() => {
+    return {
+      minWeight: 70,
+      maxWeight: 700,
+      defaultWeight: Math.round(kgToLbs(weight) * 10) / 10,
+      formatWeight: (weight: number) => {
+        "worklet";
+        return `${weight} lbs`;
+      },
+      onChange: (weight: number) => {
+        const convertedWeight = lbsToKg(weight);
+        setData((prev) => ({ ...prev, weight: convertedWeight }));
+      },
+    };
+  }, [setData, weight]);
 
   const handleMeasurementSystemChange = (system: string) => {
     if (system !== "Kilogramos" && system !== "Libras") return;
@@ -17,17 +51,6 @@ export default function OnboardingWeight() {
       ...prev,
       measurementSystem: system === "Kilogramos" ? "metric" : "imperial",
     }));
-  };
-
-  const formatWeight = (weight: number) => {
-    "worklet";
-    const roundedWeight = Math.round(weight * 10) / 10;
-
-    if (data.measurementSystem === "metric") {
-      return `${roundedWeight} kg`;
-    } else {
-      return `${roundedWeight} lbs`;
-    }
   };
 
   return (
@@ -43,12 +66,11 @@ export default function OnboardingWeight() {
             onChange={handleMeasurementSystemChange}
           />
         </View>
-        <WeightPicker
-          minWeight={minWeight}
-          maxWeight={maxWeight}
-          defaultWeight={defaultWeight}
-          formatWeight={formatWeight}
-        />
+        {data.measurementSystem === "metric" ? (
+          <WeightPicker {...metricProps} />
+        ) : (
+          <WeightPicker {...imperialProps} />
+        )}
       </View>
     </>
   );
