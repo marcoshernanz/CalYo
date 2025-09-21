@@ -68,7 +68,8 @@ export default function WeightPicker({
   const weight = useDerivedValue(() => {
     const weight =
       -panX.value / space / 10 + minWeight + (numBigLinesVisible - 1) / 2;
-    return Math.round(weight * 10) / 10;
+    const roundedWeight = Math.round(weight * 10) / 10;
+    return Math.min(Math.max(roundedWeight, minWeight), maxWeight);
   });
 
   const primaryLinesPath = useMemo(() => {
