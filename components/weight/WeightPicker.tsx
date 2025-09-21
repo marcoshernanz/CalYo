@@ -32,6 +32,7 @@ interface Props {
   maxWeight: number;
   defaultWeight: number;
   formatWeight: (weight: number) => string;
+  onChange?: (weight: number) => void;
 }
 
 export default function WeightPicker({
@@ -39,6 +40,7 @@ export default function WeightPicker({
   maxWeight,
   defaultWeight,
   formatWeight,
+  onChange,
 }: Props) {
   const height = 75;
   const bigLineHeight = 40;
@@ -98,6 +100,13 @@ export default function WeightPicker({
     panX.value = -event.contentOffset.x + center;
   });
 
+  const handleScrollEnd = () => {
+    const weight =
+      -panX.value / space / 10 + minWeight + (numBigLinesVisible - 1) / 2;
+    const roundedWeight = Math.round(weight * 10) / 10;
+    onChange?.(roundedWeight);
+  };
+
   const fontManager = useFonts({
     Inter: [
       require("@/node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf"),
@@ -118,6 +127,7 @@ export default function WeightPicker({
     <View style={styles.container}>
       <Animated.ScrollView
         onScroll={handleScroll}
+        onScrollAnimationEnd={handleScrollEnd}
         horizontal
         contentOffset={{ x: defaultOffset, y: 0 }}
         style={styles.scrollView}
