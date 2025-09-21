@@ -41,8 +41,7 @@ export default function OnboardingWeight() {
         return `${weight} lbs`;
       },
       onChange: (weight: number) => {
-        const convertedWeight = lbsToKg(weight);
-        setData((prev) => ({ ...prev, weight: convertedWeight }));
+        setData((prev) => ({ ...prev, weight: lbsToKg(weight) }));
       },
     };
   }, [setData, weight]);
