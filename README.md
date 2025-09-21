@@ -7,6 +7,7 @@
 - [ ] Select options reveal animation
 - [ ] Select button lag on press animation
 - [ ] Onboarding height keep value when changing measurement system
+- [ ] Onboarding weight smooth measurement system change
 - [ ] Optimize FlatList
   - [ ] Wheel Picker
   - [ ] Onboarding Height
