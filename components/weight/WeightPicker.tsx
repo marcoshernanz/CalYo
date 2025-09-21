@@ -65,6 +65,12 @@ export default function WeightPicker({
   const panX = useSharedValue(center - defaultOffset);
   const transform = useDerivedValue(() => [{ translateX: panX.value }]);
 
+  const weight = useDerivedValue(() => {
+    const weight =
+      -panX.value / space / 10 + minWeight + (numBigLinesVisible - 1) / 2;
+    return Math.round(weight * 10) / 10;
+  });
+
   const primaryLinesPath = useMemo(() => {
     const path = Skia.Path.Make();
 
@@ -101,10 +107,7 @@ export default function WeightPicker({
   });
 
   const handleScrollEnd = () => {
-    const weight =
-      -panX.value / space / 10 + minWeight + (numBigLinesVisible - 1) / 2;
-    const roundedWeight = Math.round(weight * 10) / 10;
-    onChange?.(roundedWeight);
+    onChange?.(weight.value);
   };
 
   const fontManager = useFonts({
@@ -115,11 +118,7 @@ export default function WeightPicker({
 
   const animatedProps = {
     weightText: useAnimatedProps(() => ({
-      text: String(
-        formatWeight(
-          -panX.value / space / 10 + minWeight + (numBigLinesVisible - 1) / 2
-        )
-      ),
+      text: String(formatWeight(weight.value)),
     })),
   };
 
@@ -127,7 +126,7 @@ export default function WeightPicker({
     <View style={styles.container}>
       <Animated.ScrollView
         onScroll={handleScroll}
-        onScrollAnimationEnd={handleScrollEnd}
+        onMomentumScrollEnd={handleScrollEnd}
         horizontal
         contentOffset={{ x: defaultOffset, y: 0 }}
         style={styles.scrollView}
