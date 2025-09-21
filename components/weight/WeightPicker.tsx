@@ -51,15 +51,17 @@ export default function WeightPicker({
     Dimensions.get("window").width - 32
   );
   const numBigLinesVisible = 5;
-  const numBigLines = maxWeight - minWeight + 1;
-  const numSmallLines = (numBigLines - 1) * 9;
+  const startInt = Math.ceil(minWeight);
+  const endInt = Math.floor(maxWeight);
+  const numBigLines = Math.max(0, endInt - startInt + 1);
+  const totalTenths = Math.max(0, Math.round((maxWeight - minWeight) * 10));
   const rawSpace = width / ((numBigLinesVisible - 1) * 10);
   const space = PixelRatio.roundToNearestPixel(rawSpace);
   const defaultOffset = PixelRatio.roundToNearestPixel(
     (initialWeight - minWeight) * space * 10
   );
   const center = PixelRatio.roundToNearestPixel(width / 2);
-  const contentWidth = width + (numBigLines - 1) * space * 10;
+  const contentWidth = width + totalTenths * space;
 
   const panX = useSharedValue(center - defaultOffset);
   const transform = useDerivedValue(() => [{ translateX: panX.value }]);
@@ -74,33 +76,30 @@ export default function WeightPicker({
   const primaryLinesPath = useMemo(() => {
     const path = Skia.Path.Make();
 
-    let xPos = 0;
-
-    for (let i = 0; i < numBigLines; i++) {
+    for (let w = startInt; w <= endInt; w++) {
+      const xPos = (w - minWeight) * 10 * space;
       path.moveTo(xPos, height);
       path.lineTo(xPos, height - bigLineHeight);
-      xPos += space * 10;
     }
 
     return path;
-  }, [numBigLines, space]);
+  }, [startInt, endInt, minWeight, space]);
 
   const secondaryLinesPath = useMemo(() => {
     const path = Skia.Path.Make();
 
-    let xPos = space;
+    for (let k = 1; k <= Math.max(0, totalTenths - 1); k++) {
+      const w = minWeight + k / 10;
+      const isInteger = Math.abs(w - Math.round(w)) < 1e-6;
+      if (isInteger) continue;
 
-    for (let i = 1; i <= numSmallLines; i++) {
+      const xPos = k * space;
       path.moveTo(xPos, height);
       path.lineTo(xPos, height - smallLineHeight);
-      xPos += space;
-      if (i % 9 === 0) {
-        xPos += space;
-      }
     }
 
     return path;
-  }, [numSmallLines, space]);
+  }, [minWeight, totalTenths, space]);
 
   const highlightedLinePath = useMemo(() => {
     const path = Skia.Path.Make();
@@ -195,7 +194,8 @@ export default function WeightPicker({
             />
             {Array.from({ length: numBigLines }, (_, i) => {
               const labelWidth = space * 10;
-              const label = String(minWeight + i);
+              const value = startInt + i;
+              const label = String(value);
 
               const paragraph = (() => {
                 if (!fontManager) return null;
@@ -229,7 +229,7 @@ export default function WeightPicker({
                 <Paragraph
                   key={`label-${i}-${label}`}
                   paragraph={paragraph}
-                  x={i * space * 10 - labelWidth / 2}
+                  x={(value - minWeight) * 10 * space - labelWidth / 2}
                   y={height - bigLineHeight - 12 - paragraphHeight / 2}
                   width={labelWidth}
                 />
