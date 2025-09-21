@@ -11,3 +11,4 @@
 - [ ] Optimize FlatList
   - [ ] Wheel Picker
   - [ ] Onboarding Height
+- [ ] Onboarding scroll
