@@ -12,3 +12,4 @@
   - [ ] Wheel Picker
   - [ ] Onboarding Height
 - [ ] Onboarding scroll
+- [ ] Fix weight picker selected weight
