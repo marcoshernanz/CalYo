@@ -51,16 +51,7 @@ export default function OnboardingWeightChangeRate() {
       <View style={styles.container}>
         <AnimateableText
           animatedProps={animatedProps.messageText}
-          style={[
-            styles.messageText,
-            animatedStyles.messageText,
-            {
-              transform: [{ translateY: -50 }],
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-              borderRadius: 999,
-            },
-          ]}
+          style={[styles.messageText, animatedStyles.messageText]}
         />
         <Slider
           minValue={minValue}
@@ -87,5 +78,9 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
     color: getColor("foreground"),
     ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
+    transform: [{ translateY: -52 }],
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 999,
   },
 });
