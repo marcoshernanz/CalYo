@@ -13,6 +13,7 @@ interface Props {
   minValue: number;
   maxValue: number;
   value: SharedValue<number>;
+  initialValue?: number;
   highlightedRange?: [number, number];
 }
 
@@ -26,11 +27,15 @@ export default function Slider({
   minValue = 0,
   maxValue = 100,
   value,
+  initialValue = minValue,
   highlightedRange,
 }: Props) {
-  const isPressed = useSharedValue(false);
-  const offset = useSharedValue(0);
-  const startOffset = useSharedValue(0);
+  const calculateOffsetFromValue = (value: number) => {
+    "worklet";
+    const clamped = Math.min(Math.max(value, minValue), maxValue);
+    const ratio = (clamped - minValue) / (maxValue - minValue);
+    return minOffset + ratio * (maxOffset - minOffset);
+  };
 
   const calculateValue = (offset: number) => {
     "worklet";
@@ -38,6 +43,10 @@ export default function Slider({
     const mapped = minValue + ratio * (maxValue - minValue);
     return mapped;
   };
+
+  const isPressed = useSharedValue(false);
+  const offset = useSharedValue(calculateOffsetFromValue(initialValue));
+  const startOffset = useSharedValue(calculateOffsetFromValue(initialValue));
 
   const gesture = Gesture.Pan()
     .onBegin(() => {
@@ -68,6 +77,14 @@ export default function Slider({
         ],
       };
     }),
+    innerDot: useAnimatedStyle(() => ({
+      backgroundColor:
+        highlightedRange &&
+        value.value >= highlightedRange[0] &&
+        value.value <= highlightedRange[1]
+          ? getColor("foreground")
+          : getColor("mutedForeground"),
+    })),
   };
 
   return (
@@ -92,7 +109,7 @@ export default function Slider({
       </View>
       <GestureDetector gesture={gesture}>
         <Animated.View style={[styles.dotContainer, animatedStyles.dot]}>
-          <View style={styles.dot} />
+          <Animated.View style={[styles.dot, animatedStyles.innerDot]} />
         </Animated.View>
       </GestureDetector>
     </View>
