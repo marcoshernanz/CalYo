@@ -13,13 +13,21 @@ interface Props {
   minValue: number;
   maxValue: number;
   value: SharedValue<number>;
+  highlightedRange?: [number, number];
 }
 
 const dotSize = 24;
-const minOffset = -dotSize / 2;
-const maxOffset = Dimensions.get("window").width - (dotSize * 3) / 2 - 32;
+const lineWidth = Dimensions.get("window").width - 32 - dotSize;
 
-export default function Slider({ minValue = 0, maxValue = 100, value }: Props) {
+const minOffset = -dotSize / 2;
+const maxOffset = lineWidth - dotSize / 2;
+
+export default function Slider({
+  minValue = 0,
+  maxValue = 100,
+  value,
+  highlightedRange,
+}: Props) {
   const isPressed = useSharedValue(false);
   const offset = useSharedValue(0);
   const startOffset = useSharedValue(0);
@@ -64,10 +72,27 @@ export default function Slider({ minValue = 0, maxValue = 100, value }: Props) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.line}></View>
+      <View style={styles.line}>
+        {highlightedRange && (
+          <View
+            style={[
+              styles.highlightLine,
+              {
+                width:
+                  lineWidth *
+                  ((highlightedRange[1] - highlightedRange[0]) /
+                    (maxValue - minValue)),
+                marginLeft:
+                  lineWidth *
+                  ((highlightedRange[0] - minValue) / (maxValue - minValue)),
+              },
+            ]}
+          />
+        )}
+      </View>
       <GestureDetector gesture={gesture}>
         <Animated.View style={[styles.dotContainer, animatedStyles.dot]}>
-          <View style={styles.dot}></View>
+          <View style={styles.dot} />
         </Animated.View>
       </GestureDetector>
     </View>
@@ -81,10 +106,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   line: {
-    width: Dimensions.get("window").width - 32 - dotSize,
+    width: lineWidth,
     height: 4,
     backgroundColor: getColor("secondary"),
     marginLeft: dotSize / 2,
+  },
+  highlightLine: {
+    backgroundColor: getColor("primary"),
+    height: "100%",
   },
   dotContainer: {
     width: dotSize * 2,
