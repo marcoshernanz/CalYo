@@ -4,11 +4,12 @@ import { View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 
 const minValue = 0.1;
-const maxValue = 2;
-const recommendedRange = [0.2, 0.8] as [number, number];
+const maxValue = 1.5;
+const initialValue = 0.5;
+const recommendedRange = [0.3, 0.8] as [number, number];
 
 export default function OnboardingWeightChangeRate() {
-  const changeRate = useSharedValue(50);
+  const changeRate = useSharedValue(initialValue);
 
   return (
     <>
@@ -18,6 +19,7 @@ export default function OnboardingWeightChangeRate() {
           minValue={minValue}
           maxValue={maxValue}
           value={changeRate}
+          initialValue={initialValue}
           highlightedRange={recommendedRange}
         />
       </View>
