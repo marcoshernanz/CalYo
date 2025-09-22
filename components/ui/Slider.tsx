@@ -16,8 +16,8 @@ interface Props {
 }
 
 const dotSize = 24;
-const minOffset = -dotSize;
-const maxOffset = Dimensions.get("window").width - dotSize - 32;
+const minOffset = -dotSize / 2;
+const maxOffset = Dimensions.get("window").width - (dotSize * 3) / 2 - 32;
 
 export default function Slider({ minValue = 0, maxValue = 100, value }: Props) {
   const isPressed = useSharedValue(false);
@@ -81,9 +81,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   line: {
-    width: "100%",
+    width: Dimensions.get("window").width - 32 - dotSize,
     height: 4,
     backgroundColor: getColor("secondary"),
+    marginLeft: dotSize / 2,
   },
   dotContainer: {
     width: dotSize * 2,
