@@ -1,6 +1,6 @@
 import Slider from "@/components/ui/Slider";
 import Title from "@/components/ui/Title";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 
 const minValue = 0.1;
@@ -14,7 +14,7 @@ export default function OnboardingWeightChangeRate() {
   return (
     <>
       <Title size="24">¿Cómo de rápido quieres alcanzar tu objetivo?</Title>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View style={styles.container}>
         <Slider
           minValue={minValue}
           maxValue={maxValue}
@@ -26,3 +26,11 @@ export default function OnboardingWeightChangeRate() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
