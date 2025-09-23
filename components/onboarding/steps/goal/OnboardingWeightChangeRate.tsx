@@ -17,7 +17,7 @@ import {
 
 const minValue = 0.1;
 const maxValue = 1.5;
-const initialValue = 0.5;
+const defaultValue = 0.5;
 const recommendedRange = [0.25, 0.85] as [number, number];
 
 const getMessage = (rate: number) => {
@@ -29,7 +29,7 @@ const getMessage = (rate: number) => {
     return "Lento";
   } else if (rate > recommendedRange[1]) {
     return "Rápido (Ten Precaución)";
-  } else if (roundedRate === initialValue) {
+  } else if (roundedRate === defaultValue) {
     return "Estándar (Recomendado)";
   } else {
     return "Estándar";
@@ -39,7 +39,9 @@ const getMessage = (rate: number) => {
 export default function OnboardingWeightChangeRate() {
   const { data, setData } = useOnboardingContext();
 
-  const changeRate = useSharedValue(data.weightChangeRate ?? initialValue);
+  const initialValue = data.weightChangeRate ?? defaultValue;
+
+  const changeRate = useSharedValue(initialValue);
 
   const weeklyRate = useDerivedValue(() => {
     return Math.round(changeRate.value * 10) / 10;
@@ -87,7 +89,6 @@ export default function OnboardingWeightChangeRate() {
 
   return (
     <>
-      {/* <Text>{data.weightChangeRate}</Text> */}
       <Title size="24">¿Cómo de rápido quieres alcanzar tu objetivo?</Title>
       <View style={styles.container}>
         <AnimateableText
