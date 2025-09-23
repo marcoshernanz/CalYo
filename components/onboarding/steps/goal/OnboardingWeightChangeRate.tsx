@@ -2,8 +2,10 @@ import Slider from "@/components/ui/Slider";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
 import { useOnboardingContext } from "@/context/OnboardingContext";
+import kgToLbs from "@/lib/units/kgToLbs";
+import lbsToKg from "@/lib/units/lbsToKg";
 import getColor from "@/lib/utils/getColor";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import AnimateableText from "react-native-animateable-text";
 import {
@@ -15,33 +17,39 @@ import {
   useSharedValue,
 } from "react-native-reanimated";
 
-const minValue = 0.1;
-const maxValue = 1.5;
-const defaultValue = 0.5;
-const recommendedRange = [0.25, 0.85] as [number, number];
-
-const getMessage = (rate: number) => {
-  "worklet";
-
-  const roundedRate = Math.round(rate * 10) / 10;
-
-  if (rate < recommendedRange[0]) {
-    return "Lento";
-  } else if (rate > recommendedRange[1]) {
-    return "Rápido (Ten Precaución)";
-  } else if (roundedRate === defaultValue) {
-    return "Estándar (Recomendado)";
-  } else {
-    return "Estándar";
-  }
-};
+const minKg = 0.1;
+const minLbs = 0.2;
+const maxKg = 1.5;
+const maxLbs = 3.3;
+const defaultKg = 0.5;
+const defaultLbs = 1.0;
+const recommendedKg = [0.25, 0.85] as [number, number];
+const recommendedLbs = [0.65, 1.75] as [number, number];
 
 export default function OnboardingWeightChangeRate() {
   const { data, setData } = useOnboardingContext();
 
-  const initialValue = data.weightChangeRate ?? defaultValue;
+  const isMetric = data.measurementSystem !== "imperial";
 
-  const changeRate = useSharedValue(initialValue);
+  const displayBounds = useMemo(() => {
+    const min = isMetric ? minKg : minLbs;
+    const max = isMetric ? maxKg : maxLbs;
+    const def = isMetric ? defaultKg : defaultLbs;
+    const rec: [number, number] = isMetric ? recommendedKg : recommendedLbs;
+    return { min, max, def, rec } as const;
+  }, [isMetric]);
+
+  const initialDisplayValue = useMemo(() => {
+    if (!data.weightChangeRate) {
+      return displayBounds.def;
+    } else {
+      return isMetric
+        ? data.weightChangeRate
+        : kgToLbs(data.weightChangeRate * 10) / 10;
+    }
+  }, [data.weightChangeRate, displayBounds.def, isMetric]);
+
+  const changeRate = useSharedValue(initialDisplayValue);
 
   const weeklyRate = useDerivedValue(() => {
     return Math.round(changeRate.value * 10) / 10;
@@ -51,31 +59,49 @@ export default function OnboardingWeightChangeRate() {
   });
 
   const changeSign = data.goal === "lose" ? "-" : "+";
+  const unitLabel = isMetric ? "kg" : "lbs";
+
+  const getMessage = (rate: number, rec: [number, number], def: number) => {
+    "worklet";
+    const roundedRate = Math.round(rate * 10) / 10;
+    if (rate < rec[0]) {
+      return "Lento";
+    } else if (rate > rec[1]) {
+      return "Rápido (Ten Precaución)";
+    } else if (roundedRate === def) {
+      return "Estándar (Recomendado)";
+    } else {
+      return "Estándar";
+    }
+  };
 
   const animatedProps = {
     tooltip: useAnimatedProps(() => ({
-      text: getMessage(changeRate.value),
+      text: getMessage(changeRate.value, displayBounds.rec, displayBounds.def),
     })),
   };
 
   const animatedStyles = {
     tooltip: useAnimatedProps(() => ({
       backgroundColor:
-        changeRate.value >= recommendedRange[0] &&
-        changeRate.value <= recommendedRange[1]
+        changeRate.value >= displayBounds.rec[0] &&
+        changeRate.value <= displayBounds.rec[1]
           ? getColor("primaryLight")
           : getColor("secondary"),
     })),
   };
 
   const updateWeightChangeRate = useCallback(
-    (roundedValue: number) => {
+    (roundedDisplayValue: number) => {
+      const valueKg = isMetric
+        ? roundedDisplayValue
+        : Math.round(lbsToKg(roundedDisplayValue) * 10) / 10;
       setData((prev) => ({
         ...prev,
-        weightChangeRate: roundedValue,
+        weightChangeRate: valueKg,
       }));
     },
-    [setData]
+    [isMetric, setData]
   );
 
   useAnimatedReaction(
@@ -96,11 +122,11 @@ export default function OnboardingWeightChangeRate() {
           style={[styles.tooltip, animatedStyles.tooltip]}
         />
         <Slider
-          minValue={minValue}
-          maxValue={maxValue}
+          minValue={displayBounds.min}
+          maxValue={displayBounds.max}
           value={changeRate}
-          initialValue={initialValue}
-          highlightedRange={recommendedRange}
+          initialValue={initialDisplayValue}
+          highlightedRange={displayBounds.rec}
         />
         <View style={styles.weightChange}>
           {[
@@ -112,6 +138,7 @@ export default function OnboardingWeightChangeRate() {
               sign={changeSign}
               amount={amount}
               period={period}
+              unit={unitLabel}
             />
           ))}
         </View>
@@ -124,9 +151,10 @@ interface WeightChangeRowProps {
   sign: string;
   amount: SharedValue<number>;
   period: string;
+  unit: string;
 }
 
-function WeightChangeRow({ sign, amount, period }: WeightChangeRowProps) {
+function WeightChangeRow({ sign, amount, period, unit }: WeightChangeRowProps) {
   const animatedProps = {
     amount: useAnimatedProps(() => ({
       text: String(amount.value),
@@ -144,7 +172,7 @@ function WeightChangeRow({ sign, amount, period }: WeightChangeRowProps) {
           style={styles.valueNumber}
         />
         <Text size="16" style={styles.valueUnit}>
-          kg
+          {unit}
         </Text>
       </View>
       <Text size="16" style={styles.periodLabel}>
