@@ -1,4 +1,5 @@
 import Slider from "@/components/ui/Slider";
+import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
 import getColor from "@/lib/utils/getColor";
 import { Platform, StyleSheet, View } from "react-native";
@@ -60,6 +61,28 @@ export default function OnboardingWeightChangeRate() {
           initialValue={initialValue}
           highlightedRange={recommendedRange}
         />
+        <View style={styles.weightInfo}>
+          <View style={styles.row}>
+            <Text size="24" style={styles.changeDirection}>
+              +
+            </Text>
+            <View style={styles.valueContainer}>
+              <Text style={styles.valueNumber}>0.2</Text>
+              <Text style={styles.valueUnit}>kg</Text>
+            </View>
+            <Text style={styles.periodLabel}>Por Semana</Text>
+          </View>
+          <View style={styles.row}>
+            <Text size="24" style={styles.changeDirection}>
+              +
+            </Text>
+            <View style={styles.valueContainer}>
+              <Text style={styles.valueNumber}>0.8</Text>
+              <Text style={styles.valueUnit}>kg</Text>
+            </View>
+            <Text style={styles.periodLabel}>Por Mes</Text>
+          </View>
+        </View>
       </View>
     </>
   );
@@ -82,5 +105,37 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 999,
+  },
+  weightInfo: {
+    position: "absolute",
+    gap: 8,
+    transform: [{ translateY: 52 }],
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  changeDirection: {
+    fontWeight: 300,
+  },
+  valueContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 10,
+    gap: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: getColor("mutedForeground"),
+  },
+  valueNumber: {
+    fontWeight: 600,
+  },
+  valueUnit: {
+    color: getColor("mutedForeground"),
+  },
+  periodLabel: {
+    paddingLeft: 8,
   },
 });
