@@ -13,3 +13,5 @@
   - [ ] Onboarding Height
 - [ ] Onboarding scroll
 - [ ] Fix weight picker selected weight
+- [ ] Fix screen animation
+- [ ] Fix going back animation
