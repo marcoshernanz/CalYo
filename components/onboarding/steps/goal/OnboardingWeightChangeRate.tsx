@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: getColor("mutedForeground"),
+    borderColor: getColor("mutedForeground", 0.5),
   },
   valueNumber: {
     fontSize: 16,
@@ -233,7 +233,8 @@ const styles = StyleSheet.create({
     ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
   },
   valueUnit: {
-    color: getColor("mutedForeground"),
+    color: getColor("mutedForeground", 0.5),
+    fontWeight: 500,
   },
   periodLabel: {
     paddingLeft: 8,
