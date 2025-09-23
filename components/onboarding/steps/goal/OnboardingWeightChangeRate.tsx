@@ -31,13 +31,13 @@ export default function OnboardingWeightChangeRate() {
   const changeRate = useSharedValue(initialValue);
 
   const animatedProps = {
-    messageText: useAnimatedProps(() => ({
+    tooltip: useAnimatedProps(() => ({
       text: getMessage(changeRate.value),
     })),
   };
 
   const animatedStyles = {
-    messageText: useAnimatedProps(() => ({
+    tooltip: useAnimatedProps(() => ({
       backgroundColor:
         changeRate.value >= recommendedRange[0] &&
         changeRate.value <= recommendedRange[1]
@@ -51,8 +51,8 @@ export default function OnboardingWeightChangeRate() {
       <Title size="24">¿Cómo de rápido quieres alcanzar tu objetivo?</Title>
       <View style={styles.container}>
         <AnimateableText
-          animatedProps={animatedProps.messageText}
-          style={[styles.messageText, animatedStyles.messageText]}
+          animatedProps={animatedProps.tooltip}
+          style={[styles.tooltip, animatedStyles.tooltip]}
         />
         <Slider
           minValue={minValue}
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  messageText: {
+  tooltip: {
     fontSize: 16,
     position: "absolute",
     fontWeight: 600,
