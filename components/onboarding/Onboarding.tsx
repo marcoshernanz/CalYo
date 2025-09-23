@@ -9,12 +9,10 @@ import OnboardingWeightTrend from "./steps/basics/OnboardingWeightTrend";
 import OnboardingActivityLevel from "./steps/basics/OnboardingActivityLevel";
 import OnboardingLiftingExperience from "./steps/basics/OnboardingLiftingExperience";
 import OnboardingCardioExperience from "./steps/basics/OnboardingCardioExperience";
-import OnboardingLongTermResults from "./steps/basics/OnboardingLongTermResults";
 import OnboardingGoalSection from "./steps/goal/OnboardingGoalSection";
 import OnboardingGoal from "./steps/goal/OnboardingGoal";
 import OnboardingTargetWeight from "./steps/goal/OnboardingTargetWeight";
 import OnboardingWeightChangeRate from "./steps/goal/OnboardingWeightChangeRate";
-import OnboardingWeightChangeResult from "./steps/goal/OnboardingWeightChangeResult";
 import OnboardingProgramSection from "./steps/program/OnboardingProgramSection";
 import OnboardingTraining from "./steps/program/OnboardingTraining";
 import { useRouter } from "expo-router";
@@ -39,7 +37,6 @@ const sections: SectionType[] = [
       <OnboardingActivityLevel key="activity-level" />,
       <OnboardingLiftingExperience key="lifting-experience" />,
       <OnboardingCardioExperience key="cardio-experience" />,
-      <OnboardingLongTermResults key="long-term-results" />,
     ],
   },
   {
@@ -49,7 +46,6 @@ const sections: SectionType[] = [
       <OnboardingGoal key="goal" />,
       <OnboardingTargetWeight key="target-weight" />,
       <OnboardingWeightChangeRate key="weight-change-rate" />,
-      <OnboardingWeightChangeResult key="weight-change-result" />,
     ],
   },
   {
