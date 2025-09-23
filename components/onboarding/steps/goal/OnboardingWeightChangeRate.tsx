@@ -3,11 +3,14 @@ import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import getColor from "@/lib/utils/getColor";
+import { useCallback } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import AnimateableText from "react-native-animateable-text";
 import {
+  runOnJS,
   SharedValue,
   useAnimatedProps,
+  useAnimatedReaction,
   useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated";
@@ -15,7 +18,7 @@ import {
 const minValue = 0.1;
 const maxValue = 1.5;
 const initialValue = 0.5;
-const recommendedRange = [0.3, 0.8] as [number, number];
+const recommendedRange = [0.25, 0.85] as [number, number];
 
 const getMessage = (rate: number) => {
   "worklet";
@@ -36,7 +39,7 @@ const getMessage = (rate: number) => {
 export default function OnboardingWeightChangeRate() {
   const { data, setData } = useOnboardingContext();
 
-  const changeRate = useSharedValue(initialValue);
+  const changeRate = useSharedValue(data.weightChangeRate ?? initialValue);
 
   const weeklyRate = useDerivedValue(() => {
     return Math.round(changeRate.value * 10) / 10;
@@ -63,8 +66,28 @@ export default function OnboardingWeightChangeRate() {
     })),
   };
 
+  const updateWeightChangeRate = useCallback(
+    (roundedValue: number) => {
+      setData((prev) => ({
+        ...prev,
+        weightChangeRate: roundedValue,
+      }));
+    },
+    [setData]
+  );
+
+  useAnimatedReaction(
+    () => changeRate.value,
+    (value) => {
+      const roundedValue = Math.round(value * 10) / 10;
+      runOnJS(updateWeightChangeRate)(roundedValue);
+    },
+    [updateWeightChangeRate]
+  );
+
   return (
     <>
+      {/* <Text>{data.weightChangeRate}</Text> */}
       <Title size="24">¿Cómo de rápido quieres alcanzar tu objetivo?</Title>
       <View style={styles.container}>
         <AnimateableText
