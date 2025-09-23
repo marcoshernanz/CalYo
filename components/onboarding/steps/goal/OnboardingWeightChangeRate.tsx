@@ -31,7 +31,7 @@ const getMessage = (rate: number) => {
 export default function OnboardingWeightChangeRate() {
   const { data, setData } = useOnboardingContext();
 
-  const direction = data.goal === "lose" ? "-" : "+";
+  const changeSign = data.goal === "lose" ? "-" : "+";
 
   const changeRate = useSharedValue(initialValue);
 
@@ -72,8 +72,8 @@ export default function OnboardingWeightChangeRate() {
             { amount: 0.8, period: "Por Mes" },
           ].map(({ amount, period }) => (
             <View key={`row-${amount}-${period}`} style={styles.row}>
-              <Text size="24" style={styles.direction}>
-                {direction}
+              <Text size="24" style={styles.sign}>
+                {changeSign}
               </Text>
               <View style={styles.valueContainer}>
                 <Text size="16" style={styles.valueNumber}>
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
   },
-  direction: {
+  sign: {
     fontWeight: 300,
   },
   valueContainer: {
