@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
     color: getColor("foreground"),
     ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
+    bottom: "50%",
     transform: [{ translateY: -52 }],
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -109,6 +110,7 @@ const styles = StyleSheet.create({
   weightInfo: {
     position: "absolute",
     gap: 8,
+    top: "50%",
     transform: [{ translateY: 52 }],
   },
   row: {
