@@ -5,7 +5,12 @@ import { useOnboardingContext } from "@/context/OnboardingContext";
 import getColor from "@/lib/utils/getColor";
 import { Platform, StyleSheet, View } from "react-native";
 import AnimateableText from "react-native-animateable-text";
-import { useAnimatedProps, useSharedValue } from "react-native-reanimated";
+import {
+  SharedValue,
+  useAnimatedProps,
+  useDerivedValue,
+  useSharedValue,
+} from "react-native-reanimated";
 
 const minValue = 0.1;
 const maxValue = 1.5;
@@ -31,9 +36,16 @@ const getMessage = (rate: number) => {
 export default function OnboardingWeightChangeRate() {
   const { data, setData } = useOnboardingContext();
 
-  const changeSign = data.goal === "lose" ? "-" : "+";
-
   const changeRate = useSharedValue(initialValue);
+
+  const weeklyRate = useDerivedValue(() => {
+    return Math.round(changeRate.value * 10) / 10;
+  });
+  const monthlyRate = useDerivedValue(() => {
+    return (Math.round(changeRate.value * 10) / 10) * 4;
+  });
+
+  const changeSign = data.goal === "lose" ? "-" : "+";
 
   const animatedProps = {
     tooltip: useAnimatedProps(() => ({
@@ -66,31 +78,55 @@ export default function OnboardingWeightChangeRate() {
           initialValue={initialValue}
           highlightedRange={recommendedRange}
         />
-        <View style={styles.weightInfo}>
+        <View style={styles.weightChange}>
           {[
-            { amount: 0.2, period: "Por Semana" },
-            { amount: 0.8, period: "Por Mes" },
+            { amount: weeklyRate, period: "Por Semana" },
+            { amount: monthlyRate, period: "Por Mes" },
           ].map(({ amount, period }) => (
-            <View key={`row-${amount}-${period}`} style={styles.row}>
-              <Text size="24" style={styles.sign}>
-                {changeSign}
-              </Text>
-              <View style={styles.valueContainer}>
-                <Text size="16" style={styles.valueNumber}>
-                  {amount}
-                </Text>
-                <Text size="16" style={styles.valueUnit}>
-                  kg
-                </Text>
-              </View>
-              <Text size="16" style={styles.periodLabel}>
-                {period}
-              </Text>
-            </View>
+            <WeightChangeRow
+              key={`row-${amount}-${period}`}
+              sign={changeSign}
+              amount={amount}
+              period={period}
+            />
           ))}
         </View>
       </View>
     </>
+  );
+}
+
+interface WeightChangeRowProps {
+  sign: string;
+  amount: SharedValue<number>;
+  period: string;
+}
+
+function WeightChangeRow({ sign, amount, period }: WeightChangeRowProps) {
+  const animatedProps = {
+    amount: useAnimatedProps(() => ({
+      text: String(amount.value),
+    })),
+  };
+
+  return (
+    <View style={styles.row}>
+      <Text size="24" style={styles.sign}>
+        {sign}
+      </Text>
+      <View style={styles.valueContainer}>
+        <AnimateableText
+          animatedProps={animatedProps.amount}
+          style={styles.valueNumber}
+        />
+        <Text size="16" style={styles.valueUnit}>
+          kg
+        </Text>
+      </View>
+      <Text size="16" style={styles.periodLabel}>
+        {period}
+      </Text>
+    </View>
   );
 }
 
@@ -113,7 +149,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 999,
   },
-  weightInfo: {
+  weightChange: {
     position: "absolute",
     gap: 8,
     top: "50%",
@@ -131,14 +167,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    width: 86,
     padding: 10,
-    gap: 16,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: getColor("mutedForeground"),
   },
   valueNumber: {
+    fontSize: 16,
     fontWeight: 600,
+    fontFamily: "Inter_600SemiBold",
+    color: getColor("foreground"),
+    ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
   },
   valueUnit: {
     color: getColor("mutedForeground"),
