@@ -85,7 +85,7 @@ export default function Onboarding() {
       setSection(section - 1);
       setStep(prevSection.steps.length - 1);
     } else {
-      router.navigate("/auth");
+      router.back();
     }
   };
 
