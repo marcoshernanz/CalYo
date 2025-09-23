@@ -1,6 +1,7 @@
 import Slider from "@/components/ui/Slider";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
+import { useOnboardingContext } from "@/context/OnboardingContext";
 import getColor from "@/lib/utils/getColor";
 import { Platform, StyleSheet, View } from "react-native";
 import AnimateableText from "react-native-animateable-text";
@@ -28,6 +29,10 @@ const getMessage = (rate: number) => {
 };
 
 export default function OnboardingWeightChangeRate() {
+  const { data, setData } = useOnboardingContext();
+
+  const direction = data.goal === "lose" ? "-" : "+";
+
   const changeRate = useSharedValue(initialValue);
 
   const animatedProps = {
@@ -62,26 +67,27 @@ export default function OnboardingWeightChangeRate() {
           highlightedRange={recommendedRange}
         />
         <View style={styles.weightInfo}>
-          <View style={styles.row}>
-            <Text size="24" style={styles.changeDirection}>
-              +
-            </Text>
-            <View style={styles.valueContainer}>
-              <Text style={styles.valueNumber}>0.2</Text>
-              <Text style={styles.valueUnit}>kg</Text>
+          {[
+            { amount: 0.2, period: "Por Semana" },
+            { amount: 0.8, period: "Por Mes" },
+          ].map(({ amount, period }) => (
+            <View key={`row-${amount}-${period}`} style={styles.row}>
+              <Text size="24" style={styles.direction}>
+                {direction}
+              </Text>
+              <View style={styles.valueContainer}>
+                <Text size="16" style={styles.valueNumber}>
+                  {amount}
+                </Text>
+                <Text size="16" style={styles.valueUnit}>
+                  kg
+                </Text>
+              </View>
+              <Text size="16" style={styles.periodLabel}>
+                {period}
+              </Text>
             </View>
-            <Text style={styles.periodLabel}>Por Semana</Text>
-          </View>
-          <View style={styles.row}>
-            <Text size="24" style={styles.changeDirection}>
-              +
-            </Text>
-            <View style={styles.valueContainer}>
-              <Text style={styles.valueNumber}>0.8</Text>
-              <Text style={styles.valueUnit}>kg</Text>
-            </View>
-            <Text style={styles.periodLabel}>Por Mes</Text>
-          </View>
+          ))}
         </View>
       </View>
     </>
@@ -102,7 +108,7 @@ const styles = StyleSheet.create({
     color: getColor("foreground"),
     ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
     bottom: "50%",
-    transform: [{ translateY: -52 }],
+    transform: [{ translateY: -36 }],
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 999,
@@ -111,14 +117,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     gap: 8,
     top: "50%",
-    transform: [{ translateY: 52 }],
+    transform: [{ translateY: 36 }],
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
   },
-  changeDirection: {
+  direction: {
     fontWeight: 300,
   },
   valueContainer: {
