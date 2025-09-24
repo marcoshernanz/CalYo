@@ -38,7 +38,7 @@ export default function OnboardingStepLayout({
             ))}
         </View>
       </View>
-      <View style={styles.mainContainer}>{children}</View>
+      <View style={styles.content}>{children}</View>
     </View>
   );
 }
@@ -62,9 +62,8 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     backgroundColor: getColor("secondary"),
   },
-  mainContainer: {
+  content: {
     flex: 1,
-    gap: 36,
     paddingVertical: 24,
   },
 });
