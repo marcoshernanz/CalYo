@@ -16,3 +16,4 @@
 - [ ] Fix screen animation
 - [ ] Fix going back animation
 - [ ] Back gesture should go back 1 step in onboarding
+- [ ] Link prefetch
