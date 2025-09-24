@@ -115,6 +115,7 @@ export default function Onboarding() {
             ref={carouselRef}
             width={Dimensions.get("window").width}
             loop={false}
+            enabled={false}
             data={sectionSteps.slice(1)}
             renderItem={({ item }) => item}
           />
