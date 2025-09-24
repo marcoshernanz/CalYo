@@ -30,7 +30,7 @@ export default function OnboardingLayout({
         <View style={styles.headerContainer}>
           <Title size="18">{header}</Title>
           <View style={styles.progressContainer}>
-            {Array(numSteps)
+            {Array(numSteps - 1)
               .fill(0)
               .map((_, index) => (
                 <View
