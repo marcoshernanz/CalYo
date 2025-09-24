@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import Title from "../ui/Title";
 import getColor from "@/lib/utils/getColor";
 
@@ -20,7 +20,7 @@ export default function OnboardingStepLayout({
       <View style={styles.headerContainer}>
         <Title size="18">{sectionName}</Title>
         <View style={styles.progressContainer}>
-          {Array(numSteps - 1)
+          {Array(numSteps)
             .fill(0)
             .map((_, index) => (
               <View
@@ -64,6 +64,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    width: Dimensions.get("window").width,
     paddingVertical: 24,
+    marginLeft: -16,
   },
 });

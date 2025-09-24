@@ -1,5 +1,4 @@
 import { useOnboardingContext } from "@/context/OnboardingContext";
-import OnboardingLayout from "./OnboardingLayout";
 import OnboardingBasicsSection from "./steps/basics/OnboardingBasicsSection";
 import OnboardingSex from "./steps/basics/OnboardingSex";
 import OnboardingBirthDate from "./steps/basics/OnboardingBirthDate";
@@ -17,10 +16,14 @@ import OnboardingProgramSection from "./steps/program/OnboardingProgramSection";
 import OnboardingTraining from "./steps/program/OnboardingTraining";
 import { useRouter } from "expo-router";
 import OnboardingWeeklyWorkouts from "./steps/basics/OnboardingWeeklyWorkouts";
+import OnboardingSectionLayout from "./OnboardingSectionLayout";
+import Carousel from "react-native-reanimated-carousel";
+import OnboardingStepLayout from "./OnboardingStepLayout";
+import { Dimensions } from "react-native";
 
 type SectionType = {
   name: string;
-  steps: React.ReactNode[];
+  steps: React.ReactElement[];
 };
 
 const sections: SectionType[] = [
@@ -63,11 +66,11 @@ export default function Onboarding() {
 
   const currentSection = sections[section];
   const sectionName = currentSection.name;
-  const sectionsSteps = currentSection.steps;
+  const sectionSteps = currentSection.steps;
   const currentStep = currentSection.steps[step];
 
   const handleNext = () => {
-    if (step < sectionsSteps.length - 1) {
+    if (step < sectionSteps.length - 1) {
       setStep(step + 1);
     } else if (section < sections.length - 1) {
       setSection(section + 1);
@@ -90,15 +93,23 @@ export default function Onboarding() {
   };
 
   return (
-    <OnboardingLayout
-      header={sectionName}
-      showHeader={step !== 0}
-      numSteps={sectionsSteps.length}
-      currentStep={step}
-      onNext={handleNext}
-      onBack={handleBack}
-    >
-      {currentStep}
-    </OnboardingLayout>
+    <OnboardingSectionLayout onNext={handleNext} onBack={handleBack}>
+      {step === 0 ? (
+        currentStep
+      ) : (
+        <OnboardingStepLayout
+          sectionName={sectionName}
+          numSteps={sectionSteps.length - 1}
+          currentStep={step - 1}
+        >
+          <Carousel
+            width={Dimensions.get("window").width}
+            loop={false}
+            data={sectionSteps.slice(1)}
+            renderItem={({ item }) => item}
+          />
+        </OnboardingStepLayout>
+      )}
+    </OnboardingSectionLayout>
   );
 }

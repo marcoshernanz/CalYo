@@ -15,7 +15,7 @@ export default function OnboardingSectionLayout({
   onNext,
 }: Props) {
   return (
-    <SafeArea style={styles.safeArea} edges={["top", "bottom"]}>
+    <SafeArea>
       <View style={styles.mainContainer}>{children}</View>
       <View style={styles.footerContainer}>
         <Button
@@ -40,9 +40,6 @@ export default function OnboardingSectionLayout({
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    paddingHorizontal: 0,
-  },
   mainContainer: {
     flex: 1,
   },
