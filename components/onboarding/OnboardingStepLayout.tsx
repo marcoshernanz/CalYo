@@ -29,7 +29,7 @@ export default function OnboardingStepLayout({
                   styles.progressStep,
                   {
                     backgroundColor:
-                      index < currentStep
+                      index <= currentStep
                         ? getColor("foreground")
                         : getColor("secondary"),
                   },
