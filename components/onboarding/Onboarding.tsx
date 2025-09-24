@@ -1,4 +1,6 @@
+import { useMemo } from "react";
 import { useOnboardingContext } from "@/context/OnboardingContext";
+import { useWindowDimensions } from "react-native";
 import OnboardingBasicsSection from "./steps/basics/OnboardingBasicsSection";
 import OnboardingSex from "./steps/basics/OnboardingSex";
 import OnboardingBirthDate from "./steps/basics/OnboardingBirthDate";
@@ -18,7 +20,7 @@ import { useRouter } from "expo-router";
 import OnboardingWeeklyWorkouts from "./steps/basics/OnboardingWeeklyWorkouts";
 import OnboardingSectionLayout from "./OnboardingSectionLayout";
 import OnboardingStepLayout from "./OnboardingStepLayout";
-import Animated, { SlideInRight, SlideOutLeft } from "react-native-reanimated";
+import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 
 type SectionType = {
   name: string;
@@ -62,6 +64,56 @@ const sections: SectionType[] = [
 export default function Onboarding() {
   const router = useRouter();
   const { section, setSection, step, setStep } = useOnboardingContext();
+  const direction = useSharedValue<1 | -1>(1);
+  const { width: screenWidth } = useWindowDimensions();
+
+  const animationDuration = 250;
+
+  const enteringAnimation = useMemo(() => {
+    return () => {
+      "worklet";
+      return {
+        initialValues: {
+          transform: [
+            {
+              translateX: direction.value * screenWidth,
+            },
+          ],
+        },
+        animations: {
+          transform: [
+            {
+              translateX: withTiming(0, { duration: animationDuration }),
+            },
+          ],
+        },
+      };
+    };
+  }, [direction, screenWidth, animationDuration]);
+
+  const exitingAnimation = useMemo(() => {
+    return () => {
+      "worklet";
+      return {
+        initialValues: {
+          transform: [
+            {
+              translateX: 0,
+            },
+          ],
+        },
+        animations: {
+          transform: [
+            {
+              translateX: withTiming(-direction.value * screenWidth, {
+                duration: animationDuration,
+              }),
+            },
+          ],
+        },
+      };
+    };
+  }, [direction, screenWidth, animationDuration]);
 
   const currentSection = sections[section];
   const sectionName = currentSection.name;
@@ -69,6 +121,7 @@ export default function Onboarding() {
   const currentStep = currentSection.steps[step];
 
   const handleNext = () => {
+    direction.value = 1;
     if (step < sectionSteps.length - 1) {
       setStep(step + 1);
     } else if (section < sections.length - 1) {
@@ -80,6 +133,7 @@ export default function Onboarding() {
   };
 
   const handleBack = () => {
+    direction.value = -1;
     if (step > 0) {
       setStep(step - 1);
     } else if (section > 0) {
@@ -97,8 +151,8 @@ export default function Onboarding() {
         <Animated.View
           style={{ flex: 1 }}
           key={`section-overview-${section}-${step}`}
-          entering={SlideInRight}
-          exiting={SlideOutLeft}
+          entering={enteringAnimation}
+          exiting={exitingAnimation}
         >
           {currentStep}
         </Animated.View>
@@ -106,8 +160,8 @@ export default function Onboarding() {
         <Animated.View
           style={{ flex: 1 }}
           key={`section-layout-${section}`}
-          entering={SlideInRight}
-          exiting={SlideOutLeft}
+          entering={enteringAnimation}
+          exiting={exitingAnimation}
         >
           <OnboardingStepLayout
             sectionName={sectionName}
@@ -117,8 +171,8 @@ export default function Onboarding() {
             <Animated.View
               style={{ flex: 1 }}
               key={`step-${section}-${step}`}
-              entering={SlideInRight}
-              exiting={SlideOutLeft}
+              entering={enteringAnimation}
+              exiting={exitingAnimation}
             >
               {currentStep}
             </Animated.View>
