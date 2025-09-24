@@ -15,3 +15,4 @@
 - [ ] Fix weight picker selected weight
 - [ ] Fix screen animation
 - [ ] Fix going back animation
+- [ ] Back gesture should go back 1 step in onboarding
