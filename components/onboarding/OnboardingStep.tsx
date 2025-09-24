@@ -19,6 +19,7 @@ export default function OnboardingStep({ children, title }: Props) {
 const styles = StyleSheet.create({
   safeArea: {
     paddingVertical: 0,
+    gap: 36,
   },
   content: {
     flex: 1,
