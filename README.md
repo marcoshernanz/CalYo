@@ -17,4 +17,5 @@
 - [ ] Fix going back animation
 - [ ] Back gesture should go back 1 step in onboarding
 - [ ] Link prefetch
-- [ ] Dimensions -> useWindowDimensions
+- [ ] Dimensions -> useWindowDimensions
+- [ ] Replace router animations with react-native-reanimated animations
