@@ -5,8 +5,8 @@ import { ArrowLeftIcon } from "lucide-react-native";
 
 interface Props {
   children: React.ReactNode;
-  onBack?: () => void;
-  onNext?: () => void;
+  onBack: () => void;
+  onNext: () => void;
 }
 
 export default function OnboardingSectionLayout({
@@ -15,7 +15,7 @@ export default function OnboardingSectionLayout({
   onNext,
 }: Props) {
   return (
-    <SafeArea style={styles.safeArea}>
+    <SafeArea style={styles.safeArea} edges={["top", "bottom"]}>
       <View style={styles.mainContainer}>{children}</View>
       <View style={styles.footerContainer}>
         <Button
@@ -41,7 +41,7 @@ export default function OnboardingSectionLayout({
 
 const styles = StyleSheet.create({
   safeArea: {
-    gap: 24,
+    paddingHorizontal: 0,
   },
   mainContainer: {
     flex: 1,

@@ -46,7 +46,6 @@ export default function OnboardingStepLayout({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 24,
   },
   headerContainer: {
     alignItems: "center",
@@ -66,5 +65,6 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     gap: 36,
+    paddingVertical: 24,
   },
 });
