@@ -17,10 +17,8 @@ import OnboardingTraining from "./steps/program/OnboardingTraining";
 import { useRouter } from "expo-router";
 import OnboardingWeeklyWorkouts from "./steps/basics/OnboardingWeeklyWorkouts";
 import OnboardingSectionLayout from "./OnboardingSectionLayout";
-import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import OnboardingStepLayout from "./OnboardingStepLayout";
 import { Dimensions } from "react-native";
-import { useRef } from "react";
 
 type SectionType = {
   name: string;
@@ -65,8 +63,6 @@ export default function Onboarding() {
   const router = useRouter();
   const { section, setSection, step, setStep } = useOnboardingContext();
 
-  const carouselRef = useRef<ICarouselInstance>(null);
-
   const currentSection = sections[section];
   const sectionName = currentSection.name;
   const sectionSteps = currentSection.steps;
@@ -75,9 +71,6 @@ export default function Onboarding() {
   const handleNext = () => {
     if (step < sectionSteps.length - 1) {
       setStep(step + 1);
-      if (step > 0) {
-        carouselRef.current?.next();
-      }
     } else if (section < sections.length - 1) {
       setSection(section + 1);
       setStep(0);
@@ -89,9 +82,6 @@ export default function Onboarding() {
   const handleBack = () => {
     if (step > 0) {
       setStep(step - 1);
-      if (step > 1) {
-        carouselRef.current?.prev();
-      }
     } else if (section > 0) {
       const prevSection = sections[section - 1];
       setSection(section - 1);
@@ -111,16 +101,7 @@ export default function Onboarding() {
           numSteps={sectionSteps.length - 1}
           currentStep={step - 1}
         >
-          <Carousel
-            ref={carouselRef}
-            key={`section-${section}`}
-            width={Dimensions.get("window").width}
-            loop={false}
-            enabled={false}
-            defaultIndex={Math.max(0, step - 1)}
-            data={sectionSteps.slice(1)}
-            renderItem={({ item }) => item}
-          />
+          {currentStep}
         </OnboardingStepLayout>
       )}
     </OnboardingSectionLayout>
