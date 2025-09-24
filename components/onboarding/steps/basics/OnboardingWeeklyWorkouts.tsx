@@ -1,9 +1,9 @@
 import Dot3Icon from "@/components/icons/Dot3Icon";
 import Dot1Icon from "@/components/icons/Dot1Icon";
 import Select, { SelectOption } from "@/components/ui/Select";
-import Title from "@/components/ui/Title";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import Dot6Icon from "@/components/icons/Dot6Icon";
+import OnboardingStep from "../../OnboardingStep";
 
 const options: SelectOption[] = [
   {
@@ -37,13 +37,12 @@ export default function OnboardingWeeklyWorkouts() {
   };
 
   return (
-    <>
-      <Title size="24">¿Cuantos entrenamientos haces a la semana?</Title>
+    <OnboardingStep title="¿Cuantos entrenamientos haces a la semana?">
       <Select
         options={options}
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
       />
-    </>
+    </OnboardingStep>
   );
 }

@@ -1,11 +1,11 @@
 import SegmentedControl from "@/components/ui/SegmentedControl";
-import Title from "@/components/ui/Title";
 import WeightPicker from "@/components/weight/WeightPicker";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import kgToLbs from "@/lib/units/kgToLbs";
 import lbsToKg from "@/lib/units/lbsToKg";
 import { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
+import OnboardingStep from "../../OnboardingStep";
 
 export default function OnboardingTargetWeight() {
   const { data, setData } = useOnboardingContext();
@@ -60,8 +60,7 @@ export default function OnboardingTargetWeight() {
   };
 
   return (
-    <>
-      <Title size="24">¿Qué peso te gustaría alcanzar?</Title>
+    <OnboardingStep title="¿Qué peso te gustaría alcanzar?">
       <View style={style.pickerContainer}>
         <View style={style.segmentControlContainer}>
           <SegmentedControl
@@ -78,7 +77,7 @@ export default function OnboardingTargetWeight() {
           <WeightPicker {...imperialProps} />
         )}
       </View>
-    </>
+    </OnboardingStep>
   );
 }
 

@@ -1,7 +1,7 @@
 import Select, { SelectOption } from "@/components/ui/Select";
-import Title from "@/components/ui/Title";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import { ArmchairIcon, FootprintsIcon, KayakIcon } from "lucide-react-native";
+import OnboardingStep from "../../OnboardingStep";
 
 const options: SelectOption[] = [
   {
@@ -35,13 +35,12 @@ export default function OnboardingActivityLevel() {
   };
 
   return (
-    <>
-      <Title size="24">¿Cuál es tu nivel de actividad?</Title>
+    <OnboardingStep title="¿Cuál es tu nivel de actividad?">
       <Select
         options={options}
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
       />
-    </>
+    </OnboardingStep>
   );
 }

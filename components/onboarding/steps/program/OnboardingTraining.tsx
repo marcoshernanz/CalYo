@@ -1,5 +1,4 @@
 import Select, { SelectOption } from "@/components/ui/Select";
-import Title from "@/components/ui/Title";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import {
   ArmchairIcon,
@@ -7,6 +6,7 @@ import {
   DumbbellIcon,
   HeartPulseIcon,
 } from "lucide-react-native";
+import OnboardingStep from "../../OnboardingStep";
 
 const options: SelectOption[] = [
   { name: "none", label: "Ninguno", Icon: ArmchairIcon },
@@ -31,15 +31,12 @@ export default function OnboardingTraining() {
   };
 
   return (
-    <>
-      <Title size="24">
-        ¿Qué tipo de entrenamiento vas a hacer durante este programa?
-      </Title>
+    <OnboardingStep title="¿Qué tipo de entrenamiento vas a hacer durante este programa?">
       <Select
         options={options}
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
       />
-    </>
+    </OnboardingStep>
   );
 }

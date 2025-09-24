@@ -1,6 +1,5 @@
 import Slider from "@/components/ui/Slider";
 import Text from "@/components/ui/Text";
-import Title from "@/components/ui/Title";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import kgToLbs from "@/lib/units/kgToLbs";
 import lbsToKg from "@/lib/units/lbsToKg";
@@ -16,6 +15,7 @@ import {
   useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated";
+import OnboardingStep from "../../OnboardingStep";
 
 const minKg = 0.1;
 const minLbs = 0.2;
@@ -114,8 +114,7 @@ export default function OnboardingWeightChangeRate() {
   );
 
   return (
-    <>
-      <Title size="24">¿Cómo de rápido quieres alcanzar tu objetivo?</Title>
+    <OnboardingStep title="¿Cómo de rápido quieres alcanzar tu objetivo?">
       <View style={styles.container}>
         <AnimateableText
           animatedProps={animatedProps.tooltip}
@@ -143,7 +142,7 @@ export default function OnboardingWeightChangeRate() {
           ))}
         </View>
       </View>
-    </>
+    </OnboardingStep>
   );
 }
 

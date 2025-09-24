@@ -1,7 +1,7 @@
 import Select, { SelectOption } from "@/components/ui/Select";
-import Title from "@/components/ui/Title";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import { ArrowDownIcon, ArrowUpIcon, MinusIcon } from "lucide-react-native";
+import OnboardingStep from "../../OnboardingStep";
 
 const options: SelectOption[] = [
   { name: "lose", label: "Perder Peso", Icon: ArrowDownIcon },
@@ -20,13 +20,12 @@ export default function OnboardingGoal() {
   };
 
   return (
-    <>
-      <Title size="24">¿Cuál es tu objetivo?</Title>
+    <OnboardingStep title="¿Cuál es tu objetivo?">
       <Select
         options={options}
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
       />
-    </>
+    </OnboardingStep>
   );
 }

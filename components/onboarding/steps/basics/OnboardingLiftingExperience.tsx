@@ -1,5 +1,4 @@
 import Select, { SelectOption } from "@/components/ui/Select";
-import Title from "@/components/ui/Title";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import {
   SignalIcon,
@@ -7,6 +6,7 @@ import {
   SignalMediumIcon,
   SignalZeroIcon,
 } from "lucide-react-native";
+import OnboardingStep from "../../OnboardingStep";
 
 const options: SelectOption[] = [
   {
@@ -53,13 +53,12 @@ export default function OnboardingLiftingExperience() {
   };
 
   return (
-    <>
-      <Title size="24">¿Cuál es tu experiencia levantando pesas?</Title>
+    <OnboardingStep title="¿Cuál es tu experiencia levantando pesas?">
       <Select
         options={options}
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
       />
-    </>
+    </OnboardingStep>
   );
 }

@@ -1,10 +1,10 @@
-import Title from "@/components/ui/Title";
 import WheelPicker from "@/components/ui/WheelPicker";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { useMemo } from "react";
 import { format, getDaysInMonth } from "date-fns";
 import { es } from "date-fns/locale";
+import OnboardingStep from "../../OnboardingStep";
 
 const defaultDate = new Date(2000, 6, 15);
 
@@ -70,8 +70,7 @@ export default function OnboardingBirthDate() {
   };
 
   return (
-    <>
-      <Title size="24">¿Cuándo naciste?</Title>
+    <OnboardingStep title="¿Cuándo naciste?">
       <View style={style.pickerContainer}>
         <WheelPicker
           data={days}
@@ -91,7 +90,7 @@ export default function OnboardingBirthDate() {
           itemStyle={{ paddingRight: 16 }}
         />
       </View>
-    </>
+    </OnboardingStep>
   );
 }
 

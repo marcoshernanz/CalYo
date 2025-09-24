@@ -1,7 +1,7 @@
 import Select, { SelectOption } from "@/components/ui/Select";
-import Title from "@/components/ui/Title";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import { MarsIcon, VenusIcon } from "lucide-react-native";
+import OnboardingStep from "../../OnboardingStep";
 
 const options: SelectOption[] = [
   { name: "male", label: "Hombre", Icon: MarsIcon },
@@ -19,13 +19,12 @@ export default function OnboardingSex() {
   };
 
   return (
-    <>
-      <Title size="24">¿Cuál es tu sexo?</Title>
+    <OnboardingStep title="¿Cuál es tu sexo?">
       <Select
         options={options}
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
       />
-    </>
+    </OnboardingStep>
   );
 }

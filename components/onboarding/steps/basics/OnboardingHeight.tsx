@@ -1,5 +1,4 @@
 import SegmentedControl from "@/components/ui/SegmentedControl";
-import Title from "@/components/ui/Title";
 import WheelPicker from "@/components/ui/WheelPicker";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import cmToIn from "@/lib/units/cmToIn";
@@ -7,6 +6,7 @@ import inToCm from "@/lib/units/inToCm";
 import inToFtIn from "@/lib/units/inToFtIn";
 import { useMemo, useRef } from "react";
 import { Dimensions, FlatList, StyleSheet, View } from "react-native";
+import OnboardingStep from "../../OnboardingStep";
 
 const minHeight = 120;
 const maxHeight = 240;
@@ -86,8 +86,7 @@ export default function OnboardingHeight() {
   }, [height]);
 
   return (
-    <>
-      <Title size="24">¿Cuanto mides?</Title>
+    <OnboardingStep title="¿Cuanto mides?">
       <View style={style.pickerContainer}>
         <View style={style.segmentControlContainer}>
           <SegmentedControl
@@ -130,7 +129,7 @@ export default function OnboardingHeight() {
           </View>
         </View>
       </View>
-    </>
+    </OnboardingStep>
   );
 }
 
