@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import { useWindowDimensions } from "react-native";
 import OnboardingBasicsSection from "./steps/basics/OnboardingBasicsSection";
@@ -66,8 +66,13 @@ export default function Onboarding() {
   const { section, setSection, step, setStep } = useOnboardingContext();
   const direction = useSharedValue<1 | -1>(1);
   const { width: screenWidth } = useWindowDimensions();
+  const [hasMounted, setHasMounted] = useState(false);
 
   const animationDuration = 250;
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const enteringAnimation = useMemo(() => {
     return () => {
@@ -151,7 +156,7 @@ export default function Onboarding() {
         <Animated.View
           style={{ flex: 1 }}
           key={`section-overview-${section}-${step}`}
-          entering={enteringAnimation}
+          entering={hasMounted ? enteringAnimation : undefined}
           exiting={exitingAnimation}
         >
           {currentStep}
@@ -160,7 +165,7 @@ export default function Onboarding() {
         <Animated.View
           style={{ flex: 1 }}
           key={`section-layout-${section}`}
-          entering={enteringAnimation}
+          entering={hasMounted ? enteringAnimation : undefined}
           exiting={exitingAnimation}
         >
           <OnboardingStepLayout
@@ -171,7 +176,7 @@ export default function Onboarding() {
             <Animated.View
               style={{ flex: 1 }}
               key={`step-${section}-${step}`}
-              entering={enteringAnimation}
+              entering={hasMounted ? enteringAnimation : undefined}
               exiting={exitingAnimation}
             >
               {currentStep}
