@@ -75,6 +75,9 @@ export default function Onboarding() {
   const handleNext = () => {
     if (step < sectionSteps.length - 1) {
       setStep(step + 1);
+      if (step > 0) {
+        carouselRef.current?.next();
+      }
     } else if (section < sections.length - 1) {
       setSection(section + 1);
       setStep(0);
@@ -86,6 +89,9 @@ export default function Onboarding() {
   const handleBack = () => {
     if (step > 0) {
       setStep(step - 1);
+      if (step > 1) {
+        carouselRef.current?.prev();
+      }
     } else if (section > 0) {
       const prevSection = sections[section - 1];
       setSection(section - 1);
