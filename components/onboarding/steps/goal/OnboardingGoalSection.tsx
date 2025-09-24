@@ -1,5 +1,5 @@
-import OnboardingSectionOverview from "../../OnboardingSectionOverview";
+import OnboardingSection from "../../OnboardingSection";
 
 export default function OnboardingGoalSection() {
-  return <OnboardingSectionOverview section={1} />;
+  return <OnboardingSection section={1} />;
 }

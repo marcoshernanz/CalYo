@@ -6,6 +6,7 @@ import Text from "@/components/ui/Text";
 import getColor from "@/lib/utils/getColor";
 import { CheckIcon } from "lucide-react-native";
 import { useState } from "react";
+import SafeArea from "../ui/SafeArea";
 
 const sections = [
   {
@@ -29,9 +30,7 @@ interface Props {
   section: number;
 }
 
-export default function OnboardingSectionOverview({
-  section: sectionNumber,
-}: Props) {
+export default function OnboardingSection({ section: sectionNumber }: Props) {
   const [positions, setPositions] = useState<{ x: number; y: number }[]>([]);
 
   const handleRowLayout = (index: number, event: LayoutChangeEvent) => {
@@ -45,7 +44,7 @@ export default function OnboardingSectionOverview({
   };
 
   return (
-    <>
+    <SafeArea style={styles.safeArea} edges={["left", "right"]}>
       <Header style={styles.header}>
         <Title>¡Empecemos!</Title>
         <Description>Tu programa personalizado te espera</Description>
@@ -131,11 +130,16 @@ export default function OnboardingSectionOverview({
           </View>
         ))}
       </View>
-    </>
+    </SafeArea>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    paddingVertical: 24,
+    flex: 1,
+    gap: 36,
+  },
   header: {
     alignItems: "center",
   },
