@@ -113,9 +113,11 @@ export default function Onboarding() {
         >
           <Carousel
             ref={carouselRef}
+            key={`section-${section}`}
             width={Dimensions.get("window").width}
             loop={false}
             enabled={false}
+            defaultIndex={Math.max(0, step - 1)}
             data={sectionSteps.slice(1)}
             renderItem={({ item }) => item}
           />
