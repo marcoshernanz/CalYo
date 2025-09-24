@@ -18,7 +18,7 @@ import { useRouter } from "expo-router";
 import OnboardingWeeklyWorkouts from "./steps/basics/OnboardingWeeklyWorkouts";
 import OnboardingSectionLayout from "./OnboardingSectionLayout";
 import OnboardingStepLayout from "./OnboardingStepLayout";
-import { Dimensions } from "react-native";
+import Animated, { SlideInRight, SlideOutLeft } from "react-native-reanimated";
 
 type SectionType = {
   name: string;
@@ -94,15 +94,36 @@ export default function Onboarding() {
   return (
     <OnboardingSectionLayout onNext={handleNext} onBack={handleBack}>
       {step === 0 ? (
-        currentStep
-      ) : (
-        <OnboardingStepLayout
-          sectionName={sectionName}
-          numSteps={sectionSteps.length - 1}
-          currentStep={step - 1}
+        <Animated.View
+          style={{ flex: 1 }}
+          key={`section-overview-${section}-${step}`}
+          entering={SlideInRight}
+          exiting={SlideOutLeft}
         >
           {currentStep}
-        </OnboardingStepLayout>
+        </Animated.View>
+      ) : (
+        <Animated.View
+          style={{ flex: 1 }}
+          key={`section-layout-${section}`}
+          entering={SlideInRight}
+          exiting={SlideOutLeft}
+        >
+          <OnboardingStepLayout
+            sectionName={sectionName}
+            numSteps={sectionSteps.length - 1}
+            currentStep={step - 1}
+          >
+            <Animated.View
+              style={{ flex: 1 }}
+              key={`step-${section}-${step}`}
+              entering={SlideInRight}
+              exiting={SlideOutLeft}
+            >
+              {currentStep}
+            </Animated.View>
+          </OnboardingStepLayout>
+        </Animated.View>
       )}
     </OnboardingSectionLayout>
   );
