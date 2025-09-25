@@ -48,7 +48,7 @@ export default function Button({
   const animatedStyle = useAnimatedStyle(
     () => ({
       transform: [{ scale: scale.value }],
-      opacity: disabled ? 0.4 : opacity.value,
+      opacity: disabled ? 0.5 : opacity.value,
     }),
     [disabled]
   );
