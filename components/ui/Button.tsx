@@ -66,7 +66,7 @@ export default function Button({
         backgroundColor: getColor("secondary"),
       },
       text: {
-        color: getColor("secondaryForeground"),
+        color: getColor("foreground"),
       },
     },
     ghost: {},
