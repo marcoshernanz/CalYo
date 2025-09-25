@@ -37,6 +37,7 @@ export default function OnboardingWeightTrend() {
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
         animated
+        animationDelay={100}
       />
     </OnboardingStep>
   );

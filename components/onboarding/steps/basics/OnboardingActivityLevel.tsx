@@ -41,6 +41,7 @@ export default function OnboardingActivityLevel() {
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
         animated
+        animationDelay={100}
       />
     </OnboardingStep>
   );

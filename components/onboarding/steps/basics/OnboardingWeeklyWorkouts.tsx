@@ -43,6 +43,7 @@ export default function OnboardingWeeklyWorkouts() {
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
         animated
+        animationDelay={100}
       />
     </OnboardingStep>
   );

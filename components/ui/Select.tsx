@@ -24,6 +24,7 @@ interface OptionItemProps {
   isSelected: boolean;
   onPress?: () => void;
   animated?: boolean;
+  animationDelay?: number;
   index: number;
 }
 
@@ -34,6 +35,7 @@ function OptionItem({
   isSelected,
   onPress,
   animated,
+  animationDelay = 0,
   index,
 }: OptionItemProps) {
   const progress = useSharedValue(isSelected ? 1 : 0);
@@ -55,8 +57,11 @@ function OptionItem({
     const springConfig = { stiffness: 500, damping: 30, mass: 0.9 } as const;
 
     appearance.value = 0;
-    appearance.value = withDelay(index * 120, withSpring(1, springConfig));
-  }, [animated, appearance, index]);
+    appearance.value = withDelay(
+      animationDelay + index * 120,
+      withSpring(1, springConfig)
+    );
+  }, [animated, animationDelay, appearance, index]);
 
   const animatedContainerStyle = useAnimatedStyle(() => {
     const backgroundColor = interpolateColor(
@@ -127,6 +132,47 @@ function OptionItem({
   );
 }
 
+export type SelectOption = {
+  name: string;
+  label: string;
+  description?: string;
+  Icon: IconProp;
+};
+
+interface Props {
+  options: SelectOption[];
+  selectedOptions?: string[];
+  onSelectOption?: (optionName: string) => void;
+  animated?: boolean;
+  animationDelay?: number;
+}
+
+export default function Select({
+  options,
+  selectedOptions,
+  onSelectOption,
+  animated = false,
+  animationDelay = 0,
+}: Props) {
+  return (
+    <View style={styles.container}>
+      {options.map(({ name, label, description, Icon }, index) => (
+        <OptionItem
+          key={`option-${label}-${index}`}
+          label={label}
+          description={description}
+          Icon={Icon}
+          isSelected={!!selectedOptions?.includes(name)}
+          onPress={() => onSelectOption?.(name)}
+          animated={animated}
+          animationDelay={animationDelay}
+          index={index}
+        />
+      ))}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     gap: 16,
@@ -158,41 +204,3 @@ const styles = StyleSheet.create({
     gap: 2,
   },
 });
-
-export type SelectOption = {
-  name: string;
-  label: string;
-  description?: string;
-  Icon: IconProp;
-};
-
-interface Props {
-  options: SelectOption[];
-  selectedOptions?: string[];
-  onSelectOption?: (optionName: string) => void;
-  animated?: boolean;
-}
-
-export default function Select({
-  options,
-  selectedOptions,
-  onSelectOption,
-  animated = false,
-}: Props) {
-  return (
-    <View style={styles.container}>
-      {options.map(({ name, label, description, Icon }, index) => (
-        <OptionItem
-          key={`option-${label}-${index}`}
-          label={label}
-          description={description}
-          Icon={Icon}
-          isSelected={!!selectedOptions?.includes(name)}
-          onPress={() => onSelectOption?.(name)}
-          animated={animated}
-          index={index}
-        />
-      ))}
-    </View>
-  );
-}
