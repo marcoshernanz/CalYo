@@ -8,7 +8,6 @@
   - [ ] Wheel Picker
   - [ ] Onboarding Height
 - [ ] Onboarding scroll
-- [ ] Back gesture should go back 1 step in onboarding
 - [ ] Link prefetch
 - [ ] Dimensions -> useWindowDimensions
 - [ ] Replace router animations with react-native-reanimated animations

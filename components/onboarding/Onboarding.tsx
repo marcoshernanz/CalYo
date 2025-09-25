@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   OnboardingData,
   useOnboardingContext,
@@ -19,7 +19,7 @@ import OnboardingTargetWeight from "./steps/goal/OnboardingTargetWeight";
 import OnboardingWeightChangeRate from "./steps/goal/OnboardingWeightChangeRate";
 import OnboardingProgramSection from "./steps/program/OnboardingProgramSection";
 import OnboardingTraining from "./steps/program/OnboardingTraining";
-import { useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import OnboardingWeeklyWorkouts from "./steps/basics/OnboardingWeeklyWorkouts";
 import OnboardingSectionLayout from "./OnboardingSectionLayout";
 import OnboardingStepLayout from "./OnboardingStepLayout";
@@ -91,6 +91,7 @@ const stepCompletionCheckers: ((data: OnboardingData) => boolean)[][] = [
 
 export default function Onboarding() {
   const router = useRouter();
+  const navigation = useNavigation();
   const { section, setSection, step, setStep, data } = useOnboardingContext();
   const direction = useSharedValue<1 | -1>(1);
   const { width: screenWidth } = useWindowDimensions();
@@ -98,21 +99,21 @@ export default function Onboarding() {
 
   const animationDuration = 250;
 
-  const shouldSkipStep = (
-    targetSectionIndex: number,
-    targetStepIndex: number
-  ) => {
-    const targetSection = sections[targetSectionIndex];
-    if (!targetSection) return false;
-    const targetStepElement = targetSection.steps[targetStepIndex];
-    if (!targetStepElement) return false;
+  const shouldSkipStep = useCallback(
+    (targetSectionIndex: number, targetStepIndex: number) => {
+      const targetSection = sections[targetSectionIndex];
+      if (!targetSection) return false;
+      const targetStepElement = targetSection.steps[targetStepIndex];
+      if (!targetStepElement) return false;
 
-    return (
-      (targetStepElement.type === OnboardingTargetWeight ||
-        targetStepElement.type === OnboardingWeightChangeRate) &&
-      data.goal === "maintain"
-    );
-  };
+      return (
+        (targetStepElement.type === OnboardingTargetWeight ||
+          targetStepElement.type === OnboardingWeightChangeRate) &&
+        data.goal === "maintain"
+      );
+    },
+    [data.goal]
+  );
 
   useEffect(() => {
     setHasMounted(true);
@@ -200,7 +201,7 @@ export default function Onboarding() {
     }
   };
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     direction.value = -1;
     if (step > 0) {
       let prevStepIndex = step - 1;
@@ -225,7 +226,26 @@ export default function Onboarding() {
     } else {
       router.back();
     }
-  };
+  }, [direction, router, section, setSection, setStep, shouldSkipStep, step]);
+
+  const canGoBackWithinOnboarding = step > 0 || section > 0;
+
+  useEffect(() => {
+    const subscription = navigation.addListener("beforeRemove", (event) => {
+      const actionType = event.data.action.type;
+
+      if (!canGoBackWithinOnboarding) {
+        return;
+      }
+
+      if (actionType === "GO_BACK" || actionType === "POP") {
+        event.preventDefault();
+        handleBack();
+      }
+    });
+
+    return subscription;
+  }, [canGoBackWithinOnboarding, handleBack, navigation]);
 
   return (
     <OnboardingSectionLayout
