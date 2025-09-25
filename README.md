@@ -1,16 +1,18 @@
-- [ ] Otp disabled button before entering code
-- [ ] Email disabled button while input is empty
-- [ ] Onboarding section overview animation
-- [ ] App navigation animation
+- [ ] Onboarding scroll
 - [ ] Onboarding height keep value when changing measurement system
 - [ ] Onboarding weight smooth measurement system change
+- [ ] Onboarding finish animation
+- [ ] Onboarding section overview animation
+
+- [ ] Otp disabled button before entering code
+- [ ] Email disabled button while input is empty
+- [ ] Sign in back button size
+
 - [ ] Optimize FlatList
   - [ ] Wheel Picker
   - [ ] Onboarding Height
-- [ ] Onboarding scroll
+
 - [ ] Link prefetch
 - [ ] Dimensions -> useWindowDimensions
 - [ ] Replace router animations with react-native-reanimated animations
-- [ ] Sign in back button size
-- [ ] Skip weight target step when the goal is maintaining
 - [ ] Onboarding pre-render
