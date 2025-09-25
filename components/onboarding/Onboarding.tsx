@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { useOnboardingContext } from "@/context/OnboardingContext";
+import {
+  OnboardingData,
+  useOnboardingContext,
+} from "@/context/OnboardingContext";
 import { useWindowDimensions } from "react-native";
 import OnboardingBasicsSection from "./steps/basics/OnboardingBasicsSection";
 import OnboardingSex from "./steps/basics/OnboardingSex";
@@ -61,9 +64,31 @@ const sections: SectionType[] = [
   },
 ];
 
+const stepCompletionCheckers: ((data: OnboardingData) => boolean)[][] = [
+  [
+    () => true,
+    (data) => data.sex !== null,
+    (data) => data.bornDate !== null,
+    (data) => data.height !== null,
+    (data) => data.weight !== null,
+    (data) => data.weightTrend !== null,
+    (data) => data.weeklyWorkouts !== null,
+    (data) => data.activityLevel !== null,
+    (data) => data.liftingExperience !== null,
+    (data) => data.cardioExperience !== null,
+  ],
+  [
+    () => true,
+    (data) => data.goal !== null,
+    (data) => data.targetWeight !== null,
+    (data) => data.weightChangeRate !== null,
+  ],
+  [() => true, (data) => data.training !== null],
+];
+
 export default function Onboarding() {
   const router = useRouter();
-  const { section, setSection, step, setStep } = useOnboardingContext();
+  const { section, setSection, step, setStep, data } = useOnboardingContext();
   const direction = useSharedValue<1 | -1>(1);
   const { width: screenWidth } = useWindowDimensions();
   const [hasMounted, setHasMounted] = useState(false);
@@ -124,8 +149,14 @@ export default function Onboarding() {
   const sectionName = currentSection.name;
   const sectionSteps = currentSection.steps;
   const currentStep = currentSection.steps[step];
+  const isCurrentStepComplete =
+    stepCompletionCheckers[section]?.[step]?.(data) ?? true;
+  const isNextDisabled = !isCurrentStepComplete;
 
   const handleNext = () => {
+    if (isNextDisabled) {
+      return;
+    }
     direction.value = 1;
     if (step < sectionSteps.length - 1) {
       setStep(step + 1);
@@ -151,7 +182,11 @@ export default function Onboarding() {
   };
 
   return (
-    <OnboardingSectionLayout onNext={handleNext} onBack={handleBack}>
+    <OnboardingSectionLayout
+      onNext={handleNext}
+      onBack={handleBack}
+      isNextDisabled={isNextDisabled}
+    >
       {step === 0 ? (
         <Animated.View
           style={{ flex: 1 }}

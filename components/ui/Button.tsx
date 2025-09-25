@@ -36,6 +36,7 @@ export default function Button({
   onPress,
   onPressIn,
   onPressOut,
+  disabled,
   ...restPressable
 }: Props) {
   const childArray = React.Children.toArray(children);
@@ -44,10 +45,13 @@ export default function Button({
     childArray.every((c) => typeof c === "string" || typeof c === "number");
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-    opacity: opacity.value,
-  }));
+  const animatedStyle = useAnimatedStyle(
+    () => ({
+      transform: [{ scale: scale.value }],
+      opacity: disabled ? 0.4 : opacity.value,
+    }),
+    [disabled]
+  );
 
   const variantStyles: Record<
     Variant,
@@ -181,6 +185,7 @@ export default function Button({
   };
 
   const handlePressIn: NonNullable<PressableProps["onPressIn"]> = (e) => {
+    if (disabled) return;
     onPressIn?.(e);
     clearOutTimer();
     pressStartRef.current = Date.now();
@@ -189,6 +194,7 @@ export default function Button({
   };
 
   const handlePressOut: NonNullable<PressableProps["onPressOut"]> = (e) => {
+    if (disabled) return;
     onPressOut?.(e);
     const now = Date.now();
     const elapsed = pressStartRef.current
@@ -198,6 +204,7 @@ export default function Button({
   };
 
   const handlePress: NonNullable<PressableProps["onPress"]> = (e) => {
+    if (disabled) return;
     onPress?.(e);
     const now = Date.now();
     const elapsed = pressStartRef.current
@@ -215,6 +222,7 @@ export default function Button({
   return (
     <AnimatedPressable
       {...restPressable}
+      disabled={disabled}
       onPress={handlePress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}

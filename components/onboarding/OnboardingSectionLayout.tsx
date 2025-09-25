@@ -7,12 +7,14 @@ interface Props {
   children: React.ReactNode;
   onBack: () => void;
   onNext: () => void;
+  isNextDisabled?: boolean;
 }
 
 export default function OnboardingSectionLayout({
   children,
   onBack,
   onNext,
+  isNextDisabled = false,
 }: Props) {
   return (
     <SafeArea>
@@ -31,6 +33,7 @@ export default function OnboardingSectionLayout({
           size="md"
           style={styles.nextButton}
           onPress={onNext}
+          disabled={isNextDisabled}
         >
           Siguiente
         </Button>

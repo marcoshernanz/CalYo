@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
-type OnboardingData = {
+export type OnboardingData = {
   measurementSystem: "metric" | "imperial";
   sex: "male" | "female" | null;
   bornDate: Date | null;
