@@ -1,6 +1,37 @@
 import { Dimensions, StyleSheet, View } from "react-native";
+import Animated, {
+  interpolateColor,
+  useDerivedValue,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import Title from "../ui/Title";
 import getColor from "@/lib/utils/getColor";
+
+interface ProgressStepProps {
+  isActive: boolean;
+}
+
+function ProgressStep({ isActive }: ProgressStepProps) {
+  const progress = useSharedValue(isActive ? 1 : 0);
+
+  useDerivedValue(() => {
+    progress.value = withTiming(isActive ? 1 : 0);
+  }, [isActive]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      backgroundColor: interpolateColor(
+        progress.value,
+        [0, 1],
+        [getColor("secondary"), getColor("foreground")]
+      ),
+    };
+  });
+
+  return <Animated.View style={[styles.progressStep, animatedStyle]} />;
+}
 
 interface Props {
   children: React.ReactNode;
@@ -23,18 +54,7 @@ export default function OnboardingStepLayout({
           {Array(numSteps)
             .fill(0)
             .map((_, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.progressStep,
-                  {
-                    backgroundColor:
-                      index <= currentStep
-                        ? getColor("foreground")
-                        : getColor("secondary"),
-                  },
-                ]}
-              />
+              <ProgressStep key={index} isActive={index <= currentStep} />
             ))}
         </View>
       </View>
