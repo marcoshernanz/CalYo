@@ -24,7 +24,7 @@ export default function OnboardingWeight() {
         return `${weight} kg`;
       },
       onChange: (weight: number) => {
-        setData((prev) => ({ ...prev, weight }));
+        setData((prev) => ({ ...prev, weight, targetWeight: weight }));
       },
     };
   }, [setData, weight]);
@@ -41,7 +41,11 @@ export default function OnboardingWeight() {
         return `${weight} lbs`;
       },
       onChange: (weight: number) => {
-        setData((prev) => ({ ...prev, weight: lbsToKg(weight) }));
+        setData((prev) => ({
+          ...prev,
+          weight: lbsToKg(weight),
+          targetWeight: lbsToKg(weight),
+        }));
       },
     };
   }, [setData, weight]);

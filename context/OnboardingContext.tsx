@@ -3,17 +3,17 @@ import React, { createContext, useContext, useState } from "react";
 export type OnboardingData = {
   measurementSystem: "metric" | "imperial";
   sex: "male" | "female" | null;
-  bornDate: Date | null;
-  height: number | null;
-  weight: number | null;
+  bornDate: Date;
+  height: number;
+  weight: number;
   weightTrend: "lose" | "maintain" | "gain" | "unsure" | null;
   weeklyWorkouts: "0-2" | "3-5" | "6+" | null;
   activityLevel: "low" | "medium" | "high" | null;
   liftingExperience: "none" | "beginner" | "intermediate" | "advanced" | null;
   cardioExperience: "none" | "beginner" | "intermediate" | "advanced" | null;
   goal: "lose" | "maintain" | "gain" | null;
-  targetWeight: number | null;
-  weightChangeRate: number | null;
+  targetWeight: number;
+  weightChangeRate: number;
   training: "none" | "lifting" | "cardio" | "both" | null;
 };
 
@@ -40,17 +40,17 @@ export default function OnboardingContextProvider({ children }: Props) {
   const [data, setData] = useState<OnboardingData>({
     measurementSystem: "metric",
     sex: null,
-    bornDate: null,
-    height: null,
-    weight: null,
+    bornDate: new Date(2000, 6, 15),
+    height: 170,
+    weight: 80,
     weightTrend: null,
     weeklyWorkouts: null,
     activityLevel: null,
     liftingExperience: null,
     cardioExperience: null,
     goal: null,
-    targetWeight: null,
-    weightChangeRate: null,
+    targetWeight: 80,
+    weightChangeRate: 0.5,
     training: null,
   });
 
