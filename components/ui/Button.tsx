@@ -45,12 +45,13 @@ export default function Button({
     childArray.every((c) => typeof c === "string" || typeof c === "number");
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
+  const disabledOpacity = useSharedValue(disabled ? 0.5 : 1);
   const animatedStyle = useAnimatedStyle(
     () => ({
       transform: [{ scale: scale.value }],
-      opacity: disabled ? 0.5 : opacity.value,
+      opacity: disabledOpacity.value * opacity.value,
     }),
-    [disabled]
+    []
   );
 
   const variantStyles: Record<
@@ -212,6 +213,10 @@ export default function Button({
       : MIN_PRESS_IN_MS;
     scheduleReleaseAnimation(elapsed);
   };
+
+  useEffect(() => {
+    disabledOpacity.value = withTiming(disabled ? 0.5 : 1);
+  }, [disabled, disabledOpacity]);
 
   useEffect(() => {
     return () => {
