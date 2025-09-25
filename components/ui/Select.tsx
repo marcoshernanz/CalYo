@@ -8,6 +8,8 @@ import Animated, {
   interpolateColor,
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
+  withSpring,
   withTiming,
 } from "react-native-reanimated";
 
@@ -21,6 +23,8 @@ interface OptionItemProps {
   Icon: IconProp;
   isSelected: boolean;
   onPress?: () => void;
+  animated?: boolean;
+  index: number;
 }
 
 function OptionItem({
@@ -29,8 +33,11 @@ function OptionItem({
   Icon,
   isSelected,
   onPress,
+  animated,
+  index,
 }: OptionItemProps) {
   const progress = useSharedValue(isSelected ? 1 : 0);
+  const appearance = useSharedValue(animated ? 0 : 1);
 
   useEffect(() => {
     progress.value = withTiming(isSelected ? 1 : 0, {
@@ -38,6 +45,18 @@ function OptionItem({
       easing: Easing.inOut(Easing.quad),
     });
   }, [isSelected, progress]);
+
+  useEffect(() => {
+    if (!animated) {
+      appearance.value = 1;
+      return;
+    }
+
+    const springConfig = { stiffness: 500, damping: 30, mass: 0.9 } as const;
+
+    appearance.value = 0;
+    appearance.value = withDelay(index * 120, withSpring(1, springConfig));
+  }, [animated, appearance, index]);
 
   const animatedContainerStyle = useAnimatedStyle(() => {
     const backgroundColor = interpolateColor(
@@ -64,41 +83,56 @@ function OptionItem({
     );
     return { color };
   });
+  const animatedAppearanceStyle = useAnimatedStyle(() => {
+    const scale = 0.85 + appearance.value * 0.15;
+    return {
+      transform: [{ scale }],
+      opacity: appearance.value,
+    };
+  });
 
   return (
-    <Button
-      style={[styles.optionButton, animatedContainerStyle]}
-      onPress={onPress}
-    >
-      <View style={styles.iconContainer}>
-        {React.isValidElement(Icon)
-          ? Icon
-          : (() => {
-              const Cmp = Icon as React.ComponentType<any>;
-              return <Cmp color={getColor("foreground")} />;
-            })()}
-      </View>
+    <Animated.View style={[styles.optionWrapper, animatedAppearanceStyle]}>
+      <Button
+        style={[styles.optionButton, animatedContainerStyle]}
+        onPress={onPress}
+      >
+        <View style={styles.iconContainer}>
+          {React.isValidElement(Icon)
+            ? Icon
+            : (() => {
+                const Cmp = Icon as React.ComponentType<any>;
+                return <Cmp color={getColor("foreground")} />;
+              })()}
+        </View>
 
-      <View style={styles.labelContainer}>
-        <AnimatedText
-          size="16"
-          style={[{ fontWeight: description ? 600 : 500 }, animatedLabelStyle]}
-        >
-          {label}
-        </AnimatedText>
-        {description && (
-          <AnimatedText size="14" style={animatedDescriptionStyle}>
-            {description}
+        <View style={styles.labelContainer}>
+          <AnimatedText
+            size="16"
+            style={[
+              { fontWeight: description ? 600 : 500 },
+              animatedLabelStyle,
+            ]}
+          >
+            {label}
           </AnimatedText>
-        )}
-      </View>
-    </Button>
+          {description && (
+            <AnimatedText size="14" style={animatedDescriptionStyle}>
+              {description}
+            </AnimatedText>
+          )}
+        </View>
+      </Button>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     gap: 16,
+  },
+  optionWrapper: {
+    width: "100%",
   },
   optionButton: {
     flexDirection: "row",
@@ -136,12 +170,14 @@ interface Props {
   options: SelectOption[];
   selectedOptions?: string[];
   onSelectOption?: (optionName: string) => void;
+  animated?: boolean;
 }
 
 export default function Select({
   options,
   selectedOptions,
   onSelectOption,
+  animated = false,
 }: Props) {
   return (
     <View style={styles.container}>
@@ -153,6 +189,8 @@ export default function Select({
           Icon={Icon}
           isSelected={!!selectedOptions?.includes(name)}
           onPress={() => onSelectOption?.(name)}
+          animated={animated}
+          index={index}
         />
       ))}
     </View>

@@ -58,6 +58,7 @@ export default function OnboardingLiftingExperience() {
         options={options}
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
+        animated
       />
     </OnboardingStep>
   );

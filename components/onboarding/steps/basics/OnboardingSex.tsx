@@ -24,6 +24,7 @@ export default function OnboardingSex() {
         options={options}
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
+        animated
       />
     </OnboardingStep>
   );

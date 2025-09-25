@@ -56,6 +56,7 @@ export default function OnboardingCardioExperience() {
         options={options}
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
+        animated
       />
     </OnboardingStep>
   );

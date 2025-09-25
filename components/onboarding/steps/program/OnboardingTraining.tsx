@@ -36,6 +36,7 @@ export default function OnboardingTraining() {
         options={options}
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
+        animated
       />
     </OnboardingStep>
   );

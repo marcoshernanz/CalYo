@@ -25,6 +25,7 @@ export default function OnboardingGoal() {
         options={options}
         selectedOptions={selectedOptions}
         onSelectOption={setSelectedOption}
+        animated
       />
     </OnboardingStep>
   );
