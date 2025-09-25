@@ -98,6 +98,22 @@ export default function Onboarding() {
 
   const animationDuration = 250;
 
+  const shouldSkipStep = (
+    targetSectionIndex: number,
+    targetStepIndex: number
+  ) => {
+    const targetSection = sections[targetSectionIndex];
+    if (!targetSection) return false;
+    const targetStepElement = targetSection.steps[targetStepIndex];
+    if (!targetStepElement) return false;
+
+    return (
+      (targetStepElement.type === OnboardingTargetWeight ||
+        targetStepElement.type === OnboardingWeightChangeRate) &&
+      data.goal === "maintain"
+    );
+  };
+
   useEffect(() => {
     setHasMounted(true);
   }, []);
@@ -162,10 +178,23 @@ export default function Onboarding() {
     }
     direction.value = 1;
     if (step < sectionSteps.length - 1) {
-      setStep(step + 1);
-    } else if (section < sections.length - 1) {
+      let nextStepIndex = step + 1;
+      while (shouldSkipStep(section, nextStepIndex)) {
+        nextStepIndex += 1;
+      }
+      if (nextStepIndex < sectionSteps.length) {
+        setStep(nextStepIndex);
+        return;
+      }
+    }
+
+    if (section < sections.length - 1) {
       setSection(section + 1);
-      setStep(0);
+      let nextSectionStep = 0;
+      while (shouldSkipStep(section + 1, nextSectionStep)) {
+        nextSectionStep += 1;
+      }
+      setStep(nextSectionStep);
     } else {
       console.log("Onboarding completed");
     }
@@ -174,11 +203,25 @@ export default function Onboarding() {
   const handleBack = () => {
     direction.value = -1;
     if (step > 0) {
-      setStep(step - 1);
+      let prevStepIndex = step - 1;
+      while (prevStepIndex >= 0 && shouldSkipStep(section, prevStepIndex)) {
+        prevStepIndex -= 1;
+      }
+      if (prevStepIndex >= 0) {
+        setStep(prevStepIndex);
+        return;
+      }
     } else if (section > 0) {
       const prevSection = sections[section - 1];
       setSection(section - 1);
-      setStep(prevSection.steps.length - 1);
+      let prevSectionStep = prevSection.steps.length - 1;
+      while (
+        prevSectionStep >= 0 &&
+        shouldSkipStep(section - 1, prevSectionStep)
+      ) {
+        prevSectionStep -= 1;
+      }
+      setStep(prevSectionStep >= 0 ? prevSectionStep : 0);
     } else {
       router.back();
     }

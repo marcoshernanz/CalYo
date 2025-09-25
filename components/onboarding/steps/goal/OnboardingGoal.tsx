@@ -15,7 +15,12 @@ export default function OnboardingGoal() {
   const selectedOptions = data.goal ? [data.goal] : [];
   const setSelectedOption = (name: string) => {
     if (name === "lose" || name === "maintain" || name === "gain") {
-      setData((prev) => ({ ...prev, goal: name }));
+      setData((prev) => ({
+        ...prev,
+        goal: name,
+        targetWeight: name === "maintain" ? prev.weight : prev.targetWeight,
+        weightChangeRate: name === "maintain" ? 0 : prev.weightChangeRate,
+      }));
     }
   };
 
