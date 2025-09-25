@@ -19,3 +19,4 @@
 - [ ] Link prefetch
 - [ ] Dimensions -> useWindowDimensions
 - [ ] Replace router animations with react-native-reanimated animations
+- [ ] Sign in back button size
