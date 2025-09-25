@@ -66,24 +66,27 @@ const sections: SectionType[] = [
 
 const stepCompletionCheckers: ((data: OnboardingData) => boolean)[][] = [
   [
-    () => true,
-    (data) => data.sex !== null,
-    (data) => data.bornDate !== null,
-    (data) => data.height !== null,
-    (data) => data.weight !== null,
-    (data) => data.weightTrend !== null,
-    (data) => data.weeklyWorkouts !== null,
-    (data) => data.activityLevel !== null,
-    (data) => data.liftingExperience !== null,
-    (data) => data.cardioExperience !== null,
+    () => true, // Basics Section
+    (data) => data.sex !== null, // Sex
+    () => true, // Birth Date
+    () => true, // Height
+    () => true, // Weight
+    (data) => data.weightTrend !== null, // Weight Trend
+    (data) => data.weeklyWorkouts !== null, // Weekly Workouts
+    (data) => data.activityLevel !== null, // Activity Level
+    (data) => data.liftingExperience !== null, // Lifting Experience
+    (data) => data.cardioExperience !== null, // Cardio Experience
   ],
   [
-    () => true,
-    (data) => data.goal !== null,
-    (data) => data.targetWeight !== null,
-    (data) => data.weightChangeRate !== null,
+    () => true, // Goal Section
+    (data) => data.goal !== null, // Goal
+    () => true, // Target Weight
+    () => true, // Weight Change Rate
   ],
-  [() => true, (data) => data.training !== null],
+  [
+    () => true, // Program Section
+    (data) => data.training !== null, // Training
+  ],
 ];
 
 export default function Onboarding() {
