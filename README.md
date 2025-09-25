@@ -20,3 +20,4 @@
 - [ ] Dimensions -> useWindowDimensions
 - [ ] Replace router animations with react-native-reanimated animations
 - [ ] Sign in back button size
+- [ ] Skip weight target step when the goal is maintaining
