@@ -4,6 +4,14 @@ import Title from "@/components/ui/Title";
 import getColor from "@/lib/utils/getColor";
 import { StyleSheet, View } from "react-native";
 
+const dailyRecommendations = [
+  "Calorías",
+  "Carbohidratos",
+  "Proteína",
+  "Grasas",
+  "Micronutrientes",
+];
+
 export default function OnboardingCreatingPlan() {
   return (
     <View style={styles.container}>
@@ -20,21 +28,19 @@ export default function OnboardingCreatingPlan() {
         <Description style={styles.description}>
           Calculando calorías...
         </Description>
-        <View style={styles.resultsContainer}>
+        <View style={styles.recommendationsContainer}>
           <View style={styles.progressContainer}>
             <View style={styles.progressIndicator}></View>
           </View>
-          <Title size="18" style={styles.resultsTitle}>
+          <Title size="18" style={styles.recommendationsTitle}>
             Recomendaciones diarias
           </Title>
-          {Array(5)
-            .fill(0)
-            .map((_, i) => (
-              <View key={i}>
-                <Text size="16">&bull; Calorías</Text>
-                <View></View>
-              </View>
-            ))}
+          {dailyRecommendations.map((item, i) => (
+            <View key={i} style={styles.recommendationContainer}>
+              <Text size="16">&bull; {item}</Text>
+              <View></View>
+            </View>
+          ))}
         </View>
       </View>
     </View>
@@ -67,7 +73,7 @@ const styles = StyleSheet.create({
   description: {
     textAlign: "center",
   },
-  resultsContainer: {
+  recommendationsContainer: {
     width: "100%",
     backgroundColor: getColor("secondary", 0.5),
     padding: 20,
@@ -87,8 +93,13 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: getColor("primary"),
   },
-  resultsTitle: {
+  recommendationsTitle: {
     fontWeight: 600,
     paddingBottom: 8,
+  },
+  recommendationContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
