@@ -12,6 +12,15 @@ const dailyRecommendations = [
   "Micronutrientes",
 ];
 
+const descriptions = [
+  "Calculando calorías...",
+  "Calculando carbohidratos...",
+  "Calculando proteínas...",
+  "Calculando grasas...",
+  "Calculando micronutrientes...",
+  "Finalizando plan...",
+];
+
 export default function OnboardingCreatingPlan() {
   return (
     <View style={styles.container}>
@@ -25,9 +34,7 @@ export default function OnboardingCreatingPlan() {
       </View>
 
       <View style={styles.bottomContainer}>
-        <Description style={styles.description}>
-          Calculando calorías...
-        </Description>
+        <Description style={styles.description}>{descriptions[0]}</Description>
         <View style={styles.recommendationsContainer}>
           <View style={styles.progressContainer}>
             <View style={styles.progressIndicator}></View>
