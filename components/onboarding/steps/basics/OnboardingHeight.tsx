@@ -19,12 +19,17 @@ export default function OnboardingHeight() {
     const minHeight = 120;
     const maxHeight = 240;
 
+    const initialHeight = Math.min(
+      Math.max(Math.round(height), minHeight),
+      maxHeight
+    );
+
     return {
       data: Array.from(
         { length: maxHeight - minHeight + 1 },
         (_, i) => `${minHeight + i} cm`
       ),
-      initialValue: `${Math.round(height)} cm`,
+      initialValue: `${initialHeight} cm`,
       onValueChange: (value: string) => {
         const match = value.match(/^(\d+)\s*cm$/);
         if (!match) return;
@@ -39,7 +44,12 @@ export default function OnboardingHeight() {
   >(() => {
     const minHeight = 48;
     const maxHeight = 96;
-    const { feet, inches } = inToFtIn(cmToIn(height));
+
+    const initialHeight = Math.min(
+      Math.max(Math.round(cmToIn(height)), minHeight),
+      maxHeight
+    );
+    const { feet, inches } = inToFtIn(initialHeight);
 
     return {
       data: Array.from({ length: maxHeight - minHeight + 1 }, (_, i) => {
@@ -67,6 +77,8 @@ export default function OnboardingHeight() {
     }));
   };
 
+  console.log();
+
   return (
     <OnboardingStep title="¿Cuanto mides?">
       <View style={style.pickerContainer}>
@@ -83,9 +95,9 @@ export default function OnboardingHeight() {
         </View>
 
         {data.measurementSystem === "metric" ? (
-          <WheelPicker {...metricProps} />
+          <WheelPicker key="metric-wheel" {...metricProps} />
         ) : (
-          <WheelPicker {...imperialProps} />
+          <WheelPicker key="imperial-wheel" {...imperialProps} />
         )}
       </View>
     </OnboardingStep>
