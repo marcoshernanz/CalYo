@@ -89,13 +89,17 @@ function LucideSpinner({ color, size = 18 }: LucideSpinnerProps) {
 export default function OnboardingCreatingPlan() {
   const { data, setData } = useOnboardingContext();
 
-  const progress = useSharedValue(0);
+  const progress = useSharedValue(data.hasCreatedPlan ? 100 : 0);
   const progressWidth = useSharedValue(0);
-  const [currentDescriptionIndex, setCurrentDescriptionIndex] = useState(0);
-  const [completedRecommendations, setCompletedRecommendations] = useState(0);
+  const [currentDescriptionIndex, setCurrentDescriptionIndex] = useState(() =>
+    data.hasCreatedPlan ? descriptions.length - 1 : 0
+  );
+  const [completedRecommendations, setCompletedRecommendations] = useState(() =>
+    data.hasCreatedPlan ? dailyRecommendations.length : 0
+  );
   const [activeRecommendationIndex, setActiveRecommendationIndex] = useState<
     number | null
-  >(0);
+  >(() => (data.hasCreatedPlan ? null : 0));
 
   const animatedProps = {
     progress: useAnimatedProps(() => ({
@@ -113,6 +117,17 @@ export default function OnboardingCreatingPlan() {
 
   useEffect(() => {
     let isCancelled = false;
+
+    if (data.hasCreatedPlan) {
+      progress.value = 100;
+      setCurrentDescriptionIndex(descriptions.length - 1);
+      setCompletedRecommendations(dailyRecommendations.length);
+      setActiveRecommendationIndex(null);
+
+      return () => {
+        cancelAnimation(progress);
+      };
+    }
 
     const animateTo = (target: number, duration: number) =>
       new Promise<void>((resolve) => {
@@ -168,7 +183,7 @@ export default function OnboardingCreatingPlan() {
       isCancelled = true;
       cancelAnimation(progress);
     };
-  }, [progress, setData]);
+  }, [data.hasCreatedPlan, progress, setData]);
 
   return (
     <View style={styles.container}>
