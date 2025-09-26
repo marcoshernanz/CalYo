@@ -2,9 +2,27 @@ import Description from "@/components/ui/Description";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
 import getColor from "@/lib/utils/getColor";
-import { Platform, StyleSheet, View } from "react-native";
+import { CheckIcon } from "lucide-react-native";
+import {
+  ActivityIndicator,
+  LayoutChangeEvent,
+  Platform,
+  StyleSheet,
+  View,
+} from "react-native";
+import { useEffect, useState } from "react";
 import AnimateableText from "react-native-animateable-text";
-import { useAnimatedProps } from "react-native-reanimated";
+import Animated, {
+  cancelAnimation,
+  Easing,
+  FadeIn,
+  FadeOut,
+  runOnJS,
+  useAnimatedProps,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 const dailyRecommendations = [
   "Calorías",
@@ -23,12 +41,89 @@ const descriptions = [
   "Finalizando plan...",
 ];
 
+const stageConfiguration = [
+  { target: 20, descriptionIndex: 0 },
+  { target: 40, descriptionIndex: 1 },
+  { target: 60, descriptionIndex: 2 },
+  { target: 80, descriptionIndex: 3 },
+  { target: 99, descriptionIndex: 4 },
+  { target: 100, descriptionIndex: 5 },
+] as const;
+
+const stageDurations = [900, 900, 900, 900, 900, 600] as const;
+
 export default function OnboardingCreatingPlan() {
+  const progress = useSharedValue(0);
+  const progressWidth = useSharedValue(0);
+  const [currentDescriptionIndex, setCurrentDescriptionIndex] = useState(0);
+  const [completedRecommendations, setCompletedRecommendations] = useState(0);
+  const [activeRecommendationIndex, setActiveRecommendationIndex] = useState<
+    number | null
+  >(0);
+
   const animatedProps = {
     progress: useAnimatedProps(() => ({
-      text: `${49}%`,
+      text: `${Math.round(progress.value)}%`,
     })),
   };
+
+  const progressIndicatorStyle = useAnimatedStyle(() => ({
+    width: (progressWidth.value * progress.value) / 100,
+  }));
+
+  const handleProgressLayout = ({ nativeEvent }: LayoutChangeEvent) => {
+    progressWidth.value = nativeEvent.layout.width;
+  };
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    const animateTo = (target: number, duration: number) =>
+      new Promise<void>((resolve) => {
+        progress.value = withTiming(
+          target,
+          { duration, easing: Easing.inOut(Easing.ease) },
+          (finished) => {
+            if (finished && !isCancelled) {
+              runOnJS(resolve)();
+            }
+          }
+        );
+      });
+
+    const runStages = async () => {
+      for (let i = 0; i < stageConfiguration.length; i++) {
+        if (isCancelled) {
+          break;
+        }
+
+        const { descriptionIndex, target } = stageConfiguration[i];
+
+        setCurrentDescriptionIndex(descriptionIndex);
+        setActiveRecommendationIndex(
+          i < dailyRecommendations.length ? i : null
+        );
+
+        await animateTo(target, stageDurations[i]);
+
+        if (isCancelled) {
+          break;
+        }
+
+        setCompletedRecommendations((prev) => {
+          const next = Math.min(i + 1, dailyRecommendations.length);
+          return prev === next ? prev : next;
+        });
+      }
+    };
+
+    runStages();
+
+    return () => {
+      isCancelled = true;
+      cancelAnimation(progress);
+    };
+  }, [progress]);
 
   return (
     <View style={styles.container}>
@@ -43,10 +138,23 @@ export default function OnboardingCreatingPlan() {
       </View>
 
       <View style={styles.bottomContainer}>
-        <Description style={styles.description}>{descriptions[0]}</Description>
+        <Animated.View
+          key={currentDescriptionIndex}
+          entering={FadeIn.duration(250)}
+          exiting={FadeOut.duration(150)}
+        >
+          <Description style={styles.description}>
+            {descriptions[currentDescriptionIndex]}
+          </Description>
+        </Animated.View>
         <View style={styles.recommendationsContainer}>
-          <View style={styles.progressContainer}>
-            <View style={styles.progressIndicator}></View>
+          <View
+            style={styles.progressContainer}
+            onLayout={handleProgressLayout}
+          >
+            <Animated.View
+              style={[styles.progressIndicator, progressIndicatorStyle]}
+            />
           </View>
           <Title size="18" style={styles.recommendationsTitle}>
             Recomendaciones diarias
@@ -54,7 +162,21 @@ export default function OnboardingCreatingPlan() {
           {dailyRecommendations.map((item, i) => (
             <View key={i} style={styles.recommendationContainer}>
               <Text size="16">&bull; {item}</Text>
-              <View style={styles.recommendationLoading}></View>
+              <View style={styles.recommendationLoading}>
+                {i < completedRecommendations ? (
+                  <Animated.View entering={FadeIn.duration(200)}>
+                    <CheckIcon
+                      size={18}
+                      strokeWidth={2.5}
+                      color={getColor("primary")}
+                    />
+                  </Animated.View>
+                ) : i === activeRecommendationIndex ? (
+                  <ActivityIndicator size="small" color={getColor("primary")} />
+                ) : (
+                  <View style={styles.recommendationPlaceholder} />
+                )}
+              </View>
             </View>
           ))}
         </View>
@@ -110,7 +232,6 @@ const styles = StyleSheet.create({
     backgroundColor: getColor("secondary"),
   },
   progressIndicator: {
-    width: "49%",
     height: "100%",
     backgroundColor: getColor("primary"),
   },
@@ -123,5 +244,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  recommendationLoading: {},
+  recommendationLoading: {
+    width: 24,
+    height: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  recommendationPlaceholder: {
+    width: 12,
+    height: 12,
+    borderRadius: 999,
+    backgroundColor: getColor("secondary", 0.6),
+  },
 });
