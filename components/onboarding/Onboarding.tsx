@@ -97,7 +97,7 @@ const stepCompletionCheckers: ((data: OnboardingData) => boolean)[][] = [
     (data) => data.training !== null, // Training
   ],
   [
-    () => true, // Creating Plan
+    (data) => data.hasCreatedPlan, // Creating Plan
     () => true, // Plan
   ],
 ];

@@ -15,6 +15,7 @@ export type OnboardingData = {
   targetWeight: number;
   weightChangeRate: number;
   training: "none" | "lifting" | "cardio" | "both" | null;
+  hasCreatedPlan: boolean;
 };
 
 interface OnboardingContextValue {
@@ -52,6 +53,7 @@ export default function OnboardingContextProvider({ children }: Props) {
     targetWeight: 80,
     weightChangeRate: 0.5,
     training: null,
+    hasCreatedPlan: false,
   });
 
   return (

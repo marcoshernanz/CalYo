@@ -20,6 +20,7 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
+import { useOnboardingContext } from "@/context/OnboardingContext";
 
 const dailyRecommendations = [
   "Calorías",
@@ -86,6 +87,8 @@ function LucideSpinner({ color, size = 18 }: LucideSpinnerProps) {
 }
 
 export default function OnboardingCreatingPlan() {
+  const { data, setData } = useOnboardingContext();
+
   const progress = useSharedValue(0);
   const progressWidth = useSharedValue(0);
   const [currentDescriptionIndex, setCurrentDescriptionIndex] = useState(0);
@@ -153,6 +156,10 @@ export default function OnboardingCreatingPlan() {
           setCurrentDescriptionIndex(descriptions.length - 1);
         }
       }
+
+      if (!isCancelled) {
+        setData((prev) => ({ ...prev, hasCreatedPlan: true }));
+      }
     };
 
     runStages();
@@ -161,7 +168,7 @@ export default function OnboardingCreatingPlan() {
       isCancelled = true;
       cancelAnimation(progress);
     };
-  }, [progress]);
+  }, [progress, setData]);
 
   return (
     <View style={styles.container}>
