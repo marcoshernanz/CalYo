@@ -1,6 +1,3 @@
-- [ ] Onboarding scroll
-- [ ] Onboarding height keep value when changing measurement system
-- [ ] Onboarding weight smooth measurement system change
 - [ ] Onboarding finish animation
 - [ ] Onboarding section overview animation
 
@@ -16,3 +13,7 @@
 - [ ] Dimensions -> useWindowDimensions
 - [ ] Replace router animations with react-native-reanimated animations
 - [ ] Onboarding pre-render
+
+- [ ] Onboarding scroll
+- [ ] Onboarding height smooth measurement system change
+- [ ] Onboarding weight smooth measurement system change
