@@ -13,6 +13,7 @@
 - [ ] Dimensions -> useWindowDimensions
 - [ ] Replace router animations with react-native-reanimated animations
 - [ ] Onboarding pre-render
+- [ ] Onboarding weight rate tooltip position
 
 - [ ] Onboarding scroll
 - [ ] Onboarding height smooth measurement system change
