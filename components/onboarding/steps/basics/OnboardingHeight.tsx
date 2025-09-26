@@ -77,8 +77,6 @@ export default function OnboardingHeight() {
     }));
   };
 
-  console.log();
-
   return (
     <OnboardingStep title="¿Cuanto mides?">
       <View style={style.pickerContainer}>
