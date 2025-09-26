@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    gap: 64,
+    gap: 48,
   },
   topContainer: {
     alignItems: "center",
@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     position: "absolute",
-    width: "100%",
+    left: 0,
+    right: 0,
     height: 6,
     backgroundColor: getColor("secondary"),
   },
