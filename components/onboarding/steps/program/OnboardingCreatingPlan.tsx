@@ -179,7 +179,7 @@ export default function OnboardingCreatingPlan() {
         <Animated.View
           key={currentDescriptionIndex}
           entering={FadeInDown.duration(350)}
-          exiting={FadeOutDown.duration(200)}
+          exiting={FadeOutDown.duration(350)}
         >
           <Description style={styles.description}>
             {descriptions[currentDescriptionIndex]}
@@ -201,27 +201,35 @@ export default function OnboardingCreatingPlan() {
             <View key={i} style={styles.recommendationContainer}>
               <Text size="16">&bull; {item}</Text>
               <View style={styles.recommendationLoading}>
-                {i < completedRecommendations ? (
-                  <Animated.View
-                    entering={FadeIn.duration(200)}
-                    exiting={FadeOut.duration(150)}
-                  >
-                    <CheckIcon
-                      size={18}
-                      strokeWidth={2.5}
-                      color={getColor("primary")}
-                    />
-                  </Animated.View>
-                ) : i === activeRecommendationIndex ? (
-                  <Animated.View
-                    entering={FadeIn.duration(200)}
-                    exiting={FadeOut.duration(150)}
-                  >
-                    <LucideSpinner color={getColor("primary")} />
-                  </Animated.View>
-                ) : (
-                  <View style={styles.recommendationPlaceholder} />
-                )}
+                {(() => {
+                  const state =
+                    i < completedRecommendations
+                      ? "completed"
+                      : i === activeRecommendationIndex
+                      ? "loading"
+                      : "pending";
+
+                  return (
+                    <Animated.View
+                      key={state}
+                      entering={FadeIn.duration(150)}
+                      exiting={FadeOut.duration(150)}
+                      style={styles.recommendationAnimatedContainer}
+                    >
+                      {state === "completed" ? (
+                        <CheckIcon
+                          size={18}
+                          strokeWidth={2.5}
+                          color={getColor("primary")}
+                        />
+                      ) : state === "loading" ? (
+                        <LucideSpinner color={getColor("primary")} />
+                      ) : (
+                        <View style={styles.recommendationPlaceholder} />
+                      )}
+                    </Animated.View>
+                  );
+                })()}
               </View>
             </View>
           ))}
@@ -295,6 +303,12 @@ const styles = StyleSheet.create({
     height: 24,
     alignItems: "center",
     justifyContent: "center",
+  },
+  recommendationAnimatedContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
   },
   recommendationPlaceholder: {
     width: 12,
