@@ -45,7 +45,7 @@ export default function OnboardingCreatingPlan() {
           {dailyRecommendations.map((item, i) => (
             <View key={i} style={styles.recommendationContainer}>
               <Text size="16">&bull; {item}</Text>
-              <View></View>
+              <View style={styles.recommendationLoading}></View>
             </View>
           ))}
         </View>
@@ -109,4 +109,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  recommendationLoading: {},
 });
