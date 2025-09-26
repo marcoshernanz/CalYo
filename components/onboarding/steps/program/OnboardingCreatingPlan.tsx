@@ -2,25 +2,22 @@ import Description from "@/components/ui/Description";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
 import getColor from "@/lib/utils/getColor";
-import { CheckIcon } from "lucide-react-native";
-import {
-  ActivityIndicator,
-  LayoutChangeEvent,
-  Platform,
-  StyleSheet,
-  View,
-} from "react-native";
+import { CheckIcon, Loader2Icon } from "lucide-react-native";
+import { LayoutChangeEvent, Platform, StyleSheet, View } from "react-native";
 import { useEffect, useState } from "react";
 import AnimateableText from "react-native-animateable-text";
 import Animated, {
   cancelAnimation,
   Easing,
   FadeIn,
+  FadeInDown,
   FadeOut,
+  FadeOutDown,
   runOnJS,
   useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
+  withRepeat,
   withTiming,
 } from "react-native-reanimated";
 
@@ -33,12 +30,12 @@ const dailyRecommendations = [
 ];
 
 const descriptions = [
-  "Calculando calorías...",
-  "Calculando carbohidratos...",
-  "Calculando proteínas...",
-  "Calculando grasas...",
-  "Calculando micronutrientes...",
-  "Finalizando plan...",
+  "Calculando Calorías...",
+  "Calculando Carbohidratos...",
+  "Calculando Proteínas...",
+  "Calculando Grasas...",
+  "Calculando Micronutrientes...",
+  "Plan Personalizado Creado",
 ];
 
 const stageConfiguration = [
@@ -46,11 +43,47 @@ const stageConfiguration = [
   { target: 40, descriptionIndex: 1 },
   { target: 60, descriptionIndex: 2 },
   { target: 80, descriptionIndex: 3 },
-  { target: 99, descriptionIndex: 4 },
-  { target: 100, descriptionIndex: 5 },
+  { target: 100, descriptionIndex: 4 },
 ] as const;
 
-const stageDurations = [900, 900, 900, 900, 900, 600] as const;
+const stageDurations = [3000, 3000, 3000, 3000, 3000] as const;
+
+const AnimatedLoaderIcon = Animated.createAnimatedComponent(Loader2Icon);
+
+interface LucideSpinnerProps {
+  color: string;
+  size?: number;
+}
+
+function LucideSpinner({ color, size = 18 }: LucideSpinnerProps) {
+  const rotation = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotation.value}deg` }],
+  }));
+
+  useEffect(() => {
+    rotation.value = withRepeat(
+      withTiming(360, { duration: 900, easing: Easing.linear }),
+      -1,
+      false
+    );
+
+    return () => {
+      cancelAnimation(rotation);
+      rotation.value = 0;
+    };
+  }, [rotation]);
+
+  return (
+    <AnimatedLoaderIcon
+      style={animatedStyle}
+      size={size}
+      color={color}
+      strokeWidth={2.5}
+    />
+  );
+}
 
 export default function OnboardingCreatingPlan() {
   const progress = useSharedValue(0);
@@ -114,6 +147,11 @@ export default function OnboardingCreatingPlan() {
           const next = Math.min(i + 1, dailyRecommendations.length);
           return prev === next ? prev : next;
         });
+
+        if (!isCancelled && i === stageConfiguration.length - 1) {
+          setActiveRecommendationIndex(null);
+          setCurrentDescriptionIndex(descriptions.length - 1);
+        }
       }
     };
 
@@ -140,8 +178,8 @@ export default function OnboardingCreatingPlan() {
       <View style={styles.bottomContainer}>
         <Animated.View
           key={currentDescriptionIndex}
-          entering={FadeIn.duration(250)}
-          exiting={FadeOut.duration(150)}
+          entering={FadeInDown.duration(350)}
+          exiting={FadeOutDown.duration(200)}
         >
           <Description style={styles.description}>
             {descriptions[currentDescriptionIndex]}
@@ -164,7 +202,10 @@ export default function OnboardingCreatingPlan() {
               <Text size="16">&bull; {item}</Text>
               <View style={styles.recommendationLoading}>
                 {i < completedRecommendations ? (
-                  <Animated.View entering={FadeIn.duration(200)}>
+                  <Animated.View
+                    entering={FadeIn.duration(200)}
+                    exiting={FadeOut.duration(150)}
+                  >
                     <CheckIcon
                       size={18}
                       strokeWidth={2.5}
@@ -172,7 +213,12 @@ export default function OnboardingCreatingPlan() {
                     />
                   </Animated.View>
                 ) : i === activeRecommendationIndex ? (
-                  <ActivityIndicator size="small" color={getColor("primary")} />
+                  <Animated.View
+                    entering={FadeIn.duration(200)}
+                    exiting={FadeOut.duration(150)}
+                  >
+                    <LucideSpinner color={getColor("primary")} />
+                  </Animated.View>
                 ) : (
                   <View style={styles.recommendationPlaceholder} />
                 )}
