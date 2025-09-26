@@ -15,10 +15,18 @@ export default function OnboardingWeight() {
   const weight = data.weight ?? defaultWeight;
 
   const metricProps = useMemo<React.ComponentProps<typeof WeightPicker>>(() => {
+    const minWeight = 30;
+    const maxWeight = 300;
+
+    const initialWeight = Math.min(
+      Math.max(Math.round(weight * 10) / 10, minWeight),
+      maxWeight
+    );
+
     return {
-      minWeight: 30,
-      maxWeight: 300,
-      initialWeight: Math.round(weight * 10) / 10,
+      minWeight,
+      maxWeight,
+      initialWeight,
       formatWeight: (weight: number) => {
         "worklet";
         return `${weight} kg`;
@@ -32,10 +40,18 @@ export default function OnboardingWeight() {
   const imperialProps = useMemo<
     React.ComponentProps<typeof WeightPicker>
   >(() => {
+    const minWeight = 70;
+    const maxWeight = 700;
+
+    const initialWeight = Math.min(
+      Math.max(Math.round(kgToLbs(weight) * 10) / 10, minWeight),
+      maxWeight
+    );
+
     return {
-      minWeight: 70,
-      maxWeight: 700,
-      initialWeight: Math.round(kgToLbs(weight) * 10) / 10,
+      minWeight,
+      maxWeight,
+      initialWeight,
       formatWeight: (weight: number) => {
         "worklet";
         return `${weight} lbs`;
@@ -71,9 +87,9 @@ export default function OnboardingWeight() {
           />
         </View>
         {data.measurementSystem === "metric" ? (
-          <WeightPicker {...metricProps} />
+          <WeightPicker key="metric-weight" {...metricProps} />
         ) : (
-          <WeightPicker {...imperialProps} />
+          <WeightPicker key="imperial-weight" {...imperialProps} />
         )}
       </View>
     </OnboardingStep>
