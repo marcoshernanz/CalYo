@@ -2,7 +2,9 @@ import Description from "@/components/ui/Description";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
 import getColor from "@/lib/utils/getColor";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
+import AnimateableText from "react-native-animateable-text";
+import { useAnimatedProps } from "react-native-reanimated";
 
 const dailyRecommendations = [
   "Calorías",
@@ -22,12 +24,19 @@ const descriptions = [
 ];
 
 export default function OnboardingCreatingPlan() {
+  const animatedProps = {
+    progress: useAnimatedProps(() => ({
+      text: `${49}%`,
+    })),
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <Title size="48" style={styles.progressText}>
-          99%
-        </Title>
+        <AnimateableText
+          animatedProps={animatedProps.progress}
+          style={styles.progressText}
+        />
         <Title size="28" style={styles.title}>
           Estamos creando tu plan personalizado
         </Title>
@@ -68,6 +77,11 @@ const styles = StyleSheet.create({
   },
   progressText: {
     alignItems: "center",
+    fontSize: 48,
+    fontWeight: 600,
+    fontFamily: "Inter_600SemiBold",
+    color: getColor("foreground"),
+    ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
   },
   title: {
     textAlign: "center",
