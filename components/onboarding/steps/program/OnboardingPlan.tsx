@@ -8,6 +8,7 @@ import AnimateableText from "react-native-animateable-text";
 import {
   cancelAnimation,
   useAnimatedProps,
+  useDerivedValue,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
@@ -65,6 +66,7 @@ interface MacroCardProps {
 
 function MacroCard({ name, amount, ratio, formatAmount }: MacroCardProps) {
   const progress = useSharedValue(0);
+  const progressRatio = useDerivedValue(() => ratio * progress.value);
 
   const animatedProps = {
     weightText: useAnimatedProps(() => ({
@@ -73,7 +75,7 @@ function MacroCard({ name, amount, ratio, formatAmount }: MacroCardProps) {
   };
 
   useEffect(() => {
-    progress.value = withTiming(1, { duration: 1000 });
+    progress.value = withTiming(1, { duration: 1500 });
 
     return () => {
       cancelAnimation(progress);
@@ -91,7 +93,7 @@ function MacroCard({ name, amount, ratio, formatAmount }: MacroCardProps) {
           animatedProps={animatedProps.weightText}
           style={styles.macroAmountText}
         />
-        <CircularProgress progress={ratio} />
+        <CircularProgress progress={progressRatio} />
       </View>
     </View>
   );
@@ -161,6 +163,8 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 12,
     gap: 6,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: getColor("secondary"),
   },
   macroName: {
     textAlign: "center",
