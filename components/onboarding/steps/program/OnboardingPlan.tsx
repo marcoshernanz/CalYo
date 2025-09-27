@@ -23,6 +23,7 @@ const macros = [
     name: "Calorías",
     amount: calories,
     ratio: 1,
+    color: getColor("blue"),
     formatAmount: (amount: number) => {
       "worklet";
       return `${Math.round(amount)}`;
@@ -32,6 +33,7 @@ const macros = [
     name: "Carbos",
     amount: carbs,
     ratio: (carbs * 4) / calories,
+    color: getColor("emerald"),
     formatAmount: (amount: number) => {
       "worklet";
       return `${Math.round(amount)}g`;
@@ -41,6 +43,7 @@ const macros = [
     name: "Proteína",
     amount: protein,
     ratio: (protein * 4) / calories,
+    color: getColor("red"),
     formatAmount: (amount: number) => {
       "worklet";
       return `${Math.round(amount)}g`;
@@ -50,6 +53,7 @@ const macros = [
     name: "Grasas",
     amount: fat,
     ratio: (fat * 9) / calories,
+    color: getColor("yellow"),
     formatAmount: (amount: number) => {
       "worklet";
       return `${Math.round(amount)}g`;
@@ -62,9 +66,16 @@ interface MacroCardProps {
   amount: number;
   ratio: number;
   formatAmount: (amount: number) => string;
+  color: string;
 }
 
-function MacroCard({ name, amount, ratio, formatAmount }: MacroCardProps) {
+function MacroCard({
+  name,
+  amount,
+  ratio,
+  formatAmount,
+  color,
+}: MacroCardProps) {
   const progress = useSharedValue(0);
   const progressRatio = useDerivedValue(() => ratio * progress.value);
 
@@ -93,7 +104,7 @@ function MacroCard({ name, amount, ratio, formatAmount }: MacroCardProps) {
           animatedProps={animatedProps.weightText}
           style={styles.macroAmountText}
         />
-        <CircularProgress progress={progressRatio} />
+        <CircularProgress progress={progressRatio} color={color} />
       </View>
     </View>
   );
