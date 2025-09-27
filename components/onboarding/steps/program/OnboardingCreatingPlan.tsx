@@ -47,7 +47,7 @@ const stageConfiguration = [
   { target: 100, descriptionIndex: 4 },
 ] as const;
 
-const stageDurations = [3000, 3000, 3000, 3000, 3000] as const;
+const stageDurations = [2000, 2000, 2000, 2000, 2000] as const;
 
 const AnimatedLoaderIcon = Animated.createAnimatedComponent(Loader2Icon);
 
