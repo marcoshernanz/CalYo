@@ -1,12 +1,106 @@
+import CircularProgress from "@/components/ui/CircularProgress";
 import Description from "@/components/ui/Description";
 import Title from "@/components/ui/Title";
 import getColor from "@/lib/utils/getColor";
-import { StyleSheet, View } from "react-native";
+import { useEffect } from "react";
+import { Platform, StyleSheet, View } from "react-native";
+import AnimateableText from "react-native-animateable-text";
+import {
+  cancelAnimation,
+  useAnimatedProps,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+
+const carbs = 400;
+const protein = 200;
+const fat = 70;
+const calories = carbs * 4 + protein * 4 + fat * 9;
+
+const macros = [
+  {
+    name: "Calorías",
+    amount: calories,
+    ratio: 1,
+    formatAmount: (amount: number) => {
+      "worklet";
+      return `${Math.round(amount)}`;
+    },
+  },
+  {
+    name: "Carbos",
+    amount: carbs,
+    ratio: (carbs * 4) / calories,
+    formatAmount: (amount: number) => {
+      "worklet";
+      return `${Math.round(amount)}g`;
+    },
+  },
+  {
+    name: "Proteína",
+    amount: protein,
+    ratio: (protein * 4) / calories,
+    formatAmount: (amount: number) => {
+      "worklet";
+      return `${Math.round(amount)}g`;
+    },
+  },
+  {
+    name: "Grasa",
+    amount: fat,
+    ratio: (fat * 9) / calories,
+    formatAmount: (amount: number) => {
+      "worklet";
+      return `${Math.round(amount)}g`;
+    },
+  },
+];
+
+interface MacroCardProps {
+  name: string;
+  amount: number;
+  ratio: number;
+  formatAmount: (amount: number) => string;
+}
+
+function MacroCard({ name, amount, ratio, formatAmount }: MacroCardProps) {
+  const progress = useSharedValue(0);
+
+  const animatedProps = {
+    weightText: useAnimatedProps(() => ({
+      text: `${formatAmount(Math.round(amount * progress.value))}`,
+    })),
+  };
+
+  useEffect(() => {
+    progress.value = withTiming(1, { duration: 1000 });
+
+    return () => {
+      cancelAnimation(progress);
+      progress.value = 0;
+    };
+  }, [progress, ratio]);
+
+  return (
+    <View style={styles.macroCard}>
+      <Title size="16" style={styles.macroName}>
+        {name}
+      </Title>
+      <View style={styles.macroAmountContainer}>
+        <AnimateableText
+          animatedProps={animatedProps.weightText}
+          style={styles.macroAmountText}
+        />
+        <CircularProgress size={100} progress={ratio} />
+      </View>
+    </View>
+  );
+}
 
 export default function OnboardingPlan() {
   return (
     <View style={styles.container}>
-      <Title>¡Enhorabuena! Tu plan personalizado está listo</Title>
+      <Title size="24">¡Enhorabuena! Tu plan personalizado está listo</Title>
       <View style={styles.mainContainer}>
         <View style={styles.recommendationsContainer}>
           <View style={styles.header}>
@@ -15,11 +109,19 @@ export default function OnboardingPlan() {
               Puedes cambiarlas cuando quieras
             </Description>
           </View>
-          <View>
-            <View></View>
-            <View></View>
-            <View></View>
-            <View></View>
+          <View style={styles.macrosContainer}>
+            {Array(2)
+              .fill(0)
+              .map((_, i) => (
+                <View key={`macro-row-${i}`} style={styles.macroRow}>
+                  {macros.slice(i * 2, i * 2 + 2).map((item) => (
+                    <MacroCard
+                      key={`macros-${item.name}-${item.amount}`}
+                      {...item}
+                    />
+                  ))}
+                </View>
+              ))}
           </View>
         </View>
       </View>
@@ -43,6 +145,98 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   header: {
-    gap: 4,
+    gap: 2,
+    paddingBottom: 24,
+  },
+  macrosContainer: {
+    gap: 12,
+  },
+  macroRow: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  macroCard: {
+    backgroundColor: getColor("background"),
+    flex: 1,
+    padding: 12,
+    borderRadius: 12,
+  },
+  macroName: {
+    textAlign: "center",
+    paddingBottom: 8,
+  },
+  macroAmountContainer: {
+    width: "100%",
+    aspectRatio: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  macroAmountText: {
+    fontSize: 20,
+    position: "absolute",
+    fontWeight: 700,
+    fontFamily: "Inter_700Bold",
+    color: getColor("foreground"),
+    ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
   },
 });
+
+// function MacroProgressCircle({ amount, ratio }: MacroProgressCircleProps) {
+//   const [size, setSize] = useState(0);
+
+//   const handleLayout = ({ nativeEvent }: LayoutChangeEvent) => {
+//     const nextSize = Math.min(
+//       nativeEvent.layout.width,
+//       nativeEvent.layout.height
+//     );
+//     if (nextSize && nextSize !== size) {
+//       setSize(nextSize);
+//     }
+//   };
+
+//   const { radius, circumference, dashOffset } = useMemo(() => {
+//     const clampedRatio = Math.max(0, Math.min(1, ratio));
+//     const computedRadius = Math.max((size - MACRO_STROKE_WIDTH) / 2, 0);
+//     const computedCircumference = 2 * Math.PI * computedRadius;
+//     const computedDashOffset = computedCircumference * (1 - clampedRatio);
+
+//     return {
+//       radius: computedRadius,
+//       circumference: computedCircumference,
+//       dashOffset: computedDashOffset,
+//     };
+//   }, [ratio, size]);
+
+//   const showProgress = size > 0 && radius > 0;
+
+//   return (
+//     <View style={styles.macroAmountContainer} onLayout={handleLayout}>
+//       {showProgress ? (
+//         <Svg width={size} height={size}>
+//           <Circle
+//             cx={size / 2}
+//             cy={size / 2}
+//             r={radius}
+//             stroke={getColor("secondary", 0.12)}
+//             strokeWidth={MACRO_STROKE_WIDTH}
+//             fill="none"
+//           />
+//           <Circle
+//             cx={size / 2}
+//             cy={size / 2}
+//             r={radius}
+//             stroke={getColor("secondary")}
+//             strokeWidth={MACRO_STROKE_WIDTH}
+//             strokeDasharray={`${circumference} ${circumference}`}
+//             strokeDashoffset={dashOffset}
+//             strokeLinecap="round"
+//             fill="none"
+//           />
+//         </Svg>
+//       ) : null}
+//       <Description size="14" style={styles.macroAmountText}>
+//         {amount}
+//       </Description>
+//     </View>
+//   );
+// }
