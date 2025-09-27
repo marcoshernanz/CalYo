@@ -21,6 +21,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useOnboardingContext } from "@/context/OnboardingContext";
+import OnboardingPlan from "./OnboardingPlan";
 
 const dailyRecommendations = [
   "Calorías",
@@ -184,6 +185,10 @@ export default function OnboardingCreatingPlan() {
       cancelAnimation(progress);
     };
   }, [data.hasCreatedPlan, progress, setData]);
+
+  if (data.hasCreatedPlan) {
+    return <OnboardingPlan />;
+  }
 
   return (
     <View style={styles.container}>

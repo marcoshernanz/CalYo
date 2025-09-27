@@ -25,7 +25,6 @@ import OnboardingSectionLayout from "./OnboardingSectionLayout";
 import OnboardingStepLayout from "./OnboardingStepLayout";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import OnboardingCreatingPlan from "./steps/program/OnboardingCreatingPlan";
-import OnboardingPlan from "./steps/program/OnboardingPlan";
 
 type SectionType = {
   name: string;
@@ -66,10 +65,7 @@ const sections: SectionType[] = [
   },
   {
     name: "End",
-    steps: [
-      <OnboardingCreatingPlan key="creating-plan" />,
-      <OnboardingPlan key="plan" />,
-    ],
+    steps: [<OnboardingCreatingPlan key="creating-plan" />],
   },
 ];
 
@@ -98,7 +94,6 @@ const stepCompletionCheckers: ((data: OnboardingData) => boolean)[][] = [
   ],
   [
     (data) => data.hasCreatedPlan, // Creating Plan
-    () => true, // Plan
   ],
 ];
 
