@@ -34,7 +34,7 @@ const dailyRecommendations = [
 const descriptions = [
   "Calculando Calorías...",
   "Calculando Carbohidratos...",
-  "Calculando Proteínas...",
+  "Calculando Proteína...",
   "Calculando Grasas...",
   "Calculando Micronutrientes...",
   "Plan Personalizado Creado",
