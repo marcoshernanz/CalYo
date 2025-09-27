@@ -222,7 +222,7 @@ export default function OnboardingCreatingPlan() {
             />
           </View>
           <Title size="18" style={styles.recommendationsTitle}>
-            Recomendaciones diarias
+            Recomendaciones Diarias
           </Title>
           {dailyRecommendations.map((item, i) => (
             <View key={i} style={styles.recommendationContainer}>
