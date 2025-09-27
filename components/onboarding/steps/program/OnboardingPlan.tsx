@@ -46,7 +46,7 @@ const macros = [
     },
   },
   {
-    name: "Grasa",
+    name: "Grasas",
     amount: fat,
     ratio: (fat * 9) / calories,
     formatAmount: (amount: number) => {
@@ -91,7 +91,7 @@ function MacroCard({ name, amount, ratio, formatAmount }: MacroCardProps) {
           animatedProps={animatedProps.weightText}
           style={styles.macroAmountText}
         />
-        <CircularProgress size={100} progress={ratio} />
+        <CircularProgress progress={ratio} />
       </View>
     </View>
   );
@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     borderRadius: 12,
+    gap: 6,
   },
   macroName: {
     textAlign: "center",
@@ -180,63 +181,3 @@ const styles = StyleSheet.create({
     ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
   },
 });
-
-// function MacroProgressCircle({ amount, ratio }: MacroProgressCircleProps) {
-//   const [size, setSize] = useState(0);
-
-//   const handleLayout = ({ nativeEvent }: LayoutChangeEvent) => {
-//     const nextSize = Math.min(
-//       nativeEvent.layout.width,
-//       nativeEvent.layout.height
-//     );
-//     if (nextSize && nextSize !== size) {
-//       setSize(nextSize);
-//     }
-//   };
-
-//   const { radius, circumference, dashOffset } = useMemo(() => {
-//     const clampedRatio = Math.max(0, Math.min(1, ratio));
-//     const computedRadius = Math.max((size - MACRO_STROKE_WIDTH) / 2, 0);
-//     const computedCircumference = 2 * Math.PI * computedRadius;
-//     const computedDashOffset = computedCircumference * (1 - clampedRatio);
-
-//     return {
-//       radius: computedRadius,
-//       circumference: computedCircumference,
-//       dashOffset: computedDashOffset,
-//     };
-//   }, [ratio, size]);
-
-//   const showProgress = size > 0 && radius > 0;
-
-//   return (
-//     <View style={styles.macroAmountContainer} onLayout={handleLayout}>
-//       {showProgress ? (
-//         <Svg width={size} height={size}>
-//           <Circle
-//             cx={size / 2}
-//             cy={size / 2}
-//             r={radius}
-//             stroke={getColor("secondary", 0.12)}
-//             strokeWidth={MACRO_STROKE_WIDTH}
-//             fill="none"
-//           />
-//           <Circle
-//             cx={size / 2}
-//             cy={size / 2}
-//             r={radius}
-//             stroke={getColor("secondary")}
-//             strokeWidth={MACRO_STROKE_WIDTH}
-//             strokeDasharray={`${circumference} ${circumference}`}
-//             strokeDashoffset={dashOffset}
-//             strokeLinecap="round"
-//             fill="none"
-//           />
-//         </Svg>
-//       ) : null}
-//       <Description size="14" style={styles.macroAmountText}>
-//         {amount}
-//       </Description>
-//     </View>
-//   );
-// }
