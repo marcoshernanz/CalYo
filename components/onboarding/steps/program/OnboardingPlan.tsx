@@ -30,7 +30,7 @@ const macros = [
     },
   },
   {
-    name: "Carbos",
+    name: "Hidratos",
     amount: carbs,
     ratio: (carbs * 4) / calories,
     color: getColor("emerald"),
