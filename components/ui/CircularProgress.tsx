@@ -4,19 +4,19 @@ import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 
 interface Props {
-  size: number;
   progress: number;
+  size?: number;
   strokeWidth?: number;
   color?: string;
 }
 
 export default function CircularProgress({
-  size,
   progress,
+  size,
   strokeWidth = 8,
   color = getColor("foreground"),
 }: Props) {
-  const [finalSize, setFinalSize] = useState(size);
+  const [finalSize, setFinalSize] = useState(0);
   const radius = (finalSize - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
@@ -25,6 +25,7 @@ export default function CircularProgress({
       nativeEvent.layout.width,
       nativeEvent.layout.height
     );
+
     if (nextSize && nextSize !== size) {
       setFinalSize(size ?? nextSize);
     }
@@ -32,25 +33,25 @@ export default function CircularProgress({
 
   return (
     <View style={styles.container} onLayout={handleLayout}>
-      <Svg width={size} height={size}>
+      <Svg width={size} height={finalSize}>
         <Circle
-          cx={size / 2}
-          cy={size / 2}
-          r={(size - strokeWidth) / 2}
+          cx={finalSize / 2}
+          cy={finalSize / 2}
+          r={radius}
           stroke={getColor("secondary")}
           strokeWidth={strokeWidth}
           fill="none"
         />
         <Circle
-          cx={size / 2}
-          cy={size / 2}
-          r={(size - strokeWidth) / 2}
+          cx={finalSize / 2}
+          cy={finalSize / 2}
+          r={radius}
           stroke={color}
           strokeWidth={strokeWidth}
           strokeDasharray={`${circumference} ${circumference}`}
           strokeDashoffset={circumference * (1 - progress)}
           strokeLinecap="round"
-          transform={`rotate(-90, ${size / 2}, ${size / 2})`}
+          transform={`rotate(-90, ${finalSize / 2}, ${finalSize / 2})`}
           fill="none"
         />
       </Svg>
@@ -60,6 +61,7 @@ export default function CircularProgress({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: "100%",
+    width: "100%",
   },
 });
