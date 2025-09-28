@@ -1,6 +1,3 @@
-- [ ] Onboarding plan
-- [ ] Onboarding jump to plan after creating it
-- [ ] Onboarding remove buttons while creating plan
 - [ ] Onboarding section overview animation
 
 - [ ] Otp disabled button before entering code
