@@ -61,7 +61,6 @@ export default function OnboardingSection({ section: sectionNumber }: Props) {
                   {
                     left: pos.x,
                     top: pos.y,
-                    transform: [{ translateX: "-50%" }],
                     height: next.y - pos.y,
                     backgroundColor:
                       index < sectionNumber
@@ -149,6 +148,7 @@ const styles = StyleSheet.create({
   },
   line: {
     position: "absolute",
+    transform: [{ translateX: "-50%" }],
     width: 2,
   },
   sectionContainer: {
