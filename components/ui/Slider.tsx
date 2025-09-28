@@ -1,6 +1,6 @@
 import React from "react";
 import getColor from "@/lib/utils/getColor";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   SharedValue,
@@ -17,12 +17,6 @@ interface Props {
   highlightedRange?: [number, number];
 }
 
-const dotSize = 24;
-const lineWidth = Dimensions.get("window").width - 32 - dotSize;
-
-const minOffset = -dotSize / 2;
-const maxOffset = lineWidth - dotSize / 2;
-
 export default function Slider({
   minValue = 0,
   maxValue = 100,
@@ -30,6 +24,14 @@ export default function Slider({
   initialValue = minValue,
   highlightedRange,
 }: Props) {
+  const dimensions = useWindowDimensions();
+
+  const dotSize = 24;
+  const lineWidth = dimensions.width - 32 - dotSize;
+
+  const minOffset = -dotSize / 2;
+  const maxOffset = lineWidth - dotSize / 2;
+
   const calculateOffsetFromValue = (value: number) => {
     "worklet";
     const clamped = Math.min(Math.max(value, minValue), maxValue);
@@ -88,8 +90,10 @@ export default function Slider({
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.line}>
+    <View style={[styles.container, { height: dotSize * 2 }]}>
+      <View
+        style={[styles.line, { width: lineWidth, marginLeft: dotSize / 2 }]}
+      >
         {highlightedRange && (
           <View
             style={[
@@ -108,8 +112,20 @@ export default function Slider({
         )}
       </View>
       <GestureDetector gesture={gesture}>
-        <Animated.View style={[styles.dotContainer, animatedStyles.dot]}>
-          <Animated.View style={[styles.dot, animatedStyles.innerDot]} />
+        <Animated.View
+          style={[
+            styles.dotContainer,
+            animatedStyles.dot,
+            { width: dotSize * 2, height: dotSize * 2 },
+          ]}
+        >
+          <Animated.View
+            style={[
+              styles.dot,
+              animatedStyles.innerDot,
+              { width: dotSize, height: dotSize },
+            ]}
+          />
         </Animated.View>
       </GestureDetector>
     </View>
@@ -119,30 +135,23 @@ export default function Slider({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: dotSize * 2,
     justifyContent: "center",
   },
   line: {
-    width: lineWidth,
     height: 4,
     backgroundColor: getColor("secondary"),
-    marginLeft: dotSize / 2,
   },
   highlightLine: {
     backgroundColor: getColor("primary"),
     height: "100%",
   },
   dotContainer: {
-    width: dotSize * 2,
-    height: dotSize * 2,
     borderRadius: 999,
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
   },
   dot: {
-    width: dotSize,
-    height: dotSize,
     borderRadius: 999,
     backgroundColor: getColor("foreground"),
   },

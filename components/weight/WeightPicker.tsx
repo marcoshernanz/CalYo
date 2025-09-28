@@ -1,9 +1,9 @@
 import AnimateableText from "react-native-animateable-text";
 import {
-  Dimensions,
   PixelRatio,
   Platform,
   StyleSheet,
+  useWindowDimensions,
   View,
 } from "react-native";
 import Animated, {
@@ -46,12 +46,12 @@ export default function WeightPicker({
   formatWeight,
   onChange,
 }: Props) {
+  const dimensions = useWindowDimensions();
+
   const height = 75;
   const bigLineHeight = 40;
   const smallLineHeight = 25;
-  const width = PixelRatio.roundToNearestPixel(
-    Dimensions.get("window").width - 32
-  );
+  const width = PixelRatio.roundToNearestPixel(dimensions.width - 32);
   const numBigLinesVisible = 5;
   const startInt = Math.ceil(minWeight);
   const endInt = Math.floor(maxWeight);

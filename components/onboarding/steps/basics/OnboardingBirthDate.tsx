@@ -1,6 +1,6 @@
 import WheelPicker from "@/components/ui/WheelPicker";
 import { useOnboardingContext } from "@/context/OnboardingContext";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
 import { useMemo } from "react";
 import { format, getDaysInMonth } from "date-fns";
 import { es } from "date-fns/locale";
@@ -9,6 +9,7 @@ import OnboardingStep from "../../OnboardingStep";
 const defaultDate = new Date(2000, 6, 15);
 
 export default function OnboardingBirthDate() {
+  const dimensions = useWindowDimensions();
   const { data, setData } = useOnboardingContext();
 
   const date = data?.bornDate ?? defaultDate;
@@ -71,7 +72,7 @@ export default function OnboardingBirthDate() {
 
   return (
     <OnboardingStep title="¿Cuándo naciste?">
-      <View style={style.pickerContainer}>
+      <View style={[style.pickerContainer, { width: dimensions.width }]}>
         <WheelPicker
           data={days}
           initialValue={selectedDate.day}
@@ -96,7 +97,6 @@ export default function OnboardingBirthDate() {
 
 const style = StyleSheet.create({
   pickerContainer: {
-    width: Dimensions.get("window").width,
     marginLeft: -16,
     flex: 1,
     flexDirection: "row",

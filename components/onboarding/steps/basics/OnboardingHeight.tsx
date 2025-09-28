@@ -5,12 +5,13 @@ import cmToIn from "@/lib/units/cmToIn";
 import inToCm from "@/lib/units/inToCm";
 import inToFtIn from "@/lib/units/inToFtIn";
 import { useMemo } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
 import OnboardingStep from "../../OnboardingStep";
 
 const defaultHeight = 170;
 
 export default function OnboardingHeight() {
+  const dimensions = useWindowDimensions();
   const { data, setData } = useOnboardingContext();
 
   const height = data.height ?? defaultHeight;
@@ -79,7 +80,7 @@ export default function OnboardingHeight() {
 
   return (
     <OnboardingStep title="¿Cuanto mides?">
-      <View style={style.pickerContainer}>
+      <View style={[style.pickerContainer, { width: dimensions.width }]}>
         <View style={style.segmentControlContainer}>
           <SegmentedControl
             options={["Centímetros", "Pies y Pulgadas"]}
@@ -109,7 +110,6 @@ const style = StyleSheet.create({
     transform: [{ translateX: "-50%" }],
   },
   pickerContainer: {
-    width: Dimensions.get("window").width,
     marginLeft: -16,
     flex: 1,
   },
