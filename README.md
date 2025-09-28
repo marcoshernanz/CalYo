@@ -1,5 +1,3 @@
-- [ ] Onboarding section overview animation
-
 - [ ] Otp disabled button before entering code
 - [ ] Email disabled button while input is empty
 - [ ] Sign in back button size
@@ -14,6 +12,7 @@
 - [ ] Onboarding pre-render
 - [ ] Onboarding weight rate tooltip position
 
+- [ ] Onboarding section overview animation
 - [ ] Onboarding scroll
 - [ ] Onboarding height smooth measurement system change
 - [ ] Onboarding weight smooth measurement system change
