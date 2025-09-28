@@ -116,10 +116,12 @@ export default function OnboardingWeightChangeRate() {
   return (
     <OnboardingStep title="¿Cómo de rápido quieres alcanzar tu objetivo?">
       <View style={styles.container}>
-        <AnimateableText
-          animatedProps={animatedProps.tooltip}
-          style={[styles.tooltip, animatedStyles.tooltip]}
-        />
+        <View style={styles.tooltipContainer}>
+          <AnimateableText
+            animatedProps={animatedProps.tooltip}
+            style={[styles.tooltip, animatedStyles.tooltip]}
+          />
+        </View>
         <Slider
           minValue={displayBounds.min}
           maxValue={displayBounds.max}
@@ -187,15 +189,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  tooltipContainer: {
+    position: "absolute",
+    bottom: "50%",
+    transform: [{ translateY: -36 }],
+  },
   tooltip: {
     fontSize: 16,
-    position: "absolute",
     fontWeight: 600,
     fontFamily: "Inter_600SemiBold",
     color: getColor("foreground"),
     ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
-    bottom: "50%",
-    transform: [{ translateY: -36 }],
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 999,
