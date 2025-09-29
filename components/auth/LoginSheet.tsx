@@ -30,15 +30,16 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
   const handleAppleLogin = () => {};
 
   const handleGoogleLogin = async () => {
-    const { redirect } = await signIn("github", { redirectTo });
+    const { redirect } = await signIn("google", { redirectTo });
     if (Platform.OS === "web") {
       return;
     }
+    console.log(redirectTo);
     const result = await openAuthSessionAsync(redirect!.toString(), redirectTo);
     if (result.type === "success") {
       const { url } = result;
       const code = new URL(url).searchParams.get("code")!;
-      await signIn("github", { code });
+      await signIn("google", { code });
     }
   };
 
