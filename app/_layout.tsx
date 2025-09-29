@@ -1,4 +1,6 @@
-import { ConvexProvider, ConvexReactClient } from "convex/react";
+import * as SecureStore from "expo-secure-store";
+import { ConvexReactClient } from "convex/react";
+import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import AppContextProvider from "@/context/AppContext";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -32,10 +34,19 @@ import {
 import { useEffect } from "react";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { Platform } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
-const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!);
+const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
+  unsavedChangesWarning: false,
+});
+
+const secureStorage = {
+  getItem: SecureStore.getItemAsync,
+  setItem: SecureStore.setItemAsync,
+  removeItem: SecureStore.deleteItemAsync,
+};
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -68,7 +79,14 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <ConvexProvider client={convex}>
+    <ConvexAuthProvider
+      client={convex}
+      storage={
+        Platform.OS === "android" || Platform.OS === "ios"
+          ? secureStorage
+          : undefined
+      }
+    >
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
           <KeyboardProvider>
@@ -85,6 +103,6 @@ export default function RootLayout() {
           </KeyboardProvider>
         </SafeAreaProvider>
       </GestureHandlerRootView>
-    </ConvexProvider>
+    </ConvexAuthProvider>
   );
 }
