@@ -1,3 +1,4 @@
+import { ConvexProvider, ConvexReactClient } from "convex/react";
 import AppContextProvider from "@/context/AppContext";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -34,6 +35,8 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 
 SplashScreen.preventAutoHideAsync();
 
+const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!);
+
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     Inter_100Thin,
@@ -65,21 +68,23 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <KeyboardProvider>
-          <BottomSheetModalProvider>
-            <AppContextProvider>
-              <StatusBar style="light" />
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                }}
-              />
-            </AppContextProvider>
-          </BottomSheetModalProvider>
-        </KeyboardProvider>
-      </SafeAreaProvider>
-    </GestureHandlerRootView>
+    <ConvexProvider client={convex}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+          <KeyboardProvider>
+            <BottomSheetModalProvider>
+              <AppContextProvider>
+                <StatusBar style="light" />
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                  }}
+                />
+              </AppContextProvider>
+            </BottomSheetModalProvider>
+          </KeyboardProvider>
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
+    </ConvexProvider>
   );
 }
