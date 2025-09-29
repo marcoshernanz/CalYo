@@ -10,6 +10,9 @@ import Text from "../ui/Text";
 import GoogleLogo from "@/assets/svg/google-logo.svg";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { makeRedirectUri } from "expo-auth-session";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { openAuthSessionAsync } from "expo-web-browser";
 
 interface Props {
   ref: React.Ref<BottomSheetModal>;
@@ -17,13 +20,27 @@ interface Props {
   onClose?: () => void;
 }
 
+const redirectTo = makeRedirectUri();
+
 export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
+  const { signIn } = useAuthActions();
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
   const handleAppleLogin = () => {};
 
-  const handleGoogleLogin = () => {};
+  const handleGoogleLogin = async () => {
+    const { redirect } = await signIn("github", { redirectTo });
+    if (Platform.OS === "web") {
+      return;
+    }
+    const result = await openAuthSessionAsync(redirect!.toString(), redirectTo);
+    if (result.type === "success") {
+      const { url } = result;
+      const code = new URL(url).searchParams.get("code")!;
+      await signIn("github", { code });
+    }
+  };
 
   const handleEmailLogin = () => {
     onClose?.();
