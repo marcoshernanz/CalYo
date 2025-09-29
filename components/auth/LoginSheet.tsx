@@ -27,19 +27,16 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const handleAppleLogin = () => {};
-
-  const handleGoogleLogin = async () => {
-    const { redirect } = await signIn("google", { redirectTo });
+  const handleLogin = async (provider: "google" | "apple") => {
+    const { redirect } = await signIn(provider, { redirectTo });
     if (Platform.OS === "web") {
       return;
     }
-    console.log(redirectTo);
     const result = await openAuthSessionAsync(redirect!.toString(), redirectTo);
     if (result.type === "success") {
       const { url } = result;
       const code = new URL(url).searchParams.get("code")!;
-      await signIn("google", { code });
+      await signIn(provider, { code });
     }
   };
 
@@ -77,7 +74,7 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
               size="lg"
               variant="primary"
               style={styles.button}
-              onPress={handleAppleLogin}
+              onPress={() => handleLogin("apple")}
             >
               <FontAwesome5
                 name="apple"
@@ -93,7 +90,7 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
             size="lg"
             variant={Platform.OS === "android" ? "primary" : "outline"}
             style={styles.button}
-            onPress={handleGoogleLogin}
+            onPress={() => handleLogin("google")}
           >
             <GoogleLogo height={24} width={24} />
             <Text
