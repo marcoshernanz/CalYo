@@ -13,6 +13,7 @@ import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import createAccurateInterval from "@/lib/utils/createAccurateInterval";
 import getColor from "@/lib/utils/getColor";
 import { useAuthActions } from "@convex-dev/auth/react";
+import tryCatch from "@/lib/utils/tryCatch";
 
 export default function ConfirmEmailScreen() {
   const { signIn } = useAuthActions();
@@ -31,7 +32,12 @@ export default function ConfirmEmailScreen() {
       return;
     }
 
-    await signIn("resend-otp", { email, code });
+    const { error } = await tryCatch(signIn("resend-otp", { email, code }));
+    if (error) {
+      inputRef.current?.flashError();
+    } else {
+      // Successfully signed in
+    }
   };
 
   const startResendCountdown = () => {
