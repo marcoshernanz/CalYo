@@ -5,7 +5,7 @@ import OTPInput, { OTPInputHandle } from "@/components/ui/OTPInput";
 import SafeArea from "@/components/ui/SafeArea";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
@@ -17,6 +17,7 @@ import { useAuthActions } from "@convex-dev/auth/react";
 export default function ConfirmEmailScreen() {
   const { signIn } = useAuthActions();
   const router = useRouter();
+  const { email } = useLocalSearchParams<{ email: string }>();
 
   const inputRef = useRef<OTPInputHandle>(null);
   const [resendIn, setResendIn] = useState(0);
@@ -24,11 +25,13 @@ export default function ConfirmEmailScreen() {
     typeof createAccurateInterval
   > | null>(null);
 
-  const handleSubmit = (code: string) => {
+  const handleSubmit = async (code: string) => {
     if (code.length !== 4) {
       inputRef.current?.flashError();
       return;
     }
+
+    await signIn("resend-otp", { email, code });
   };
 
   const startResendCountdown = () => {
