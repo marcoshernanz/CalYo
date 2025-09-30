@@ -8,8 +8,10 @@ import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { StyleSheet, View } from "react-native";
 import { useRef, useState } from "react";
 import { z } from "zod";
+import { useAuthActions } from "@convex-dev/auth/react";
 
 export default function SignInScreen() {
+  const { signIn } = useAuthActions();
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -20,12 +22,14 @@ export default function SignInScreen() {
     email: z.email(),
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const result = EmailForm.safeParse({ email });
     if (!result.success) {
       inputRef.current?.flashError();
       return;
     }
+
+    await signIn("resend-otp", { email });
 
     router.navigate("/confirm-email");
   };

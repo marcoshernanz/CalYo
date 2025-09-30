@@ -12,8 +12,10 @@ import { StyleSheet, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import createAccurateInterval from "@/lib/utils/createAccurateInterval";
 import getColor from "@/lib/utils/getColor";
+import { useAuthActions } from "@convex-dev/auth/react";
 
 export default function ConfirmEmailScreen() {
+  const { signIn } = useAuthActions();
   const router = useRouter();
 
   const inputRef = useRef<OTPInputHandle>(null);
