@@ -11,8 +11,8 @@ import GoogleLogo from "@/assets/svg/google-logo.svg";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { makeRedirectUri } from "expo-auth-session";
-import { useAuthActions } from "@convex-dev/auth/react";
 import { openAuthSessionAsync } from "expo-web-browser";
+import { useAuthContext } from "@/context/AuthContext";
 
 interface Props {
   ref: React.Ref<BottomSheetModal>;
@@ -23,7 +23,7 @@ interface Props {
 const redirectTo = makeRedirectUri();
 
 export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
-  const { signIn } = useAuthActions();
+  const { signIn } = useAuthContext();
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
@@ -37,6 +37,7 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
       const { url } = result;
       const code = new URL(url).searchParams.get("code")!;
       await signIn(provider, { code });
+      router.replace("/home");
     }
   };
 
