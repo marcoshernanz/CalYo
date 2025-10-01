@@ -6,10 +6,7 @@ import {
 } from "@convex-dev/auth/react";
 import { useConvexAuth } from "convex/react";
 
-type SessionStatus = "loading" | "authenticated" | "unauthenticated";
-
 type AuthContextValue = {
-  status: SessionStatus;
   isAuthenticated: boolean;
   isLoading: boolean;
   signIn: ConvexAuthActionsContext["signIn"];
@@ -27,14 +24,7 @@ export function SessionProvider({ children }: Props) {
   const { signIn, signOut } = useAuthActions();
 
   const value = useMemo<AuthContextValue>(() => {
-    const status: SessionStatus = isLoading
-      ? "loading"
-      : isAuthenticated
-        ? "authenticated"
-        : "unauthenticated";
-
     return {
-      status,
       isAuthenticated,
       isLoading,
       signIn,
