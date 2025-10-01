@@ -19,7 +19,7 @@ interface Props {
   children: ReactNode;
 }
 
-export function SessionProvider({ children }: Props) {
+export function AuthContextProvider({ children }: Props) {
   const { isLoading, isAuthenticated } = useConvexAuth();
   const { signIn, signOut } = useAuthActions();
 
