@@ -12,11 +12,11 @@ import { StyleSheet, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import createAccurateInterval from "@/lib/utils/createAccurateInterval";
 import getColor from "@/lib/utils/getColor";
-import { useAuthActions } from "@convex-dev/auth/react";
 import tryCatch from "@/lib/utils/tryCatch";
+import { useAuthContext } from "@/context/AuthContext";
 
 export default function ConfirmEmailScreen() {
-  const { signIn } = useAuthActions();
+  const { signIn } = useAuthContext();
   const router = useRouter();
   const { email } = useLocalSearchParams<{ email: string }>();
 
@@ -32,11 +32,16 @@ export default function ConfirmEmailScreen() {
       return;
     }
 
+    if (!email) {
+      inputRef.current?.flashError();
+      return;
+    }
+
     const { error } = await tryCatch(signIn("resend-otp", { email, code }));
     if (error) {
       inputRef.current?.flashError();
     } else {
-      // Successfully signed in
+      router.replace("/home");
     }
   };
 
@@ -61,8 +66,12 @@ export default function ConfirmEmailScreen() {
     timer.start();
   };
 
-  const handleResend = () => {
-    startResendCountdown();
+  const handleResend = async () => {
+    if (!email || resendIn > 0) return;
+    const { error } = await tryCatch(signIn("resend-otp", { email }));
+    if (!error) {
+      startResendCountdown();
+    }
   };
 
   useEffect(() => {
@@ -91,7 +100,7 @@ export default function ConfirmEmailScreen() {
             <Description>
               Introduce el código que te acabamos de enviar a{" "}
               <Text size="16" style={{ fontWeight: 600 }}>
-                em••••@gmail.com
+                {email || "tu email"}
               </Text>
             </Description>
           </Header>
