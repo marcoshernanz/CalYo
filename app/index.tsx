@@ -1,9 +1,15 @@
 import { Redirect } from "expo-router";
 
-export const isSignedIn = false;
+import { useAuthContext } from "@/context/AuthContext";
 
 export default function Index() {
-  if (isSignedIn) {
+  const { isAuthenticated, isLoading } = useAuthContext();
+
+  if (isLoading) {
+    return null;
+  }
+
+  if (isAuthenticated) {
     return <Redirect href="/home" />;
   } else {
     return <Redirect href="/auth" />;
