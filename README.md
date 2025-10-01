@@ -1,3 +1,5 @@
+- [ ] Fix OTP resend
+
 - [ ] Otp disabled button before entering code
 - [ ] Email disabled button while input is empty
 - [ ] Sign in back button size
