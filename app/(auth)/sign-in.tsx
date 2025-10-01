@@ -8,10 +8,10 @@ import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { StyleSheet, View } from "react-native";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import { useAuthActions } from "@convex-dev/auth/react";
+import { useAuthContext } from "@/context/AuthContext";
 
 export default function SignInScreen() {
-  const { signIn } = useAuthActions();
+  const { signIn } = useAuthContext();
   const router = useRouter();
 
   const [email, setEmail] = useState("");
