@@ -12,6 +12,7 @@ import {
   initialWindowMetrics,
   SafeAreaProvider,
 } from "react-native-safe-area-context";
+import { SplashScreenController } from "./SplashScreenController";
 
 interface Props {
   children: React.ReactNode;
@@ -44,6 +45,7 @@ export default function RootLayoutProvider({ children }: Props) {
           <KeyboardProvider>
             <BottomSheetModalProvider>
               <AppContextProvider>
+                <SplashScreenController />
                 <GestureHandlerRootView style={{ flex: 1 }}>
                   {children}
                 </GestureHandlerRootView>
