@@ -1,4 +1,4 @@
-import { StyleSheet, useWindowDimensions, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Animated, {
   interpolateColor,
   useDerivedValue,
@@ -46,8 +46,6 @@ export default function OnboardingStepLayout({
   numSteps,
   currentStep,
 }: Props) {
-  const dimensions = useWindowDimensions();
-
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -60,9 +58,7 @@ export default function OnboardingStepLayout({
             ))}
         </View>
       </View>
-      <View style={[styles.content, { width: dimensions.width }]}>
-        {children}
-      </View>
+      <View style={styles.content}>{children}</View>
     </View>
   );
 }
@@ -89,6 +85,5 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingVertical: 24,
-    marginLeft: -16,
   },
 });
