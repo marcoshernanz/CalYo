@@ -36,8 +36,8 @@ interface Props {
 }
 
 export default function OnboardingContextProvider({ children }: Props) {
-  const [section, setSection] = useState(3);
-  const [step, setStep] = useState(1);
+  const [section, setSection] = useState(0);
+  const [step, setStep] = useState(0);
   const [data, setData] = useState<OnboardingData>({
     measurementSystem: "metric",
     sex: null,
