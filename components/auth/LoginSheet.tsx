@@ -1,18 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Platform } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import Button from "@/components/ui/Button";
 import Title from "@/components/ui/Title";
 import getColor from "@/lib/utils/getColor";
-import { MailIcon, XIcon } from "lucide-react-native";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import Text from "../ui/Text";
-import GoogleLogo from "@/assets/svg/google-logo.svg";
-import { useRouter } from "expo-router";
+import { XIcon } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { makeRedirectUri } from "expo-auth-session";
-import { openAuthSessionAsync } from "expo-web-browser";
-import { useAuthContext } from "@/context/AuthContext";
+import SignInButtons from "./SignInButtons";
 
 interface Props {
   ref: React.Ref<BottomSheetModal>;
@@ -20,31 +14,8 @@ interface Props {
   onClose?: () => void;
 }
 
-const redirectTo = makeRedirectUri();
-
 export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
-  const { signIn } = useAuthContext();
-  const router = useRouter();
   const insets = useSafeAreaInsets();
-
-  const handleLogin = async (provider: "google" | "apple") => {
-    const { redirect } = await signIn(provider, { redirectTo });
-    if (Platform.OS === "web") {
-      return;
-    }
-    const result = await openAuthSessionAsync(redirect!.toString(), redirectTo);
-    if (result.type === "success") {
-      const { url } = result;
-      const code = new URL(url).searchParams.get("code")!;
-      await signIn(provider, { code });
-      router.replace("/home");
-    }
-  };
-
-  const handleEmailLogin = () => {
-    onClose?.();
-    router.navigate("/sign-in");
-  };
 
   return (
     <BottomSheetModal
@@ -69,53 +40,9 @@ export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
             </Button>
           </View>
         </View>
+
         <View style={styles.contentContainer}>
-          {Platform.OS === "ios" && (
-            <Button
-              size="lg"
-              variant="primary"
-              style={styles.button}
-              onPress={() => handleLogin("apple")}
-            >
-              <FontAwesome5
-                name="apple"
-                size={28}
-                color={getColor("background")}
-              />
-              <Text size="16" style={styles.buttonPrimaryText}>
-                Continuar con Apple
-              </Text>
-            </Button>
-          )}
-          <Button
-            size="lg"
-            variant={Platform.OS === "android" ? "primary" : "outline"}
-            style={styles.button}
-            onPress={() => handleLogin("google")}
-          >
-            <GoogleLogo height={24} width={24} />
-            <Text
-              size="16"
-              style={
-                Platform.OS === "android"
-                  ? styles.buttonPrimaryText
-                  : styles.buttonOutlineText
-              }
-            >
-              Continuar con Google
-            </Text>
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            style={styles.button}
-            onPress={handleEmailLogin}
-          >
-            <MailIcon size={24} color={getColor("foreground")} />
-            <Text size="16" style={styles.buttonOutlineText}>
-              Continuar con Email
-            </Text>
-          </Button>
+          <SignInButtons onEmailLogin={onClose} />
         </View>
       </BottomSheetView>
     </BottomSheetModal>
@@ -148,7 +75,6 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   contentContainer: {
-    gap: 20,
     paddingHorizontal: 16,
     paddingVertical: 30,
   },
