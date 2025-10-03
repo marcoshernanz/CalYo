@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   closeButton: {
-    borderRadius: 9999,
     aspectRatio: 1,
   },
   contentContainer: {
