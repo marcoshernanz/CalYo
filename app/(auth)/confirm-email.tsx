@@ -88,11 +88,12 @@ export default function ConfirmEmailScreen() {
         keyboardVerticalOffset={10}
       >
         <Button
+          size="sm"
           variant="secondary"
-          style={styles.closeButton}
+          style={styles.backButton}
           onPress={() => router.back()}
         >
-          <ArrowLeftIcon />
+          <ArrowLeftIcon size={22} />
         </Button>
         <View style={styles.container}>
           <Header>
@@ -136,8 +137,7 @@ export default function ConfirmEmailScreen() {
 }
 
 const styles = StyleSheet.create({
-  closeButton: {
-    borderRadius: 9999,
+  backButton: {
     aspectRatio: 1,
   },
   container: {

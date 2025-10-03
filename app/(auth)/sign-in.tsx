@@ -42,11 +42,12 @@ export default function SignInScreen() {
         keyboardVerticalOffset={10}
       >
         <Button
+          size="sm"
           variant="secondary"
-          style={styles.closeButton}
+          style={styles.backButton}
           onPress={() => router.back()}
         >
-          <ArrowLeftIcon />
+          <ArrowLeftIcon size={22} />
         </Button>
         <View style={styles.container}>
           <Title>Iniciar Sesión</Title>
@@ -70,8 +71,7 @@ export default function SignInScreen() {
 }
 
 const styles = StyleSheet.create({
-  closeButton: {
-    borderRadius: 9999,
+  backButton: {
     aspectRatio: 1,
   },
   container: {
