@@ -65,7 +65,7 @@ const sections: SectionType[] = [
     ],
   },
   {
-    name: "End",
+    name: "Resultados",
     steps: [
       <OnboardingCreatingPlan key="creating-plan" />,
       <OnboardingCreateAccount key="creating-account" />,
@@ -265,7 +265,7 @@ export default function Onboarding() {
       onBack={handleBack}
       isNextDisabled={isNextDisabled}
     >
-      {step === 0 ? (
+      {step === 0 || section === 3 ? (
         <Animated.View
           style={{ flex: 1 }}
           key={`section-overview-${section}-${step}`}
