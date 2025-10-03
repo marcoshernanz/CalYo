@@ -24,7 +24,8 @@ import OnboardingWeeklyWorkouts from "./steps/basics/OnboardingWeeklyWorkouts";
 import OnboardingSectionLayout from "./OnboardingSectionLayout";
 import OnboardingStepLayout from "./OnboardingStepLayout";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
-import OnboardingCreatingPlan from "./steps/program/OnboardingCreatingPlan";
+import OnboardingCreatingPlan from "./steps/end/OnboardingCreatingPlan";
+import OnboardingCreateAccount from "./steps/end/OnboardingCreateAccount";
 
 type SectionType = {
   name: string;
@@ -65,7 +66,10 @@ const sections: SectionType[] = [
   },
   {
     name: "End",
-    steps: [<OnboardingCreatingPlan key="creating-plan" />],
+    steps: [
+      <OnboardingCreatingPlan key="creating-plan" />,
+      <OnboardingCreateAccount key="creating-account" />,
+    ],
   },
 ];
 
@@ -261,7 +265,7 @@ export default function Onboarding() {
       onBack={handleBack}
       isNextDisabled={isNextDisabled}
     >
-      {step === 0 || currentSection.name === "End" ? (
+      {step === 0 ? (
         <Animated.View
           style={{ flex: 1 }}
           key={`section-overview-${section}-${step}`}

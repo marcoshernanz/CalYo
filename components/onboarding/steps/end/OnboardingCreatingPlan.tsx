@@ -95,8 +95,8 @@ export default function OnboardingCreatingPlan() {
   const [currentDescriptionIndex, setCurrentDescriptionIndex] = useState(() =>
     data.hasCreatedPlan ? descriptions.length - 1 : 0
   );
-  const [completedRecommendations, setCompletedRecommendations] = useState(() =>
-    data.hasCreatedPlan ? dailyRecommendations.length : 0
+  const [completedRecommendations, setCompletedRecommendations] = useState(
+    () => (data.hasCreatedPlan ? dailyRecommendations.length : 0)
   );
   const [activeRecommendationIndex, setActiveRecommendationIndex] = useState<
     number | null
@@ -233,8 +233,8 @@ export default function OnboardingCreatingPlan() {
                     i < completedRecommendations
                       ? "completed"
                       : i === activeRecommendationIndex
-                      ? "loading"
-                      : "pending";
+                        ? "loading"
+                        : "pending";
 
                   return (
                     <Animated.View

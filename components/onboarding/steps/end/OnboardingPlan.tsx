@@ -12,6 +12,7 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import OnboardingStep from "../../OnboardingStep";
 
 const carbs = 400;
 const protein = 200;
@@ -112,9 +113,8 @@ function MacroCard({
 
 export default function OnboardingPlan() {
   return (
-    <View style={styles.container}>
-      <Title size="24">¡Enhorabuena! Tu plan personalizado está listo</Title>
-      <View style={styles.mainContainer}>
+    <OnboardingStep title="¡Enhorabuena! Tu plan personalizado está listo">
+      <View style={styles.container}>
         <View style={styles.recommendationsContainer}>
           <View style={styles.header}>
             <Title size="18">Recomendaciones Diarias</Title>
@@ -138,15 +138,12 @@ export default function OnboardingPlan() {
           </View>
         </View>
       </View>
-    </View>
+    </OnboardingStep>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  mainContainer: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
