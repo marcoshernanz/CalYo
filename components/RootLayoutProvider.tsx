@@ -32,28 +32,28 @@ const secureStorage = {
 
 export default function RootLayoutProvider({ children }: Props) {
   return (
-    <ConvexAuthProvider
-      client={convex}
-      storage={
-        Platform.OS === "android" || Platform.OS === "ios"
-          ? secureStorage
-          : undefined
-      }
-    >
-      <AuthContextProvider>
-        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-          <KeyboardProvider>
-            <BottomSheetModalProvider>
-              <AppContextProvider>
-                <SplashScreenController />
-                <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ConvexAuthProvider
+        client={convex}
+        storage={
+          Platform.OS === "android" || Platform.OS === "ios"
+            ? secureStorage
+            : undefined
+        }
+      >
+        <AuthContextProvider>
+          <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+            <KeyboardProvider>
+              <BottomSheetModalProvider>
+                <AppContextProvider>
+                  <SplashScreenController />
                   {children}
-                </GestureHandlerRootView>
-              </AppContextProvider>
-            </BottomSheetModalProvider>
-          </KeyboardProvider>
-        </SafeAreaProvider>
-      </AuthContextProvider>
-    </ConvexAuthProvider>
+                </AppContextProvider>
+              </BottomSheetModalProvider>
+            </KeyboardProvider>
+          </SafeAreaProvider>
+        </AuthContextProvider>
+      </ConvexAuthProvider>
+    </GestureHandlerRootView>
   );
 }
