@@ -62,9 +62,7 @@ export default function SignInScreen() {
             autoFocus
           />
         </View>
-        <Button size="lg" onPress={handleSubmit}>
-          Continuar
-        </Button>
+        <Button onPress={handleSubmit}>Continuar</Button>
       </KeyboardAvoidingView>
     </SafeArea>
   );

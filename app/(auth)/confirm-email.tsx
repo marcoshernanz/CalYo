@@ -128,7 +128,7 @@ export default function ConfirmEmailScreen() {
           </View>
         </View>
 
-        <Button size="lg" onPress={() => inputRef.current?.flashError()}>
+        <Button onPress={() => inputRef.current?.flashError()}>
           Continuar
         </Button>
       </KeyboardAvoidingView>
