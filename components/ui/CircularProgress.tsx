@@ -4,7 +4,6 @@ import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import Animated, {
   SharedValue,
   useAnimatedProps,
-  useSharedValue,
 } from "react-native-reanimated";
 import Svg, { Circle } from "react-native-svg";
 
@@ -17,6 +16,7 @@ interface Props {
   size?: number;
   strokeWidth?: number;
   color?: string | string[];
+  trackColor?: string;
 }
 
 export default function CircularProgress({
@@ -24,25 +24,30 @@ export default function CircularProgress({
   size,
   strokeWidth = 8,
   color,
+  trackColor = getColor("secondary"),
 }: Props) {
   const [resolvedSize, setResolvedSize] = useState(size ?? 0);
 
   useEffect(() => {
-    if (size) {
+    if (typeof size === "number") {
       setResolvedSize(size);
     }
   }, [size]);
 
-  const radius = (resolvedSize - strokeWidth) / 2;
+  const radius = Math.max((resolvedSize - strokeWidth) / 2, 0);
   const circumference = 2 * Math.PI * radius;
   const fallbackColor = getColor("foreground");
-  const progressList = normalizeToArray(progress);
-  const colorList = normalizeToArray(color ?? fallbackColor);
+  const progressList: ProgressValue[] = Array.isArray(progress)
+    ? progress
+    : [progress];
+  const colorInput = color ?? fallbackColor;
+  const colorList = Array.isArray(colorInput) ? colorInput : [colorInput];
 
   const handleLayout = ({ nativeEvent }: LayoutChangeEvent) => {
-    if (size) {
+    if (typeof size === "number") {
       return;
     }
+
     const nextSize = Math.min(
       nativeEvent.layout.width,
       nativeEvent.layout.height
@@ -61,40 +66,44 @@ export default function CircularProgress({
             cx={resolvedSize / 2}
             cy={resolvedSize / 2}
             r={radius}
-            stroke={getColor("secondary")}
+            stroke={trackColor}
             strokeWidth={strokeWidth}
             fill="none"
           />
         )}
         {radius > 0 &&
-          progressList.map((_, index) => (
-            <ProgressSegment
-              key={`progress-segment-${index}`}
-              index={index}
-              center={resolvedSize / 2}
-              radius={radius}
-              strokeWidth={strokeWidth}
-              circumference={circumference}
-              progressList={progressList}
-              color={
-                colorList[index] ??
-                colorList[colorList.length - 1] ??
-                fallbackColor
-              }
-            />
-          ))}
+          progressList.map((_, index) => {
+            const segmentColor =
+              colorList[index] ??
+              colorList[colorList.length - 1] ??
+              fallbackColor;
+
+            return (
+              <ProgressSegment
+                key={`progress-segment-${index}`}
+                index={index}
+                center={resolvedSize / 2}
+                radius={radius}
+                strokeWidth={strokeWidth}
+                circumference={circumference}
+                progressList={progressList}
+                color={segmentColor}
+              />
+            );
+          })}
       </Svg>
     </View>
   );
 }
 
-function normalizeToArray<T>(value: T | T[]): T[] {
-  return Array.isArray(value) ? value : [value];
-}
-
 function clamp01(value: number) {
   "worklet";
   return Math.max(0, Math.min(value, 1));
+}
+
+function getProgressValue(value: ProgressValue) {
+  "worklet";
+  return typeof value === "number" ? value : value.value;
 }
 
 interface ProgressSegmentProps {
@@ -116,35 +125,31 @@ function ProgressSegment({
   progressList,
   color,
 }: ProgressSegmentProps) {
-  const staticProgress = useSharedValue(0);
-
   const animatedProps = useAnimatedProps(() => {
-    const clampedValues = progressList.map((item, itemIndex) => {
-      if (typeof item === "number") {
-        return clamp01(item);
-      }
+    const clampedValues = progressList.map((item) =>
+      clamp01(getProgressValue(item))
+    );
 
-      if (
-        item === progressList[index] &&
-        typeof progressList[index] === "number"
-      ) {
-        return clamp01(progressList[index] as number);
-      }
+    let accumulated = 0;
+    for (let i = 0; i < index; i += 1) {
+      accumulated += clampedValues[i] ?? 0;
+    }
 
-      return clamp01(item.value);
-    });
-
+    const boundedStart = Math.min(accumulated, 1);
+    const remainingCapacity = Math.max(0, 1 - boundedStart);
     const currentValue = clamp01(clampedValues[index] ?? 0);
-    const priorSum = clampedValues
-      .slice(0, index)
-      .reduce((acc, value) => acc + clamp01(value), 0);
-    const boundedStart = Math.min(priorSum, 1);
-    const safeCurrent = Math.min(currentValue, Math.max(0, 1 - boundedStart));
-    const rotation = -90 + boundedStart * 360;
+    const safeLength = Math.min(currentValue, remainingCapacity);
+    const dashLength = circumference * safeLength;
+    const dashOffset = circumference * (1 - boundedStart);
+    const hasProgress = dashLength > 0.0001;
 
     return {
-      strokeDashoffset: circumference * (1 - safeCurrent),
-      transform: `rotate(${rotation}, ${center}, ${center})`,
+      strokeDasharray: [dashLength, circumference],
+      strokeDashoffset: dashOffset,
+      rotation: -90,
+      originX: center,
+      originY: center,
+      strokeOpacity: hasProgress ? 1 : 0,
     };
   }, [center, circumference, index, progressList]);
 
@@ -155,7 +160,6 @@ function ProgressSegment({
       r={radius}
       stroke={color}
       strokeWidth={strokeWidth}
-      strokeDasharray={`${circumference} ${circumference}`}
       strokeLinecap="round"
       fill="none"
       animatedProps={animatedProps}
