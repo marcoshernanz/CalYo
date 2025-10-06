@@ -2,12 +2,17 @@ import CalyoLogo from "@/assets/svg/calyo-logo.svg";
 import SafeArea from "@/components/ui/SafeArea";
 import Text from "@/components/ui/Text";
 import getColor from "@/lib/utils/getColor";
+import { LinearGradient } from "expo-linear-gradient";
 import { FlameIcon } from "lucide-react-native";
 import { StyleSheet, View } from "react-native";
 
 export default function HomeScreen() {
   return (
     <SafeArea>
+      <LinearGradient
+        colors={[getColor("primaryLight"), getColor("background")]}
+        style={styles.gradient}
+      />
       <View style={styles.header}>
         <View style={styles.logoContainer}>
           <CalyoLogo width={28} height={28} color={getColor("foreground")} />
@@ -29,6 +34,9 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    ...StyleSheet.absoluteFillObject,
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
