@@ -3,6 +3,7 @@ import getColor from "@/lib/utils/getColor";
 import {
   Pressable,
   PressableProps,
+  PressableStateCallbackType,
   StyleSheet,
   ViewStyle,
   TextStyle,
@@ -24,7 +25,9 @@ interface Props extends Omit<PressableProps, "children"> {
   variant?: Variant;
   size?: Size;
   textProps?: Omit<TextProps, "children">;
-  children: React.ReactNode;
+  children?:
+    | React.ReactNode
+    | ((state: PressableStateCallbackType) => React.ReactNode);
 }
 
 export default function Button({
@@ -39,8 +42,12 @@ export default function Button({
   disabled,
   ...restPressable
 }: Props) {
-  const childArray = React.Children.toArray(children);
+  const isFunctionChild = typeof children === "function";
+  const childArray = isFunctionChild
+    ? []
+    : (React.Children.toArray(children) ?? []);
   const shouldWrapInText =
+    !isFunctionChild &&
     childArray.length > 0 &&
     childArray.every((c) => typeof c === "string" || typeof c === "number");
   const scale = useSharedValue(1);
@@ -239,7 +246,7 @@ export default function Button({
           {...textProps}
           style={composedTextStyle}
         >
-          {children}
+          {children as React.ReactNode}
         </Text>
       ) : (
         children
