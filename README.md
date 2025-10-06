@@ -1,3 +1,5 @@
+- [ ] SafeArea padding vertical
+
 - [ ] Fix OTP resend
 
 - [ ] Otp disabled button before entering code
