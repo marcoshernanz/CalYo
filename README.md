@@ -1,3 +1,4 @@
+- [ ] Text font weight prop
 - [ ] SafeArea padding vertical
 
 - [ ] Fix OTP resend
