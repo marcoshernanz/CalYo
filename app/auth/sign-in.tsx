@@ -31,7 +31,7 @@ export default function SignInScreen() {
 
     await signIn("resend-otp", { email });
 
-    router.navigate({ pathname: "/confirm-email", params: { email } });
+    router.navigate({ pathname: "/auth/confirm-email", params: { email } });
   };
 
   return (

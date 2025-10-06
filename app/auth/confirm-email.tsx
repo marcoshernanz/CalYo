@@ -41,7 +41,7 @@ export default function ConfirmEmailScreen() {
     if (error) {
       inputRef.current?.flashError();
     } else {
-      router.replace("/home");
+      router.replace("/app");
     }
   };
 

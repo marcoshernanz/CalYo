@@ -10,7 +10,7 @@ export default function Index() {
   }
 
   if (isAuthenticated) {
-    return <Redirect href="/home" />;
+    return <Redirect href="/app" />;
   } else {
     return <Redirect href="/auth" />;
   }

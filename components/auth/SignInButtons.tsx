@@ -30,13 +30,13 @@ export default function SignInButtons({ onEmailLogin }: Props) {
       const { url } = result;
       const code = new URL(url).searchParams.get("code")!;
       await signIn(provider, { code });
-      router.replace("/home");
+      router.replace("/app");
     }
   };
 
   const handleEmailLogin = () => {
     onEmailLogin?.();
-    router.navigate("/sign-in");
+    router.navigate("/auth/sign-in");
   };
 
   return (
