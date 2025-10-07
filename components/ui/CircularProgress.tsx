@@ -11,6 +11,7 @@ import Svg, { Circle } from "react-native-svg";
 
 interface CircularProgressItemProps {
   progress: ProgressValue;
+  previousProgresses: ProgressValue[];
   size: number;
   strokeWidth: number;
   color: string;
@@ -18,6 +19,7 @@ interface CircularProgressItemProps {
 
 function CircularProgressItem({
   progress,
+  previousProgresses,
   size,
   strokeWidth,
   color,
@@ -34,17 +36,35 @@ function CircularProgressItem({
     return skPath;
   }, [radius, size]);
 
-  const transform = useDerivedValue(() => [
-    { rotate: sharedProgress.value - Math.PI / 2 },
-  ]);
+  const startAngle = useDerivedValue(() => {
+    let total = 0;
+
+    previousProgresses.forEach((previousProgress) => {
+      total +=
+        typeof previousProgress === "number"
+          ? previousProgress
+          : previousProgress.value;
+    });
+
+    return Math.min(Math.max(total, 0), 1);
+  }, [previousProgresses]);
+
+  const endAngle = useDerivedValue(() =>
+    Math.min(
+      Math.max(startAngle.value + sharedProgress.value, startAngle.value),
+      1
+    )
+  );
+
+  const transform = useDerivedValue(() => [{ rotate: -Math.PI / 2 }]);
 
   return (
     <Canvas style={{ height: size, width: size, position: "absolute" }}>
       <Group origin={{ x: size / 2, y: size / 2 }} transform={transform}>
         <Path
-          start={0}
+          start={startAngle}
           path={path}
-          end={sharedProgress}
+          end={endAngle}
           style={"stroke"}
           strokeCap={"round"}
           color={color}
@@ -103,6 +123,7 @@ export default function CircularProgress({
         {progresses.map((progress, index) => (
           <CircularProgressItem
             key={`circular-progress-item-${index}`}
+            previousProgresses={progresses.slice(0, index)}
             progress={progress}
             size={resolvedSize}
             strokeWidth={strokeWidth}
