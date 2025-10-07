@@ -122,10 +122,8 @@ const styles = StyleSheet.create({
   dayProgressContainer: {
     width: 36,
     height: 36,
-    borderColor: getColor("foreground"),
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 999,
   },
   dayNumberText: {
     position: "absolute",

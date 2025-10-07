@@ -1,7 +1,8 @@
-import { LucideIcon, LucideWheat } from "lucide-react-native";
+import { FlameIcon, LucideIcon, LucideWheat } from "lucide-react-native";
 import { StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import getColor from "@/lib/utils/getColor";
+import CircularProgress from "../ui/CircularProgress";
 
 type Macro = {
   name: string;
@@ -68,7 +69,16 @@ export default function HomeMacroSummary() {
             </Text>
           </View>
         </View>
-        <View style={styles.progressContainer}></View>
+        <View style={styles.progressContainer}>
+          <CircularProgress
+            progress={1532 / 2000}
+            color={getColor("foreground")}
+            strokeWidth={6}
+          />
+          <View style={styles.caloriesIconContainer}>
+            <FlameIcon size={20} />
+          </View>
+        </View>
       </View>
       <View style={styles.cardsContainer}>
         {macros.map((macro) => (
@@ -98,9 +108,19 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
   },
   progressContainer: {
-    height: 64,
-    width: 64,
-    backgroundColor: "red",
+    height: 80,
+    width: 80,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  caloriesIconContainer: {
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 32,
+    height: 32,
+    borderRadius: 999,
+    backgroundColor: getColor("secondary"),
   },
   cardsContainer: {
     flexDirection: "row",
