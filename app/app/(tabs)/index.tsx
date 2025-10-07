@@ -18,10 +18,9 @@ export default function HomeScreen() {
         style={[styles.gradient, { height: dimensions.height * 0.75 }]}
       />
 
-      <Button onPress={signOut}>Sign Out</Button>
-
       <HomeHeader />
       <HomeDaySelector />
+      {/* <Button onPress={signOut}>Sign Out</Button> */}
     </SafeArea>
   );
 }

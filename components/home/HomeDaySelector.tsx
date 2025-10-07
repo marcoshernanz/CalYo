@@ -4,6 +4,7 @@ import { addDays, format, startOfWeek } from "date-fns";
 import { es } from "date-fns/locale";
 import Text from "../ui/Text";
 import getColor from "@/lib/utils/getColor";
+import CircularProgress from "../ui/CircularProgress";
 
 export default function HomeDaySelector() {
   const selectedDate = format(new Date(), "yyyy-MM-dd");
@@ -19,6 +20,9 @@ export default function HomeDaySelector() {
         id: format(date, "yyyy-MM-dd"),
         letter,
         number: format(date, "dd", { locale: es }),
+        carbs: 0.4,
+        protein: 0.2,
+        fat: 0.1,
       };
     });
   }, []);
@@ -43,6 +47,11 @@ export default function HomeDaySelector() {
             <Text size="14" style={styles.dayNumberText}>
               {day.number}
             </Text>
+            <CircularProgress
+              progress={[day.carbs, day.protein, day.fat]}
+              color={[getColor("emerald"), getColor("red"), getColor("yellow")]}
+              strokeWidth={4}
+            />
           </View>
         </View>
       ))}
@@ -66,9 +75,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   dayProgressContainer: {
-    width: 32,
-    height: 32,
-    borderWidth: 1,
+    width: 36,
+    height: 36,
     borderColor: getColor("foreground"),
     alignItems: "center",
     justifyContent: "center",
@@ -76,5 +84,6 @@ const styles = StyleSheet.create({
   },
   dayNumberText: {
     fontWeight: "600",
+    position: "absolute",
   },
 });
