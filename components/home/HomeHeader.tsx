@@ -3,6 +3,7 @@ import CalyoLogo from "@/assets/svg/calyo-logo.svg";
 import getColor from "@/lib/ui/getColor";
 import Text from "../ui/Text";
 import { FlameIcon } from "lucide-react-native";
+import getShadow from "@/lib/ui/getShadow";
 
 export default function HomeHeader() {
   return (
@@ -48,5 +49,6 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: getColor("secondary"),
+    ...getShadow("sm"),
   },
 });
