@@ -1,6 +1,6 @@
 import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import Button from "./Button";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import Text from "./Text";
 import { useEffect, useRef, useState } from "react";
 import Animated, {

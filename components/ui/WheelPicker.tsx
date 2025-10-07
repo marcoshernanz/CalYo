@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Text from "./Text";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { useMemo } from "react";
 
 interface Props {

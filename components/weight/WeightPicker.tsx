@@ -24,7 +24,7 @@ import {
   useFonts,
 } from "@shopify/react-native-skia";
 import { useMemo } from "react";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { LinearGradient } from "expo-linear-gradient";
 
 interface Props {

@@ -1,5 +1,5 @@
 import React from "react";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {

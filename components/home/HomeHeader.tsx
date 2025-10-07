@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import CalyoLogo from "@/assets/svg/calyo-logo.svg";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import Text from "../ui/Text";
 import { FlameIcon } from "lucide-react-native";
 

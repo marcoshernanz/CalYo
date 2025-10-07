@@ -1,6 +1,6 @@
 import Button from "@/components/ui/Button";
 import Text from "@/components/ui/Text";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { StyleSheet, View } from "react-native";
 import React, { useEffect } from "react";
 import Animated, {

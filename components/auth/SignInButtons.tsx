@@ -8,7 +8,7 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Text from "@/components/ui/Text";
 import GoogleLogo from "@/assets/svg/google-logo.svg";
 import { MailIcon } from "lucide-react-native";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 
 interface Props {
   onEmailLogin?: () => void;

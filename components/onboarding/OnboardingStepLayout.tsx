@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import Title from "../ui/Title";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 
 interface ProgressStepProps {
   isActive: boolean;

@@ -6,7 +6,7 @@ import {
 } from "lucide-react-native";
 import { StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import CircularProgress from "../ui/CircularProgress";
 import { IconAvocado } from "@tabler/icons-react-native";
 

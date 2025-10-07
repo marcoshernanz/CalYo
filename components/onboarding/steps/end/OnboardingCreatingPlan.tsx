@@ -1,7 +1,7 @@
 import Description from "@/components/ui/Description";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { CheckIcon, Loader2Icon } from "lucide-react-native";
 import { LayoutChangeEvent, Platform, StyleSheet, View } from "react-native";
 import { useEffect, useState } from "react";

@@ -1,7 +1,7 @@
 import CircularProgress from "@/components/ui/CircularProgress";
 import Description from "@/components/ui/Description";
 import Title from "@/components/ui/Title";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { useEffect } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import AnimateableText from "react-native-animateable-text";

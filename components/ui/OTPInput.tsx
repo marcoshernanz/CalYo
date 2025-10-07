@@ -16,7 +16,7 @@ import Animated, {
   withDelay,
   interpolateColor,
 } from "react-native-reanimated";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 

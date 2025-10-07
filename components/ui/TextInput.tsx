@@ -1,4 +1,4 @@
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import React, { RefObject, useEffect, useRef, useState } from "react";
 import {
   Keyboard,

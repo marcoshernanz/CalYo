@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import Button from "@/components/ui/Button";
 import Title from "@/components/ui/Title";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { XIcon } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SignInButtons from "./SignInButtons";

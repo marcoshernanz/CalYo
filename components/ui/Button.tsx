@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import {
   Pressable,
   PressableProps,

@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import createAccurateInterval from "@/lib/utils/createAccurateInterval";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import tryCatch from "@/lib/utils/tryCatch";
 import { useAuthContext } from "@/context/AuthContext";
 

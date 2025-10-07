@@ -1,5 +1,5 @@
 import Button from "@/components/ui/Button";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { Tabs } from "expo-router";
 import {
   ActivityIcon,

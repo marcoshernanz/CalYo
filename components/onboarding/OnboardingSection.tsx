@@ -3,7 +3,7 @@ import Header from "@/components/ui/Header";
 import Title from "@/components/ui/Title";
 import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import Text from "@/components/ui/Text";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { CheckIcon } from "lucide-react-native";
 import { useState } from "react";
 import SafeArea from "../ui/SafeArea";

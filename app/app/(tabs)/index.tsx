@@ -2,7 +2,7 @@ import HomeDaySelector from "@/components/home/HomeDaySelector";
 import HomeHeader from "@/components/home/HomeHeader";
 import HomeMacroSummary from "@/components/home/HomeMacroSummary";
 import SafeArea from "@/components/ui/SafeArea";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, useWindowDimensions } from "react-native";
 

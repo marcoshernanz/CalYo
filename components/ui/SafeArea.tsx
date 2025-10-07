@@ -1,4 +1,4 @@
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { StyleSheet } from "react-native";
 import {
   SafeAreaView,

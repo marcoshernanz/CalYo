@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import Text, { TextProps, FontSize } from "./Text";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 
 interface Props extends TextProps {
   size?: FontSize;

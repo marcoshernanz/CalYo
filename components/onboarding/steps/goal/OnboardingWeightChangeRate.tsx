@@ -3,7 +3,7 @@ import Text from "@/components/ui/Text";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import kgToLbs from "@/lib/units/kgToLbs";
 import lbsToKg from "@/lib/units/lbsToKg";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { useCallback, useMemo } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import AnimateableText from "react-native-animateable-text";

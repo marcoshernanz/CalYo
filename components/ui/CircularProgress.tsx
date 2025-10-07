@@ -1,4 +1,4 @@
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import { Canvas, Group, Path, Skia } from "@shopify/react-native-skia";
 import { useMemo, useState } from "react";
 import { LayoutChangeEvent, StyleSheet, View } from "react-native";

@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { addDays, format, startOfWeek } from "date-fns";
 import { es } from "date-fns/locale";
 import Text from "../ui/Text";
-import getColor from "@/lib/utils/getColor";
+import getColor from "@/lib/ui/getColor";
 import CircularProgress from "../ui/CircularProgress";
 import {
   cancelAnimation,
