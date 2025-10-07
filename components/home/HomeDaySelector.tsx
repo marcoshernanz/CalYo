@@ -1,10 +1,16 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { addDays, format, startOfWeek } from "date-fns";
 import { es } from "date-fns/locale";
 import Text from "../ui/Text";
 import getColor from "@/lib/utils/getColor";
 import CircularProgress from "../ui/CircularProgress";
+import {
+  cancelAnimation,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 type DayData = {
   id: string;
@@ -22,6 +28,20 @@ interface DaySelectorItemProps {
 }
 
 function DaySelectorItem({ day, isSelected, isToday }: DaySelectorItemProps) {
+  const progress = useSharedValue(0);
+  const progressCarbs = useDerivedValue(() => day.carbs * progress.value);
+  const progressProtein = useDerivedValue(() => day.protein * progress.value);
+  const progressFat = useDerivedValue(() => day.fat * progress.value);
+
+  useEffect(() => {
+    progress.value = withTiming(1, { duration: 1500 });
+
+    return () => {
+      cancelAnimation(progress);
+      progress.value = 0;
+    };
+  }, [progress]);
+
   return (
     <View
       style={[
@@ -41,7 +61,7 @@ function DaySelectorItem({ day, isSelected, isToday }: DaySelectorItemProps) {
           {day.number}
         </Text>
         <CircularProgress
-          progress={[day.carbs, day.protein, day.fat]}
+          progress={[progressCarbs, progressProtein, progressFat]}
           color={[getColor("emerald"), getColor("red"), getColor("yellow")]}
           strokeWidth={4}
         />
