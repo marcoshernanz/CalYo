@@ -73,6 +73,7 @@ function TextWrapper(props: RNTextProps) {
 }
 
 export type FontSize =
+  | "10"
   | "12"
   | "14"
   | "16"
