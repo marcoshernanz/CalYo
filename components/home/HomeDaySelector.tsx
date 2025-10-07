@@ -6,6 +6,45 @@ import Text from "../ui/Text";
 import getColor from "@/lib/utils/getColor";
 import CircularProgress from "../ui/CircularProgress";
 
+type DayData = {
+  id: string;
+  letter: string;
+  number: string;
+  carbs: number;
+  protein: number;
+  fat: number;
+};
+
+interface DaySelectorItemProps {
+  day: DayData;
+  isSelected: boolean;
+}
+
+function DaySelectorItem({ day, isSelected }: DaySelectorItemProps) {
+  return (
+    <View
+      style={[
+        styles.dayContainer,
+        {
+          backgroundColor: isSelected ? getColor("background") : "transparent",
+        },
+      ]}
+    >
+      <Text weight="600">{day.letter}</Text>
+      <View style={styles.dayProgressContainer}>
+        <Text size="14" weight="600" style={styles.dayNumberText}>
+          {day.number}
+        </Text>
+        <CircularProgress
+          progress={[day.carbs, day.protein, day.fat]}
+          color={[getColor("emerald"), getColor("red"), getColor("yellow")]}
+          strokeWidth={4}
+        />
+      </View>
+    </View>
+  );
+}
+
 export default function HomeDaySelector() {
   const selectedDate = format(new Date(), "yyyy-MM-dd");
 
@@ -30,30 +69,11 @@ export default function HomeDaySelector() {
   return (
     <View style={styles.container}>
       {weekDays.map((day) => (
-        <View
-          key={`day-${day.id}`}
-          style={[
-            styles.dayContainer,
-            {
-              backgroundColor:
-                day.id === selectedDate
-                  ? getColor("background")
-                  : "transparent",
-            },
-          ]}
-        >
-          <Text weight="600">{day.letter}</Text>
-          <View style={styles.dayProgressContainer}>
-            <Text size="14" weight="600" style={styles.dayNumberText}>
-              {day.number}
-            </Text>
-            <CircularProgress
-              progress={[day.carbs, day.protein, day.fat]}
-              color={[getColor("emerald"), getColor("red"), getColor("yellow")]}
-              strokeWidth={4}
-            />
-          </View>
-        </View>
+        <DaySelectorItem
+          key={day.id}
+          day={day}
+          isSelected={day.id === selectedDate}
+        />
       ))}
     </View>
   );
