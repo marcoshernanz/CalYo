@@ -2,7 +2,10 @@ import { ViewStyle } from "react-native";
 
 type ShadowSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
-export default function getShadow(size: ShadowSize): ViewStyle {
+export default function getShadow(
+  size: ShadowSize,
+  opacity: number
+): ViewStyle {
   const shadowMap = {
     xs: { offsetX: 0, offsetY: 1, blurRadius: 2, spreadDistance: 0 },
     sm: { offsetX: 0, offsetY: 2, blurRadius: 4, spreadDistance: 0 },
@@ -21,7 +24,7 @@ export default function getShadow(size: ShadowSize): ViewStyle {
         offsetY,
         blurRadius,
         spreadDistance,
-        color: `rgba(0, 0, 0, 0.05)`,
+        color: `rgba(0, 0, 0, ${opacity})`,
       },
     ],
   };
