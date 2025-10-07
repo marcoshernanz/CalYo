@@ -54,18 +54,25 @@ function DaySelectorItem({ day, isSelected, isToday }: DaySelectorItemProps) {
               ? getColor("background", 0.6)
               : "transparent",
         },
-        isSelected ? getShadow("md") : undefined,
+        isSelected && getShadow("md"),
+        isSelected && {
+          borderWidth: StyleSheet.hairlineWidth,
+          borderColor: getColor("secondary"),
+        },
       ]}
     >
-      <Text weight="600">{day.letter}</Text>
+      <Text size="14" weight="600">
+        {day.letter}
+      </Text>
       <View style={styles.dayProgressContainer}>
-        <Text size="14" weight="600" style={styles.dayNumberText}>
+        <Text size="12" weight="600" style={styles.dayNumberText}>
           {day.number}
         </Text>
         <CircularProgress
           progress={[progressCarbs, progressProtein, progressFat]}
-          color={[getColor("emerald"), getColor("red"), getColor("yellow")]}
-          strokeWidth={4}
+          color={[getColor("carbs"), getColor("protein"), getColor("fats")]}
+          trackColor={getColor("mutedForeground", 0.2)}
+          strokeWidth={3}
         />
       </View>
     </View>
@@ -116,14 +123,14 @@ const styles = StyleSheet.create({
   },
   dayContainer: {
     alignItems: "center",
-    gap: 4,
+    gap: 6,
     flex: 1,
     paddingVertical: 8,
     borderRadius: 999,
   },
   dayProgressContainer: {
-    width: 36,
-    height: 36,
+    width: 34,
+    height: 34,
     alignItems: "center",
     justifyContent: "center",
   },
