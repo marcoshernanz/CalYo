@@ -46,5 +46,7 @@ const styles = StyleSheet.create({
     padding: 8,
     gap: 4,
     borderRadius: 999,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: getColor("secondary"),
   },
 });
