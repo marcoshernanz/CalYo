@@ -1,27 +1,36 @@
-import { FlameIcon, LucideIcon, LucideWheat } from "lucide-react-native";
+import {
+  DrumstickIcon,
+  FlameIcon,
+  LucideIcon,
+  LucideWheat,
+} from "lucide-react-native";
 import { StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import getColor from "@/lib/utils/getColor";
 import CircularProgress from "../ui/CircularProgress";
+import { IconAvocado } from "@tabler/icons-react-native";
 
-const macros = [
+const macros: Macro[] = [
   {
     name: "Hidratos",
     value: 250,
     target: 300,
     Icon: LucideWheat,
+    color: getColor("carbs"),
   },
   {
     name: "Proteína",
     value: 150,
     target: 200,
-    Icon: LucideWheat,
+    Icon: DrumstickIcon,
+    color: getColor("protein"),
   },
   {
     name: "Grasas",
     value: 70,
     target: 100,
-    Icon: LucideWheat,
+    Icon: IconAvocado,
+    color: getColor("fats"),
   },
 ];
 
@@ -30,6 +39,7 @@ type Macro = {
   value: number;
   target: number;
   Icon: LucideIcon;
+  color: string;
 };
 
 interface MacroCardProps {
@@ -39,34 +49,30 @@ interface MacroCardProps {
 function MacroCard({ macro }: MacroCardProps) {
   return (
     <View style={styles.macroCard}>
-      <Text size="16" weight="500">
+      <Text size="12" weight="600" color={getColor("mutedForeground")}>
         {macro.name}
       </Text>
-      <View style={styles.caloriesValueContainer}>
-        <Text size="20" weight="600">
+      <View style={styles.macroCardValueContainer}>
+        <Text size="18" weight="600">
           {macro.value}
         </Text>
         <Text
-          size="12"
+          size="10"
           color={getColor("mutedForeground")}
-          style={styles.targetText}
+          style={styles.macroCardTargetText}
         >
           {" "}
           / {macro.target}
         </Text>
       </View>
-      {/* <View>
-        <macro.Icon />
-      </View> */}
-
-      <View style={styles.progressContainer}>
+      <View style={styles.macroCardProgressContainer}>
         <CircularProgress
-          progress={1532 / 2000}
-          color={getColor("foreground")}
-          strokeWidth={6}
+          progress={macro.value / macro.target}
+          color={macro.color}
+          strokeWidth={4}
         />
         <View style={styles.caloriesIconContainer}>
-          <FlameIcon size={20} />
+          <macro.Icon size={18} color={macro.color} />
         </View>
       </View>
     </View>
@@ -78,24 +84,24 @@ export default function HomeMacroSummary() {
     <View style={styles.container}>
       <View style={styles.caloriesContainer}>
         <View style={styles.caloriesTextContainer}>
-          <Text size="12" weight="700" color={getColor("mutedForeground")}>
+          <Text size="12" weight="600" color={getColor("mutedForeground")}>
             Calorías
           </Text>
           <View style={styles.caloriesValueContainer}>
-            <Text size="32" weight="600">
+            <Text size="40" weight="600">
               1532
             </Text>
             <Text
-              size="16"
+              size="20"
               color={getColor("mutedForeground")}
-              style={styles.targetText}
+              style={styles.caloriesTargetText}
             >
               {" "}
               / 2000
             </Text>
           </View>
         </View>
-        <View style={styles.progressContainer}>
+        <View style={styles.caloriesProgressContainer}>
           <CircularProgress
             progress={1532 / 2000}
             color={getColor("foreground")}
@@ -134,10 +140,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
   },
-  targetText: {
-    paddingBottom: 4,
+  caloriesTargetText: {
+    paddingBottom: 6,
   },
-  progressContainer: {
+  caloriesProgressContainer: {
     height: 80,
     width: 80,
     alignItems: "center",
@@ -150,11 +156,11 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 999,
-    backgroundColor: getColor("secondary"),
+    backgroundColor: getColor("secondary", 0.5),
   },
   cardsContainer: {
     flexDirection: "row",
-    gap: 12,
+    gap: 8,
   },
 
   macroCard: {
@@ -164,5 +170,29 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: getColor("secondary"),
+  },
+  macroCardValueContainer: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    paddingBottom: 12,
+    paddingTop: 4,
+  },
+  macroCardTargetText: {
+    paddingBottom: 3,
+  },
+  macroCardProgressContainer: {
+    height: 80,
+    width: 80,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  macroCardIconContainer: {
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 32,
+    height: 32,
+    borderRadius: 999,
+    backgroundColor: getColor("secondary", 0.5),
   },
 });
