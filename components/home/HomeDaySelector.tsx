@@ -11,6 +11,7 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import getShadow from "@/lib/ui/getShadow";
 
 type DayData = {
   id: string;
@@ -53,6 +54,7 @@ function DaySelectorItem({ day, isSelected, isToday }: DaySelectorItemProps) {
               ? getColor("background", 0.6)
               : "transparent",
         },
+        isSelected ? getShadow("md") : undefined,
       ]}
     >
       <Text weight="600">{day.letter}</Text>
