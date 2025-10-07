@@ -4,7 +4,7 @@ type ShadowSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export default function getShadow(
   size: ShadowSize,
-  opacity: number
+  opacity: number = 0.05
 ): ViewStyle {
   const shadowMap = {
     xs: { offsetX: 0, offsetY: 1, blurRadius: 2, spreadDistance: 0 },
