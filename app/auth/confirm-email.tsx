@@ -100,7 +100,7 @@ export default function ConfirmEmailScreen() {
             <Title>Confirma tu Email</Title>
             <Description>
               Introduce el código que te acabamos de enviar a{" "}
-              <Text size="16" style={{ fontWeight: 600 }}>
+              <Text size="16" weight="600">
                 {email || "tu email"}
               </Text>
             </Description>

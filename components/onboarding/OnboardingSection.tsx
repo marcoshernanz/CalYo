@@ -90,15 +90,13 @@ export default function OnboardingSection({ section: sectionNumber }: Props) {
             >
               {index >= sectionNumber ? (
                 <Text
-                  style={[
-                    styles.numberText,
-                    {
-                      color:
-                        index <= sectionNumber
-                          ? getColor("background")
-                          : getColor("foreground"),
-                    },
-                  ]}
+                  weight="500"
+                  style={{
+                    color:
+                      index <= sectionNumber
+                        ? getColor("background")
+                        : getColor("foreground"),
+                  }}
                 >
                   {index + 1}
                 </Text>
@@ -162,9 +160,6 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     alignItems: "center",
     justifyContent: "center",
-  },
-  numberText: {
-    fontWeight: "500",
   },
   textContainer: {
     flex: 1,

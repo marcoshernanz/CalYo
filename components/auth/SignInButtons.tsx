@@ -49,7 +49,7 @@ export default function SignInButtons({ onEmailLogin }: Props) {
           onPress={() => handleLogin("apple")}
         >
           <FontAwesome5 name="apple" size={28} color={getColor("background")} />
-          <Text size="16" style={styles.buttonPrimaryText}>
+          <Text size="16" weight="500" style={styles.buttonPrimaryText}>
             Continuar con Apple
           </Text>
         </Button>
@@ -99,7 +99,6 @@ const styles = StyleSheet.create({
   },
   buttonPrimaryText: {
     color: getColor("background"),
-    fontWeight: 500,
   },
   buttonOutlineText: {
     color: getColor("foreground"),

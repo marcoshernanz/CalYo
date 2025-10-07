@@ -164,7 +164,7 @@ function WeightChangeRow({ sign, amount, period, unit }: WeightChangeRowProps) {
 
   return (
     <View style={styles.row}>
-      <Text size="24" style={styles.sign}>
+      <Text size="24" weight="300">
         {sign}
       </Text>
       <View style={styles.valueContainer}>
@@ -172,7 +172,7 @@ function WeightChangeRow({ sign, amount, period, unit }: WeightChangeRowProps) {
           animatedProps={animatedProps.amount}
           style={styles.valueNumber}
         />
-        <Text size="16" style={styles.valueUnit}>
+        <Text size="16" weight="500" style={styles.valueUnit}>
           {unit}
         </Text>
       </View>
@@ -215,9 +215,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
   },
-  sign: {
-    fontWeight: 300,
-  },
   valueContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -237,7 +234,6 @@ const styles = StyleSheet.create({
   },
   valueUnit: {
     color: getColor("mutedForeground", 0.5),
-    fontWeight: 500,
   },
   periodLabel: {
     paddingLeft: 8,

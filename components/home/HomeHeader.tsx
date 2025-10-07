@@ -9,7 +9,7 @@ export default function HomeHeader() {
     <View style={styles.header}>
       <View style={styles.logoContainer}>
         <CalyoLogo width={28} height={28} color={getColor("foreground")} />
-        <Text size="28" style={styles.logoText}>
+        <Text size="28" weight="600">
           CalYo
         </Text>
       </View>
@@ -19,7 +19,7 @@ export default function HomeHeader() {
           color={getColor("orange")}
           fill={getColor("orange")}
         />
-        <Text style={styles.streakText}>12</Text>
+        <Text weight="600">12</Text>
       </View>
     </View>
   );
@@ -38,9 +38,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
   },
-  logoText: {
-    fontWeight: 600,
-  },
   streakContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -49,8 +46,5 @@ const styles = StyleSheet.create({
     padding: 8,
     gap: 4,
     borderRadius: 999,
-  },
-  streakText: {
-    fontWeight: 600,
   },
 });

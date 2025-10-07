@@ -42,9 +42,9 @@ export default function HomeDaySelector() {
             },
           ]}
         >
-          <Text style={styles.dayLetterText}>{day.letter}</Text>
+          <Text weight="600">{day.letter}</Text>
           <View style={styles.dayProgressContainer}>
-            <Text size="14" style={styles.dayNumberText}>
+            <Text size="14" weight="600" style={styles.dayNumberText}>
               {day.number}
             </Text>
             <CircularProgress
@@ -71,9 +71,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 999,
   },
-  dayLetterText: {
-    fontWeight: "600",
-  },
   dayProgressContainer: {
     width: 36,
     height: 36,
@@ -83,7 +80,6 @@ const styles = StyleSheet.create({
     borderRadius: 999,
   },
   dayNumberText: {
-    fontWeight: "600",
     position: "absolute",
   },
 });

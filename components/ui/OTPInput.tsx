@@ -166,7 +166,7 @@ export default function OTPInput({
                 animatedBoxStyle,
               ]}
             >
-              <Text size="28" style={styles.text}>
+              <Text size="28" weight="700">
                 {char}
               </Text>
               {showCaret && index === focusedInputIndex && (
@@ -211,9 +211,6 @@ const styles = StyleSheet.create({
   focusedBox: {
     borderColor: getColor("foreground"),
     borderWidth: 2,
-  },
-  text: {
-    fontWeight: 700,
   },
   caretContainer: {
     ...StyleSheet.absoluteFillObject,

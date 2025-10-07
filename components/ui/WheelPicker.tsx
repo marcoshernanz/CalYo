@@ -96,7 +96,7 @@ export default function WheelPicker({
           })}
           renderItem={({ item }) => (
             <View style={[styles.item, { height: itemHeight }, itemStyle]}>
-              <Text style={styles.text}>{item}</Text>
+              <Text weight="600">{item}</Text>
             </View>
           )}
         />
@@ -133,8 +133,5 @@ const styles = StyleSheet.create({
   item: {
     justifyContent: "center",
     alignItems: "center",
-  },
-  text: {
-    fontWeight: 600,
   },
 });
