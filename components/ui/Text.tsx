@@ -64,7 +64,6 @@ function TextWrapper(props: RNTextProps) {
       style={[
         {
           fontFamily,
-          color: getColor("foreground"),
           ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
         },
         rest,
@@ -100,18 +99,20 @@ export interface TextProps extends RNTextProps {
   children: React.ReactNode;
   size?: FontSize;
   weight?: FontWeight;
+  color?: string;
 }
 
 export default function Text({
   size = "18",
   weight = "400",
+  color = getColor("foreground"),
   ...rest
 }: TextProps) {
   const fontSize = size ? parseInt(size) : 18;
   return (
     <TextWrapper
       {...rest}
-      style={[{ fontSize, fontWeight: weight }, rest.style]}
+      style={[{ fontSize, fontWeight: weight, color }, rest.style]}
     />
   );
 }
