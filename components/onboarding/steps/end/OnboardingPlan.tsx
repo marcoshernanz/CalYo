@@ -24,7 +24,7 @@ const macros = [
     name: "Calorías",
     amount: calories,
     ratio: 1,
-    color: getColor("blue"),
+    color: getColor("foreground"),
     formatAmount: (amount: number) => {
       "worklet";
       return `${Math.round(amount)}`;
@@ -34,7 +34,7 @@ const macros = [
     name: "Hidratos",
     amount: carbs,
     ratio: (carbs * 4) / calories,
-    color: getColor("emerald"),
+    color: getColor("carbs"),
     formatAmount: (amount: number) => {
       "worklet";
       return `${Math.round(amount)}g`;
@@ -44,7 +44,7 @@ const macros = [
     name: "Proteína",
     amount: protein,
     ratio: (protein * 4) / calories,
-    color: getColor("red"),
+    color: getColor("protein"),
     formatAmount: (amount: number) => {
       "worklet";
       return `${Math.round(amount)}g`;
@@ -54,7 +54,7 @@ const macros = [
     name: "Grasas",
     amount: fat,
     ratio: (fat * 9) / calories,
-    color: getColor("yellow"),
+    color: getColor("fats"),
     formatAmount: (amount: number) => {
       "worklet";
       return `${Math.round(amount)}g`;

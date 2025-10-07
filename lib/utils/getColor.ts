@@ -7,6 +7,10 @@ const colors = {
   secondary: [229, 231, 235], // #e5e7eb
   destructive: [239, 68, 68], // #ef4444
 
+  carbs: [234, 179, 8], // #eab308
+  protein: [239, 68, 68], // #ef4444
+  fats: [16, 185, 129], // #10b981
+
   red: [239, 68, 68], // #ef4444
   orange: [249, 115, 22], // #f97316
   amber: [245, 158, 11], // #f59e0b
