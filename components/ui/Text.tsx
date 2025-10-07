@@ -85,12 +85,33 @@ export type FontSize =
   | "40"
   | "48";
 
+export type FontWeight =
+  | "100"
+  | "200"
+  | "300"
+  | "400"
+  | "500"
+  | "600"
+  | "700"
+  | "800"
+  | "900";
+
 export interface TextProps extends RNTextProps {
   children: React.ReactNode;
   size?: FontSize;
+  weight?: FontWeight;
 }
 
-export default function Text({ size = "18", ...rest }: TextProps) {
+export default function Text({
+  size = "18",
+  weight = "400",
+  ...rest
+}: TextProps) {
   const fontSize = size ? parseInt(size) : 18;
-  return <TextWrapper {...rest} style={[{ fontSize }, rest.style]} />;
+  return (
+    <TextWrapper
+      {...rest}
+      style={[{ fontSize, fontWeight: weight }, rest.style]}
+    />
+  );
 }
