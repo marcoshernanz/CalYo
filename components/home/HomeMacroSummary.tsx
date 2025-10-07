@@ -9,6 +9,7 @@ import Text from "../ui/Text";
 import getColor from "@/lib/ui/getColor";
 import CircularProgress from "../ui/CircularProgress";
 import { IconAvocado } from "@tabler/icons-react-native";
+import getShadow from "../../lib/ui/getShadow";
 
 const macros: Macro[] = [
   {
@@ -134,6 +135,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: getColor("secondary"),
+    ...getShadow("sm"),
   },
   caloriesTextContainer: {},
   caloriesValueContainer: {
@@ -170,6 +172,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: getColor("secondary"),
+    ...getShadow("sm"),
   },
   macroCardValueContainer: {
     flexDirection: "row",

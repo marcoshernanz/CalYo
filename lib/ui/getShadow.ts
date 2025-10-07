@@ -1,16 +1,8 @@
 import { ViewStyle } from "react-native";
 
-export interface Props {
-  size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-  color?: string;
-  opacity?: number;
-}
+type ShadowSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
-export default function getShadow({
-  size,
-  color = "#000",
-  opacity = 0.15,
-}: Props): ViewStyle {
+export default function getShadow(size: ShadowSize): ViewStyle {
   const shadowMap = {
     xs: { offsetX: 0, offsetY: 1, blurRadius: 2, spreadDistance: 0 },
     sm: { offsetX: 0, offsetY: 2, blurRadius: 4, spreadDistance: 0 },
@@ -22,13 +14,6 @@ export default function getShadow({
 
   const { offsetX, offsetY, blurRadius, spreadDistance } = shadowMap[size];
 
-  const colorRGBA = {
-    r: parseInt(color.slice(1, 3), 16),
-    g: parseInt(color.slice(3, 5), 16),
-    b: parseInt(color.slice(5, 7), 16),
-    a: opacity,
-  };
-
   return {
     boxShadow: [
       {
@@ -36,7 +21,7 @@ export default function getShadow({
         offsetY,
         blurRadius,
         spreadDistance,
-        color: `rgba(${colorRGBA.r}, ${colorRGBA.g}, ${colorRGBA.b}, ${colorRGBA.a})`,
+        color: `rgba(0, 0, 0, 0.05)`,
       },
     ],
   };
