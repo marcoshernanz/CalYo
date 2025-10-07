@@ -18,15 +18,20 @@ type DayData = {
 interface DaySelectorItemProps {
   day: DayData;
   isSelected: boolean;
+  isToday: boolean;
 }
 
-function DaySelectorItem({ day, isSelected }: DaySelectorItemProps) {
+function DaySelectorItem({ day, isSelected, isToday }: DaySelectorItemProps) {
   return (
     <View
       style={[
         styles.dayContainer,
         {
-          backgroundColor: isSelected ? getColor("background") : "transparent",
+          backgroundColor: isSelected
+            ? getColor("background")
+            : isToday
+              ? getColor("background", 0.6)
+              : "transparent",
         },
       ]}
     >
@@ -47,6 +52,7 @@ function DaySelectorItem({ day, isSelected }: DaySelectorItemProps) {
 
 export default function HomeDaySelector() {
   const selectedDate = format(new Date(), "yyyy-MM-dd");
+  const today = format(new Date(), "yyyy-MM-dd");
 
   const weekDays = useMemo(() => {
     const start = startOfWeek(new Date(), { weekStartsOn: 1 });
@@ -73,6 +79,7 @@ export default function HomeDaySelector() {
           key={day.id}
           day={day}
           isSelected={day.id === selectedDate}
+          isToday={day.id === today}
         />
       ))}
     </View>
