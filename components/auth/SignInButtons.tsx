@@ -49,7 +49,12 @@ export default function SignInButtons({ onEmailLogin }: Props) {
           onPress={() => handleLogin("apple")}
         >
           <FontAwesome5 name="apple" size={28} color={getColor("background")} />
-          <Text size="16" weight="500" style={styles.buttonPrimaryText}>
+          <Text
+            size="16"
+            weight="500"
+            color={getColor("background")}
+            style={styles.buttonPrimaryText}
+          >
             Continuar con Apple
           </Text>
         </Button>
@@ -63,11 +68,8 @@ export default function SignInButtons({ onEmailLogin }: Props) {
         <GoogleLogo height={24} width={24} />
         <Text
           size="16"
-          style={
-            Platform.OS === "android"
-              ? styles.buttonPrimaryText
-              : styles.buttonOutlineText
-          }
+          weight={Platform.OS === "android" ? undefined : "500"}
+          color={Platform.OS === "android" ? getColor("background") : undefined}
         >
           Continuar con Google
         </Text>
@@ -79,7 +81,7 @@ export default function SignInButtons({ onEmailLogin }: Props) {
         onPress={handleEmailLogin}
       >
         <MailIcon size={24} color={getColor("foreground")} />
-        <Text size="16" style={styles.buttonOutlineText}>
+        <Text size="16" weight="500">
           Continuar con Email
         </Text>
       </Button>

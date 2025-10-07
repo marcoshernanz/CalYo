@@ -91,12 +91,11 @@ export default function OnboardingSection({ section: sectionNumber }: Props) {
               {index >= sectionNumber ? (
                 <Text
                   weight="500"
-                  style={{
-                    color:
-                      index <= sectionNumber
-                        ? getColor("background")
-                        : getColor("foreground"),
-                  }}
+                  color={
+                    index <= sectionNumber
+                      ? getColor("background")
+                      : getColor("foreground")
+                  }
                 >
                   {index + 1}
                 </Text>

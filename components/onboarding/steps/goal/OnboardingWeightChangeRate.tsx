@@ -172,7 +172,7 @@ function WeightChangeRow({ sign, amount, period, unit }: WeightChangeRowProps) {
           animatedProps={animatedProps.amount}
           style={styles.valueNumber}
         />
-        <Text size="16" weight="500" style={styles.valueUnit}>
+        <Text size="16" weight="500" color={getColor("mutedForeground", 0.5)}>
           {unit}
         </Text>
       </View>
@@ -231,9 +231,6 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
     color: getColor("foreground"),
     ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
-  },
-  valueUnit: {
-    color: getColor("mutedForeground", 0.5),
   },
   periodLabel: {
     paddingLeft: 8,
