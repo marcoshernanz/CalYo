@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     gap: 4,
+    paddingBottom: 16,
   },
   dayContainer: {
     alignItems: "center",

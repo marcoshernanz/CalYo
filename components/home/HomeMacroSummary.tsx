@@ -51,12 +51,21 @@ export default function HomeMacroSummary() {
     <View style={styles.container}>
       <View style={styles.caloriesContainer}>
         <View style={styles.caloriesTextContainer}>
-          <Text style={styles.labelText}>Calorías</Text>
+          <Text size="12" weight="700" color={getColor("mutedForeground")}>
+            Calorías
+          </Text>
           <View style={styles.caloriesValueContainer}>
             <Text size="32" weight="600">
               1532
             </Text>
-            <Text style={styles.targetText}>/2000</Text>
+            <Text
+              size="16"
+              color={getColor("mutedForeground")}
+              style={styles.targetText}
+            >
+              {" "}
+              / 2000
+            </Text>
           </View>
         </View>
         <View style={styles.progressContainer}></View>
@@ -74,7 +83,7 @@ const styles = StyleSheet.create({
   container: {},
   caloriesContainer: {
     backgroundColor: getColor("background"),
-    padding: 24,
+    padding: 20,
     borderRadius: 16,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -85,15 +94,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
   },
-  labelText: {
-    color: getColor("mutedForeground"),
-  },
   targetText: {
-    color: getColor("mutedForeground"),
+    paddingBottom: 4,
   },
   progressContainer: {
-    height: 86,
-    width: 86,
+    height: 64,
+    width: 64,
     backgroundColor: "red",
   },
   cardsContainer: {
