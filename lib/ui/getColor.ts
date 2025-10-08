@@ -1,4 +1,5 @@
 const colors = {
+  white: [255, 255, 255], // #ffffff
   primary: [59, 130, 246], // #3B82F6
   primaryLight: [191, 219, 254], // #bfdbfe
   background: [249, 250, 251], // #f9fafb
