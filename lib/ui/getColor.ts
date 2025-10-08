@@ -4,6 +4,7 @@ const colors = {
   primaryLight: [191, 219, 254], // #bfdbfe
   background: [249, 250, 251], // #f9fafb
   foreground: [3, 7, 18], // #030712
+  muted: [243, 244, 246], // #f3f4f6
   mutedForeground: [107, 114, 128], // #6b7280
   secondary: [229, 231, 235], // #e5e7eb
   destructive: [239, 68, 68], // #ef4444
