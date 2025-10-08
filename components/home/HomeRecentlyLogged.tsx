@@ -19,7 +19,7 @@ type Item = {
 
 const data: Item[] = [
   {
-    name: "Banana",
+    name: "Bananaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     calories: 105,
     carbs: 27,
     protein: 1,
@@ -123,7 +123,7 @@ function LogItem({ item }: LogItemProps) {
   return (
     <View style={styles.itemCard}>
       <View style={styles.itemHeaderContainer}>
-        <Text size="16" weight="600">
+        <Text size="16" weight="600" numberOfLines={1} style={styles.itemName}>
           {item.name}
         </Text>
         <Text size="14">{format(item.date, "HH:mm")}</Text>
@@ -190,6 +190,10 @@ const styles = StyleSheet.create({
   itemHeaderContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  itemName: {
+    flexShrink: 1,
+    marginRight: 12,
   },
   itemDetailsContainer: {
     flexDirection: "row",
