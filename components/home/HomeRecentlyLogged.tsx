@@ -1,12 +1,11 @@
 import { StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import { format } from "date-fns";
-import getColor from "@/lib/ui/getColor";
-import getShadow from "@/lib/ui/getShadow";
 import CalorieIcon from "../icons/macros/CalorieIcon";
 import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
 import FatIcon from "../icons/macros/FatIcon";
+import Card from "../ui/Card";
 
 type Item = {
   name: string;
@@ -121,7 +120,7 @@ function LogItem({ item }: LogItemProps) {
   ];
 
   return (
-    <View style={styles.itemCard}>
+    <Card style={styles.itemCard}>
       <View style={styles.itemHeaderContainer}>
         <Text size="16" weight="600" numberOfLines={1} style={styles.itemName}>
           {item.name}
@@ -147,7 +146,7 @@ function LogItem({ item }: LogItemProps) {
           </View>
         ))}
       </View>
-    </View>
+    </Card>
   );
 }
 
@@ -178,13 +177,6 @@ const styles = StyleSheet.create({
   },
 
   itemCard: {
-    flex: 1,
-    backgroundColor: getColor("white"),
-    padding: 20,
-    borderRadius: 16,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: getColor("secondary"),
-    ...getShadow("sm"),
     gap: 16,
   },
   itemHeaderContainer: {
