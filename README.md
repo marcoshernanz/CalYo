@@ -1,3 +1,4 @@
+- [ ] Card component
 - [ ] Home scroll view bounce
 - [ ] Refactor calories, carbs, protein, and fat icon
 
