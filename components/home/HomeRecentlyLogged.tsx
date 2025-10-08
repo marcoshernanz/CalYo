@@ -6,6 +6,7 @@ import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
 import FatIcon from "../icons/macros/FatIcon";
 import Card from "../ui/Card";
+import Button from "../ui/Button";
 
 type Item = {
   name: string;
@@ -120,33 +121,40 @@ function LogItem({ item }: LogItemProps) {
   ];
 
   return (
-    <Card style={styles.itemCard}>
-      <View style={styles.itemHeaderContainer}>
-        <Text size="16" weight="600" numberOfLines={1} style={styles.itemName}>
-          {item.name}
-        </Text>
-        <Text size="14">{format(item.date, "HH:mm")}</Text>
-      </View>
-      <View style={styles.itemDetailsContainer}>
-        <View
-          key={`macro-calories`}
-          style={[styles.itemMacroContainer, { marginRight: "auto" }]}
-        >
-          <View style={styles.itemMacroIcon}>
-            <CalorieIcon size={18} strokeWidth={2.25} />
-          </View>
-          <Text size="16">{item.calories}</Text>
+    <Button variant="base" size="base">
+      <Card style={styles.itemCard}>
+        <View style={styles.itemHeaderContainer}>
+          <Text
+            size="16"
+            weight="600"
+            numberOfLines={1}
+            style={styles.itemName}
+          >
+            {item.name}
+          </Text>
+          <Text size="14">{format(item.date, "HH:mm")}</Text>
         </View>
-        {macros.map((macro, index) => (
-          <View key={`macro-${index}`} style={styles.itemMacroContainer}>
+        <View style={styles.itemDetailsContainer}>
+          <View
+            key={`macro-calories`}
+            style={[styles.itemMacroContainer, { marginRight: "auto" }]}
+          >
             <View style={styles.itemMacroIcon}>
-              <macro.Icon size={16} strokeWidth={2.25} />
+              <CalorieIcon size={18} strokeWidth={2.25} />
             </View>
-            <Text size="14">{macro.value}</Text>
+            <Text size="16">{item.calories}</Text>
           </View>
-        ))}
-      </View>
-    </Card>
+          {macros.map((macro, index) => (
+            <View key={`macro-${index}`} style={styles.itemMacroContainer}>
+              <View style={styles.itemMacroIcon}>
+                <macro.Icon size={16} strokeWidth={2.25} />
+              </View>
+              <Text size="14">{macro.value}</Text>
+            </View>
+          ))}
+        </View>
+      </Card>
+    </Button>
   );
 }
 
