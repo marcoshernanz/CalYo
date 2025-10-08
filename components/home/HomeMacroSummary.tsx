@@ -106,7 +106,7 @@ export default function HomeMacroSummary() {
           <CircularProgress
             progress={1532 / 2000}
             color={getColor("foreground")}
-            strokeWidth={6}
+            strokeWidth={5}
           />
           <View style={styles.caloriesIconContainer}>
             <FlameIcon size={20} />
