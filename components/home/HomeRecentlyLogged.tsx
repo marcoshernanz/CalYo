@@ -107,10 +107,6 @@ interface LogItemProps {
 function LogItem({ item }: LogItemProps) {
   const macros = [
     {
-      value: item.calories,
-      Icon: CalorieIcon,
-    },
-    {
       value: item.carbs,
       Icon: CarbIcon,
     },
@@ -130,17 +126,24 @@ function LogItem({ item }: LogItemProps) {
         <Text size="16" weight="600">
           {item.name}
         </Text>
-        <Text size="14" weight="500">
-          {format(item.date, "HH:mm")}
-        </Text>
+        <Text size="14">{format(item.date, "HH:mm")}</Text>
       </View>
       <View style={styles.itemDetailsContainer}>
+        <View
+          key={`macro-calories`}
+          style={[styles.itemMacroContainer, { marginRight: "auto" }]}
+        >
+          <View style={styles.itemMacroIcon}>
+            <CalorieIcon size={18} strokeWidth={2.25} />
+          </View>
+          <Text size="16">{item.calories}</Text>
+        </View>
         {macros.map((macro, index) => (
           <View key={`macro-${index}`} style={styles.itemMacroContainer}>
             <View style={styles.itemMacroIcon}>
-              <macro.Icon size={14} />
+              <macro.Icon size={16} strokeWidth={2.25} />
             </View>
-            <Text size="16">{macro.value}</Text>
+            <Text size="14">{macro.value}</Text>
           </View>
         ))}
       </View>
@@ -151,7 +154,7 @@ function LogItem({ item }: LogItemProps) {
 export default function HomeRecentlyLogged() {
   return (
     <View style={styles.container}>
-      <Text size="24" weight="600" style={styles.title}>
+      <Text size="20" weight="600" style={styles.title}>
         Recientemente añadido
       </Text>
       <View style={styles.itemsContainer}>
@@ -165,24 +168,24 @@ export default function HomeRecentlyLogged() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 28,
+    paddingTop: 32,
   },
   title: {
-    paddingBottom: 12,
+    paddingBottom: 16,
   },
   itemsContainer: {
-    gap: 8,
+    gap: 12,
   },
 
   itemCard: {
     flex: 1,
-    backgroundColor: getColor("background"),
-    padding: 16,
+    backgroundColor: getColor("white"),
+    padding: 20,
     borderRadius: 16,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: getColor("secondary"),
     ...getShadow("sm"),
-    gap: 8,
+    gap: 16,
   },
   itemHeaderContainer: {
     flexDirection: "row",
@@ -196,13 +199,9 @@ const styles = StyleSheet.create({
   itemMacroContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
+    gap: 4,
   },
   itemMacroIcon: {
-    backgroundColor: getColor("secondary", 0.5),
-    height: 24,
-    width: 24,
-    borderRadius: 999,
     alignItems: "center",
     justifyContent: "center",
   },
