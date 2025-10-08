@@ -106,13 +106,13 @@ export default function Button({
     },
     base: {
       container: {
-        borderRadius: 0,
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-        paddingHorizontal: 0,
+        borderRadius: undefined,
+        justifyContent: undefined,
+        alignItems: undefined,
+        paddingHorizontal: undefined,
       },
       text: {
-        fontWeight: 400,
+        fontWeight: undefined,
       },
     },
   };
