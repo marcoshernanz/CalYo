@@ -140,7 +140,7 @@ function LogItem({ item }: LogItemProps) {
             <View style={styles.itemMacroIcon}>
               <macro.Icon size={14} />
             </View>
-            <Text>{macro.value}</Text>
+            <Text size="16">{macro.value}</Text>
           </View>
         ))}
       </View>
