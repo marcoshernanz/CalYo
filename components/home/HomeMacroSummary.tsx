@@ -89,7 +89,7 @@ function MacroCard({ macro, progress }: MacroCardProps) {
           strokeWidth={4}
         />
         <View style={styles.caloriesIconContainer}>
-          <macro.Icon size={18} />
+          <macro.Icon size={18} strokeWidth={2.25} />
         </View>
       </View>
     </View>
@@ -139,7 +139,7 @@ export default function HomeMacroSummary() {
             strokeWidth={5}
           />
           <View style={styles.caloriesIconContainer}>
-            <CalorieIcon size={20} />
+            <CalorieIcon size={20} strokeWidth={2.25} />
           </View>
         </View>
       </View>
