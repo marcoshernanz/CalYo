@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 4,
     paddingBottom: 16,
+    justifyContent: "space-between",
   },
   dayContainer: {
     alignItems: "center",
@@ -127,6 +128,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 8,
     borderRadius: 999,
+    maxWidth: 48,
   },
   dayProgressContainer: {
     width: 34,
