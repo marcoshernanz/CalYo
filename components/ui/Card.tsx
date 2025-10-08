@@ -16,7 +16,7 @@ export default function Card({ children, style, ...props }: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: getColor("white"),
+    backgroundColor: getColor("base"),
     padding: 20,
     borderRadius: 16,
     borderWidth: StyleSheet.hairlineWidth,
