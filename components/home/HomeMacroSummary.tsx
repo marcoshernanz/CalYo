@@ -99,7 +99,7 @@ function MacroCard({ macro, progress }: MacroCardProps) {
 export default function HomeMacroSummary() {
   const progress = useSharedValue(0);
   const progressCalories = useDerivedValue(
-    () => (calories.value / calories.value) * progress.value
+    () => (calories.value / calories.target) * progress.value
   );
 
   useEffect(() => {
