@@ -1,6 +1,10 @@
 import { StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import { format } from "date-fns";
+import getColor from "@/lib/ui/getColor";
+import getShadow from "@/lib/ui/getShadow";
+import { DrumstickIcon, FlameIcon, LucideWheat } from "lucide-react-native";
+import { IconAvocado } from "@tabler/icons-react-native";
 
 type Item = {
   name: string;
@@ -99,14 +103,49 @@ interface LogItemProps {
 }
 
 function LogItem({ item }: LogItemProps) {
+  const macros = [
+    {
+      value: item.calories,
+      Icon: FlameIcon,
+      color: getColor("foreground"),
+    },
+    {
+      value: item.carbs,
+      Icon: LucideWheat,
+      color: getColor("carb"),
+    },
+    {
+      value: item.protein,
+      Icon: DrumstickIcon,
+      color: getColor("protein"),
+    },
+    {
+      value: item.fat,
+      Icon: IconAvocado,
+      color: getColor("fat"),
+    },
+  ];
+
   return (
-    <View>
-      <Text>{item.name}</Text>
-      <Text>{item.calories}</Text>
-      <Text>{item.carbs}</Text>
-      <Text>{item.protein}</Text>
-      <Text>{item.fat}</Text>
-      <Text>{format(item.date, "HH:mm")}</Text>
+    <View style={styles.itemCard}>
+      <View style={styles.itemHeaderContainer}>
+        <Text size="16" weight="600">
+          {item.name}
+        </Text>
+        <Text size="14" weight="500">
+          {format(item.date, "HH:mm")}
+        </Text>
+      </View>
+      <View style={styles.itemDetailsContainer}>
+        {macros.map((macro, index) => (
+          <View key={`macro-${index}`} style={styles.itemMacroContainer}>
+            <View style={styles.itemMacroIcon}>
+              <macro.Icon size={14} color={macro.color} />
+            </View>
+            <Text>{macro.value}</Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 }
@@ -114,12 +153,14 @@ function LogItem({ item }: LogItemProps) {
 export default function HomeRecentlyLogged() {
   return (
     <View style={styles.container}>
-      <Text size="24" weight="600">
+      <Text size="24" weight="600" style={styles.title}>
         Recientemente añadido
       </Text>
-      {data.map((item, index) => (
-        <LogItem key={`log-item-${index}-${item.name}`} item={item} />
-      ))}
+      <View style={styles.itemsContainer}>
+        {data.map((item, index) => (
+          <LogItem key={`log-item-${index}-${item.name}`} item={item} />
+        ))}
+      </View>
     </View>
   );
 }
@@ -127,5 +168,44 @@ export default function HomeRecentlyLogged() {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 28,
+  },
+  title: {
+    paddingBottom: 12,
+  },
+  itemsContainer: {
+    gap: 8,
+  },
+
+  itemCard: {
+    flex: 1,
+    backgroundColor: getColor("background"),
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: getColor("secondary"),
+    ...getShadow("sm"),
+    gap: 8,
+  },
+  itemHeaderContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  itemDetailsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+  },
+  itemMacroContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  itemMacroIcon: {
+    backgroundColor: getColor("secondary", 0.5),
+    height: 24,
+    width: 24,
+    borderRadius: 999,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
