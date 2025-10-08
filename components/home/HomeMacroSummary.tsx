@@ -30,7 +30,7 @@ const macros: Macro[] = [
     value: 250,
     target: 300,
     Icon: LucideWheat,
-    color: getColor("carbs"),
+    color: getColor("carb"),
   },
   {
     name: "Proteína",
@@ -44,7 +44,7 @@ const macros: Macro[] = [
     value: 70,
     target: 100,
     Icon: IconAvocado,
-    color: getColor("fats"),
+    color: getColor("fat"),
   },
 ];
 

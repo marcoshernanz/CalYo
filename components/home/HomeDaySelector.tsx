@@ -78,7 +78,7 @@ function DaySelectorItem({ day }: DaySelectorItemProps) {
         </Text>
         <CircularProgress
           progress={[progressCarbs, progressProtein, progressFat]}
-          color={[getColor("carbs"), getColor("protein"), getColor("fats")]}
+          color={[getColor("carb"), getColor("protein"), getColor("fat")]}
           trackColor={getColor("mutedForeground", 0.2)}
           strokeWidth={3}
         />
