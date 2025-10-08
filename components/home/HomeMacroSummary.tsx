@@ -10,6 +10,19 @@ import getColor from "@/lib/ui/getColor";
 import CircularProgress from "../ui/CircularProgress";
 import { IconAvocado } from "@tabler/icons-react-native";
 import getShadow from "../../lib/ui/getShadow";
+import {
+  cancelAnimation,
+  SharedValue,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import { useEffect } from "react";
+
+const calories = {
+  value: 1532,
+  target: 2000,
+};
 
 const macros: Macro[] = [
   {
@@ -45,9 +58,14 @@ type Macro = {
 
 interface MacroCardProps {
   macro: Macro;
+  progress: SharedValue<number>;
 }
 
-function MacroCard({ macro }: MacroCardProps) {
+function MacroCard({ macro, progress }: MacroCardProps) {
+  const progressMacro = useDerivedValue(
+    () => progress.value * (macro.value / macro.target)
+  );
+
   return (
     <View style={styles.macroCard}>
       <Text size="12" weight="600" color={getColor("mutedForeground")}>
@@ -68,7 +86,7 @@ function MacroCard({ macro }: MacroCardProps) {
       </View>
       <View style={styles.macroCardProgressContainer}>
         <CircularProgress
-          progress={macro.value / macro.target}
+          progress={progressMacro}
           color={macro.color}
           strokeWidth={4}
         />
@@ -81,6 +99,20 @@ function MacroCard({ macro }: MacroCardProps) {
 }
 
 export default function HomeMacroSummary() {
+  const progress = useSharedValue(0);
+  const progressCalories = useDerivedValue(
+    () => (calories.value / calories.value) * progress.value
+  );
+
+  useEffect(() => {
+    progress.value = withTiming(1, { duration: 1500 });
+
+    return () => {
+      cancelAnimation(progress);
+      progress.value = 0;
+    };
+  }, [progress]);
+
   return (
     <View style={styles.container}>
       <View style={styles.caloriesContainer}>
@@ -104,7 +136,7 @@ export default function HomeMacroSummary() {
         </View>
         <View style={styles.caloriesProgressContainer}>
           <CircularProgress
-            progress={1532 / 2000}
+            progress={progressCalories}
             color={getColor("foreground")}
             strokeWidth={5}
           />
@@ -115,7 +147,11 @@ export default function HomeMacroSummary() {
       </View>
       <View style={styles.cardsContainer}>
         {macros.map((macro) => (
-          <MacroCard key={`macro-${macro.name}`} macro={macro} />
+          <MacroCard
+            key={`macro-${macro.name}`}
+            macro={macro}
+            progress={progress}
+          />
         ))}
       </View>
     </View>
