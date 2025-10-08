@@ -1,6 +1,7 @@
 import HomeDaySelector from "@/components/home/HomeDaySelector";
 import HomeHeader from "@/components/home/HomeHeader";
 import HomeMacroSummary from "@/components/home/HomeMacroSummary";
+import HomeRecentlyLogged from "@/components/home/HomeRecentlyLogged";
 import SafeArea from "@/components/ui/SafeArea";
 import getColor from "@/lib/ui/getColor";
 import { LinearGradient } from "expo-linear-gradient";
@@ -19,6 +20,7 @@ export default function HomeScreen() {
       <HomeHeader />
       <HomeDaySelector />
       <HomeMacroSummary />
+      <HomeRecentlyLogged />
     </SafeArea>
   );
 }
