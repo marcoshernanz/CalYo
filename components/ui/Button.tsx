@@ -16,8 +16,8 @@ import Animated, {
 } from "react-native-reanimated";
 import Text, { TextProps } from "./Text";
 
-type Variant = "primary" | "secondary" | "ghost" | "outline" | "text";
-type Size = "sm" | "md" | "lg" | "xl";
+type Variant = "primary" | "secondary" | "ghost" | "outline" | "text" | "base";
+type Size = "sm" | "md" | "lg" | "xl" | "base";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -104,6 +104,17 @@ export default function Button({
         borderBottomColor: getColor("foreground"),
       },
     },
+    base: {
+      container: {
+        borderRadius: 0,
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+        paddingHorizontal: 0,
+      },
+      text: {
+        fontWeight: 400,
+      },
+    },
   };
 
   const sizeStyles: Record<
@@ -139,6 +150,7 @@ export default function Button({
       },
     },
     xl: {},
+    base: {},
   };
 
   const variantStyle = variantStyles[variant] ?? {};
