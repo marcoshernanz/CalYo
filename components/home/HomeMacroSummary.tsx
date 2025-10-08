@@ -1,14 +1,8 @@
-import {
-  DrumstickIcon,
-  FlameIcon,
-  LucideIcon,
-  LucideWheat,
-} from "lucide-react-native";
+import { FlameIcon, LucideIcon } from "lucide-react-native";
 import { StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import getColor from "@/lib/ui/getColor";
 import CircularProgress from "../ui/CircularProgress";
-import { IconAvocado } from "@tabler/icons-react-native";
 import getShadow from "../../lib/ui/getShadow";
 import {
   cancelAnimation,
@@ -18,6 +12,10 @@ import {
   withTiming,
 } from "react-native-reanimated";
 import { useEffect } from "react";
+import FatIcon from "../icons/macros/FatIcon";
+import CarbIcon from "../icons/macros/CarbIcon";
+import ProteinIcon from "../icons/macros/ProteinIcon";
+import CalorieIcon from "../icons/macros/CalorieIcon";
 
 const calories = {
   value: 1532,
@@ -29,21 +27,21 @@ const macros: Macro[] = [
     name: "Hidratos",
     value: 250,
     target: 300,
-    Icon: LucideWheat,
+    Icon: CarbIcon,
     color: getColor("carb"),
   },
   {
     name: "Proteína",
     value: 150,
     target: 200,
-    Icon: DrumstickIcon,
+    Icon: ProteinIcon,
     color: getColor("protein"),
   },
   {
     name: "Grasas",
     value: 70,
     target: 100,
-    Icon: IconAvocado,
+    Icon: FatIcon,
     color: getColor("fat"),
   },
 ];
@@ -53,7 +51,6 @@ type Macro = {
   value: number;
   target: number;
   Icon: LucideIcon;
-  color: string;
 };
 
 interface MacroCardProps {
@@ -91,7 +88,7 @@ function MacroCard({ macro, progress }: MacroCardProps) {
           strokeWidth={4}
         />
         <View style={styles.caloriesIconContainer}>
-          <macro.Icon size={18} color={macro.color} />
+          <macro.Icon size={18} />
         </View>
       </View>
     </View>
@@ -141,7 +138,7 @@ export default function HomeMacroSummary() {
             strokeWidth={5}
           />
           <View style={styles.caloriesIconContainer}>
-            <FlameIcon size={20} />
+            <CalorieIcon size={20} />
           </View>
         </View>
       </View>

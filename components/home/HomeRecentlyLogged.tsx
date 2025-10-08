@@ -3,8 +3,10 @@ import Text from "../ui/Text";
 import { format } from "date-fns";
 import getColor from "@/lib/ui/getColor";
 import getShadow from "@/lib/ui/getShadow";
-import { DrumstickIcon, FlameIcon, LucideWheat } from "lucide-react-native";
-import { IconAvocado } from "@tabler/icons-react-native";
+import CalorieIcon from "../icons/macros/CalorieIcon";
+import CarbIcon from "../icons/macros/CarbIcon";
+import ProteinIcon from "../icons/macros/ProteinIcon";
+import FatIcon from "../icons/macros/FatIcon";
 
 type Item = {
   name: string;
@@ -106,23 +108,19 @@ function LogItem({ item }: LogItemProps) {
   const macros = [
     {
       value: item.calories,
-      Icon: FlameIcon,
-      color: getColor("foreground"),
+      Icon: CalorieIcon,
     },
     {
       value: item.carbs,
-      Icon: LucideWheat,
-      color: getColor("carb"),
+      Icon: CarbIcon,
     },
     {
       value: item.protein,
-      Icon: DrumstickIcon,
-      color: getColor("protein"),
+      Icon: ProteinIcon,
     },
     {
       value: item.fat,
-      Icon: IconAvocado,
-      color: getColor("fat"),
+      Icon: FatIcon,
     },
   ];
 
