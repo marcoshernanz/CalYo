@@ -16,6 +16,7 @@ import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
 import CalorieIcon from "../icons/macros/CalorieIcon";
 import Card from "../ui/Card";
+import Button from "../ui/Button";
 
 const calories = {
   value: 1532,
@@ -65,34 +66,36 @@ function MacroCard({ macro, progress }: MacroCardProps) {
   );
 
   return (
-    <Card style={styles.macroCard}>
-      <Text size="12" weight="600" color={getColor("mutedForeground")}>
-        {macro.name}
-      </Text>
-      <View style={styles.macroCardValueContainer}>
-        <Text size="18" weight="600">
-          {macro.value}
+    <Button variant="base" size="base" style={{ flex: 1 }}>
+      <Card style={styles.macroCard}>
+        <Text size="12" weight="600" color={getColor("mutedForeground")}>
+          {macro.name}
         </Text>
-        <Text
-          size="10"
-          color={getColor("mutedForeground")}
-          style={styles.macroCardTargetText}
-        >
-          {" "}
-          / {macro.target}
-        </Text>
-      </View>
-      <View style={styles.macroCardProgressContainer}>
-        <CircularProgress
-          progress={progressMacro}
-          color={macro.color}
-          strokeWidth={4}
-        />
-        <View style={styles.caloriesIconContainer}>
-          <macro.Icon size={18} strokeWidth={2.25} />
+        <View style={styles.macroCardValueContainer}>
+          <Text size="18" weight="600">
+            {macro.value}
+          </Text>
+          <Text
+            size="10"
+            color={getColor("mutedForeground")}
+            style={styles.macroCardTargetText}
+          >
+            {" "}
+            / {macro.target}
+          </Text>
         </View>
-      </View>
-    </Card>
+        <View style={styles.macroCardProgressContainer}>
+          <CircularProgress
+            progress={progressMacro}
+            color={macro.color}
+            strokeWidth={4}
+          />
+          <View style={styles.caloriesIconContainer}>
+            <macro.Icon size={18} strokeWidth={2.25} />
+          </View>
+        </View>
+      </Card>
+    </Button>
   );
 }
 
@@ -113,36 +116,38 @@ export default function HomeMacroSummary() {
 
   return (
     <View style={styles.container}>
-      <Card style={styles.caloriesCard}>
-        <View style={styles.caloriesTextContainer}>
-          <Text size="12" weight="600" color={getColor("mutedForeground")}>
-            Calorías
-          </Text>
-          <View style={styles.caloriesValueContainer}>
-            <Text size="40" weight="600">
-              1532
+      <Button variant="base" size="base">
+        <Card style={styles.caloriesCard}>
+          <View style={styles.caloriesTextContainer}>
+            <Text size="12" weight="600" color={getColor("mutedForeground")}>
+              Calorías
             </Text>
-            <Text
-              size="20"
-              color={getColor("mutedForeground")}
-              style={styles.caloriesTargetText}
-            >
-              {" "}
-              / 2000
-            </Text>
+            <View style={styles.caloriesValueContainer}>
+              <Text size="40" weight="600">
+                1532
+              </Text>
+              <Text
+                size="20"
+                color={getColor("mutedForeground")}
+                style={styles.caloriesTargetText}
+              >
+                {" "}
+                / 2000
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.caloriesProgressContainer}>
-          <CircularProgress
-            progress={progressCalories}
-            color={getColor("foreground")}
-            strokeWidth={5}
-          />
-          <View style={styles.caloriesIconContainer}>
-            <CalorieIcon size={20} strokeWidth={2.25} />
+          <View style={styles.caloriesProgressContainer}>
+            <CircularProgress
+              progress={progressCalories}
+              color={getColor("foreground")}
+              strokeWidth={5}
+            />
+            <View style={styles.caloriesIconContainer}>
+              <CalorieIcon size={20} strokeWidth={2.25} />
+            </View>
           </View>
-        </View>
-      </Card>
+        </Card>
+      </Button>
       <View style={styles.cardsContainer}>
         {macros.map((macro) => (
           <MacroCard
