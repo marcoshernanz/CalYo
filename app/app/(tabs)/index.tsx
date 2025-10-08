@@ -5,23 +5,29 @@ import HomeRecentlyLogged from "@/components/home/HomeRecentlyLogged";
 import SafeArea from "@/components/ui/SafeArea";
 import getColor from "@/lib/ui/getColor";
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, useWindowDimensions } from "react-native";
+import { ScrollView, StyleSheet, useWindowDimensions } from "react-native";
 
 export default function HomeScreen() {
   const dimensions = useWindowDimensions();
 
   return (
-    <SafeArea>
-      <LinearGradient
-        colors={[getColor("primaryLight", 0.75), getColor("background")]}
-        style={[styles.gradient, { height: dimensions.height * 0.75 }]}
-      />
+    <ScrollView
+      overScrollMode="never"
+      bounces={false}
+      showsVerticalScrollIndicator={false}
+    >
+      <SafeArea>
+        <LinearGradient
+          colors={[getColor("primaryLight", 0.75), getColor("background")]}
+          style={[styles.gradient, { height: dimensions.height * 0.75 }]}
+        />
 
-      <HomeHeader />
-      <HomeDaySelector />
-      <HomeMacroSummary />
-      <HomeRecentlyLogged />
-    </SafeArea>
+        <HomeHeader />
+        <HomeDaySelector />
+        <HomeMacroSummary />
+        <HomeRecentlyLogged />
+      </SafeArea>
+    </ScrollView>
   );
 }
 

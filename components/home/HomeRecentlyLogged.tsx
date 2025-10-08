@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import { format } from "date-fns";
 
@@ -117,12 +117,9 @@ export default function HomeRecentlyLogged() {
       <Text size="24" weight="600">
         Recientemente añadido
       </Text>
-      <FlatList
-        data={data}
-        renderItem={({ item, index }) => (
-          <LogItem key={`log-item-${index}-${item.name}`} item={item} />
-        )}
-      />
+      {data.map((item, index) => (
+        <LogItem key={`log-item-${index}-${item.name}`} item={item} />
+      ))}
     </View>
   );
 }

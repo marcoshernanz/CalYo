@@ -1,3 +1,5 @@
+- [ ] Home scroll view bounce
+
 - [ ] Animate home macro summary
 - [ ] Text font weight prop
 - [ ] SafeArea padding vertical
