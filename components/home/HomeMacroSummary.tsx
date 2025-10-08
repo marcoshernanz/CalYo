@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 999,
-    backgroundColor: getColor("secondary", 0.5),
+    backgroundColor: getColor("muted"),
   },
   cardsContainer: {
     flexDirection: "row",
@@ -221,6 +221,6 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 999,
-    backgroundColor: getColor("secondary", 0.5),
+    backgroundColor: getColor("muted"),
   },
 });

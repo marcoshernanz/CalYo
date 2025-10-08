@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
   },
   recommendationsContainer: {
     width: "100%",
-    backgroundColor: getColor("secondary", 0.5),
+    backgroundColor: getColor("muted"),
     padding: 20,
     borderRadius: 16,
     gap: 10,
@@ -341,6 +341,6 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 999,
-    backgroundColor: getColor("secondary", 0.6),
+    backgroundColor: getColor("muted"),
   },
 });

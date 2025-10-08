@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   recommendationsContainer: {
-    backgroundColor: getColor("secondary", 0.5),
+    backgroundColor: getColor("muted"),
     width: "100%",
     padding: 20,
     borderRadius: 16,
