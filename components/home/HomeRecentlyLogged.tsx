@@ -138,7 +138,7 @@ function LogItem({ item }: LogItemProps) {
         {macros.map((macro, index) => (
           <View key={`macro-${index}`} style={styles.itemMacroContainer}>
             <View style={styles.itemMacroIcon}>
-              <macro.Icon size={14} color={macro.color} />
+              <macro.Icon size={14} />
             </View>
             <Text>{macro.value}</Text>
           </View>

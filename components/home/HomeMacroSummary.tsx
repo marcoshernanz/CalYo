@@ -1,4 +1,4 @@
-import { FlameIcon, LucideIcon } from "lucide-react-native";
+import { type LucideProps } from "lucide-react-native";
 import { StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import getColor from "@/lib/ui/getColor";
@@ -11,7 +11,7 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useEffect } from "react";
+import { useEffect, type ComponentType } from "react";
 import FatIcon from "../icons/macros/FatIcon";
 import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
@@ -20,6 +20,14 @@ import CalorieIcon from "../icons/macros/CalorieIcon";
 const calories = {
   value: 1532,
   target: 2000,
+};
+
+type Macro = {
+  name: string;
+  value: number;
+  target: number;
+  Icon: ComponentType<LucideProps>;
+  color: string;
 };
 
 const macros: Macro[] = [
@@ -45,13 +53,6 @@ const macros: Macro[] = [
     color: getColor("fat"),
   },
 ];
-
-type Macro = {
-  name: string;
-  value: number;
-  target: number;
-  Icon: LucideIcon;
-};
 
 interface MacroCardProps {
   macro: Macro;
