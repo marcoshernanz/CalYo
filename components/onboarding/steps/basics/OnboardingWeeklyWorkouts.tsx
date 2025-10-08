@@ -1,8 +1,8 @@
-import Dot3Icon from "@/components/icons/Dot3Icon";
-import Dot1Icon from "@/components/icons/Dot1Icon";
+import Dot3Icon from "@/components/icons/dots/Dot3Icon";
+import Dot1Icon from "@/components/icons/dots/Dot1Icon";
 import Select, { SelectOption } from "@/components/ui/Select";
 import { useOnboardingContext } from "@/context/OnboardingContext";
-import Dot6Icon from "@/components/icons/Dot6Icon";
+import Dot6Icon from "@/components/icons/dots/Dot6Icon";
 import OnboardingStep from "../../OnboardingStep";
 
 const options: SelectOption[] = [
