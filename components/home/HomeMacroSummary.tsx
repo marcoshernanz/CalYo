@@ -218,6 +218,7 @@ const styles = StyleSheet.create({
     width: 80,
     alignItems: "center",
     justifyContent: "center",
+    alignSelf: "center",
   },
   macroCardIconContainer: {
     position: "absolute",
