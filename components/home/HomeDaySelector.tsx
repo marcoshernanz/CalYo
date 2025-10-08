@@ -12,6 +12,8 @@ import {
   withTiming,
 } from "react-native-reanimated";
 import getShadow from "@/lib/ui/getShadow";
+import { useAppStateContext } from "@/context/AppStateContext";
+import Button from "../ui/Button";
 
 type DayData = {
   id: string;
@@ -24,15 +26,18 @@ type DayData = {
 
 interface DaySelectorItemProps {
   day: DayData;
-  isSelected: boolean;
-  isToday: boolean;
 }
 
-function DaySelectorItem({ day, isSelected, isToday }: DaySelectorItemProps) {
+function DaySelectorItem({ day }: DaySelectorItemProps) {
   const progress = useSharedValue(0);
   const progressCarbs = useDerivedValue(() => day.carbs * progress.value);
   const progressProtein = useDerivedValue(() => day.protein * progress.value);
   const progressFat = useDerivedValue(() => day.fat * progress.value);
+
+  const { selectedDay, setSelectedDay } = useAppStateContext();
+
+  const isSelected = day.id === format(selectedDay, "yyyy-MM-dd");
+  const isToday = day.id === format(new Date(), "yyyy-MM-dd");
 
   useEffect(() => {
     progress.value = withTiming(1, { duration: 1500 });
@@ -44,7 +49,9 @@ function DaySelectorItem({ day, isSelected, isToday }: DaySelectorItemProps) {
   }, [progress]);
 
   return (
-    <View
+    <Button
+      variant="base"
+      size="base"
       style={[
         styles.dayContainer,
         {
@@ -60,6 +67,7 @@ function DaySelectorItem({ day, isSelected, isToday }: DaySelectorItemProps) {
           borderColor: getColor("secondary"),
         },
       ]}
+      onPress={() => setSelectedDay(new Date(day.id))}
     >
       <Text size="14" weight="600">
         {day.letter}
@@ -75,14 +83,11 @@ function DaySelectorItem({ day, isSelected, isToday }: DaySelectorItemProps) {
           strokeWidth={3}
         />
       </View>
-    </View>
+    </Button>
   );
 }
 
 export default function HomeDaySelector() {
-  const selectedDate = format(new Date(), "yyyy-MM-dd");
-  const today = format(new Date(), "yyyy-MM-dd");
-
   const weekDays = useMemo(() => {
     const start = startOfWeek(new Date(), { weekStartsOn: 1 });
     const letters = ["L", "M", "X", "J", "V", "S", "D"];
@@ -104,12 +109,7 @@ export default function HomeDaySelector() {
   return (
     <View style={styles.container}>
       {weekDays.map((day) => (
-        <DaySelectorItem
-          key={day.id}
-          day={day}
-          isSelected={day.id === selectedDate}
-          isToday={day.id === today}
-        />
+        <DaySelectorItem key={day.id} day={day} />
       ))}
     </View>
   );
