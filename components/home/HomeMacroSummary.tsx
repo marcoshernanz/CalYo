@@ -16,6 +16,7 @@ import FatIcon from "../icons/macros/FatIcon";
 import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
 import CalorieIcon from "../icons/macros/CalorieIcon";
+import Card from "../ui/Card";
 
 const calories = {
   value: 1532,
@@ -65,7 +66,7 @@ function MacroCard({ macro, progress }: MacroCardProps) {
   );
 
   return (
-    <View style={styles.macroCard}>
+    <Card style={styles.macroCard}>
       <Text size="12" weight="600" color={getColor("mutedForeground")}>
         {macro.name}
       </Text>
@@ -92,7 +93,7 @@ function MacroCard({ macro, progress }: MacroCardProps) {
           <macro.Icon size={18} strokeWidth={2.25} />
         </View>
       </View>
-    </View>
+    </Card>
   );
 }
 
@@ -113,7 +114,7 @@ export default function HomeMacroSummary() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.caloriesContainer}>
+      <View style={styles.caloriesCard}>
         <View style={styles.caloriesTextContainer}>
           <Text size="12" weight="600" color={getColor("mutedForeground")}>
             Calorías
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
   container: {
     gap: 12,
   },
-  caloriesContainer: {
+  caloriesCard: {
     backgroundColor: getColor("background"),
     padding: 20,
     borderRadius: 16,
@@ -201,12 +202,7 @@ const styles = StyleSheet.create({
 
   macroCard: {
     flex: 1,
-    backgroundColor: getColor("background"),
     padding: 16,
-    borderRadius: 16,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: getColor("secondary"),
-    ...getShadow("sm"),
   },
   macroCardValueContainer: {
     flexDirection: "row",
