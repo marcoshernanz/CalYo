@@ -3,7 +3,6 @@ import { StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import getColor from "@/lib/ui/getColor";
 import CircularProgress from "../ui/CircularProgress";
-import getShadow from "../../lib/ui/getShadow";
 import {
   cancelAnimation,
   SharedValue,
@@ -114,7 +113,7 @@ export default function HomeMacroSummary() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.caloriesCard}>
+      <Card style={styles.caloriesCard}>
         <View style={styles.caloriesTextContainer}>
           <Text size="12" weight="600" color={getColor("mutedForeground")}>
             Calorías
@@ -143,7 +142,7 @@ export default function HomeMacroSummary() {
             <CalorieIcon size={20} strokeWidth={2.25} />
           </View>
         </View>
-      </View>
+      </Card>
       <View style={styles.cardsContainer}>
         {macros.map((macro) => (
           <MacroCard
@@ -163,14 +162,9 @@ const styles = StyleSheet.create({
   },
   caloriesCard: {
     backgroundColor: getColor("background"),
-    padding: 20,
-    borderRadius: 16,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: getColor("secondary"),
-    ...getShadow("sm"),
   },
   caloriesTextContainer: {},
   caloriesValueContainer: {
@@ -201,6 +195,7 @@ const styles = StyleSheet.create({
   },
 
   macroCard: {
+    backgroundColor: getColor("background"),
     flex: 1,
     padding: 16,
   },
