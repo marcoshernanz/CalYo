@@ -4,6 +4,7 @@ import getColor from "@/lib/ui/getColor";
 import Text from "../ui/Text";
 import { FlameIcon } from "lucide-react-native";
 import Card from "../ui/Card";
+import Button from "../ui/Button";
 
 export default function HomeHeader() {
   return (
@@ -14,14 +15,16 @@ export default function HomeHeader() {
           CalYo
         </Text>
       </View>
-      <Card style={styles.streakContainer}>
-        <FlameIcon
-          size={22}
-          color={getColor("orange")}
-          fill={getColor("orange")}
-        />
-        <Text weight="600">12</Text>
-      </Card>
+      <Button variant="base" size="base">
+        <Card style={styles.streakContainer}>
+          <FlameIcon
+            size={22}
+            color={getColor("orange")}
+            fill={getColor("orange")}
+          />
+          <Text weight="600">12</Text>
+        </Card>
+      </Button>
     </View>
   );
 }
