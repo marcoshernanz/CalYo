@@ -15,6 +15,7 @@ import type {
 } from "convex/server";
 import type * as ResendOTP from "../ResendOTP.js";
 import type * as auth from "../auth.js";
+import type * as fdc_ingest from "../fdc/ingest.js";
 import type * as http from "../http.js";
 
 /**
@@ -28,6 +29,7 @@ import type * as http from "../http.js";
 declare const fullApi: ApiFromModules<{
   ResendOTP: typeof ResendOTP;
   auth: typeof auth;
+  "fdc/ingest": typeof fdc_ingest;
   http: typeof http;
 }>;
 export declare const api: FilterApi<
