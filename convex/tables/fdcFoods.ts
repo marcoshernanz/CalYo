@@ -7,9 +7,6 @@ export const fdcFoods = defineTable({
   description: v.object({
     en: v.string(),
   }),
-  category: v.object({
-    en: v.string(),
-  }),
   nutrients: v.object({
     calories: v.number(),
     protein: v.number(),
