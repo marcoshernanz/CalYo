@@ -40,6 +40,48 @@ function mapNutrients(f: any) {
   return { calories, protein, fat, carbs };
 }
 
+// export const insertFdcFoods = mutation({
+//   args: {
+//     docs: v.array(
+//       v.object({
+//         fdcId: v.number(),
+//         dataType: v.union(
+//           v.literal("Foundation"),
+//           v.literal("SR Legacy"),
+//           v.literal("Survey")
+//         ),
+//         description: v.object({ en: v.string() }),
+//         category: v.object({ en: v.string() }),
+//         nutrients: v.object({
+//           calories: v.number(),
+//           protein: v.number(),
+//           fat: v.number(),
+//           carbs: v.number(),
+//         }),
+//       })
+//     ),
+//   },
+//   handler: async (ctx, { docs }) => {
+//     for (const d of docs) {
+//       await ctx.db.insert("fdcFoods", d);
+//     }
+//     return { inserted: docs.length };
+//   },
+// });
+
+// // Optional helper to clear all rows before a fresh import (avoids duplicates)
+// export const wipeFdcFoods = mutation({
+//   args: {},
+//   handler: async (ctx) => {
+//     let count = 0;
+//     for await (const row of ctx.db.query("fdcFoods")) {
+//       await ctx.db.delete(row._id);
+//       count++;
+//     }
+//     return { deleted: count };
+//   },
+// });
+
 const ingestFdcFoods = action({
   args: {
     // dataType: v.union(
@@ -81,7 +123,7 @@ const ingestFdcFoods = action({
       }
 
       const json = await response.json();
-      if (json.length === 0) break;
+      if (!json || !Array.isArray(json) || json.length === 0) break;
 
       data.push(...json);
 
@@ -131,46 +173,4 @@ const ingestFdcFoods = action({
   },
 });
 
-// export const insertFdcFoods = mutation({
-//   args: {
-//     docs: v.array(
-//       v.object({
-//         fdcId: v.number(),
-//         dataType: v.union(
-//           v.literal("Foundation"),
-//           v.literal("SR Legacy"),
-//           v.literal("Survey")
-//         ),
-//         description: v.object({ en: v.string() }),
-//         category: v.object({ en: v.string() }),
-//         nutrients: v.object({
-//           calories: v.number(),
-//           protein: v.number(),
-//           fat: v.number(),
-//           carbs: v.number(),
-//         }),
-//       })
-//     ),
-//   },
-//   handler: async (ctx, { docs }) => {
-//     for (const d of docs) {
-//       await ctx.db.insert("fdcFoods", d);
-//     }
-//     return { inserted: docs.length };
-//   },
-// });
-
-// // Optional helper to clear all rows before a fresh import (avoids duplicates)
-// export const wipeFdcFoods = mutation({
-//   args: {},
-//   handler: async (ctx) => {
-//     let count = 0;
-//     for await (const row of ctx.db.query("fdcFoods")) {
-//       await ctx.db.delete(row._id);
-//       count++;
-//     }
-//     return { deleted: count };
-//   },
-// });
-
-// export default ingestFdcFoods;
+export default ingestFdcFoods;

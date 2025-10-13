@@ -14,8 +14,8 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as ResendOTP from "../ResendOTP.js";
-import type * as actions_ingestFdcFoods from "../actions/ingestFdcFoods.js";
 import type * as auth from "../auth.js";
+import type * as fdc_ingestFdcFoods from "../fdc/ingestFdcFoods.js";
 import type * as http from "../http.js";
 import type * as tables_fdcFoods from "../tables/fdcFoods.js";
 
@@ -29,8 +29,8 @@ import type * as tables_fdcFoods from "../tables/fdcFoods.js";
  */
 declare const fullApi: ApiFromModules<{
   ResendOTP: typeof ResendOTP;
-  "actions/ingestFdcFoods": typeof actions_ingestFdcFoods;
   auth: typeof auth;
+  "fdc/ingestFdcFoods": typeof fdc_ingestFdcFoods;
   http: typeof http;
   "tables/fdcFoods": typeof tables_fdcFoods;
 }>;
