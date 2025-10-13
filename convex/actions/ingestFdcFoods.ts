@@ -1,5 +1,6 @@
 import { action, mutation } from "../_generated/server";
 import { v } from "convex/values";
+import tryCatch from "../../lib/utils/tryCatch";
 
 type DataTypeArg = "Foundation" | "SR Legacy" | "Survey";
 
@@ -61,26 +62,33 @@ const ingestFdcFoods = action({
     url.searchParams.set("api_key", apiKey);
 
     let pageNumber = 0;
-    let response: Response | null = null;
+    let data: any[] = [];
 
-    do {
-      try {
-        response = await fetch(url, {
+    while (true) {
+      const { data: response, error } = await tryCatch(
+        fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             dataType: ["Foundation"],
             pageNumber,
           }),
-        });
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error("Error fetching FDC data:", error);
-        }
+        })
+      );
+      if (error) {
+        console.error("Error fetching FDC data:", error);
+        break;
       }
 
+      const json = await response.json();
+      if (json.length === 0) break;
+
+      data.push(...json);
+
       pageNumber++;
-    } while (response && response.ok && response.body);
+    }
+
+    console.log(data);
 
     // let page = startPage;
     // let totalInserted = 0;
@@ -123,46 +131,46 @@ const ingestFdcFoods = action({
   },
 });
 
-export const insertFdcFoods = mutation({
-  args: {
-    docs: v.array(
-      v.object({
-        fdcId: v.number(),
-        dataType: v.union(
-          v.literal("Foundation"),
-          v.literal("SR Legacy"),
-          v.literal("Survey")
-        ),
-        description: v.object({ en: v.string() }),
-        category: v.object({ en: v.string() }),
-        nutrients: v.object({
-          calories: v.number(),
-          protein: v.number(),
-          fat: v.number(),
-          carbs: v.number(),
-        }),
-      })
-    ),
-  },
-  handler: async (ctx, { docs }) => {
-    for (const d of docs) {
-      await ctx.db.insert("fdcFoods", d);
-    }
-    return { inserted: docs.length };
-  },
-});
+// export const insertFdcFoods = mutation({
+//   args: {
+//     docs: v.array(
+//       v.object({
+//         fdcId: v.number(),
+//         dataType: v.union(
+//           v.literal("Foundation"),
+//           v.literal("SR Legacy"),
+//           v.literal("Survey")
+//         ),
+//         description: v.object({ en: v.string() }),
+//         category: v.object({ en: v.string() }),
+//         nutrients: v.object({
+//           calories: v.number(),
+//           protein: v.number(),
+//           fat: v.number(),
+//           carbs: v.number(),
+//         }),
+//       })
+//     ),
+//   },
+//   handler: async (ctx, { docs }) => {
+//     for (const d of docs) {
+//       await ctx.db.insert("fdcFoods", d);
+//     }
+//     return { inserted: docs.length };
+//   },
+// });
 
-// Optional helper to clear all rows before a fresh import (avoids duplicates)
-export const wipeFdcFoods = mutation({
-  args: {},
-  handler: async (ctx) => {
-    let count = 0;
-    for await (const row of ctx.db.query("fdcFoods")) {
-      await ctx.db.delete(row._id);
-      count++;
-    }
-    return { deleted: count };
-  },
-});
+// // Optional helper to clear all rows before a fresh import (avoids duplicates)
+// export const wipeFdcFoods = mutation({
+//   args: {},
+//   handler: async (ctx) => {
+//     let count = 0;
+//     for await (const row of ctx.db.query("fdcFoods")) {
+//       await ctx.db.delete(row._id);
+//       count++;
+//     }
+//     return { deleted: count };
+//   },
+// });
 
-export default ingestFdcFoods;
+// export default ingestFdcFoods;
