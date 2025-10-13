@@ -3,11 +3,7 @@ import { v } from "convex/values";
 
 export const fdcFoods = defineTable({
   fdcId: v.number(),
-  dataType: v.union(
-    v.literal("Foundation"),
-    v.literal("SR Legacy"),
-    v.literal("Survey")
-  ),
+  dataType: v.union(v.literal("Foundation")),
   description: v.object({
     en: v.string(),
   }),
