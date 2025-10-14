@@ -1,7 +1,7 @@
 import { defineTable } from "convex/server";
 import { v } from "convex/values";
 
-export const fdcFoods = defineTable({
+export const fdcFoodsFields = {
   fdcId: v.number(),
   dataType: v.union(v.literal("Foundation")),
   description: v.object({
@@ -13,4 +13,6 @@ export const fdcFoods = defineTable({
     fat: v.number(),
     carbs: v.number(),
   }),
-});
+};
+
+export const fdcFoods = defineTable(fdcFoodsFields);
