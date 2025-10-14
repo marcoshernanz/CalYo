@@ -8,7 +8,6 @@ export const fdcFoodsFields = {
     en: v.string(),
   }),
   nutrients: v.object({
-    calories: v.number(),
     protein: v.number(),
     fat: v.number(),
     carbs: v.number(),

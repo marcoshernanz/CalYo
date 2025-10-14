@@ -90,16 +90,9 @@ const ingestFdcFoods = action({
 
     const formattedData: Omit<Doc<"fdcFoods">, "_id" | "_creationTime">[] =
       parsed.data.map((item) => {
-        // protein: 203
-        // fat: 204, 298
-        // carbs: 205, 205.2, (sugar + starch + fiber)
-        // sugar: 269, 269.3
-        // starch: 209
-        // fiber: 291, 293
         const protein = resolveNutrient(item.foodNutrients, ["203"]) ?? 0;
         const fat = resolveNutrient(item.foodNutrients, ["204", "298"]) ?? 0;
         const carbs = resolveCarbs(item.foodNutrients) ?? 0;
-        const calories = 4 * protein + 4 * carbs + 9 * fat;
 
         return {
           fdcId: item.fdcId,
@@ -108,7 +101,6 @@ const ingestFdcFoods = action({
             en: item.description,
           },
           nutrients: {
-            calories,
             protein,
             fat,
             carbs,
