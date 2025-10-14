@@ -9,7 +9,7 @@ export const FdcFoodSchema = z.object({
     z.object({
       number: z.string(),
       name: z.string(),
-      amount: z.number(),
+      amount: z.number().nullish(),
       unitName: z.string(),
     })
   ),

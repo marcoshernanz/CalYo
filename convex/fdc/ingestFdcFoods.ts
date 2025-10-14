@@ -48,16 +48,18 @@ const ingestFdcFoods = action({
 
     type FoodNutrient = (typeof parsed.data)[number]["foodNutrients"][number];
 
-    const inGrams = (nutrient: FoodNutrient) => {
+    const inGrams = (nutrient: FoodNutrient): number | null => {
+      const amount = nutrient.amount ?? null;
+      if (amount === null) return null;
+
       if (nutrient.unitName === "G") {
-        return nutrient.amount;
+        return amount;
       } else if (nutrient.unitName === "MG") {
-        return nutrient.amount / 1000;
+        return amount / 1000;
       } else if (nutrient.unitName === "UG") {
-        return nutrient.amount / 1_000_000;
-      } else {
-        return nutrient.amount;
+        return amount / 1_000_000;
       }
+      return amount;
     };
 
     const resolveNutrient = (
@@ -67,7 +69,8 @@ const ingestFdcFoods = action({
       for (const code of codes) {
         const nutrient = nutrients.find((item) => item.number === code);
         if (nutrient) {
-          return inGrams(nutrient);
+          const amount = inGrams(nutrient);
+          if (amount !== null) return amount;
         }
       }
       return null;
