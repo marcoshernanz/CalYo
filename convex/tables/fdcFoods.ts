@@ -14,4 +14,4 @@ export const fdcFoodsFields = {
   }),
 };
 
-export const fdcFoods = defineTable(fdcFoodsFields);
+export const fdcFoods = defineTable(fdcFoodsFields).index("byFdcId", ["fdcId"]);
