@@ -136,7 +136,7 @@ async function importFoundationFoods(jsonPath: string) {
     const pipeline = chain([
       fs.createReadStream(jsonPath),
       parser(),
-      pick({ filter: "FoundationFoods" }),
+      pick({ filter: rootKey }),
       streamArray(),
     ]);
 
