@@ -11,7 +11,7 @@
     "eas:dev": "eas build --profile development",
     "eas:prod": "eas build --profile production",
     "lint": "expo lint",
-    "import:fdc": "ts-node scripts/importFdcData.ts"
+    "import:fdc": "npx ts-node scripts/importFdcData.ts"
   },
   "dependencies": {
     "@auth/core": "^0.37.0",
