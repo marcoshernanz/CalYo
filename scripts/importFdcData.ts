@@ -5,10 +5,10 @@ import fs from "node:fs";
 import { z } from "zod";
 import { chain } from "stream-chain";
 import { parser } from "stream-json";
-import { pick } from "stream-json/filters/Pick";
-import { streamArray } from "stream-json/streamers/StreamArray";
-import { WithoutSystemFields } from "convex/server";
-import { Doc } from "../convex/_generated/dataModel";
+import { pick } from "stream-json/filters/Pick.js";
+import { streamArray } from "stream-json/streamers/StreamArray.js";
+import type { WithoutSystemFields } from "convex/server";
+import type { Doc } from "../convex/_generated/dataModel";
 import { api } from "../convex/_generated/api";
 import { ConvexHttpClient } from "convex/browser";
 
@@ -93,7 +93,7 @@ async function importFoundationFoods(jsonPath: string) {
   const client = new ConvexHttpClient(convexUrl);
 
   const batchSize = 500;
-  let batch: any[] = [];
+  let batch: WithoutSystemFields<Doc<"fdcFoods">>[] = [];
   let totalInserted = 0;
   let totalUpdated = 0;
 
