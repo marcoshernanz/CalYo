@@ -86,7 +86,9 @@ function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"fdcFoods">> {
 async function importFoundationFoods(jsonPath: string) {
   const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL;
   if (!convexUrl) {
-    throw new Error("Set CONVEX_URL env var to your Convex deployment URL");
+    throw new Error(
+      "Set EXPO_PUBLIC_CONVEX_URL env var to your Convex deployment URL"
+    );
   }
   const client = new ConvexHttpClient(convexUrl);
 
