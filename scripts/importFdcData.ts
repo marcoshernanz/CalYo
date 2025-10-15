@@ -32,7 +32,8 @@ type FoodItem = z.infer<typeof FdcFood>;
 const nutrientTargets = {
   protein: [1003],
   fat: [1004, 1085],
-  carbs: [1005, 1050],
+  carbsByDiff: [1005],
+  carbsBySum: [1050],
   sugar: [1063],
   starch: [1009],
   fiber: [1079],
@@ -47,7 +48,7 @@ function getAmount(
     if (amount === undefined) continue;
 
     const id = nutrient.nutrient?.id;
-    if (id && target.includes(id)) {
+    if (id && target.includes(id) && amount >= 0) {
       return amount;
     }
   }
@@ -56,14 +57,17 @@ function getAmount(
 }
 
 function computeCarbs(nutrients: FoodItem["foodNutrients"]): number {
-  const carbs = getAmount(nutrients, nutrientTargets.carbs);
-  if (carbs !== undefined) return carbs;
+  const byDiff = getAmount(nutrients, nutrientTargets.carbsByDiff);
+  if (byDiff !== undefined) return byDiff;
+
+  const bySum = getAmount(nutrients, nutrientTargets.carbsBySum);
+  if (bySum !== undefined) return bySum;
 
   const sugar = getAmount(nutrients, nutrientTargets.sugar) ?? 0;
   const starch = getAmount(nutrients, nutrientTargets.starch) ?? 0;
   const fiber = getAmount(nutrients, nutrientTargets.fiber) ?? 0;
   const total = sugar + starch + fiber;
-  return total > 0 ? total : 0;
+  return Math.max(0, total);
 }
 
 function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"fdcFoods">> {
