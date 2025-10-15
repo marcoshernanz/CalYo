@@ -92,7 +92,7 @@ async function importFoundationFoods(jsonPath: string) {
   }
   const client = new ConvexHttpClient(convexUrl);
 
-  const batchSize = 100;
+  const batchSize = 500;
   let batch: any[] = [];
   let total = 0;
 
