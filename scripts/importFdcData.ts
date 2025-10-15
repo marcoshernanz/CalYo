@@ -1,6 +1,6 @@
 // npx ts-node scripts/importFdcData.ts data.json
 
-import "dotenv/config";
+import dotenv from "dotenv";
 import fs from "node:fs";
 import { z } from "zod";
 import { chain } from "stream-chain";
@@ -11,6 +11,8 @@ import { WithoutSystemFields } from "convex/server";
 import { Doc } from "../convex/_generated/dataModel";
 import { api } from "../convex/_generated/api";
 import { ConvexHttpClient } from "convex/browser";
+
+dotenv.config({ path: ".env.local" });
 
 const FdcFood = z.object({
   fdcId: z.number(),
