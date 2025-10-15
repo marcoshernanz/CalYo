@@ -26,6 +26,7 @@
     "@tabler/icons-react-native": "^3.34.1",
     "convex": "^1.27.3",
     "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
     "expo": "~53.0.22",
     "expo-auth-session": "~6.2.1",
     "expo-blur": "~14.1.5",
