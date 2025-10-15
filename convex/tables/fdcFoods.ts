@@ -3,7 +3,11 @@ import { v } from "convex/values";
 
 export const fdcFoodsFields = {
   fdcId: v.number(),
-  dataType: v.union(v.literal("Foundation")),
+  dataType: v.union(
+    v.literal("Foundation"),
+    v.literal("Legacy"),
+    v.literal("Survey")
+  ),
   description: v.object({
     en: v.string(),
   }),

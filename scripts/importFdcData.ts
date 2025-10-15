@@ -1,5 +1,3 @@
-// npx ts-node scripts/importFdcData.ts data.json
-
 import dotenv from "dotenv";
 import fs from "node:fs";
 import { z } from "zod";
@@ -17,6 +15,7 @@ dotenv.config({ path: ".env.local" });
 const FdcFood = z.object({
   fdcId: z.number(),
   description: z.string(),
+  dataType: z.enum(["Foundation", "SR Legacy", "Survey (FNDDS)"]),
   foodNutrients: z.array(
     z.object({
       amount: z.number().nullish(),
@@ -38,6 +37,12 @@ const nutrientTargets = {
   starch: [1009],
   fiber: [1079],
 };
+
+const dataTypeMap = {
+  Foundation: "Foundation",
+  "SR Legacy": "Legacy",
+  "Survey (FNDDS)": "Survey",
+} as const;
 
 function getAmount(
   nutrients: FoodItem["foodNutrients"],
@@ -77,7 +82,7 @@ function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"fdcFoods">> {
 
   return {
     fdcId: item.fdcId,
-    dataType: "Foundation" as const,
+    dataType: dataTypeMap[item.dataType],
     description: { en: item.description },
     nutrients: {
       protein,
@@ -85,6 +90,27 @@ function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"fdcFoods">> {
       carbs,
     },
   };
+}
+
+async function detectRootKey(jsonPath: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const p = chain([fs.createReadStream(jsonPath), parser()]);
+    let found = false;
+
+    p.on("data", (token: any) => {
+      if (!found && token?.name === "keyValue") {
+        found = true;
+        resolve(token.value as string);
+        p.destroy();
+      }
+    });
+    p.on("error", reject);
+    p.on("end", () => {
+      if (!found) {
+        reject(new Error("No top-level key found in JSON"));
+      }
+    });
+  });
 }
 
 async function importFoundationFoods(jsonPath: string) {
@@ -96,12 +122,15 @@ async function importFoundationFoods(jsonPath: string) {
   }
   const client = new ConvexHttpClient(convexUrl);
 
+  const rootKey = await detectRootKey(jsonPath);
+  const label = `import:${rootKey}`;
+
   const batchSize = 500;
   let batch: WithoutSystemFields<Doc<"fdcFoods">>[] = [];
   let totalInserted = 0;
   let totalUpdated = 0;
 
-  console.time("import:FoundationFoods");
+  console.time(label);
 
   await new Promise<void>((resolve, reject) => {
     const pipeline = chain([
@@ -155,9 +184,10 @@ async function importFoundationFoods(jsonPath: string) {
           totalUpdated += updated;
           batch = [];
         }
-        console.timeEnd("import:FoundationFoods");
-        console.log(`Done. Inserted ${totalInserted} Foundation foods.`);
-        console.log(`Done. Updated ${totalUpdated} Foundation foods.`);
+        console.timeEnd(label);
+        console.log(
+          `Done. Inserted ${totalInserted}, updated ${totalUpdated} (${rootKey}).`
+        );
         resolve();
       } catch (e) {
         reject(e);
