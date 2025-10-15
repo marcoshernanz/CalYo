@@ -2,6 +2,8 @@ import { v } from "convex/values";
 import { mutation } from "../_generated/server";
 import { fdcFoodsFields } from "../tables/fdcFoods";
 
+// TODO: Make it safe
+
 const insertFdcFoods = mutation({
   args: {
     docs: v.array(v.object(fdcFoodsFields)),
