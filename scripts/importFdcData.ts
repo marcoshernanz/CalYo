@@ -157,8 +157,7 @@ async function importFoundationFoods(jsonPath: string) {
             { docs: batch }
           );
 
-          console.log(`Inserted ${inserted} FoundationFoods`);
-          console.log(`Updated ${updated} FoundationFoods`);
+          console.log(`Inserted ${totalInserted}, updated ${totalUpdated}.`);
           totalInserted += inserted;
           totalUpdated += updated;
 
