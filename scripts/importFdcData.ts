@@ -94,7 +94,8 @@ async function importFoundationFoods(jsonPath: string) {
 
   const batchSize = 500;
   let batch: any[] = [];
-  let total = 0;
+  let totalInserted = 0;
+  let totalUpdated = 0;
 
   console.time("import:FoundationFoods");
 
@@ -118,14 +119,19 @@ async function importFoundationFoods(jsonPath: string) {
       if (batch.length >= batchSize) {
         pipeline.pause();
         try {
-          await client.mutation(api.fdc.insertFdcFoods.default, {
-            docs: batch,
-          });
-          total += batch.length;
-          console.log(`Inserted ${total} FoundationFoods`);
+          const { inserted, updated } = await client.mutation(
+            api.fdc.upsertFdcFoods.default,
+            { docs: batch }
+          );
+
+          console.log(`Inserted ${inserted} FoundationFoods`);
+          console.log(`Updated ${updated} FoundationFoods`);
+          totalInserted += inserted;
+          totalUpdated += updated;
+
           batch = [];
         } catch (e) {
-          console.error("Insert error:", e);
+          console.error("Upsert error:", e);
           pipeline.destroy(e as Error);
           return;
         } finally {
@@ -137,14 +143,17 @@ async function importFoundationFoods(jsonPath: string) {
     pipeline.on("end", async () => {
       try {
         if (batch.length) {
-          await client.mutation(api.fdc.insertFdcFoods.default, {
-            docs: batch,
-          });
-          total += batch.length;
+          const { inserted, updated } = await client.mutation(
+            api.fdc.upsertFdcFoods.default,
+            { docs: batch }
+          );
+          totalInserted += inserted;
+          totalUpdated += updated;
           batch = [];
         }
         console.timeEnd("import:FoundationFoods");
-        console.log(`Done. Inserted ${total} Foundation foods.`);
+        console.log(`Done. Inserted ${totalInserted} Foundation foods.`);
+        console.log(`Done. Updated ${totalUpdated} Foundation foods.`);
         resolve();
       } catch (e) {
         reject(e);
