@@ -10,7 +10,7 @@ export const mealsFields = {
     v.literal("error")
   ),
   name: v.optional(v.string()),
-  photoStorageId: v.optional(v.string()), // TODO: photo, image or picture?
+  photoStorageId: v.optional(v.id("_storage")), // TODO: photo, image or picture?
   totals: v.optional(
     v.object({
       calories: v.number(),
