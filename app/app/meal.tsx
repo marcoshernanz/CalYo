@@ -1,27 +1,47 @@
 import { api } from "@/convex/_generated/api";
-import { useAction, useQuery } from "convex/react";
+import { useAction, useMutation, useQuery } from "convex/react";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 
 export default function MealScreen() {
-  const { pictureUri, mealId: initialMealId } = useLocalSearchParams();
-
-  const [mealId, setMealId] = useState<string | null>(initialMealId as string);
-  const analyzingRef = useRef(false); // TODO: Needed?
-
+  const { pictureUri } = useLocalSearchParams<{ pictureUri: string }>();
+  const createMeal = useMutation(api.meals.createMeal.default);
+  const generateUploadUrl = useMutation(api.storage.generateUploadUrl.default);
   const analyzeMealPicture = useAction(api.meals.analyzeMealPicture.default);
-  const meal = useQuery(api.meals.getMeal.default, { id: mealId });
+
+  const [mealId, setMealId] = useState<string | null>(null);
+  const startedRef = useRef(false);
+
+  const data = useQuery(
+    mealId ? api.meals.getMeal.default : undefined,
+    mealId ? { id: mealId } : undefined
+  );
 
   useEffect(() => {
-    if (!pictureUri || mealId || analyzingRef.current) return;
-    analyzingRef.current = true;
+    if (!pictureUri || startedRef.current) return;
+    startedRef.current = true;
 
     (async () => {
-      const { mealId } = await analyzeMealPicture(pictureUri);
-      setMealId(mealId);
-      analyzingRef.current = false;
-    })();
-  }, [analyzeMealPicture, mealId, pictureUri]);
+      try {
+        const newMealId = await createMeal({});
+        setMealId(newMealId);
 
-  return null;
+        const uploadUrl = await generateUploadUrl();
+
+        const form = new FormData();
+        form.append("file", {
+          uri: pictureUri,
+          name: "meal.jpg",
+          type: "image/jpeg",
+        });
+        const res = await fetch(uploadUrl, { method: "POST", body: form });
+        const { storageId } = await res.json();
+
+        // 4) Start analysis
+        await analyzeMeal({ mealId: newMealId, storageId, topK: 8 });
+      } catch (e) {
+        console.error("Start meal error", e);
+      }
+    })();
+  }, [pictureUri]);
 }
