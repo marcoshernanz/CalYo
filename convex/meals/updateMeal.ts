@@ -1,19 +1,20 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { query } from "../_generated/server";
+import { mutation } from "../_generated/server";
+import { mealsFields } from "../tables/meals";
 import { v } from "convex/values";
 
-const getMeal = query({
-  args: { mealId: v.id("meals") },
-  handler: async (ctx, { mealId }) => {
+const updateMeal = mutation({
+  args: { id: v.id("meals"), meal: mealsFields },
+  handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (userId === null) return; // TODO: Correct handling or throw error?
 
-    const meal = await ctx.db.get(mealId);
+    const meal = await ctx.db.get(args.id);
     if (!meal) return null; // TODO: Correct handling or throw error?
     if (meal.userId !== userId) return null; // TODO: Correct handling or throw error?
 
-    return meal;
+    await ctx.db.patch(args.id, args.meal);
   },
 });
 
-export default getMeal;
+export default updateMeal;

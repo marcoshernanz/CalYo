@@ -8,6 +8,11 @@ export const mealsFields = v.union(
   }),
   v.object({
     userId: v.id("users"),
+    status: v.literal("processing"),
+    photoStorageId: v.string(), // TODO: photo, image or picture?
+  }),
+  v.object({
+    userId: v.id("users"),
     name: v.string(),
     photoStorageId: v.string(), // TODO: photo, image or picture?
     status: v.union(
