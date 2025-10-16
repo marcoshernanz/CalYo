@@ -54,7 +54,16 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         backgroundColor: "#ffffff",
       },
     ],
+    [
+      "expo-camera",
+      {
+        cameraPermission: "Allow CalYo to access your camera",
+        microphonePermission: "Allow CalYo to access your microphone",
+        recordAudioAndroid: false,
+      },
+    ],
   ],
+
   experiments: {
     typedRoutes: true,
   },
