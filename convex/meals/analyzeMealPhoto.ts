@@ -2,7 +2,7 @@ import { v } from "convex/values";
 import { action } from "../_generated/server";
 import { api } from "../_generated/api";
 
-const analyzeMealPicture = action({
+const analyzeMealPhoto = action({
   args: {
     mealId: v.id("meals"),
     storageId: v.id("_storage"),
@@ -39,4 +39,4 @@ const analyzeMealPicture = action({
   },
 });
 
-export default analyzeMealPicture;
+export default analyzeMealPhoto;

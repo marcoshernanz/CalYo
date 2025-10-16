@@ -11,22 +11,22 @@ export default function CameraScreen() {
   const cameraRef = useRef<CameraView>(null);
   const isBusyRef = useRef(false);
 
-  const takePicture = async () => {
+  const takePhoto = async () => {
     if (!cameraRef.current || isBusyRef.current) return;
     isBusyRef.current = true;
 
     try {
-      const picture = await cameraRef.current.takePictureAsync({
+      const photo = await cameraRef.current.takePictureAsync({
         quality: 0.8,
         skipProcessing: true,
       });
 
       router.navigate({
         pathname: "/app/meal",
-        params: { pictureUri: picture.uri },
+        params: { photoUri: photo.uri },
       });
     } catch (error) {
-      console.error("Error taking picture:", error);
+      console.error("Error taking photo:", error);
     } finally {
       isBusyRef.current = false;
     }
@@ -67,7 +67,7 @@ export default function CameraScreen() {
           variant="base"
           size="base"
           style={{ backgroundColor: "#FFF", flex: 1, borderRadius: 999 }}
-          onPress={takePicture}
+          onPress={takePhoto}
         ></Button>
       </View>
     </View>

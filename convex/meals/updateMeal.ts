@@ -16,7 +16,7 @@ const updateMeal = mutation({
         )
       ),
       name: v.optional(v.string()),
-      photoStorageId: v.optional(v.id("_storage")), // TODO: photo, image or picture?
+      photoStorageId: v.optional(v.id("_storage")),
       totals: v.optional(
         v.object({
           calories: v.number(),

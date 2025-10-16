@@ -6,10 +6,10 @@ import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 
 export default function MealScreen() {
-  const { pictureUri } = useLocalSearchParams<{ pictureUri: string }>();
+  const { photoUri } = useLocalSearchParams<{ photoUri: string }>();
   const createMeal = useMutation(api.meals.createMeal.default);
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl.default);
-  const analyzeMealPicture = useAction(api.meals.analyzeMealPicture.default);
+  const analyzeMealPhoto = useAction(api.meals.analyzeMealPhoto.default);
 
   const [mealId, setMealId] = useState<string | null>(null);
   const startedRef = useRef(false);
@@ -20,7 +20,7 @@ export default function MealScreen() {
   );
 
   useEffect(() => {
-    if (!pictureUri || startedRef.current) return;
+    if (!photoUri || startedRef.current) return;
     startedRef.current = true;
 
     (async () => {
@@ -31,7 +31,7 @@ export default function MealScreen() {
 
         const uploadUrl = await generateUploadUrl();
 
-        const fileRes = await fetch(pictureUri);
+        const fileRes = await fetch(photoUri);
         const blob = await fileRes.blob();
 
         const uploadRes = await fetch(uploadUrl, {
@@ -41,12 +41,12 @@ export default function MealScreen() {
         });
         const { storageId } = await uploadRes.json();
 
-        await analyzeMealPicture({ mealId: newMealId, storageId });
+        await analyzeMealPhoto({ mealId: newMealId, storageId });
       } catch (e) {
         console.error("Start meal error", e);
       }
     })();
-  }, [analyzeMealPicture, createMeal, generateUploadUrl, pictureUri]);
+  }, [analyzeMealPhoto, createMeal, generateUploadUrl, photoUri]);
 
   const meal = data?.meal;
   const items = data?.items ?? [];
