@@ -1,7 +1,9 @@
+import Text from "@/components/ui/Text";
 import { api } from "@/convex/_generated/api";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
+import { View } from "react-native";
 
 export default function MealScreen() {
   const { pictureUri } = useLocalSearchParams<{ pictureUri: string }>();
@@ -14,7 +16,7 @@ export default function MealScreen() {
 
   const data = useQuery(
     mealId ? api.meals.getMeal.default : undefined,
-    mealId ? { id: mealId } : undefined
+    mealId ? { mealId } : undefined
   );
 
   useEffect(() => {
@@ -23,25 +25,40 @@ export default function MealScreen() {
 
     (async () => {
       try {
-        const newMealId = await createMeal({});
+        const newMealId = await createMeal();
+        if (!newMealId) throw new Error("Failed to create meal");
         setMealId(newMealId);
 
         const uploadUrl = await generateUploadUrl();
 
-        const form = new FormData();
-        form.append("file", {
-          uri: pictureUri,
-          name: "meal.jpg",
-          type: "image/jpeg",
-        });
-        const res = await fetch(uploadUrl, { method: "POST", body: form });
-        const { storageId } = await res.json();
+        const fileRes = await fetch(pictureUri);
+        const blob = await fileRes.blob();
 
-        // 4) Start analysis
-        await analyzeMeal({ mealId: newMealId, storageId, topK: 8 });
+        const uploadRes = await fetch(uploadUrl, {
+          method: "POST",
+          headers: { "Content-Type": blob.type || "image/jpeg" },
+          body: blob,
+        });
+        const { storageId } = await uploadRes.json();
+
+        await analyzeMealPicture({ mealId: newMealId, storageId });
       } catch (e) {
         console.error("Start meal error", e);
       }
     })();
-  }, [pictureUri]);
+  }, [analyzeMealPicture, createMeal, generateUploadUrl, pictureUri]);
+
+  const meal = data?.meal;
+  const items = data?.items ?? [];
+  const isLoading =
+    !meal || meal.status === "pending" || meal.status === "processing";
+  const totals = meal?.totals ?? { calories: 0, protein: 0, fat: 0, carbs: 0 };
+
+  return (
+    <View>
+      <Text>{JSON.stringify(meal)}</Text>
+      <Text>{JSON.stringify(items)}</Text>
+      <Text>{JSON.stringify(totals)}</Text>
+    </View>
+  );
 }

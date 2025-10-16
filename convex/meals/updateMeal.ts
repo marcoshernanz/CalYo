@@ -4,7 +4,7 @@ import { mealsFields } from "../tables/meals";
 import { v } from "convex/values";
 
 const updateMeal = mutation({
-  args: { id: v.id("meals"), meal: mealsFields },
+  args: { id: v.id("meals"), meal: v.object(mealsFields) },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (userId === null) return; // TODO: Correct handling or throw error?

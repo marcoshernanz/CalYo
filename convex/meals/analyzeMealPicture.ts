@@ -15,19 +15,25 @@ const analyzeMealPicture = action({
     if (!imageUrl) throw new Error("Image not found");
 
     await ctx.runMutation(api.meals.updateMeal.default, {
-      status: "processing",
-      photoStorageId: storageId,
+      id: mealId,
+      meal: {
+        status: "processing",
+        photoStorageId: storageId,
+      },
     });
 
     await new Promise((r) => setTimeout(r, 3000));
 
     await ctx.runMutation(api.meals.updateMeal.default, {
-      status: "done",
-      totals: {
-        calories: 400 + 400 + 900,
-        protein: 100,
-        fat: 100,
-        carbs: 100,
+      id: mealId,
+      meal: {
+        status: "done",
+        totals: {
+          calories: 400 + 400 + 900,
+          protein: 100,
+          fat: 100,
+          carbs: 100,
+        },
       },
     });
 

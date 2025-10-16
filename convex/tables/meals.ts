@@ -1,28 +1,24 @@
 import { defineTable } from "convex/server";
 import { v } from "convex/values";
 
-export const mealsFields = v.union(
-  v.object({
-    userId: v.id("users"),
-    status: v.literal("pending"),
-  }),
-  v.object({
-    userId: v.id("users"),
-    status: v.literal("processing"),
-    photoStorageId: v.string(), // TODO: photo, image or picture?
-  }),
-  v.object({
-    userId: v.id("users"),
-    name: v.string(),
-    photoStorageId: v.string(), // TODO: photo, image or picture?
-    status: v.union(v.literal("done"), v.literal("error")),
-    totals: v.object({
+export const mealsFields = {
+  userId: v.id("users"),
+  status: v.union(
+    v.literal("pending"),
+    v.literal("processing"),
+    v.literal("done"),
+    v.literal("error")
+  ),
+  name: v.optional(v.string()),
+  photoStorageId: v.optional(v.string()), // TODO: photo, image or picture?
+  totals: v.optional(
+    v.object({
       calories: v.number(),
       protein: v.number(),
       fat: v.number(),
       carbs: v.number(),
-    }),
-  })
-);
+    })
+  ),
+};
 
 export const meals = defineTable(mealsFields);
