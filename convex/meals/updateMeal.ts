@@ -27,15 +27,17 @@ const updateMeal = mutation({
       ),
     }),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<null> => {
     const userId = await getAuthUserId(ctx);
-    if (userId === null) return; // TODO: Correct handling or throw error?
+    if (userId === null) throw new Error("Unauthorized");
 
     const meal = await ctx.db.get(args.id);
-    if (!meal) return null; // TODO: Correct handling or throw error?
-    if (meal.userId !== userId) return null; // TODO: Correct handling or throw error?
+    if (!meal) throw new Error("Not found");
+    if (meal.userId !== userId) throw new Error("Forbidden");
 
     await ctx.db.patch(args.id, args.meal);
+
+    return null;
   },
 });
 

@@ -7,7 +7,7 @@ const analyzeMealPhoto = action({
     mealId: v.id("meals"),
     storageId: v.id("_storage"),
   },
-  handler: async (ctx, { mealId, storageId }) => {
+  handler: async (ctx, { mealId, storageId }): Promise<null> => {
     const meal = await ctx.runQuery(api.meals.getMeal.default, { mealId });
     if (!meal) throw new Error("Meal not found");
 
@@ -36,6 +36,8 @@ const analyzeMealPhoto = action({
         },
       },
     });
+
+    return null;
   },
 });
 

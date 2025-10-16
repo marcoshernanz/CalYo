@@ -8,7 +8,10 @@ const upsertFdcFoods = mutation({
   args: {
     docs: v.array(v.object(fdcFoodsFields)),
   },
-  handler: async (ctx, { docs }) => {
+  handler: async (
+    ctx,
+    { docs }
+  ): Promise<{ inserted: number; updated: number }> => {
     let inserted = 0;
     let updated = 0;
 

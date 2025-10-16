@@ -1,7 +1,7 @@
 import { mutation } from "../_generated/server";
 
 const generateUploadUrl = mutation({
-  handler: async (ctx) => {
+  handler: async (ctx): Promise<string> => {
     return await ctx.storage.generateUploadUrl();
   },
 });
