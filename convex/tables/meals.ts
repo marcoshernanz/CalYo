@@ -15,11 +15,7 @@ export const mealsFields = v.union(
     userId: v.id("users"),
     name: v.string(),
     photoStorageId: v.string(), // TODO: photo, image or picture?
-    status: v.union(
-      v.literal("processing"),
-      v.literal("done"),
-      v.literal("error")
-    ),
+    status: v.union(v.literal("done"), v.literal("error")),
     totals: v.object({
       calories: v.number(),
       protein: v.number(),
