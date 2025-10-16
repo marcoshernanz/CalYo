@@ -1,5 +1,6 @@
 import Text from "@/components/ui/Text";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
@@ -11,12 +12,12 @@ export default function MealScreen() {
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl.default);
   const analyzeMealPhoto = useAction(api.meals.analyzeMealPhoto.default);
 
-  const [mealId, setMealId] = useState<string | null>(null);
+  const [mealId, setMealId] = useState<Id<"meals"> | null>(null);
   const startedRef = useRef(false);
 
   const data = useQuery(
-    mealId ? api.meals.getMeal.default : undefined,
-    mealId ? { mealId } : undefined
+    api.meals.getMeal.default,
+    mealId ? { mealId } : "skip"
   );
 
   useEffect(() => {
@@ -49,14 +50,14 @@ export default function MealScreen() {
   }, [analyzeMealPhoto, createMeal, generateUploadUrl, photoUri]);
 
   const meal = data?.meal;
-  const items = data?.items ?? [];
+  const items = data?.mealItems ?? [];
   const isLoading =
     !meal || meal.status === "pending" || meal.status === "processing";
   const totals = meal?.totals ?? { calories: 0, protein: 0, fat: 0, carbs: 0 };
 
   return (
     <View>
-      <Text>{JSON.stringify(meal)}</Text>
+      <Text>{isLoading ? "Loading meal..." : JSON.stringify(meal)}</Text>
       <Text>{JSON.stringify(items)}</Text>
       <Text>{JSON.stringify(totals)}</Text>
     </View>
