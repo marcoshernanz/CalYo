@@ -12,7 +12,12 @@ const getMeal = query({
     if (!meal) return null; // TODO: Correct handling or throw error?
     if (meal.userId !== userId) return null; // TODO: Correct handling or throw error?
 
-    return meal;
+    const mealItems = await ctx.db
+      .query("mealItems")
+      .withIndex("byMealId", (q) => q.eq("mealId", mealId))
+      .collect();
+
+    return { meal, mealItems };
   },
 });
 
