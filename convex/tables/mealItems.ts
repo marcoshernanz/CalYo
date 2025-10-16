@@ -15,4 +15,6 @@ export const mealItemsFields = {
   ),
 };
 
-export const mealItems = defineTable(mealItemsFields);
+export const mealItems = defineTable(mealItemsFields).index("byMealId", [
+  "mealId",
+]);
