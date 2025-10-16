@@ -1,6 +1,6 @@
-- [ ] https://lmarena.ai/c/0199d97c-fe92-7bea-8ce6-5fc6d6fde912
 - [ ] Make insertFdcFoods safe
 - [ ] Authentication on convex functions
+- [ ] Try catch
 
 - [ ] Home scroll view bounce
 
