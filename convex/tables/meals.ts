@@ -3,7 +3,7 @@ import { v } from "convex/values";
 
 export const mealsFields = {
   userId: v.id("users"),
-  photoStorageId: v.string(),
+  photoStorageId: v.string(), // TODO: photo, image or picture?
   name: v.string(),
   // Nutrients? Or just compute from mealItems?
 };

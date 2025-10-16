@@ -17,6 +17,7 @@ import type * as ResendOTP from "../ResendOTP.js";
 import type * as auth from "../auth.js";
 import type * as fdc_upsertFdcFoods from "../fdc/upsertFdcFoods.js";
 import type * as http from "../http.js";
+import type * as meals_analyzeMealPicture from "../meals/analyzeMealPicture.js";
 import type * as storage_generateUploadUrl from "../storage/generateUploadUrl.js";
 import type * as tables_fdcFoods from "../tables/fdcFoods.js";
 import type * as tables_mealItems from "../tables/mealItems.js";
@@ -35,6 +36,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   "fdc/upsertFdcFoods": typeof fdc_upsertFdcFoods;
   http: typeof http;
+  "meals/analyzeMealPicture": typeof meals_analyzeMealPicture;
   "storage/generateUploadUrl": typeof storage_generateUploadUrl;
   "tables/fdcFoods": typeof tables_fdcFoods;
   "tables/mealItems": typeof tables_mealItems;
