@@ -19,6 +19,18 @@ const analyzeMealPicture = action({
       photoStorageId: storageId,
     });
 
+    await new Promise((r) => setTimeout(r, 3000));
+
+    await ctx.runMutation(api.meals.updateMeal.default, {
+      status: "done",
+      totals: {
+        calories: 400 + 400 + 900,
+        protein: 100,
+        fat: 100,
+        carbs: 100,
+      },
+    });
+
     // const uploadUrl = await ctx.runMutation(
     //   api.storage.generateUploadUrl.default
     // );
