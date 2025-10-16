@@ -9,7 +9,7 @@ export default function MealScreen() {
   const [mealId, setMealId] = useState<string | null>(initialMealId as string);
   const analyzingRef = useRef(false); // TODO: Needed?
 
-  const analyzeMeal = useAction(api.meals.analyzeMeal.default);
+  const analyzeMealPicture = useAction(api.meals.analyzeMealPicture.default);
   const meal = useQuery(api.meals.getMeal.default, { id: mealId });
 
   useEffect(() => {
@@ -17,11 +17,11 @@ export default function MealScreen() {
     analyzingRef.current = true;
 
     (async () => {
-      const { mealId } = await analyzeMeal(pictureUri);
+      const { mealId } = await analyzeMealPicture(pictureUri);
       setMealId(mealId);
       analyzingRef.current = false;
     })();
-  }, [analyzeMeal, mealId, pictureUri]);
+  }, [analyzeMealPicture, mealId, pictureUri]);
 
   return null;
 }
