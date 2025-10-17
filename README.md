@@ -1,6 +1,5 @@
 - [ ] Make insertFdcFoods safe
 - [ ] Authentication on convex functions
-- [ ] Try catch
 
 - [ ] Home scroll view bounce
 
