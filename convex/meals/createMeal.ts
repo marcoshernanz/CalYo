@@ -4,15 +4,20 @@ import { Id } from "../_generated/dataModel";
 
 const createMeal = mutation({
   handler: async (ctx): Promise<Id<"meals">> => {
-    const userId = await getAuthUserId(ctx);
-    if (userId === null) throw new Error("Unauthorized");
+    try {
+      const userId = await getAuthUserId(ctx);
+      if (userId === null) throw new Error("Unauthorized");
 
-    const mealId = await ctx.db.insert("meals", {
-      userId,
-      status: "pending",
-    });
+      const mealId = await ctx.db.insert("meals", {
+        userId,
+        status: "pending",
+      });
 
-    return mealId;
+      return mealId;
+    } catch (error) {
+      console.error("createMeal error", error);
+      throw error;
+    }
   },
 });
 

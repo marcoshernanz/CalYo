@@ -9,19 +9,24 @@ const getMeal = query({
     ctx,
     { mealId }
   ): Promise<{ meal: Doc<"meals">; mealItems: Doc<"mealItems">[] }> => {
-    const userId = await getAuthUserId(ctx);
-    if (userId === null) throw new Error("Unauthorized");
+    try {
+      const userId = await getAuthUserId(ctx);
+      if (userId === null) throw new Error("Unauthorized");
 
-    const meal = await ctx.db.get(mealId);
-    if (!meal) throw new Error("Not found");
-    if (meal.userId !== userId) throw new Error("Forbidden");
+      const meal = await ctx.db.get(mealId);
+      if (!meal) throw new Error("Not found");
+      if (meal.userId !== userId) throw new Error("Forbidden");
 
-    const mealItems = await ctx.db
-      .query("mealItems")
-      .withIndex("byMealId", (q) => q.eq("mealId", mealId))
-      .collect();
+      const mealItems = await ctx.db
+        .query("mealItems")
+        .withIndex("byMealId", (q) => q.eq("mealId", mealId))
+        .collect();
 
-    return { meal, mealItems };
+      return { meal, mealItems };
+    } catch (error) {
+      console.error("getMeal error", error);
+      throw error;
+    }
   },
 });
 

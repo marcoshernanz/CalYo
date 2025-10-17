@@ -74,7 +74,9 @@ export default function CameraScreen() {
 
   useEffect(() => {
     if (!permission?.granted) {
-      requestPermission();
+      requestPermission().catch((error) => {
+        console.error("Error requesting camera permission:", error);
+      });
     }
   }, [permission?.granted, requestPermission]);
 
