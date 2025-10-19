@@ -73,8 +73,12 @@ const backfillFdcEmbeddings = action({
             outputDimensionality: 768,
           },
         },
-        // maxParallelCalls: 3, // TODO
+        maxParallelCalls: 4,
       });
+
+      if (embeddings.length !== batch.length) {
+        throw new Error("Mismatch in number of embeddings returned");
+      }
 
       for (let i = 0; i < batch.length; i++) {
         const raw = embeddings[i];
