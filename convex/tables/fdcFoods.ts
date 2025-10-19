@@ -17,6 +17,14 @@ export const fdcFoodsFields = {
     fat: v.number(),
     carbs: v.number(),
   }),
+
+  embedding: v.optional(v.array(v.float64())),
 };
 
-export const fdcFoods = defineTable(fdcFoodsFields).index("byFdcId", ["fdcId"]);
+export const fdcFoods = defineTable(fdcFoodsFields)
+  .index("byFdcId", ["fdcId"])
+  .vectorIndex("byEmbedding", {
+    vectorField: "embedding",
+    dimensions: 768,
+    filterFields: ["dataType"],
+  });
