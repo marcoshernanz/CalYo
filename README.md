@@ -1,4 +1,5 @@
-- [ ] Make insertFdcFoods safe
+- [ ] Make upsertFdcFoods safe
+- [ ] Patch in upsertFdcFoods to avoid overwriting embeddings
 - [ ] Authentication on convex functions
 
 - [ ] Home scroll view bounce

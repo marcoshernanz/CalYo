@@ -3,6 +3,7 @@ import { mutation } from "../_generated/server";
 import { fdcFoodsFields } from "../tables/fdcFoods";
 
 // TODO: Make it safe
+// TODO: Patch to avoid overwriting embeddings
 
 const upsertFdcFoods = mutation({
   args: {
