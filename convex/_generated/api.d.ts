@@ -15,7 +15,6 @@ import type {
 } from "convex/server";
 import type * as ResendOTP from "../ResendOTP.js";
 import type * as auth from "../auth.js";
-import type * as fdc_backfillFdcEmbeddings from "../fdc/backfillFdcEmbeddings.js";
 import type * as fdc_upsertFdcFoods from "../fdc/upsertFdcFoods.js";
 import type * as http from "../http.js";
 import type * as meals_analyzeMealPhoto from "../meals/analyzeMealPhoto.js";
@@ -26,6 +25,8 @@ import type * as storage_generateUploadUrl from "../storage/generateUploadUrl.js
 import type * as tables_fdcFoods from "../tables/fdcFoods.js";
 import type * as tables_mealItems from "../tables/mealItems.js";
 import type * as tables_meals from "../tables/meals.js";
+import type * as utils_backfillFdcEmbeddings from "../utils/backfillFdcEmbeddings.js";
+import type * as utils_countFdcEmbeddings from "../utils/countFdcEmbeddings.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -38,7 +39,6 @@ import type * as tables_meals from "../tables/meals.js";
 declare const fullApi: ApiFromModules<{
   ResendOTP: typeof ResendOTP;
   auth: typeof auth;
-  "fdc/backfillFdcEmbeddings": typeof fdc_backfillFdcEmbeddings;
   "fdc/upsertFdcFoods": typeof fdc_upsertFdcFoods;
   http: typeof http;
   "meals/analyzeMealPhoto": typeof meals_analyzeMealPhoto;
@@ -49,6 +49,8 @@ declare const fullApi: ApiFromModules<{
   "tables/fdcFoods": typeof tables_fdcFoods;
   "tables/mealItems": typeof tables_mealItems;
   "tables/meals": typeof tables_meals;
+  "utils/backfillFdcEmbeddings": typeof utils_backfillFdcEmbeddings;
+  "utils/countFdcEmbeddings": typeof utils_countFdcEmbeddings;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
