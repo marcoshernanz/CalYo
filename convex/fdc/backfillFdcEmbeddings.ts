@@ -73,7 +73,6 @@ const backfillFdcEmbeddings = action({
             outputDimensionality: 768,
           },
         },
-        maxParallelCalls: 4,
       });
 
       if (embeddings.length !== batch.length) {
