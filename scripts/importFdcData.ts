@@ -24,6 +24,9 @@ const FdcFood = z.object({
       }),
     })
   ),
+  foodCategory: z.object({
+    description: z.string(),
+  }),
 });
 
 type FoodItem = z.infer<typeof FdcFood>;
@@ -84,6 +87,7 @@ function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"fdcFoods">> {
     fdcId: item.fdcId,
     dataType: dataTypeMap[item.dataType],
     description: { en: item.description },
+    category: { en: item.foodCategory.description },
     nutrients: {
       protein,
       fat,
