@@ -1,6 +1,6 @@
 import { query } from "../_generated/server";
 
-export const countFdcEmbeddings = query({
+const countFdcEmbeddings = query({
   args: {},
   handler: async (ctx) => {
     const allFoods = ctx.db.query("fdcFoods");
@@ -23,3 +23,5 @@ export const countFdcEmbeddings = query({
     return { total, embedded };
   },
 });
+
+export default countFdcEmbeddings;
