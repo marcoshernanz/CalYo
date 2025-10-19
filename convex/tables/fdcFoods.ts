@@ -11,9 +11,7 @@ export const fdcFoodsFields = {
   description: v.object({
     en: v.string(),
   }),
-  category: v.object({
-    en: v.string(),
-  }),
+  category: v.optional(v.object({ en: v.string() })),
   nutrients: v.object({
     protein: v.number(),
     fat: v.number(),

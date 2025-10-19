@@ -24,9 +24,11 @@ const FdcFood = z.object({
       }),
     })
   ),
-  foodCategory: z.object({
-    description: z.string(),
-  }),
+  foodCategory: z
+    .object({
+      description: z.string(),
+    })
+    .optional(),
 });
 
 type FoodItem = z.infer<typeof FdcFood>;
@@ -87,7 +89,9 @@ function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"fdcFoods">> {
     fdcId: item.fdcId,
     dataType: dataTypeMap[item.dataType],
     description: { en: item.description },
-    category: { en: item.foodCategory.description },
+    category: item.foodCategory
+      ? { en: item.foodCategory.description }
+      : undefined,
     nutrients: {
       protein,
       fat,
@@ -161,9 +165,9 @@ async function importFoundationFoods(jsonPath: string) {
             { docs: batch }
           );
 
-          console.log(`Inserted ${totalInserted}, updated ${totalUpdated}.`);
           totalInserted += inserted;
           totalUpdated += updated;
+          console.log(`Inserted ${totalInserted}, updated ${totalUpdated}.`);
 
           batch = [];
         } catch (e) {
