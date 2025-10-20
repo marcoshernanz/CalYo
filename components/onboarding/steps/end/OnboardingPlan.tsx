@@ -13,11 +13,12 @@ import {
   withTiming,
 } from "react-native-reanimated";
 import OnboardingStep from "../../OnboardingStep";
+import macrosToKcal from "@/lib/utils/macrosToKcal";
 
 const carbs = 400;
 const protein = 200;
 const fat = 70;
-const calories = carbs * 4 + protein * 4 + fat * 9;
+const calories = macrosToKcal({ carbs, protein, fat });
 
 const macros = [
   {
@@ -33,7 +34,7 @@ const macros = [
   {
     name: "Hidratos",
     amount: carbs,
-    ratio: (carbs * 4) / calories,
+    ratio: macrosToKcal({ carbs }) / calories,
     color: getColor("carb"),
     formatAmount: (amount: number) => {
       "worklet";
@@ -43,7 +44,7 @@ const macros = [
   {
     name: "Proteína",
     amount: protein,
-    ratio: (protein * 4) / calories,
+    ratio: macrosToKcal({ protein }) / calories,
     color: getColor("protein"),
     formatAmount: (amount: number) => {
       "worklet";
@@ -53,7 +54,7 @@ const macros = [
   {
     name: "Grasas",
     amount: fat,
-    ratio: (fat * 9) / calories,
+    ratio: macrosToKcal({ fat }) / calories,
     color: getColor("fat"),
     formatAmount: (amount: number) => {
       "worklet";
