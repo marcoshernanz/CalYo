@@ -4,6 +4,7 @@ import { action, internalMutation, internalQuery } from "../_generated/server";
 import { internal } from "../_generated/api";
 import { embedMany } from "ai";
 import { google } from "@ai-sdk/google";
+import l2Normalize from "../../lib/utils/l2Normalize";
 
 function buildEmbeddingText(food: Doc<"fdcFoods">): string {
   const parts = [];
@@ -12,15 +13,6 @@ function buildEmbeddingText(food: Doc<"fdcFoods">): string {
     parts.push(`Category: ${food.category.en}`);
   }
   return parts.join(". ");
-}
-
-function l2Normalize(vector: number[]): number[] {
-  const norm = Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0));
-  if (!isFinite(norm) || norm === 0) {
-    return vector;
-  }
-
-  return vector.map((x) => x / norm);
 }
 
 export const nextFoodsToEmbed = internalQuery({
