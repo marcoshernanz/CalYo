@@ -1,14 +1,13 @@
 import { v } from "convex/values";
-import { action, internalQuery } from "../_generated/server";
-import { api, internal } from "../_generated/api";
-import { embed, EmbeddingModel, generateObject, LanguageModel } from "ai";
+import { action } from "../_generated/server";
+import { api } from "../_generated/api";
+import { EmbeddingModel, LanguageModel } from "ai";
 import { google } from "@ai-sdk/google";
-import { z } from "zod/v4";
-import l2Normalize from "../../lib/utils/l2Normalize";
 import macrosToKcal from "../../lib/utils/macrosToKcal";
 import detectMealItems from "./analyze/detectMealItems";
 import searchFdcCandidates from "./analyze/searchFdcCandidates";
 import selectCandidates from "./analyze/selectCandidates";
+import scaleNutrients from "../../lib/utils/scaleNutrients";
 
 type AnalyzeConfig = {
   maxDetectionItems: number;
@@ -69,27 +68,24 @@ const analyzeMealPhoto = action({
         candidatesByItem,
       });
 
-      // Persist mealItems and compute totals
       let totals = { calories: 0, protein: 0, fat: 0, carbs: 0 };
 
-      // TODO
       for (const selectedItem of selectedItems) {
-        // Resolve DB doc by fdcId
-        const foodDoc = await ctx.db
-          .query("fdcFoods")
-          .withIndex("byFdcId", (q) => q.eq("fdcId", selectedItem.chosenFdcId))
-          .unique();
+        const fdcFood = await ctx.runQuery(api.fdc.getFdcFood.default, {
+          fdcId: selectedItem.fdcId,
+        });
+        if (!fdcFood) continue;
 
-        if (!foodDoc) continue;
-
-        const nutrients = scaleNutrients(foodDoc.nutrients, selectedItem.grams);
-        const calories = kcalFromMacros(nutrients);
-
-        await ctx.db.insert("mealItems", {
-          mealId,
+        const nutrients = scaleNutrients({
+          nutrients: fdcFood.nutrients,
           grams: selectedItem.grams,
-          confidence: selectedItem.confidence ?? 0.6,
-          food: foodDoc._id,
+        });
+        const calories = macrosToKcal(nutrients);
+
+        await ctx.runMutation(api.meals.insertMealItem.default, {
+          mealId,
+          food: fdcFood._id,
+          grams: selectedItem.grams,
           nutrients,
         });
 
