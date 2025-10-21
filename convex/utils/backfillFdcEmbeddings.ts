@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { Doc, Id } from "../_generated/dataModel";
+import { Doc } from "../_generated/dataModel";
 import { action, internalMutation, internalQuery } from "../_generated/server";
 import { internal } from "../_generated/api";
 import { embedMany } from "ai";
@@ -18,17 +18,15 @@ function buildEmbeddingText(food: Doc<"fdcFoods">): string {
 export const nextFoodsToEmbed = internalQuery({
   args: { limit: v.number() },
   handler: async (ctx, { limit }) => {
-    const nextFoods: { _id: Id<"fdcFoods">; text: string }[] = [];
-    const allFoods = ctx.db.query("fdcFoods");
+    const foods = await ctx.db
+      .query("fdcFoods")
+      .withIndex("byHasEmbedding", (q) => q.eq("hasEmbedding", false))
+      .take(limit);
 
-    for await (const food of allFoods) {
-      if (!food.embedding || food.embedding.length === 0) {
-        nextFoods.push({ _id: food._id, text: buildEmbeddingText(food) });
-        if (nextFoods.length >= limit) break;
-      }
-    }
-
-    return nextFoods;
+    return foods.map((food) => ({
+      _id: food._id,
+      text: buildEmbeddingText(food),
+    }));
   },
 });
 
@@ -38,7 +36,7 @@ export const saveEmbedding = internalMutation({
     embedding: v.array(v.float64()),
   },
   handler: async (ctx, { id, embedding }) => {
-    await ctx.db.patch(id, { embedding });
+    await ctx.db.patch(id, { embedding, hasEmbedding: true });
   },
 });
 

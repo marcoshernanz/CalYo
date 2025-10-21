@@ -19,10 +19,12 @@ export const fdcFoodsFields = {
   }),
 
   embedding: v.optional(v.array(v.float64())),
+  hasEmbedding: v.boolean(),
 };
 
 export const fdcFoods = defineTable(fdcFoodsFields)
   .index("byFdcId", ["fdcId"])
+  .index("byHasEmbedding", ["hasEmbedding"])
   .vectorIndex("byEmbedding", {
     vectorField: "embedding",
     dimensions: 768,
