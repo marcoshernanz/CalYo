@@ -2,7 +2,6 @@ import { EmbeddingModel, LanguageModel } from "ai";
 import { google } from "@ai-sdk/google";
 
 type AnalyzeMealConfig = {
-  maxDetectionItems: number;
   temperature: number;
   candidatesPerItem: number;
   imageProcessingModel: LanguageModel;
@@ -11,7 +10,6 @@ type AnalyzeMealConfig = {
 };
 
 export const analyzeMealConfig: AnalyzeMealConfig = {
-  maxDetectionItems: 10,
   temperature: 0.2,
   candidatesPerItem: 3,
   imageProcessingModel: google("gemini-2.5-flash"),
