@@ -30,7 +30,7 @@ const analyzeMealPhoto = action({
 
       const detectedItems = await detectMealItems({ imageUrl });
 
-      if (!detectedItems) {
+      if (!detectedItems || detectedItems.length === 0) {
         await ctx.runMutation(api.meals.updateMeal.default, {
           id: mealId,
           meal: { status: "error" },
