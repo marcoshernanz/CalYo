@@ -1,7 +1,16 @@
+import { generateObject } from "ai";
 import { analyzeConfig } from "../analyzeMealPhoto";
 import { DetectedItem } from "./detectMealItems";
 import { Candidate } from "./searchFdcCandidates";
+import { z } from "zod/v4";
 
+const selectionSchema = z.array(
+  z.object({
+    inputName: z.string(),
+    chosenFdcId: z.number(),
+    grams: z.number().min(1).max(1500),
+  })
+);
 function buildSelectionPrompt(
   items: DetectedItem[],
   candidatesByItem: Record<string, Candidate[]>
@@ -43,44 +52,40 @@ function buildSelectionPrompt(
   return lines.join("\n");
 }
 
-function ensureSelections(
-  items: DetectedItem[],
-  candidatesByItem: Record<string, Candidate[]>,
-  selection: z.infer<typeof selectionSchema>
-) {
+function ensureSelections({
+  detectedItems,
+  candidatesByItem,
+  selectedItems,
+}: {
+  detectedItems: DetectedItem[];
+  candidatesByItem: Record<string, Candidate[]>;
+  selectedItems: z.infer<typeof selectionSchema>;
+}) {
   const byName = new Map(
-    selection.chosen.map((c) => [c.inputName.toLowerCase(), c])
+    selectedItems.map((item) => [item.inputName.toLowerCase(), item])
   );
-  const chosen: Array<{
-    chosenFdcId: number;
-    grams: number;
-    confidence?: number;
-  }> = [];
+  const finalItems: { fdcId: number; grams: number }[] = [];
 
-  for (const it of items) {
-    const s = byName.get(it.name.toLowerCase());
-    if (s) {
-      chosen.push({
-        inputName: it.name,
-        chosenFdcId: s.chosenFdcId,
-        grams: Math.max(1, Math.min(1500, Math.round(s.grams))),
-        confidence: s.confidence,
+  for (const detectedItem of detectedItems) {
+    const selectedItem = byName.get(detectedItem.name.toLowerCase());
+    if (selectedItem) {
+      finalItems.push({
+        fdcId: selectedItem.chosenFdcId,
+        grams: Math.max(1, Math.min(1500, Math.round(selectedItem.grams))),
       });
       continue;
     }
-    // Fallback: pick top-1 candidate with original grams
-    const fallback = (candidatesByItem[it.name] ?? [])[0];
+
+    const fallback = (candidatesByItem[detectedItem.name] ?? [])[0];
     if (fallback) {
-      chosen.push({
-        inputName: it.name,
-        chosenFdcId: fallback.fdcId,
-        grams: Math.max(1, Math.min(1500, Math.round(it.grams))),
-        confidence: 0.5,
+      finalItems.push({
+        fdcId: fallback.fdcId,
+        grams: Math.max(1, Math.min(1500, Math.round(detectedItem.grams))),
       });
     }
   }
 
-  return chosen;
+  return finalItems;
 }
 
 interface Params {
@@ -94,13 +99,18 @@ export default async function selectCandidates({
 }: Params): Promise<{ fdcId: number; grams: number }[]> {
   const selectionPrompt = buildSelectionPrompt(detectedItems, candidatesByItem);
 
-  const { object: selection } = await generateObject({
+  const { object: selectedItems } = await generateObject({
     model: analyzeConfig.candidateSelectionModel,
     schema: selectionSchema,
     prompt: selectionPrompt,
-    temperature: 0.1,
+    temperature: analyzeConfig.temperature,
   });
 
-  // Fallback: if selection failed for some item, just pick top-1 candidate
-  const chosen = ensureSelections(detectedItems, candidatesByItem, selection);
+  const finalItems = ensureSelections({
+    detectedItems,
+    candidatesByItem,
+    selectedItems,
+  });
+
+  return finalItems;
 }

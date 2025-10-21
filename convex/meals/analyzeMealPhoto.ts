@@ -28,16 +28,6 @@ export const analyzeConfig: AnalyzeConfig = {
   candidateSelectionModel: google("models/gemini-1.5-flash"),
 };
 
-const selectionSchema = z.object({
-  chosen: z.array(
-    z.object({
-      chosenFdcId: z.number(),
-      grams: z.number().min(1).max(1500),
-      confidence: z.number().min(0).max(1),
-    })
-  ),
-});
-
 const analyzeMealPhoto = action({
   args: {
     mealId: v.id("meals"),
@@ -82,22 +72,23 @@ const analyzeMealPhoto = action({
       // Persist mealItems and compute totals
       let totals = { calories: 0, protein: 0, fat: 0, carbs: 0 };
 
-      for (const ch of chosen) {
+      // TODO
+      for (const selectedItem of selectedItems) {
         // Resolve DB doc by fdcId
         const foodDoc = await ctx.db
           .query("fdcFoods")
-          .withIndex("byFdcId", (q) => q.eq("fdcId", ch.chosenFdcId))
+          .withIndex("byFdcId", (q) => q.eq("fdcId", selectedItem.chosenFdcId))
           .unique();
 
         if (!foodDoc) continue;
 
-        const nutrients = scaleNutrients(foodDoc.nutrients, ch.grams);
+        const nutrients = scaleNutrients(foodDoc.nutrients, selectedItem.grams);
         const calories = kcalFromMacros(nutrients);
 
         await ctx.db.insert("mealItems", {
           mealId,
-          grams: ch.grams,
-          confidence: ch.confidence ?? 0.6,
+          grams: selectedItem.grams,
+          confidence: selectedItem.confidence ?? 0.6,
           food: foodDoc._id,
           nutrients,
         });
