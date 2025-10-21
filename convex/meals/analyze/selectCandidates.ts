@@ -1,3 +1,4 @@
+import { analyzeConfig } from "../analyzeMealPhoto";
 import { DetectedItem } from "./detectMealItems";
 import { Candidate } from "./searchFdcCandidates";
 
@@ -21,7 +22,7 @@ function buildSelectionPrompt(
 
   lines.push("\nDetected items:");
   for (const it of items) {
-    lines.push(`- ${it.name} ~ ${it.grams} g (conf ${it.confidence})`);
+    lines.push(`- ${it.name} ~ ${it.grams} g`);
   }
 
   lines.push("\nCandidates per item (per 100g):");
@@ -34,7 +35,7 @@ function buildSelectionPrompt(
     lines.push(`- ${it.name}:`);
     candidates.forEach((c, idx) => {
       lines.push(
-        `  ${idx + 1}) fdcId=${c.fdcId} | ${c.name} | category=${c.category ?? "-"} | P=${c.nutrientsPer100g.protein}g, F=${c.nutrientsPer100g.fat}g, C=${c.nutrientsPer100g.carbs}g, kcal=${c.caloriesPer100g}`
+        `  ${idx + 1}) fdcId=${c.fdcId} | ${c.name} | category=${c.category ?? "-"} | protein=${c.nutrientsPer100g.protein}g, fat=${c.nutrientsPer100g.fat}g, carbs=${c.nutrientsPer100g.carbs}g, kcal=${c.caloriesPer100g}`
       );
     });
   }
@@ -90,12 +91,11 @@ interface Params {
 export default async function selectCandidates({
   detectedItems,
   candidatesByItem,
-}: Params): Promise<{ fdcId: string; grams: number }[]> {
-  // Step 3: Ask the model to pick one candidate per item and adjust grams if needed
+}: Params): Promise<{ fdcId: number; grams: number }[]> {
   const selectionPrompt = buildSelectionPrompt(detectedItems, candidatesByItem);
 
   const { object: selection } = await generateObject({
-    model: google("models/gemini-1.5-flash"),
+    model: analyzeConfig.candidateSelectionModel,
     schema: selectionSchema,
     prompt: selectionPrompt,
     temperature: 0.1,

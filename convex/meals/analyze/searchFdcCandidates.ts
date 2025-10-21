@@ -1,6 +1,5 @@
 import { embed } from "ai";
 import { DetectedItem } from "./detectMealItems";
-import { google } from "@ai-sdk/google";
 import l2Normalize from "../../../lib/utils/l2Normalize";
 import { ActionCtx, internalQuery } from "../../_generated/server";
 import { internal } from "../../_generated/api";
@@ -54,7 +53,7 @@ export default async function searchFdcCandidates({
 
   for (const item of detectedItems) {
     const { embedding } = await embed({
-      model: google.textEmbeddingModel("gemini-embedding-001"),
+      model: analyzeConfig.embeddingsModel,
       value: item.name,
       providerOptions: {
         google: {

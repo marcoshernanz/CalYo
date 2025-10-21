@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { action, internalQuery } from "../_generated/server";
 import { api, internal } from "../_generated/api";
-import { embed, generateObject } from "ai";
+import { embed, EmbeddingModel, generateObject, LanguageModel } from "ai";
 import { google } from "@ai-sdk/google";
 import { z } from "zod/v4";
 import l2Normalize from "../../lib/utils/l2Normalize";
@@ -10,10 +10,22 @@ import detectMealItems from "./analyze/detectMealItems";
 import searchFdcCandidates from "./analyze/searchFdcCandidates";
 import selectCandidates from "./analyze/selectCandidates";
 
-export const analyzeConfig = {
+type AnalyzeConfig = {
+  maxDetectionItems: number;
+  temperature: number;
+  candidatesPerItem: number;
+  imageProcessingModel: LanguageModel;
+  embeddingsModel: EmbeddingModel;
+  candidateSelectionModel: LanguageModel;
+};
+
+export const analyzeConfig: AnalyzeConfig = {
   maxDetectionItems: 10,
   temperature: 0.2,
   candidatesPerItem: 3,
+  imageProcessingModel: google("gemini-2.5-flash"),
+  embeddingsModel: google.textEmbeddingModel("gemini-embedding-001"),
+  candidateSelectionModel: google("models/gemini-1.5-flash"),
 };
 
 const selectionSchema = z.object({

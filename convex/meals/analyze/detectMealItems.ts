@@ -1,4 +1,3 @@
-import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { z } from "zod/v4";
 import { analyzeConfig } from "../analyzeMealPhoto";
@@ -9,7 +8,6 @@ const detectionSchema = z.object({
       z.object({
         name: z.string().min(1),
         grams: z.number().min(1).max(1500),
-        confidence: z.number().min(0).max(1),
       })
     )
     .max(analyzeConfig.maxDetectionItems),
@@ -25,7 +23,7 @@ export default async function detectMealItems({
   imageUrl,
 }: Params): Promise<DetectedItem[]> {
   const { object: detected } = await generateObject({
-    model: google("gemini-2.5-flash"),
+    model: analyzeConfig.imageProcessingModel,
     schema: detectionSchema,
     messages: [
       {
