@@ -28,7 +28,7 @@ function buildCandidatesText(
     lines.push(`- ${item.name}:`);
     candidates.forEach((c, idx) => {
       lines.push(
-        `  ${idx + 1}) fdcId=${c.fdcId} | ${c.name} | category=${c.category ?? "-"} | protein=${c.nutrientsPer100g.protein}g, fat=${c.nutrientsPer100g.fat}g, carbs=${c.nutrientsPer100g.carbs}g, kcal=${c.caloriesPer100g}`
+        `  ${idx + 1}) fdcId=${c.fdcId} | name=${c.name} | category=${c.category ?? "-"} | protein=${c.nutrientsPer100g.protein}g, fat=${c.nutrientsPer100g.fat}g, carbs=${c.nutrientsPer100g.carbs}g, kcal=${c.caloriesPer100g}`
       );
     });
   }
