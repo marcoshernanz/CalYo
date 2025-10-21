@@ -1,4 +1,4 @@
-import { embed } from "ai";
+import { embedMany } from "ai";
 import { DetectedItem } from "./detectMealItems";
 import l2Normalize from "../../../lib/utils/l2Normalize";
 import { ActionCtx, internalQuery } from "../../_generated/server";
@@ -49,40 +49,32 @@ export default async function searchFdcCandidates({
   ctx,
   detectedItems,
 }: Params): Promise<Record<string, Candidate[]>> {
+  const names = detectedItems.map((item) => item.name);
+
+  const { embeddings } = await embedMany({
+    model: analyzeMealConfig.embeddingsModel,
+    values: names,
+    providerOptions: {
+      google: { taskType: "RETRIEVAL_QUERY", outputDimensionality: 768 },
+    },
+  });
+  const vectors = embeddings.map((e) => l2Normalize(e));
+
+  const limit = analyzeMealConfig.candidatesPerItem;
+  const searches = vectors.map((vector) =>
+    ctx.vectorSearch("fdcFoods", "byEmbedding", { vector, limit })
+  );
+  const resultsList = await Promise.all(searches);
+
   const candidatesByItem: Record<string, Candidate[]> = {};
-
-  for (const item of detectedItems) {
-    const { embedding } = await embed({
-      model: analyzeMealConfig.embeddingsModel,
-      value: item.name,
-      providerOptions: {
-        google: {
-          taskType: "RETRIEVAL_QUERY",
-          outputDimensionality: 768,
-        },
-      },
-    });
-
-    const vector = l2Normalize(embedding);
-
-    const results = await ctx.vectorSearch("fdcFoods", "byEmbedding", {
-      vector,
-      limit: analyzeMealConfig.candidatesPerItem * 2,
-    });
-
+  for (let i = 0; i < names.length; i++) {
+    const results = resultsList[i];
     const mapped: Candidate[] = await Promise.all(
-      results.map((result) =>
-        ctx.runQuery(
-          internal.meals.analyze.searchFdcCandidates.mapResult,
-          result
-        )
+      results.map((r) =>
+        ctx.runQuery(internal.meals.analyze.searchFdcCandidates.mapResult, r)
       )
     );
-
-    candidatesByItem[item.name] = mapped
-      .sort((a, b) => b.score - a.score)
-      .slice(0, analyzeMealConfig.candidatesPerItem);
+    candidatesByItem[names[i]] = mapped.sort((a, b) => b.score - a.score);
   }
-
   return candidatesByItem;
 }
