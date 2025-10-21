@@ -12,26 +12,20 @@ const selectionSchema = z.object({
 
 type SelectedType = z.infer<typeof selectionSchema>;
 
-function buildSelectionPrompt(
-  items: DetectedItem[],
+function buildCandidatesText(
+  detectedItems: DetectedItem[],
   candidatesByItem: Record<string, Candidate[]>
 ) {
   const lines: string[] = [];
-  lines.push(analyzeMealPrompts.select);
-
-  lines.push("\nDetected items:");
-  for (const it of items) {
-    lines.push(`- ${it.name} ~ ${it.grams} g`);
-  }
 
   lines.push("\nCandidates per item (per 100g):");
-  for (const it of items) {
-    const candidates = candidatesByItem[it.name] ?? [];
+  for (const item of detectedItems) {
+    const candidates = candidatesByItem[item.name] ?? [];
     if (!candidates.length) {
-      lines.push(`- ${it.name}: (no candidates)`);
+      lines.push(`- ${item.name}: (no candidates)`);
       continue;
     }
-    lines.push(`- ${it.name}:`);
+    lines.push(`- ${item.name}:`);
     candidates.forEach((c, idx) => {
       lines.push(
         `  ${idx + 1}) fdcId=${c.fdcId} | ${c.name} | category=${c.category ?? "-"} | protein=${c.nutrientsPer100g.protein}g, fat=${c.nutrientsPer100g.fat}g, carbs=${c.nutrientsPer100g.carbs}g, kcal=${c.caloriesPer100g}`
@@ -89,18 +83,15 @@ export default async function selectCandidates({
   candidatesByItem,
   imageUrl,
 }: Params): Promise<{ fdcId: number; grams: number }[]> {
-  const selectionPrompt = buildSelectionPrompt(detectedItems, candidatesByItem);
+  const candidatesText = buildCandidatesText(detectedItems, candidatesByItem);
 
   const { object: selectedItems } = await generateObject({
     model: analyzeMealConfig.candidateSelectionModel,
     temperature: analyzeMealConfig.temperature,
     schema: selectionSchema,
     output: "array",
+    system: analyzeMealPrompts.select,
     messages: [
-      {
-        role: "system",
-        content: analyzeMealPrompts.detect,
-      },
       {
         role: "user",
         content: [{ type: "image", image: imageUrl }],
@@ -110,8 +101,8 @@ export default async function selectCandidates({
         content: [{ type: "text", text: JSON.stringify(detectedItems) }],
       },
       {
-        role: "system",
-        content: selectionPrompt,
+        role: "user",
+        content: candidatesText,
       },
     ],
   });

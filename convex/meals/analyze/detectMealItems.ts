@@ -21,11 +21,8 @@ export default async function detectMealItems({
     temperature: analyzeMealConfig.temperature,
     output: "array",
     schema: detectionSchema,
+    system: analyzeMealPrompts.detect,
     messages: [
-      {
-        role: "system",
-        content: analyzeMealPrompts.detect,
-      },
       {
         role: "user",
         content: [{ type: "image", image: imageUrl }],
