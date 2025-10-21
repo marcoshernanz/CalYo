@@ -46,6 +46,7 @@ const analyzeMealPhoto = action({
       const selectedItems = await selectCandidates({
         detectedItems,
         candidatesByItem,
+        imageUrl,
       });
 
       let totals = { calories: 0, protein: 0, fat: 0, carbs: 0 };

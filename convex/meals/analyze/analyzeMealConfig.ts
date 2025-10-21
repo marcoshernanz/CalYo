@@ -1,7 +1,7 @@
 import { EmbeddingModel, LanguageModel } from "ai";
 import { google } from "@ai-sdk/google";
 
-export type AnalyzeMealConfig = {
+type AnalyzeMealConfig = {
   maxDetectionItems: number;
   temperature: number;
   candidatesPerItem: number;
@@ -17,4 +17,9 @@ export const analyzeMealConfig: AnalyzeMealConfig = {
   imageProcessingModel: google("gemini-2.5-flash"),
   embeddingsModel: google.textEmbeddingModel("gemini-embedding-001"),
   candidateSelectionModel: google("models/gemini-1.5-flash"),
+};
+
+export const analyzeMealPrompts = {
+  detect: `Prompt explaining the 2-step process and giving instructions.`,
+  select: `Prompt saying it's step 2 and that the AI needs to select the most relevant food items.`,
 };

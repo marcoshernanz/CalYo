@@ -1,6 +1,6 @@
 import { generateObject } from "ai";
 import { z } from "zod/v4";
-import { analyzeMealConfig } from "./analyzeMealConfig";
+import { analyzeMealConfig, analyzeMealPrompts } from "./analyzeMealConfig";
 
 const detectionSchema = z.object({
   items: z
@@ -24,28 +24,18 @@ export default async function detectMealItems({
 }: Params): Promise<DetectedItem[]> {
   const { object: detected } = await generateObject({
     model: analyzeMealConfig.imageProcessingModel,
+    temperature: analyzeMealConfig.temperature,
     schema: detectionSchema,
     messages: [
       {
+        role: "system",
+        content: analyzeMealPrompts.detect,
+      },
+      {
         role: "user",
-        content: [
-          {
-            type: "text",
-            text: [
-              "You are a nutrition assistant.",
-              "Task: From this meal photo, list distinct foods (ingredients) with an estimated weight in grams.",
-              "Rules:",
-              "- Estimate realistic portion sizes; if unsure, pick typical serving sizes.",
-              "- Include sauces or beverages only if visually clear.",
-              "- Max 10 items.",
-              "- Output must follow the schema: items[{name, grams, confidence}].",
-            ].join("\n"),
-          },
-          { type: "image", image: imageUrl },
-        ],
+        content: [{ type: "image", image: imageUrl }],
       },
     ],
-    temperature: analyzeMealConfig.temperature,
   });
 
   return detected.items;
