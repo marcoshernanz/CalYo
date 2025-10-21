@@ -60,7 +60,7 @@ export default async function searchFdcCandidates({
   });
   const vectors = embeddings.map((e) => l2Normalize(e));
 
-  const limit = analyzeMealConfig.candidatesPerItem;
+  const limit = analyzeMealConfig.candidatesPerItem * 2;
   const searches = vectors.map((vector) =>
     ctx.vectorSearch("fdcFoods", "byEmbedding", { vector, limit })
   );
@@ -74,7 +74,9 @@ export default async function searchFdcCandidates({
         ctx.runQuery(internal.meals.analyze.searchFdcCandidates.mapResult, r)
       )
     );
-    candidatesByItem[names[i]] = mapped.sort((a, b) => b.score - a.score);
+    candidatesByItem[names[i]] = mapped
+      .sort((a, b) => b.score - a.score)
+      .slice(0, analyzeMealConfig.candidatesPerItem);
   }
   return candidatesByItem;
 }

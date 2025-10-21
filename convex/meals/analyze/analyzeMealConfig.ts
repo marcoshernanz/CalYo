@@ -28,9 +28,9 @@ Goal
 - If parts are not fully visible but strongly implied by the dish, infer typical components.
 
 Output
-- JSON only via schema: items[{ name, grams }]
-- name: concise, generic English name (no brands), reflect visible cooked state when clear (e.g., "grilled chicken breast", "white rice (cooked)", "tomato sauce", "olive oil").
-- grams: integer grams; round reasonably (e.g., nearest 5 g is fine).
+- Return ONLY a JSON array of: { name, grams }
+  - name: concise, generic English name (no brands), reflect visible cooked state when clear (e.g., "grilled chicken breast", "white rice (cooked)", "tomato sauce", "olive oil").
+  - grams: integer grams; round reasonably (e.g., nearest 5 g is fine).
 - Merge duplicate items by summing grams.
 
 Rules
@@ -40,6 +40,7 @@ Rules
 - Include preparation oils/fats if likely used; estimate grams consistent with the visible portion and cooking method.
 - Exclude inedible parts (bones, peels) where obvious; estimate edible portions only.
 - Be concise and realistic. If uncertain, choose typical amounts consistent with the image and dish.
+- Return a reasonable number of items (typically 3-10); avoid excessive granularity.
 - Do not output explanations—return only the JSON per schema.
 `.trim(),
 
