@@ -5,7 +5,7 @@ import { ActionCtx, internalQuery } from "../../_generated/server";
 import { internal } from "../../_generated/api";
 import { v } from "convex/values";
 import macrosToKcal from "../../../lib/utils/macrosToKcal";
-import { analyzeConfig } from "../analyzeMealPhoto";
+import { analyzeMealConfig } from "./analyzeMealConfig";
 
 export type Candidate = {
   fdcId: number;
@@ -53,7 +53,7 @@ export default async function searchFdcCandidates({
 
   for (const item of detectedItems) {
     const { embedding } = await embed({
-      model: analyzeConfig.embeddingsModel,
+      model: analyzeMealConfig.embeddingsModel,
       value: item.name,
       providerOptions: {
         google: {
@@ -67,7 +67,7 @@ export default async function searchFdcCandidates({
 
     const results = await ctx.vectorSearch("fdcFoods", "byEmbedding", {
       vector,
-      limit: analyzeConfig.candidatesPerItem * 2,
+      limit: analyzeMealConfig.candidatesPerItem * 2,
     });
 
     const mapped: Candidate[] = await Promise.all(
@@ -81,7 +81,7 @@ export default async function searchFdcCandidates({
 
     candidatesByItem[item.name] = mapped
       .sort((a, b) => b.score - a.score)
-      .slice(0, analyzeConfig.candidatesPerItem);
+      .slice(0, analyzeMealConfig.candidatesPerItem);
   }
 
   return candidatesByItem;

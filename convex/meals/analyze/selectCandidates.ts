@@ -1,5 +1,5 @@
 import { generateObject } from "ai";
-import { analyzeConfig } from "../analyzeMealPhoto";
+import { analyzeMealConfig } from "./analyzeMealConfig";
 import { DetectedItem } from "./detectMealItems";
 import { Candidate } from "./searchFdcCandidates";
 import { z } from "zod/v4";
@@ -100,10 +100,10 @@ export default async function selectCandidates({
   const selectionPrompt = buildSelectionPrompt(detectedItems, candidatesByItem);
 
   const { object: selectedItems } = await generateObject({
-    model: analyzeConfig.candidateSelectionModel,
+    model: analyzeMealConfig.candidateSelectionModel,
     schema: selectionSchema,
     prompt: selectionPrompt,
-    temperature: analyzeConfig.temperature,
+    temperature: analyzeMealConfig.temperature,
   });
 
   const finalItems = ensureSelections({

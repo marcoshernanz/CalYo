@@ -1,6 +1,6 @@
 import { generateObject } from "ai";
 import { z } from "zod/v4";
-import { analyzeConfig } from "../analyzeMealPhoto";
+import { analyzeMealConfig } from "./analyzeMealConfig";
 
 const detectionSchema = z.object({
   items: z
@@ -10,7 +10,7 @@ const detectionSchema = z.object({
         grams: z.number().min(1).max(1500),
       })
     )
-    .max(analyzeConfig.maxDetectionItems),
+    .max(analyzeMealConfig.maxDetectionItems),
 });
 
 export type DetectedItem = z.infer<typeof detectionSchema>["items"][number];
@@ -23,7 +23,7 @@ export default async function detectMealItems({
   imageUrl,
 }: Params): Promise<DetectedItem[]> {
   const { object: detected } = await generateObject({
-    model: analyzeConfig.imageProcessingModel,
+    model: analyzeMealConfig.imageProcessingModel,
     schema: detectionSchema,
     messages: [
       {
@@ -45,7 +45,7 @@ export default async function detectMealItems({
         ],
       },
     ],
-    temperature: analyzeConfig.temperature,
+    temperature: analyzeMealConfig.temperature,
   });
 
   return detected.items;

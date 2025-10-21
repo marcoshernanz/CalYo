@@ -18,6 +18,7 @@ import type * as auth from "../auth.js";
 import type * as fdc_getFdcFood from "../fdc/getFdcFood.js";
 import type * as fdc_upsertFdcFoods from "../fdc/upsertFdcFoods.js";
 import type * as http from "../http.js";
+import type * as meals_analyze_analyzeMealConfig from "../meals/analyze/analyzeMealConfig.js";
 import type * as meals_analyze_detectMealItems from "../meals/analyze/detectMealItems.js";
 import type * as meals_analyze_searchFdcCandidates from "../meals/analyze/searchFdcCandidates.js";
 import type * as meals_analyze_selectCandidates from "../meals/analyze/selectCandidates.js";
@@ -46,6 +47,7 @@ declare const fullApi: ApiFromModules<{
   "fdc/getFdcFood": typeof fdc_getFdcFood;
   "fdc/upsertFdcFoods": typeof fdc_upsertFdcFoods;
   http: typeof http;
+  "meals/analyze/analyzeMealConfig": typeof meals_analyze_analyzeMealConfig;
   "meals/analyze/detectMealItems": typeof meals_analyze_detectMealItems;
   "meals/analyze/searchFdcCandidates": typeof meals_analyze_searchFdcCandidates;
   "meals/analyze/selectCandidates": typeof meals_analyze_selectCandidates;
