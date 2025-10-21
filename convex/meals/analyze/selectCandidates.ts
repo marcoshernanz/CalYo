@@ -4,13 +4,14 @@ import { DetectedItem } from "./detectMealItems";
 import { Candidate } from "./searchFdcCandidates";
 import { z } from "zod/v4";
 
-const selectionSchema = z.array(
-  z.object({
-    inputName: z.string(),
-    chosenFdcId: z.number(),
-    grams: z.number().min(1).max(1500),
-  })
-);
+const selectionSchema = z.object({
+  inputName: z.string(),
+  chosenFdcId: z.number(),
+  grams: z.number().min(1).max(1500),
+});
+
+type SelectedType = z.infer<typeof selectionSchema>;
+
 function buildSelectionPrompt(
   items: DetectedItem[],
   candidatesByItem: Record<string, Candidate[]>
@@ -48,7 +49,7 @@ function ensureSelections({
 }: {
   detectedItems: DetectedItem[];
   candidatesByItem: Record<string, Candidate[]>;
-  selectedItems: z.infer<typeof selectionSchema>;
+  selectedItems: SelectedType[];
 }) {
   const byName = new Map(
     selectedItems.map((item) => [item.inputName.toLowerCase(), item])
@@ -94,6 +95,7 @@ export default async function selectCandidates({
     model: analyzeMealConfig.candidateSelectionModel,
     temperature: analyzeMealConfig.temperature,
     schema: selectionSchema,
+    output: "array",
     messages: [
       {
         role: "system",

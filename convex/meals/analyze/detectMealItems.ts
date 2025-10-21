@@ -3,17 +3,11 @@ import { z } from "zod/v4";
 import { analyzeMealConfig, analyzeMealPrompts } from "./analyzeMealConfig";
 
 const detectionSchema = z.object({
-  items: z
-    .array(
-      z.object({
-        name: z.string().min(1),
-        grams: z.number().min(1).max(1500),
-      })
-    )
-    .max(analyzeMealConfig.maxDetectionItems),
+  name: z.string().min(1),
+  grams: z.number().min(1).max(1500),
 });
 
-export type DetectedItem = z.infer<typeof detectionSchema>["items"][number];
+export type DetectedItem = z.infer<typeof detectionSchema>;
 
 interface Params {
   imageUrl: string;
@@ -25,6 +19,7 @@ export default async function detectMealItems({
   const { object: detected } = await generateObject({
     model: analyzeMealConfig.imageProcessingModel,
     temperature: analyzeMealConfig.temperature,
+    output: "array",
     schema: detectionSchema,
     messages: [
       {
@@ -38,5 +33,5 @@ export default async function detectMealItems({
     ],
   });
 
-  return detected.items;
+  return detected;
 }
