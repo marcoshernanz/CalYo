@@ -1,6 +1,7 @@
 - [ ] Make upsertFdcFoods safe
 - [ ] Patch in upsertFdcFoods to avoid overwriting embeddings
 - [ ] Authentication on convex functions
+- [ ] Option for the AI to select no option
 
 - [ ] Home scroll view bounce
 
