@@ -5,13 +5,11 @@ export const mealItemsFields = {
   mealId: v.id("meals"),
   grams: v.number(),
   food: v.id("fdcFoods"),
-  nutrients: v.optional(
-    v.object({
-      protein: v.number(),
-      fat: v.number(),
-      carbs: v.number(),
-    })
-  ),
+  nutrients: v.object({
+    protein: v.number(),
+    fat: v.number(),
+    carbs: v.number(),
+  }),
 };
 
 export const mealItems = defineTable(mealItemsFields).index("byMealId", [
