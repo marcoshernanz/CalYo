@@ -33,7 +33,6 @@ import type * as tables_mealItems from "../tables/mealItems.js";
 import type * as tables_meals from "../tables/meals.js";
 import type * as utils_backfillFdcEmbeddings from "../utils/backfillFdcEmbeddings.js";
 import type * as utils_countFdcEmbeddings from "../utils/countFdcEmbeddings.js";
-import type * as utils_migrateFdcFoods from "../utils/migrateFdcFoods.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -64,7 +63,6 @@ declare const fullApi: ApiFromModules<{
   "tables/meals": typeof tables_meals;
   "utils/backfillFdcEmbeddings": typeof utils_backfillFdcEmbeddings;
   "utils/countFdcEmbeddings": typeof utils_countFdcEmbeddings;
-  "utils/migrateFdcFoods": typeof utils_migrateFdcFoods;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
