@@ -15,6 +15,7 @@ import type {
 } from "convex/server";
 import type * as ResendOTP from "../ResendOTP.js";
 import type * as auth from "../auth.js";
+import type * as fdc_getFdcFood from "../fdc/getFdcFood.js";
 import type * as fdc_upsertFdcFoods from "../fdc/upsertFdcFoods.js";
 import type * as http from "../http.js";
 import type * as meals_analyze_detectMealItems from "../meals/analyze/detectMealItems.js";
@@ -41,6 +42,7 @@ import type * as utils_backfillFdcEmbeddings from "../utils/backfillFdcEmbedding
 declare const fullApi: ApiFromModules<{
   ResendOTP: typeof ResendOTP;
   auth: typeof auth;
+  "fdc/getFdcFood": typeof fdc_getFdcFood;
   "fdc/upsertFdcFoods": typeof fdc_upsertFdcFoods;
   http: typeof http;
   "meals/analyze/detectMealItems": typeof meals_analyze_detectMealItems;
