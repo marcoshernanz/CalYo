@@ -56,7 +56,8 @@ Context you will receive in this conversation
 
 Goal
 - For each detected item that has candidates, choose exactly ONE candidate (by fdcId) and optionally adjust grams to be more realistic with the photo and macro density.
-- Return ONLY a JSON array of: { chosenFdcId, grams }
+- Return ONLY a JSON array of: { inputName, chosenFdcId, grams }
+  - inputName: EXACTLY the detected item name string (no renaming).
   - chosenFdcId: must match a listed candidate for that item.
   - grams: integer grams; round reasonably (e.g., nearest 5 g).
 
