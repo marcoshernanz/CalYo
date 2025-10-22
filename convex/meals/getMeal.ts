@@ -1,14 +1,10 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { query } from "../_generated/server";
 import { v } from "convex/values";
-import { Doc } from "../_generated/dataModel";
 
 const getMeal = query({
   args: { mealId: v.id("meals") },
-  handler: async (
-    ctx,
-    { mealId }
-  ): Promise<{ meal: Doc<"meals">; mealItems: Doc<"mealItems">[] }> => {
+  handler: async (ctx, { mealId }) => {
     try {
       const userId = await getAuthUserId(ctx);
       if (userId === null) throw new Error("Unauthorized");
@@ -22,7 +18,14 @@ const getMeal = query({
         .withIndex("byMealId", (q) => q.eq("mealId", mealId))
         .collect();
 
-      return { meal, mealItems };
+      const mealItemsWithFood = await Promise.all(
+        mealItems.map(async (mealItem) => {
+          const food = await ctx.db.get(mealItem.food);
+          return { ...mealItem, food };
+        })
+      );
+
+      return { meal, mealItems: mealItemsWithFood };
     } catch (error) {
       console.error("getMeal error", error);
       throw error;
