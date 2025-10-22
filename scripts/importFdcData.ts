@@ -97,6 +97,7 @@ function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"fdcFoods">> {
       fat,
       carbs,
     },
+    hasEmbedding: false,
   };
 }
 
@@ -121,7 +122,7 @@ async function detectRootKey(jsonPath: string): Promise<string> {
   });
 }
 
-async function importFoundationFoods(jsonPath: string) {
+async function importFdcData(jsonPath: string) {
   const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL;
   if (!convexUrl) {
     throw new Error(
@@ -214,7 +215,7 @@ async function main() {
     process.exit(1);
   }
 
-  await importFoundationFoods(jsonPath);
+  await importFdcData(jsonPath);
 }
 
 main().catch((e) => {
