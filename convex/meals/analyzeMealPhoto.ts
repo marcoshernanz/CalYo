@@ -22,6 +22,7 @@ const analyzeMealPhoto = action({
 
       const meal = await ctx.runQuery(api.meals.getMeal.default, { mealId });
       if (!meal) throw new Error("Meal not found");
+      if (meal.meal.userId !== userId) throw new Error("Forbidden");
 
       const imageUrl = await ctx.storage.getUrl(storageId);
       if (!imageUrl) throw new Error("Image not found");
