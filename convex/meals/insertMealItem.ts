@@ -13,7 +13,7 @@ const insertMealItem = mutation({
     if (!meal) throw new Error("Meal not found");
     if (meal.userId !== userId) throw new Error("Forbidden");
 
-    ctx.db.insert("mealItems", args);
+    await ctx.db.insert("mealItems", args);
   },
 });
 
