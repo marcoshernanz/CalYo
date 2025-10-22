@@ -4,7 +4,7 @@ import { analyzeMealConfig, analyzeMealPrompts } from "./analyzeMealConfig";
 
 const detectionSchema = z.object({
   name: z.string().min(1),
-  grams: z.number().min(1).max(1500),
+  grams: z.number().int().min(1).max(1500),
 });
 
 export type DetectedItem = z.infer<typeof detectionSchema>;
@@ -21,6 +21,8 @@ export default async function detectMealItems({
     temperature: analyzeMealConfig.temperature,
     output: "array",
     schema: detectionSchema,
+    schemaName: "DetectedIngredients",
+    schemaDescription: "Single-ingredient items with grams from a meal photo.",
     system: analyzeMealPrompts.detect,
     messages: [
       {
