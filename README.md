@@ -1,3 +1,4 @@
+- [ ] mealItems.food -> mealItems.foodId
 - [ ] Option for the AI to select no option
 - [ ] Home scroll view bounce
 
