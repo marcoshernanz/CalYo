@@ -7,6 +7,7 @@ type AnalyzeMealConfig = {
   imageProcessingModel: LanguageModel;
   embeddingsModel: EmbeddingModel;
   candidateSelectionModel: LanguageModel;
+  namingModel: LanguageModel;
 };
 
 export const analyzeMealConfig: AnalyzeMealConfig = {
@@ -15,6 +16,7 @@ export const analyzeMealConfig: AnalyzeMealConfig = {
   imageProcessingModel: google("gemini-2.5-flash"),
   embeddingsModel: google.textEmbeddingModel("gemini-embedding-001"),
   candidateSelectionModel: google("gemini-2.5-flash"),
+  namingModel: google("gemini-2.5-flash"),
 };
 
 export const analyzeMealPrompts = {
@@ -71,6 +73,7 @@ Sanity Checks
 - Keep grams realistic for the visible portion and component.
 - Return only the JSON array per schema—no explanations.
 `.trim(),
+
   name: `
 Role: Meal Naming Assistant
 
