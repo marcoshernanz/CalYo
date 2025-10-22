@@ -14,7 +14,7 @@ export const analyzeMealConfig: AnalyzeMealConfig = {
   candidatesPerItem: 3,
   imageProcessingModel: google("gemini-2.5-flash"),
   embeddingsModel: google.textEmbeddingModel("gemini-embedding-001"),
-  candidateSelectionModel: google("models/gemini-1.5-flash"),
+  candidateSelectionModel: google("gemini-2.5-flash"),
 };
 
 export const analyzeMealPrompts = {
