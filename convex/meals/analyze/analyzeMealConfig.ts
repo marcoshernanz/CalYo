@@ -71,4 +71,19 @@ Sanity Checks
 - Keep grams realistic for the visible portion and component.
 - Return only the JSON array per schema—no explanations.
 `.trim(),
+  name: `
+Role: Meal Naming Assistant
+
+Goal
+- Produce a short, appetizing, generic meal name for display.
+
+Rules
+- 3–7 words, Title Case, <= 60 characters.
+- No brands, no quantities, no emojis, no trailing punctuation.
+- Focus on the main components and cooking style; optionally include cuisine.
+- Ignore micro-ingredients and cooking oils unless central to the dish (e.g., pesto, ranch).
+
+Output
+- Return ONLY JSON: { mealName }
+`.trim(),
 };
