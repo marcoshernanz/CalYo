@@ -124,11 +124,10 @@ async function detectRootKey(jsonPath: string): Promise<string> {
 
 async function importFdcData(jsonPath: string) {
   const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL;
-  if (!convexUrl) {
-    throw new Error(
-      "Set EXPO_PUBLIC_CONVEX_URL env var to your Convex deployment URL"
-    );
-  }
+  const ingestToken = process.env.CONVEX_INGEST_TOKEN;
+  if (!convexUrl) throw new Error("Set EXPO_PUBLIC_CONVEX_URL");
+  if (!ingestToken) throw new Error("Set CONVEX_INGEST_TOKEN");
+
   const client = new ConvexHttpClient(convexUrl);
 
   const rootKey = await detectRootKey(jsonPath);
@@ -161,9 +160,9 @@ async function importFdcData(jsonPath: string) {
       if (batch.length >= batchSize) {
         pipeline.pause();
         try {
-          const { inserted, updated } = await client.mutation(
-            api.fdc.upsertFdcFoods.default,
-            { docs: batch }
+          const { inserted, updated } = await client.action(
+            api.fdc.ingestFdcFoods.default,
+            { token: ingestToken, docs: batch }
           );
 
           totalInserted += inserted;
@@ -184,9 +183,9 @@ async function importFdcData(jsonPath: string) {
     pipeline.on("end", async () => {
       try {
         if (batch.length) {
-          const { inserted, updated } = await client.mutation(
-            api.fdc.upsertFdcFoods.default,
-            { docs: batch }
+          const { inserted, updated } = await client.action(
+            api.fdc.ingestFdcFoods.default,
+            { token: ingestToken, docs: batch }
           );
           totalInserted += inserted;
           totalUpdated += updated;
