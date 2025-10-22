@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { action, internalQuery } from "../_generated/server";
+import { internalAction, internalQuery } from "../_generated/server";
 import { internal } from "../_generated/api";
 import { Id } from "../_generated/dataModel";
 
@@ -33,7 +33,7 @@ export const pageFoodsForCount = internalQuery({
   },
 });
 
-const countFdcEmbeddings = action({
+const countFdcEmbeddings = internalAction({
   handler: async (ctx) => {
     const pageSize = 200;
     let cursor: string | undefined = undefined;

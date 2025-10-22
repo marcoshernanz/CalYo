@@ -1,6 +1,10 @@
 import { v } from "convex/values";
 import { Doc } from "../_generated/dataModel";
-import { action, internalMutation, internalQuery } from "../_generated/server";
+import {
+  internalAction,
+  internalMutation,
+  internalQuery,
+} from "../_generated/server";
 import { internal } from "../_generated/api";
 import { embedMany } from "ai";
 import { google } from "@ai-sdk/google";
@@ -40,7 +44,7 @@ export const saveEmbedding = internalMutation({
   },
 });
 
-const backfillFdcEmbeddings = action({
+const backfillFdcEmbeddings = internalAction({
   handler: async (ctx) => {
     const batchSize = 100;
     let processed = 0;
