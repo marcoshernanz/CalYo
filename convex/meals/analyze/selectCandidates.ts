@@ -7,7 +7,7 @@ import { z } from "zod/v4";
 const selectionSchema = z.object({
   inputName: z.string(),
   chosenFdcId: z.number(),
-  grams: z.number().min(1).max(1500),
+  grams: z.number().int().min(1).max(1500),
 });
 
 type SelectedType = z.infer<typeof selectionSchema>;
@@ -90,6 +90,9 @@ export default async function selectCandidates({
     temperature: analyzeMealConfig.temperature,
     schema: selectionSchema,
     output: "array",
+    schemaName: "SelectedCandidates",
+    schemaDescription:
+      "Mapping from detected items to FDC candidates and grams.",
     system: analyzeMealPrompts.select,
     messages: [
       {
@@ -98,7 +101,12 @@ export default async function selectCandidates({
       },
       {
         role: "assistant",
-        content: [{ type: "text", text: JSON.stringify(detectedItems) }],
+        content: [
+          {
+            type: "text",
+            text: "Detected items (JSON):\n" + JSON.stringify(detectedItems),
+          },
+        ],
       },
       {
         role: "user",
@@ -107,11 +115,5 @@ export default async function selectCandidates({
     ],
   });
 
-  const finalItems = ensureSelections({
-    detectedItems,
-    candidatesByItem,
-    selectedItems,
-  });
-
-  return finalItems;
+  return ensureSelections({ detectedItems, candidatesByItem, selectedItems });
 }
