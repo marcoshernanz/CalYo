@@ -3,9 +3,6 @@ import { action, internalMutation } from "../_generated/server";
 import { fdcFoodsFields } from "../tables/fdcFoods";
 import { internal } from "../_generated/api";
 
-// TODO: Make it safe
-// TODO: Patch to avoid overwriting embeddings
-
 export const upsertFdcFoods = internalMutation({
   args: {
     docs: v.array(v.object(fdcFoodsFields)),
