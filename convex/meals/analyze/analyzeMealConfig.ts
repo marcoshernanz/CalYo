@@ -32,7 +32,7 @@ Goal
 Output
 - Return ONLY a JSON array of: { name, grams }
   - name: concise, generic English name (no brands), reflect visible cooked state when clear (e.g., "grilled chicken breast", "white rice (cooked)", "tomato sauce", "olive oil").
-  - grams: integer grams; round reasonably (e.g., nearest 5 g is fine).
+  - grams: integer grams; round reasonably (e.g., nearest 1 g is fine).
 - Merge duplicate items by summing grams.
 
 Rules
@@ -60,7 +60,7 @@ Goal
 - Return ONLY a JSON array of: { inputName, chosenFdcId, grams }
   - inputName: EXACTLY the detected item name string (no renaming).
   - chosenFdcId: must match a listed candidate for that item.
-  - grams: integer grams; round reasonably (e.g., nearest 5 g).
+  - grams: integer grams; round reasonably (e.g., nearest 1 g).
 
 Decision Rules
 - Maintain disaggregation: choose candidates that represent the single component itself, not a multi-component prepared food that would double-count with other items.
