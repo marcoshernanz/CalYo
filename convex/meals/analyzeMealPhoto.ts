@@ -9,7 +9,6 @@ import scaleNutrients from "../../lib/utils/scaleNutrients";
 import nameMeal from "./analyze/nameMeal";
 import { getAuthUserId } from "@convex-dev/auth/server";
 
-// TODO: Is is safe or does it expose the uploaded photo?
 const analyzeMealPhoto = action({
   args: {
     mealId: v.id("meals"),
