@@ -1,10 +1,11 @@
+import SafeArea from "@/components/ui/SafeArea";
 import Text from "@/components/ui/Text";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 export default function MealScreen() {
   const { photoUri } = useLocalSearchParams<{ photoUri: string }>();
@@ -56,10 +57,25 @@ export default function MealScreen() {
   const totals = meal?.totals ?? { calories: 0, protein: 0, fat: 0, carbs: 0 };
 
   return (
-    <View>
-      <Text>{isLoading ? "Loading meal..." : JSON.stringify(meal)}</Text>
-      <Text>{JSON.stringify(items)}</Text>
-      <Text>{JSON.stringify(totals)}</Text>
-    </View>
+    <SafeArea>
+      <ScrollView>
+        <Text>Status: {meal?.status}</Text>
+        <Text>Name: {meal?.name}</Text>
+        <Text>Calories: {meal?.totals?.calories}</Text>
+        <Text>Protein: {meal?.totals?.protein}</Text>
+        <Text>Carbs: {meal?.totals?.carbs}</Text>
+        <Text>Fat: {meal?.totals?.fat}</Text>
+        <Text>Items:</Text>
+        {items.map((item) => (
+          <View key={item._id}>
+            <Text>- Description: {item.food?.description.en}</Text>
+            <Text>- Grams: {item.grams}</Text>
+            <Text>- Protein: {item.food?.nutrients.protein}</Text>
+            <Text>- Carbs: {item.food?.nutrients.carbs}</Text>
+            <Text>- Fat: {item.food?.nutrients.fat}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </SafeArea>
   );
 }
