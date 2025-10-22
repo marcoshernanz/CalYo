@@ -6,6 +6,7 @@ import detectMealItems from "./analyze/detectMealItems";
 import searchFdcCandidates from "./analyze/searchFdcCandidates";
 import selectCandidates from "./analyze/selectCandidates";
 import scaleNutrients from "../../lib/utils/scaleNutrients";
+import nameMeal from "./analyze/nameMeal";
 
 const analyzeMealPhoto = action({
   args: {
@@ -29,7 +30,6 @@ const analyzeMealPhoto = action({
       });
 
       const detectedItems = await detectMealItems({ imageUrl });
-
       if (!detectedItems || detectedItems.length === 0) {
         await ctx.runMutation(api.meals.updateMeal.default, {
           id: mealId,
@@ -38,16 +38,24 @@ const analyzeMealPhoto = action({
         return null;
       }
 
-      const candidatesByItem = await searchFdcCandidates({
-        ctx,
-        detectedItems,
-      });
+      const mealNamePromise = nameMeal({ items: detectedItems });
+      const selectedItemsPromise = (async () => {
+        const candidatesByItem = await searchFdcCandidates({
+          ctx,
+          detectedItems,
+        });
 
-      const selectedItems = await selectCandidates({
-        detectedItems,
-        candidatesByItem,
-        imageUrl,
-      });
+        return selectCandidates({
+          detectedItems,
+          candidatesByItem,
+          imageUrl,
+        });
+      })();
+
+      const [mealName, selectedItems] = await Promise.all([
+        mealNamePromise,
+        selectedItemsPromise,
+      ]);
 
       let totals = { calories: 0, protein: 0, fat: 0, carbs: 0 };
 
@@ -82,6 +90,7 @@ const analyzeMealPhoto = action({
         id: mealId,
         meal: {
           status: "done",
+          name: mealName,
           totals,
         },
       });
