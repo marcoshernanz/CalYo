@@ -1,5 +1,13 @@
-import Text from "@/components/ui/Text";
+import Button from "@/components/ui/Button";
+import SafeArea from "@/components/ui/SafeArea";
+import { useAuthContext } from "@/context/AuthContext";
 
 export default function ExercisesScreen() {
-  return <Text>Exercises Screen</Text>;
+  const { signOut } = useAuthContext();
+
+  return (
+    <SafeArea>
+      <Button onPress={signOut}>Sign Out</Button>
+    </SafeArea>
+  );
 }
