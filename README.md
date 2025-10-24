@@ -1,7 +1,5 @@
 - [ ] Meal loading
-- [ ] Meal screen spacing
 - [ ] Meal screen footer and header shadow
-- [ ] Meal screen spacing
 - [ ] Meal screen buttons
 - [ ] Button asChild
 

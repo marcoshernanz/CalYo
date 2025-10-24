@@ -4,6 +4,8 @@ import { useRouter } from "expo-router";
 import { ArrowLeftIcon, EllipsisVerticalIcon } from "lucide-react-native";
 import Text from "../ui/Text";
 import { Id } from "@/convex/_generated/dataModel";
+import SafeArea from "../ui/SafeArea";
+import getShadow from "@/lib/ui/getShadow";
 
 interface Props {
   mealId: Id<"meals">;
@@ -13,7 +15,7 @@ export default function MealHeader({ mealId }: Props) {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
+    <SafeArea edges={["top", "left", "right"]} style={styles.container}>
       <Button
         size="sm"
         variant="secondary"
@@ -30,17 +32,19 @@ export default function MealHeader({ mealId }: Props) {
       <Button size="sm" variant="secondary" style={styles.button}>
         <EllipsisVerticalIcon size={22} />
       </Button>
-    </View>
+    </SafeArea>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 0,
+    zIndex: 10,
+    paddingBottom: 16,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
-    paddingBottom: 16,
+    ...getShadow("md"),
   },
   button: {
     aspectRatio: 1,

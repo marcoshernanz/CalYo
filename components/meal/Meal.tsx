@@ -15,17 +15,20 @@ interface Props {
 
 export default function Meal({ name, mealId, totals, items }: Props) {
   return (
-    <SafeArea>
+    <SafeArea edges={[]}>
       <MealHeader mealId={mealId} />
       <ScrollView
         style={styles.scrollView}
+        contentContainerStyle={styles.scrollViewContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text weight="600" style={styles.name}>
-          {name}
-        </Text>
-        <MealMacros totals={totals} />
-        <MealIngredients items={items} />
+        <SafeArea edges={["left", "right"]}>
+          <Text weight="600" style={styles.name}>
+            {name}
+          </Text>
+          <MealMacros totals={totals} />
+          <MealIngredients items={items} />
+        </SafeArea>
       </ScrollView>
       <MealFooter />
     </SafeArea>
@@ -35,6 +38,9 @@ export default function Meal({ name, mealId, totals, items }: Props) {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
+  },
+  scrollViewContent: {
+    paddingBottom: 16,
   },
   name: {
     fontSize: 22,
