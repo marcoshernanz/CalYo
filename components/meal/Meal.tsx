@@ -7,12 +7,13 @@ import MealMacros from "./MealMacros";
 import Text from "../ui/Text";
 
 interface Props {
+  name: string;
   mealId: React.ComponentProps<typeof MealHeader>["mealId"];
   totals: React.ComponentProps<typeof MealMacros>["totals"];
   items: React.ComponentProps<typeof MealIngredients>["items"];
 }
 
-export default function Meal({ mealId, totals, items }: Props) {
+export default function Meal({ name, mealId, totals, items }: Props) {
   return (
     <SafeArea>
       <MealHeader mealId={mealId} />
@@ -21,7 +22,7 @@ export default function Meal({ mealId, totals, items }: Props) {
         showsVerticalScrollIndicator={false}
       >
         <Text weight="600" style={{ fontSize: 22 }}>
-          Meal Title
+          {name}
         </Text>
         <MealMacros totals={totals} />
         <MealIngredients items={items} />

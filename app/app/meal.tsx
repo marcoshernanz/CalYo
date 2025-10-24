@@ -57,10 +57,11 @@ export default function MealScreen() {
 
   const { meal, mealItems } = data;
 
-  if (!meal.totals) return null;
+  if (!meal.totals || !meal.name) return null;
 
   return (
     <Meal
+      name={meal.name}
       mealId={meal._id}
       totals={meal.totals}
       items={mealItems.map((item) => ({
