@@ -21,7 +21,7 @@ export default function MealMacros({ totals }: Props) {
   const macros = useMemo(
     () => [
       {
-        label: "Carbohidratos",
+        label: "Hidratos",
         value: totals.carbs,
         color: getColor("carb"),
         Icon: CarbIcon,
@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     gap: 8,
-    alignItems: "center",
   },
   macroValueContainer: {
     flexDirection: "row",
