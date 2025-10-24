@@ -1,4 +1,4 @@
-import { ScrollView } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import SafeArea from "../ui/SafeArea";
 import MealFooter from "./MealFooter";
 import MealHeader from "./MealHeader";
@@ -10,7 +10,10 @@ export default function Meal() {
   return (
     <SafeArea>
       <MealHeader />
-      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <Text weight="600" style={{ fontSize: 22 }}>
           Meal Title
         </Text>
@@ -21,3 +24,9 @@ export default function Meal() {
     </SafeArea>
   );
 }
+
+const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
+});
