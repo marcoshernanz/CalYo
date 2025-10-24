@@ -2,38 +2,18 @@ import { StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import Card from "../ui/Card";
 import getColor from "@/lib/ui/getColor";
-import macrosToKcal from "@/lib/utils/macrosToKcal";
+import { Id } from "@/convex/_generated/dataModel";
 
-const items = [
-  {
-    food: {
-      description: {
-        en: "Chicken Breast",
-      },
-    },
-    nutrients: {
-      protein: 31,
-      fat: 3.6,
-      carbs: 0,
-    },
-    grams: 150,
-  },
-  {
-    food: {
-      description: {
-        en: "Brown Rice",
-      },
-    },
-    nutrients: {
-      protein: 2.6,
-      fat: 0.9,
-      carbs: 23,
-    },
-    grams: 200,
-  },
-];
+interface Props {
+  items: {
+    foodId: Id<"fdcFoods">;
+    name: string;
+    calories: number;
+    grams: number;
+  }[];
+}
 
-export default function MealIngredients() {
+export default function MealIngredients({ items }: Props) {
   return (
     <View>
       <View style={styles.headerContainer}>
@@ -42,7 +22,7 @@ export default function MealIngredients() {
       </View>
       <View>
         {items.map((item, i) => (
-          <Card key={i} style={styles.card}>
+          <Card key={`ingredient-${item.name}-${i}`} style={styles.card}>
             <View style={styles.cardLeftContent}>
               <Text
                 size="14"
@@ -51,11 +31,11 @@ export default function MealIngredients() {
                 ellipsizeMode="tail"
                 style={styles.foodName}
               >
-                {item.food?.description.en}
+                {item.name}
               </Text>
               <Text size="14">&middot;</Text>
               <Text size="14" color={getColor("mutedForeground")}>
-                {macrosToKcal(item.nutrients)} kcal
+                {item.calories} kcal
               </Text>
             </View>
             <Text size="14" weight="500">

@@ -5,11 +5,28 @@ import MealHeader from "./MealHeader";
 import MealIngredients from "./MealIngredients";
 import MealMacros from "./MealMacros";
 import Text from "../ui/Text";
+import { Id } from "@/convex/_generated/dataModel";
 
-export default function Meal() {
+interface Props {
+  mealId: Id<"meals">;
+  totals: {
+    calories: number;
+    protein: number;
+    fat: number;
+    carbs: number;
+  };
+  items: {
+    foodId: Id<"fdcFoods">;
+    name: string;
+    calories: number;
+    grams: number;
+  }[];
+}
+
+export default function Meal({ mealId, totals, items }: Props) {
   return (
     <SafeArea>
-      <MealHeader />
+      <MealHeader mealId={mealId} />
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
@@ -17,8 +34,8 @@ export default function Meal() {
         <Text weight="600" style={{ fontSize: 22 }}>
           Meal Title
         </Text>
-        <MealMacros />
-        <MealIngredients />
+        <MealMacros totals={totals} />
+        <MealIngredients items={items} />
       </ScrollView>
       <MealFooter />
     </SafeArea>

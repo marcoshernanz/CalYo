@@ -3,8 +3,13 @@ import Button from "../ui/Button";
 import { useRouter } from "expo-router";
 import { ArrowLeftIcon, EllipsisVerticalIcon } from "lucide-react-native";
 import Text from "../ui/Text";
+import { Id } from "@/convex/_generated/dataModel";
 
-export default function MealHeader() {
+interface Props {
+  mealId: Id<"meals">;
+}
+
+export default function MealHeader({ mealId }: Props) {
   const router = useRouter();
 
   return (
