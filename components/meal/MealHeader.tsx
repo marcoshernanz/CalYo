@@ -26,7 +26,7 @@ export default function MealHeader({ mealId }: Props) {
       </Button>
       <View style={styles.title}>
         <Text size="18" weight="600">
-          Nutrición
+          Comida
         </Text>
       </View>
       <Button size="sm" variant="secondary" style={styles.button}>
