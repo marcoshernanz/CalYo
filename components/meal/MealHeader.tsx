@@ -6,16 +6,30 @@ import Text from "../ui/Text";
 import { Id } from "@/convex/_generated/dataModel";
 import SafeArea from "../ui/SafeArea";
 import getShadow from "@/lib/ui/getShadow";
+import Animated, {
+  Extrapolation,
+  SharedValue,
+  interpolate,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 
 interface Props {
   mealId: Id<"meals">;
+  scrollY: SharedValue<number>;
 }
 
-export default function MealHeader({ mealId }: Props) {
+export default function MealHeader({ mealId, scrollY }: Props) {
   const router = useRouter();
+  const shadowStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(scrollY.value, [0, 24], [0, 1], Extrapolation.CLAMP),
+  }));
 
   return (
     <SafeArea edges={["top", "left", "right"]} style={styles.container}>
+      <Animated.View
+        pointerEvents="none"
+        style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
+      />
       <Button
         size="sm"
         variant="secondary"
@@ -44,7 +58,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    ...getShadow("md"),
+    position: "relative",
   },
   button: {
     aspectRatio: 1,
@@ -53,5 +67,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  shadow: {
+    ...getShadow("md"),
   },
 });
