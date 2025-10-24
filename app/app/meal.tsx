@@ -7,6 +7,7 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import getColor from "@/lib/ui/getColor";
 import getShadow from "@/lib/ui/getShadow";
+import macrosToKcal from "@/lib/utils/macrosToKcal";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import {
@@ -121,8 +122,8 @@ export default function MealScreen() {
         </Button>
       </View>
       <ScrollView style={{ flex: 1 }}>
-        <Text size="24" weight="600">
-          Macarrones con tomate y atún.
+        <Text weight="600" style={{ fontSize: 22 }}>
+          {meal?.name}
         </Text>
         <View style={{ gap: 6 }}>
           <Card style={{ flexDirection: "row", gap: 12, padding: 12 }}>
@@ -188,6 +189,54 @@ export default function MealScreen() {
                   </View>
                 </Card>
               ))}
+          </View>
+        </View>
+        <View>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Text>Ingredientes</Text>
+            <Text>Añadir más</Text>
+          </View>
+          <View>
+            {items.map((item, i) => (
+              <Card
+                key={i}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: 16,
+                  gap: 20,
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 6,
+                    flex: 1,
+                    flexShrink: 1,
+                  }}
+                >
+                  <Text
+                    size="14"
+                    weight="600"
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={{ flexShrink: 1 }}
+                  >
+                    {item.food?.description.en}
+                  </Text>
+                  <Text size="14">&middot;</Text>
+                  <Text size="14" color={getColor("mutedForeground")}>
+                    {macrosToKcal(item.nutrients)} kcal
+                  </Text>
+                </View>
+                <Text size="14" weight="500">
+                  {item.grams} g
+                </Text>
+              </Card>
+            ))}
           </View>
         </View>
       </ScrollView>
