@@ -81,6 +81,7 @@ export default function MealMacros({ totals }: Props) {
 const styles = StyleSheet.create({
   container: {
     gap: 6,
+    paddingBottom: 32,
   },
   caloriesCard: {
     flexDirection: "row",

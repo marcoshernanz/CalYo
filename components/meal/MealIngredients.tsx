@@ -2,6 +2,7 @@ import { StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import Card from "../ui/Card";
 import getColor from "@/lib/ui/getColor";
+import { PlusIcon } from "lucide-react-native";
 
 interface Props {
   items: {
@@ -15,10 +16,19 @@ export default function MealIngredients({ items }: Props) {
   return (
     <View>
       <View style={styles.headerContainer}>
-        <Text>Ingredientes</Text>
-        <Text>Añadir más</Text>
+        <Text weight="600">Ingredientes</Text>
+        <View style={styles.addMoreContainer}>
+          <PlusIcon
+            size={16}
+            strokeWidth={2.25}
+            color={getColor("mutedForeground")}
+          />
+          <Text size="16" color={getColor("mutedForeground")}>
+            Añadir más
+          </Text>
+        </View>
       </View>
-      <View>
+      <View style={styles.ingredientsContainer}>
         {items.map((item, i) => (
           <Card key={`ingredient-${item.name}-${i}`} style={styles.card}>
             <View style={styles.cardLeftContent}>
@@ -50,6 +60,15 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingBottom: 12,
+  },
+  addMoreContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 2,
+  },
+  ingredientsContainer: {
+    gap: 8,
   },
   card: {
     flexDirection: "row",

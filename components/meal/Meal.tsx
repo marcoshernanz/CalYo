@@ -21,7 +21,7 @@ export default function Meal({ name, mealId, totals, items }: Props) {
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
-        <Text weight="600" style={{ fontSize: 22 }}>
+        <Text weight="600" style={styles.name}>
           {name}
         </Text>
         <MealMacros totals={totals} />
@@ -35,5 +35,9 @@ export default function Meal({ name, mealId, totals, items }: Props) {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
+  },
+  name: {
+    fontSize: 22,
+    paddingBottom: 16,
   },
 });
