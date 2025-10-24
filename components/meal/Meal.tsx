@@ -5,22 +5,11 @@ import MealHeader from "./MealHeader";
 import MealIngredients from "./MealIngredients";
 import MealMacros from "./MealMacros";
 import Text from "../ui/Text";
-import { Id } from "@/convex/_generated/dataModel";
 
 interface Props {
-  mealId: Id<"meals">;
-  totals: {
-    calories: number;
-    protein: number;
-    fat: number;
-    carbs: number;
-  };
-  items: {
-    foodId: Id<"fdcFoods">;
-    name: string;
-    calories: number;
-    grams: number;
-  }[];
+  mealId: React.ComponentProps<typeof MealHeader>["mealId"];
+  totals: React.ComponentProps<typeof MealMacros>["totals"];
+  items: React.ComponentProps<typeof MealIngredients>["items"];
 }
 
 export default function Meal({ mealId, totals, items }: Props) {

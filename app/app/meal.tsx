@@ -1,8 +1,9 @@
 import Meal from "@/components/meal/Meal";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import macrosToKcal from "@/lib/utils/macrosToKcal";
 import { useAction, useMutation, useQuery } from "convex/react";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 
 export default function MealScreen() {
@@ -52,11 +53,21 @@ export default function MealScreen() {
     })();
   }, [analyzeMealPhoto, createMeal, generateUploadUrl, photoUri]);
 
-  const meal = data?.meal;
-  const items = data?.mealItems ?? [];
-  const isLoading =
-    !meal || meal.status === "pending" || meal.status === "processing";
-  const totals = meal?.totals ?? { calories: 0, protein: 0, fat: 0, carbs: 0 };
+  if (!data) return null;
 
-  return <Meal />;
+  const { meal, mealItems } = data;
+
+  if (!meal.totals) return null;
+
+  return (
+    <Meal
+      mealId={meal._id}
+      totals={meal.totals}
+      items={mealItems.map((item) => ({
+        name: item.food.description.en,
+        calories: macrosToKcal(item.nutrients),
+        grams: item.grams,
+      }))}
+    />
+  );
 }

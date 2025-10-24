@@ -2,11 +2,9 @@ import { StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import Card from "../ui/Card";
 import getColor from "@/lib/ui/getColor";
-import { Id } from "@/convex/_generated/dataModel";
 
 interface Props {
   items: {
-    foodId: Id<"fdcFoods">;
     name: string;
     calories: number;
     grams: number;

@@ -21,6 +21,8 @@ const getMeal = query({
       const mealItemsWithFood = await Promise.all(
         mealItems.map(async (mealItem) => {
           const food = await ctx.db.get(mealItem.food);
+          if (!food) throw new Error("Food not found");
+
           return { ...mealItem, food };
         })
       );
