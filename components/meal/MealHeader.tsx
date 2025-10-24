@@ -69,6 +69,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   shadow: {
-    ...getShadow("md"),
+    ...getShadow("lg"),
   },
 });

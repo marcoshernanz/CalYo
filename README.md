@@ -1,5 +1,4 @@
 - [ ] Meal loading
-- [ ] Meal screen footer and header shadow
 - [ ] Meal screen buttons
 - [ ] Button asChild
 

@@ -44,6 +44,17 @@ export default function MealFooter({
   );
 }
 
+const baseShadow = getShadow("lg");
+const invertedShadow = Array.isArray(baseShadow.boxShadow)
+  ? {
+      ...baseShadow,
+      boxShadow: baseShadow.boxShadow.map((layer: any) => ({
+        ...layer,
+        offsetY: -layer.offsetY,
+      })),
+    }
+  : baseShadow;
+
 const styles = StyleSheet.create({
   container: {
     flex: 0,
@@ -56,7 +67,5 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 48,
   },
-  shadow: {
-    ...getShadow("md"),
-  },
+  shadow: invertedShadow,
 });
