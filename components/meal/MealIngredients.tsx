@@ -3,6 +3,7 @@ import Text from "../ui/Text";
 import Card from "../ui/Card";
 import getColor from "@/lib/ui/getColor";
 import { PlusIcon } from "lucide-react-native";
+import Button from "../ui/Button";
 
 interface Props {
   items: {
@@ -17,7 +18,7 @@ export default function MealIngredients({ items }: Props) {
     <View>
       <View style={styles.headerContainer}>
         <Text weight="600">Ingredientes</Text>
-        <View style={styles.addMoreContainer}>
+        <Button variant="base" size="base" style={styles.addMoreButton}>
           <PlusIcon
             size={14}
             strokeWidth={2.25}
@@ -26,7 +27,7 @@ export default function MealIngredients({ items }: Props) {
           <Text size="14" color={getColor("mutedForeground")}>
             Añadir más
           </Text>
-        </View>
+        </Button>
       </View>
       <View style={styles.ingredientsContainer}>
         {items.map((item, i) => (
@@ -60,9 +61,10 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     paddingBottom: 12,
   },
-  addMoreContainer: {
+  addMoreButton: {
     flexDirection: "row",
     alignItems: "center",
     gap: 2,
