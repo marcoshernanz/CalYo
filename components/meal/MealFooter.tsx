@@ -8,6 +8,10 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
+import { useRouter } from "expo-router";
+import { SparklesIcon } from "lucide-react-native";
+import Text from "../ui/Text";
+import getColor from "@/lib/ui/getColor";
 
 interface Props {
   scrollY: SharedValue<number>;
@@ -20,6 +24,8 @@ export default function MealFooter({
   contentHeight,
   layoutHeight,
 }: Props) {
+  const router = useRouter();
+
   const shadowStyle = useAnimatedStyle(() => {
     const maxOffset = Math.max(contentHeight.value - layoutHeight.value, 0);
     const remaining = Math.max(maxOffset - scrollY.value, 0);
@@ -39,7 +45,20 @@ export default function MealFooter({
         pointerEvents="none"
         style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
       />
-      <Button style={styles.doneButton}>Hecho</Button>
+      <Button style={styles.button} variant="outline">
+        <SparklesIcon
+          size={16}
+          color={getColor("foreground")}
+          fill={getColor("foreground")}
+        />
+        <Text size="16" weight="600">
+          Arreglar
+        </Text>
+        {/* TODO: Nombre */}
+      </Button>
+      <Button style={styles.button} onPress={() => router.back()}>
+        Hecho
+      </Button>
     </SafeArea>
   );
 }
@@ -62,10 +81,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingTop: 12,
     position: "relative",
+    gap: 8,
   },
-  doneButton: {
+  button: {
     flex: 1,
     height: 48,
+    flexDirection: "row",
+    gap: 4,
   },
   shadow: invertedShadow,
 });
