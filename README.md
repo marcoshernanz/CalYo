@@ -1,3 +1,6 @@
+- [ ] Recently logged meals
+- [ ] No meals text
+- [ ] Header totals
 - [ ] Meals sort by recency
 - [ ] Meals selected day
 - [ ] Meal loading
