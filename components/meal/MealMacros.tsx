@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
 import FatIcon from "../icons/macros/FatIcon";
+import Button from "../ui/Button";
 
 interface Props {
   totals: {
@@ -44,34 +45,41 @@ export default function MealMacros({ totals }: Props) {
 
   return (
     <View style={styles.container}>
-      <Card style={styles.caloriesCard}>
-        <View style={styles.caloriesIconContainer}>
-          <FlameIcon />
-        </View>
-        <View style={styles.caloriesTextContainer}>
-          <Text size="12" color={getColor("mutedForeground")}>
-            Calorías
-          </Text>
-          <Text size="24" weight="700">
-            {totals.calories} kcal
-          </Text>
-        </View>
-      </Card>
+      <Button asChild>
+        <Card style={styles.caloriesCard}>
+          <View style={styles.caloriesIconContainer}>
+            <FlameIcon />
+          </View>
+          <View style={styles.caloriesTextContainer}>
+            <Text size="12" color={getColor("mutedForeground")}>
+              Calorías
+            </Text>
+            <Text size="24" weight="700">
+              {totals.calories} kcal
+            </Text>
+          </View>
+        </Card>
+      </Button>
       <View style={styles.macrosContainer}>
         {macros.map((macro, index) => (
-          <Card key={`macro-${macro.label}-${index}`} style={styles.macroCard}>
-            <Text size="12" color={getColor("mutedForeground")}>
-              {macro.label}
-            </Text>
-            <View style={styles.macroValueContainer}>
-              <View style={styles.macroIconContainer}>
-                <macro.Icon size={14} color={macro.color} />
-              </View>
-              <Text size="16" weight="600">
-                {macro.value} g
+          <Button key={`macro-${macro.label}-${index}`} asChild>
+            <Card
+              key={`macro-${macro.label}-${index}`}
+              style={styles.macroCard}
+            >
+              <Text size="12" color={getColor("mutedForeground")}>
+                {macro.label}
               </Text>
-            </View>
-          </Card>
+              <View style={styles.macroValueContainer}>
+                <View style={styles.macroIconContainer}>
+                  <macro.Icon size={14} color={macro.color} />
+                </View>
+                <Text size="16" weight="600">
+                  {macro.value} g
+                </Text>
+              </View>
+            </Card>
+          </Button>
         ))}
       </View>
     </View>
