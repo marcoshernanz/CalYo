@@ -26,6 +26,7 @@ import type * as meals_analyze_selectCandidates from "../meals/analyze/selectCan
 import type * as meals_analyzeMealPhoto from "../meals/analyzeMealPhoto.js";
 import type * as meals_createMeal from "../meals/createMeal.js";
 import type * as meals_getMeal from "../meals/getMeal.js";
+import type * as meals_getTodaysMeals from "../meals/getTodaysMeals.js";
 import type * as meals_insertMealItem from "../meals/insertMealItem.js";
 import type * as meals_updateMeal from "../meals/updateMeal.js";
 import type * as storage_generateUploadUrl from "../storage/generateUploadUrl.js";
@@ -57,6 +58,7 @@ declare const fullApi: ApiFromModules<{
   "meals/analyzeMealPhoto": typeof meals_analyzeMealPhoto;
   "meals/createMeal": typeof meals_createMeal;
   "meals/getMeal": typeof meals_getMeal;
+  "meals/getTodaysMeals": typeof meals_getTodaysMeals;
   "meals/insertMealItem": typeof meals_insertMealItem;
   "meals/updateMeal": typeof meals_updateMeal;
   "storage/generateUploadUrl": typeof storage_generateUploadUrl;

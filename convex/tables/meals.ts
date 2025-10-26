@@ -21,4 +21,7 @@ export const mealsFields = {
   ),
 };
 
-export const meals = defineTable(mealsFields);
+export const meals = defineTable(mealsFields).index("byUserId_creationTime", [
+  "userId",
+  "_creationTime",
+]);
