@@ -1,6 +1,4 @@
 - [ ] Meal loading
-- [ ] Meal screen buttons
-- [ ] Button asChild
 
 - [ ] ScrollView over scroll
 
