@@ -52,9 +52,8 @@ export default function MealFooter({
           fill={getColor("foreground")}
         />
         <Text size="16" weight="600">
-          Arreglar
+          Corregir
         </Text>
-        {/* TODO: Nombre */}
       </Button>
       <Button style={styles.button} onPress={() => router.back()}>
         Hecho
