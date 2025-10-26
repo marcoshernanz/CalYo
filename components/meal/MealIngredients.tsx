@@ -31,26 +31,28 @@ export default function MealIngredients({ items }: Props) {
       </View>
       <View style={styles.ingredientsContainer}>
         {items.map((item, i) => (
-          <Card key={`ingredient-${item.name}-${i}`} style={styles.card}>
-            <View style={styles.cardLeftContent}>
-              <Text
-                size="14"
-                weight="600"
-                numberOfLines={1}
-                ellipsizeMode="tail"
-                style={styles.foodName}
-              >
-                {item.name}
+          <Button key={`ingredient-${item.name}-${i}`} asChild>
+            <Card style={styles.card}>
+              <View style={styles.cardLeftContent}>
+                <Text
+                  size="14"
+                  weight="600"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={styles.foodName}
+                >
+                  {item.name}
+                </Text>
+                <Text size="14">&middot;</Text>
+                <Text size="14" color={getColor("mutedForeground")}>
+                  {item.calories} kcal
+                </Text>
+              </View>
+              <Text size="14" weight="500">
+                {item.grams} g
               </Text>
-              <Text size="14">&middot;</Text>
-              <Text size="14" color={getColor("mutedForeground")}>
-                {item.calories} kcal
-              </Text>
-            </View>
-            <Text size="14" weight="500">
-              {item.grams} g
-            </Text>
-          </Card>
+            </Card>
+          </Button>
         ))}
       </View>
     </View>
