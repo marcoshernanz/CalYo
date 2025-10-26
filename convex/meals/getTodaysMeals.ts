@@ -4,6 +4,9 @@ import { v } from "convex/values";
 
 const dayMs = 24 * 60 * 60 * 1000;
 
+// TODO: Day as argument
+// TODO: Sort by recency
+
 const getTodaysMeals = query({
   args: {
     timezoneOffsetMinutes: v.number(),
