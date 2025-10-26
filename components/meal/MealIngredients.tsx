@@ -19,11 +19,11 @@ export default function MealIngredients({ items }: Props) {
         <Text weight="600">Ingredientes</Text>
         <View style={styles.addMoreContainer}>
           <PlusIcon
-            size={16}
+            size={14}
             strokeWidth={2.25}
             color={getColor("mutedForeground")}
           />
-          <Text size="16" color={getColor("mutedForeground")}>
+          <Text size="14" color={getColor("mutedForeground")}>
             Añadir más
           </Text>
         </View>
