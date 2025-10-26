@@ -10,18 +10,13 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useEffect, type ComponentType } from "react";
+import { useEffect, useMemo, type ComponentType } from "react";
 import FatIcon from "../icons/macros/FatIcon";
 import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
 import CalorieIcon from "../icons/macros/CalorieIcon";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
-
-const calories = {
-  value: 1532,
-  target: 2000,
-};
 
 type Macro = {
   name: string;
@@ -30,30 +25,6 @@ type Macro = {
   Icon: ComponentType<LucideProps>;
   color: string;
 };
-
-const macros: Macro[] = [
-  {
-    name: "Hidratos",
-    value: 250,
-    target: 300,
-    Icon: CarbIcon,
-    color: getColor("carb"),
-  },
-  {
-    name: "Proteína",
-    value: 150,
-    target: 200,
-    Icon: ProteinIcon,
-    color: getColor("protein"),
-  },
-  {
-    name: "Grasas",
-    value: 70,
-    target: 100,
-    Icon: FatIcon,
-    color: getColor("fat"),
-  },
-];
 
 interface MacroCardProps {
   macro: Macro;
@@ -99,10 +70,46 @@ function MacroCard({ macro, progress }: MacroCardProps) {
   );
 }
 
-export default function HomeMacroSummary() {
+interface Props {
+  totals: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+  };
+}
+
+export default function HomeMacroSummary({ totals }: Props) {
   const progress = useSharedValue(0);
   const progressCalories = useDerivedValue(
-    () => (calories.value / calories.target) * progress.value
+    () => (totals.calories / 2000) * progress.value
+  );
+
+  const macros = useMemo<Macro[]>(
+    () => [
+      {
+        name: "Hidratos",
+        value: totals.carbs,
+        target: 300,
+        Icon: CarbIcon,
+        color: getColor("carb"),
+      },
+      {
+        name: "Proteína",
+        value: totals.protein,
+        target: 200,
+        Icon: ProteinIcon,
+        color: getColor("protein"),
+      },
+      {
+        name: "Grasas",
+        value: totals.fat,
+        target: 100,
+        Icon: FatIcon,
+        color: getColor("fat"),
+      },
+    ],
+    [totals]
   );
 
   useEffect(() => {
