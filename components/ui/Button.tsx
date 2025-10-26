@@ -31,16 +31,6 @@ interface Props extends Omit<PressableProps, "children"> {
     | ((state: PressableStateCallbackType) => React.ReactNode);
 }
 
-function composeEventHandlers<E>(
-  child?: ((e: E) => void) | undefined,
-  parent?: ((e: E) => void) | undefined
-) {
-  return (e: E) => {
-    child?.(e);
-    parent?.(e);
-  };
-}
-
 export default function Button({
   asChild = false,
   variant = "primary",
@@ -64,8 +54,6 @@ export default function Button({
     !asChild &&
     childArray.length > 0 &&
     childArray.every((c) => typeof c === "string" || typeof c === "number");
-
-  const [isPressed, setIsPressed] = React.useState(false);
 
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
@@ -144,28 +132,16 @@ export default function Button({
     }
   > = {
     sm: {
-      container: {
-        height: 40,
-      },
-      textDefaults: {
-        size: "14",
-      },
+      container: { height: 40 },
+      textDefaults: { size: "14" },
     },
     md: {
-      container: {
-        height: 56,
-      },
-      textDefaults: {
-        size: "16",
-      },
+      container: { height: 56 },
+      textDefaults: { size: "16" },
     },
     lg: {
-      container: {
-        height: 64,
-      },
-      textDefaults: {
-        size: "18",
-      },
+      container: { height: 64 },
+      textDefaults: { size: "18" },
     },
     xl: {},
     base: {},
@@ -201,18 +177,16 @@ export default function Button({
     outTimerRef.current = setTimeout(() => {
       scale.value = withSpring(1, springConfig);
       opacity.value = withTiming(1, opacityTiming);
-      // setIsPressed(false); TODO
       outTimerRef.current = null;
     }, wait);
   };
 
-  const innerPressIn: NonNullable<PressableProps["onPressIn"]> = (e) => {
+  const innerPressIn: NonNullable<PressableProps["onPressIn"]> = () => {
     scale.value = withSpring(0.96, springConfig);
     opacity.value = withTiming(0.9, opacityTiming);
-    // setIsPressed(true); TODO
   };
 
-  const innerPressOut: NonNullable<PressableProps["onPressOut"]> = (e) => {
+  const innerPressOut: NonNullable<PressableProps["onPressOut"]> = () => {
     const now = Date.now();
     const elapsed = pressStartRef.current
       ? now - pressStartRef.current
@@ -220,32 +194,12 @@ export default function Button({
     scheduleReleaseAnimation(elapsed);
   };
 
-  const innerPress: NonNullable<PressableProps["onPress"]> = (e) => {
+  const innerPress: NonNullable<PressableProps["onPress"]> = () => {
     const now = Date.now();
     const elapsed = pressStartRef.current
       ? now - pressStartRef.current
       : MIN_PRESS_IN_MS;
     scheduleReleaseAnimation(elapsed);
-  };
-
-  const handlePressIn: NonNullable<PressableProps["onPressIn"]> = (e) => {
-    if (effectiveDisabled) return;
-    onPressIn?.(e);
-    clearOutTimer();
-    pressStartRef.current = Date.now();
-    innerPressIn(e);
-  };
-
-  const handlePressOut: NonNullable<PressableProps["onPressOut"]> = (e) => {
-    if (effectiveDisabled) return;
-    onPressOut?.(e);
-    innerPressOut(e);
-  };
-
-  const handlePress: NonNullable<PressableProps["onPress"]> = (e) => {
-    if (effectiveDisabled) return;
-    onPress?.(e);
-    innerPress(e);
   };
 
   const childEl =
@@ -271,20 +225,25 @@ export default function Button({
     };
   }, []);
 
-  const baseContainerParts = [
-    animatedStyle,
-    styles.baseContainer,
-    sizeStyle.container,
-    variantStyle.container,
-  ] as const;
-
-  const composedContainerStyle: PressableProps["style"] =
+  const defaultContainerStyle: PressableProps["style"] =
     typeof incomingStyle === "function"
-      ? (state) => [...baseContainerParts, incomingStyle(state)]
-      : [...baseContainerParts, incomingStyle];
+      ? (state) => [
+          animatedStyle,
+          styles.baseContainer,
+          sizeStyle.container,
+          variantStyle.container,
+          incomingStyle(state),
+        ]
+      : [
+          animatedStyle,
+          styles.baseContainer,
+          sizeStyle.container,
+          variantStyle.container,
+          incomingStyle,
+        ];
 
   if (asChild) {
-    if (!childEl || isFunctionChild) {
+    if (!childEl) {
       if (__DEV__) {
         console.warn(
           "Button(asChild): expects a single valid React element child. Received:",
@@ -294,40 +253,64 @@ export default function Button({
       return null;
     }
 
-    const incomingResolved =
-      typeof incomingStyle === "function"
-        ? incomingStyle({ pressed: isPressed, hovered: false })
-        : incomingStyle;
+    const childOnPressIn = childEl.props?.onPressIn as
+      | PressableProps["onPressIn"]
+      | undefined;
+    const childOnPressOut = childEl.props?.onPressOut as
+      | PressableProps["onPressOut"]
+      | undefined;
+    const childOnPress = childEl.props?.onPress as
+      | PressableProps["onPress"]
+      | undefined;
 
-    const childStyleResolved =
-      typeof childEl.props?.style === "function"
-        ? childEl.props.style({
-            pressed: isPressed,
-            hovered: false,
-            focused: false,
-          })
-        : childEl.props?.style;
-
-    const mergedStyle = [
-      ...baseContainerParts,
-      incomingResolved,
-      childStyleResolved,
-    ];
-
-    const mergedProps: any = {
-      ...restPressable,
-      disabled: effectiveDisabled,
-      accessibilityRole,
-      onPressIn: composeEventHandlers(childEl.props?.onPressIn, handlePressIn),
-      onPressOut: composeEventHandlers(
-        childEl.props?.onPressOut,
-        handlePressOut
-      ),
-      onPress: composeEventHandlers(childEl.props?.onPress, handlePress),
-      style: mergedStyle,
+    const handlePressIn: NonNullable<PressableProps["onPressIn"]> = (e) => {
+      if (effectiveDisabled) return;
+      clearOutTimer();
+      pressStartRef.current = Date.now();
+      childOnPressIn?.(e);
+      onPressIn?.(e);
+      innerPressIn(e);
     };
 
-    return React.cloneElement(childEl, mergedProps);
+    const handlePressOut: NonNullable<PressableProps["onPressOut"]> = (e) => {
+      if (effectiveDisabled) return;
+      childOnPressOut?.(e);
+      onPressOut?.(e);
+      innerPressOut(e);
+    };
+
+    const handlePress: NonNullable<PressableProps["onPress"]> = (e) => {
+      if (effectiveDisabled) return;
+      childOnPress?.(e);
+      onPress?.(e);
+      innerPress(e);
+    };
+
+    const wrapperStyle: PressableProps["style"] = [animatedStyle];
+
+    const clonedChild = React.cloneElement(childEl, {
+      disabled:
+        "disabled" in (childEl.props ?? {})
+          ? effectiveDisabled
+          : childEl.props?.disabled,
+      onPressIn: undefined,
+      onPressOut: undefined,
+      onPress: undefined,
+    });
+
+    return (
+      <AnimatedPressable
+        {...restPressable}
+        accessibilityRole={accessibilityRole}
+        disabled={effectiveDisabled}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        onPress={handlePress}
+        style={wrapperStyle}
+      >
+        {clonedChild}
+      </AnimatedPressable>
+    );
   }
 
   return (
@@ -335,10 +318,24 @@ export default function Button({
       {...restPressable}
       accessibilityRole={accessibilityRole}
       disabled={effectiveDisabled}
-      onPress={handlePress}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-      style={composedContainerStyle}
+      onPressIn={(e) => {
+        if (effectiveDisabled) return;
+        clearOutTimer();
+        pressStartRef.current = Date.now();
+        onPressIn?.(e);
+        innerPressIn(e);
+      }}
+      onPressOut={(e) => {
+        if (effectiveDisabled) return;
+        onPressOut?.(e);
+        innerPressOut(e);
+      }}
+      onPress={(e) => {
+        if (effectiveDisabled) return;
+        onPress?.(e);
+        innerPress(e);
+      }}
+      style={defaultContainerStyle}
     >
       {shouldWrapInText ? (
         <Text
