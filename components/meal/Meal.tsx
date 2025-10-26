@@ -1,5 +1,4 @@
-import { useCallback } from "react";
-import { LayoutChangeEvent, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
@@ -20,30 +19,12 @@ interface Props {
 
 export default function Meal({ name, mealId, totals, items }: Props) {
   const scrollY = useSharedValue(0);
-  const contentHeight = useSharedValue(0);
-  const layoutHeight = useSharedValue(0);
 
   const onScroll = useAnimatedScrollHandler({
     onScroll: (event) => {
       scrollY.value = event.contentOffset.y;
-      contentHeight.value = event.contentSize.height;
-      layoutHeight.value = event.layoutMeasurement.height;
     },
   });
-
-  const handleLayout = useCallback(
-    (event: LayoutChangeEvent) => {
-      layoutHeight.value = event.nativeEvent.layout.height;
-    },
-    [layoutHeight]
-  );
-
-  const handleContentSizeChange = useCallback(
-    (_: number, height: number) => {
-      contentHeight.value = height;
-    },
-    [contentHeight]
-  );
 
   return (
     <SafeArea edges={[]}>
@@ -54,8 +35,6 @@ export default function Meal({ name, mealId, totals, items }: Props) {
         showsVerticalScrollIndicator={false}
         onScroll={onScroll}
         scrollEventThrottle={16}
-        onLayout={handleLayout}
-        onContentSizeChange={handleContentSizeChange}
       >
         <SafeArea edges={["left", "right"]}>
           <Text weight="600" style={styles.name}>
@@ -65,11 +44,7 @@ export default function Meal({ name, mealId, totals, items }: Props) {
           <MealIngredients items={items} />
         </SafeArea>
       </Animated.ScrollView>
-      <MealFooter
-        scrollY={scrollY}
-        contentHeight={contentHeight}
-        layoutHeight={layoutHeight}
-      />
+      <MealFooter />
     </SafeArea>
   );
 }
