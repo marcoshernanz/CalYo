@@ -1,9 +1,9 @@
-- [ ] Recently logged meals
-- [ ] No meals text
-- [ ] Header totals
-- [ ] Meals sort by recency
-- [ ] Meals selected day
-- [ ] Meal loading
+- [ ] Home recently logged meals
+- [ ] Home no meals text
+- [ ] Home day selector totals
+- [ ] Home meals sort by recency
+- [ ] Home meals selected day
+- [ ] Meal screen loading
 
 - [ ] ScrollView over scroll
 
