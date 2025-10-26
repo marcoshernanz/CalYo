@@ -1,3 +1,5 @@
+- [ ] Meals sort by recency
+- [ ] Meals selected day
 - [ ] Meal loading
 
 - [ ] ScrollView over scroll
