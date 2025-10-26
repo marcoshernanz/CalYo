@@ -31,7 +31,11 @@ export default function MealIngredients({ items }: Props) {
       </View>
       <View style={styles.ingredientsContainer}>
         {items.map((item, i) => (
-          <Button key={`ingredient-${item.name}-${i}`} asChild>
+          <Button
+            key={`ingredient-${item.name}-${i}`}
+            variant="base"
+            size="base"
+          >
             <Card style={styles.card}>
               <View style={styles.cardLeftContent}>
                 <Text

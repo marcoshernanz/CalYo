@@ -45,7 +45,7 @@ export default function MealMacros({ totals }: Props) {
 
   return (
     <View style={styles.container}>
-      <Button asChild>
+      <Button variant="base" size="base">
         <Card style={styles.caloriesCard}>
           <View style={styles.caloriesIconContainer}>
             <FlameIcon />
@@ -62,11 +62,13 @@ export default function MealMacros({ totals }: Props) {
       </Button>
       <View style={styles.macrosContainer}>
         {macros.map((macro, index) => (
-          <Button key={`macro-${macro.label}-${index}`} asChild>
-            <Card
-              key={`macro-${macro.label}-${index}`}
-              style={styles.macroCard}
-            >
+          <Button
+            key={`macro-${macro.label}-${index}`}
+            variant="base"
+            size="base"
+            style={styles.macroCardButton}
+          >
+            <Card style={styles.macroCard}>
               <Text size="12" color={getColor("mutedForeground")}>
                 {macro.label}
               </Text>
@@ -110,6 +112,9 @@ const styles = StyleSheet.create({
   macrosContainer: {
     flexDirection: "row",
     gap: 6,
+  },
+  macroCardButton: {
+    flex: 1,
   },
   macroCard: {
     flex: 1,
