@@ -15,10 +15,9 @@ export default function HomeScreen() {
   const dimensions = useWindowDimensions();
   const [selectedDay, setSelectedDay] = useState((getDay(new Date()) + 6) % 7);
 
-  const weekMeals =
-    useQuery(api.meals.getWeekMeals.default, {
-      timezoneOffsetMinutes: new Date().getTimezoneOffset(),
-    }) ?? [];
+  const weekMeals = useQuery(api.meals.getWeekMeals.default, {
+    timezoneOffsetMinutes: new Date().getTimezoneOffset(),
+  }) ?? [[], [], [], [], [], [], []];
   const dayMeals = weekMeals[selectedDay];
 
   const weekTotals = weekMeals.map((meals) =>
@@ -50,6 +49,7 @@ export default function HomeScreen() {
         <HomeDaySelector
           selectedDay={selectedDay}
           setSelectedDay={setSelectedDay}
+          weekTotals={weekTotals}
         />
         <HomeMacroSummary totals={dayTotals} />
         <HomeRecentlyLogged />
