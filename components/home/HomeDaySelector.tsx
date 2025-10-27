@@ -13,6 +13,7 @@ import {
 } from "react-native-reanimated";
 import getShadow from "@/lib/ui/getShadow";
 import Button from "../ui/Button";
+import macrosToKcal from "@/lib/utils/macrosToKcal";
 
 type DayData = {
   weekDay: number;
@@ -92,27 +93,40 @@ function DaySelectorItem({
 interface Props {
   selectedDay: number;
   setSelectedDay: Dispatch<SetStateAction<number>>;
+  weekTotals: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+  }[];
 }
 
 export default function HomeDaySelector({
   selectedDay,
   setSelectedDay,
+  weekTotals,
 }: Props) {
   const weekDays: DayData[] = useMemo(() => {
     const start = startOfWeek(new Date(), { weekStartsOn: 1 });
     return Array.from({ length: 7 }, (_, index) => {
       const date = addDays(start, index);
+      const calories = weekTotals[index].calories;
+      const carbsRatio =
+        macrosToKcal({ carbs: weekTotals[index].carbs }) / calories;
+      const proteinRatio =
+        macrosToKcal({ protein: weekTotals[index].protein }) / calories;
+      const fatRatio = macrosToKcal({ fat: weekTotals[index].fat }) / calories;
 
       return {
         weekDay: (getDay(date) + 6) % 7,
         letter: format(date, "EEEEE", { locale: es }).toUpperCase(),
         number: format(date, "dd", { locale: es }),
-        carbs: 0.4,
-        protein: 0.2,
-        fat: 0.1,
+        carbs: isNaN(carbsRatio) ? 0 : carbsRatio,
+        protein: isNaN(proteinRatio) ? 0 : proteinRatio,
+        fat: isNaN(fatRatio) ? 0 : fatRatio,
       };
     });
-  }, []);
+  }, [weekTotals]);
 
   return (
     <View style={styles.container}>
