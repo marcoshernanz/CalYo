@@ -13,7 +13,6 @@ import {
   SafeAreaProvider,
 } from "react-native-safe-area-context";
 import { SplashScreenController } from "./SplashScreenController";
-import { AppStateContextProvider } from "@/context/AppStateContext";
 
 interface Props {
   children: React.ReactNode;
@@ -47,10 +46,8 @@ export default function RootLayoutProvider({ children }: Props) {
             <KeyboardProvider>
               <BottomSheetModalProvider>
                 <AppContextProvider>
-                  <AppStateContextProvider>
-                    <SplashScreenController />
-                    {children}
-                  </AppStateContextProvider>
+                  <SplashScreenController />
+                  {children}
                 </AppContextProvider>
               </BottomSheetModalProvider>
             </KeyboardProvider>
