@@ -8,6 +8,7 @@ import FatIcon from "../icons/macros/FatIcon";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
 import { Doc } from "@/convex/_generated/dataModel";
+import getColor from "@/lib/ui/getColor";
 
 interface LogItemProps {
   meal: Doc<"meals">;
@@ -81,6 +82,15 @@ export default function HomeRecentlyLogged({ meals }: Props) {
         {meals.map((meal, index) => (
           <LogItem key={`log-item-${index}-${meal.name}`} meal={meal} />
         ))}
+        {meals.length === 0 && (
+          <Text
+            size="16"
+            color={getColor("mutedForeground")}
+            style={{ textAlign: "center", paddingTop: 32 }}
+          >
+            Añade comidas para verlas aquí
+          </Text>
+        )}
       </View>
     </View>
   );
