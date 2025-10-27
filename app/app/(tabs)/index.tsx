@@ -53,6 +53,7 @@ export default function HomeScreen() {
       overScrollMode="never"
       bounces={false}
       showsVerticalScrollIndicator={false}
+      style={styles.scrollView}
     >
       <SafeArea>
         <LinearGradient
@@ -74,6 +75,10 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+    backgroundColor: getColor("background"),
+  },
   gradient: {
     ...StyleSheet.absoluteFillObject,
   },
