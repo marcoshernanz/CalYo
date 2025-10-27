@@ -100,14 +100,12 @@ export default function HomeDaySelector({
 }: Props) {
   const weekDays: DayData[] = useMemo(() => {
     const start = startOfWeek(new Date(), { weekStartsOn: 1 });
-    const letters = ["L", "M", "X", "J", "V", "S", "D"] as const; // TODO
-
-    return letters.map((letter, index) => {
+    return Array.from({ length: 7 }, (_, index) => {
       const date = addDays(start, index);
 
       return {
         weekDay: (getDay(date) + 6) % 7,
-        letter,
+        letter: format(date, "EEEEE", { locale: es }).toUpperCase(),
         number: format(date, "dd", { locale: es }),
         carbs: 0.4,
         protein: 0.2,
