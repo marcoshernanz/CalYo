@@ -1,9 +1,4 @@
-- [ ] useMemo in meals data
-- [ ] Home recently logged meals
 - [ ] Home no meals text
-- [ ] Home day selector totals
-- [ ] Home meals sort by recency
-- [ ] Home meals selected day
 - [ ] Meal screen loading
 
 - [ ] ScrollView over scroll
