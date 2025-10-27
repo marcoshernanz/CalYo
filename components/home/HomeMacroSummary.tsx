@@ -131,7 +131,7 @@ export default function HomeMacroSummary({ totals }: Props) {
             </Text>
             <View style={styles.caloriesValueContainer}>
               <Text size="40" weight="600">
-                1532
+                {totals.calories}
               </Text>
               <Text
                 size="20"
