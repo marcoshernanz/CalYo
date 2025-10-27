@@ -1,3 +1,4 @@
+- [ ] useMemo in meals data
 - [ ] Home recently logged meals
 - [ ] Home no meals text
 - [ ] Home day selector totals
