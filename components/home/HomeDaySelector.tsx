@@ -1,6 +1,6 @@
-import { useEffect, useMemo } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
-import { addDays, format, startOfWeek } from "date-fns";
+import { addDays, format, getDay, startOfWeek } from "date-fns";
 import { es } from "date-fns/locale";
 import Text from "../ui/Text";
 import getColor from "@/lib/ui/getColor";
@@ -12,11 +12,10 @@ import {
   withTiming,
 } from "react-native-reanimated";
 import getShadow from "@/lib/ui/getShadow";
-import { useAppStateContext } from "@/context/AppStateContext";
 import Button from "../ui/Button";
 
 type DayData = {
-  id: string;
+  weekDay: number;
   letter: string;
   number: string;
   carbs: number;
@@ -26,18 +25,21 @@ type DayData = {
 
 interface DaySelectorItemProps {
   day: DayData;
+  isSelected: boolean;
+  isToday: boolean;
+  onPress: () => void;
 }
 
-function DaySelectorItem({ day }: DaySelectorItemProps) {
+function DaySelectorItem({
+  day,
+  isSelected,
+  isToday,
+  onPress,
+}: DaySelectorItemProps) {
   const progress = useSharedValue(0);
   const progressCarbs = useDerivedValue(() => day.carbs * progress.value);
   const progressProtein = useDerivedValue(() => day.protein * progress.value);
   const progressFat = useDerivedValue(() => day.fat * progress.value);
-
-  const { selectedDay, setSelectedDay } = useAppStateContext();
-
-  const isSelected = day.id === format(selectedDay, "yyyy-MM-dd");
-  const isToday = day.id === format(new Date(), "yyyy-MM-dd");
 
   useEffect(() => {
     progress.value = withTiming(1, { duration: 1500 });
@@ -67,7 +69,7 @@ function DaySelectorItem({ day }: DaySelectorItemProps) {
           borderColor: getColor("secondary"),
         },
       ]}
-      onPress={() => setSelectedDay(new Date(day.id))}
+      onPress={onPress}
     >
       <Text size="14" weight="600">
         {day.letter}
@@ -87,16 +89,24 @@ function DaySelectorItem({ day }: DaySelectorItemProps) {
   );
 }
 
-export default function HomeDaySelector() {
-  const weekDays = useMemo(() => {
+interface Props {
+  selectedDay: number;
+  setSelectedDay: Dispatch<SetStateAction<number>>;
+}
+
+export default function HomeDaySelector({
+  selectedDay,
+  setSelectedDay,
+}: Props) {
+  const weekDays: DayData[] = useMemo(() => {
     const start = startOfWeek(new Date(), { weekStartsOn: 1 });
-    const letters = ["L", "M", "X", "J", "V", "S", "D"];
+    const letters = ["L", "M", "X", "J", "V", "S", "D"] as const; // TODO
 
     return letters.map((letter, index) => {
       const date = addDays(start, index);
 
       return {
-        id: format(date, "yyyy-MM-dd"),
+        weekDay: (getDay(date) + 6) % 7,
         letter,
         number: format(date, "dd", { locale: es }),
         carbs: 0.4,
@@ -109,7 +119,13 @@ export default function HomeDaySelector() {
   return (
     <View style={styles.container}>
       {weekDays.map((day) => (
-        <DaySelectorItem key={day.id} day={day} />
+        <DaySelectorItem
+          key={`day-${day.weekDay}-${day.number}`}
+          day={day}
+          isSelected={selectedDay === day.weekDay}
+          isToday={day.weekDay === (getDay(new Date()) + 6) % 7}
+          onPress={() => setSelectedDay(day.weekDay)}
+        />
       ))}
     </View>
   );
