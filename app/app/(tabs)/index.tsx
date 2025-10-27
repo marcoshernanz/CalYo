@@ -52,7 +52,7 @@ export default function HomeScreen() {
           weekTotals={weekTotals}
         />
         <HomeMacroSummary totals={dayTotals} />
-        <HomeRecentlyLogged />
+        <HomeRecentlyLogged meals={dayMeals} />
       </SafeArea>
     </ScrollView>
   );
