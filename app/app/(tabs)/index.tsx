@@ -6,26 +6,33 @@ import SafeArea from "@/components/ui/SafeArea";
 import { api } from "@/convex/_generated/api";
 import getColor from "@/lib/ui/getColor";
 import { useQuery } from "convex/react";
+import { getDay } from "date-fns";
 import { LinearGradient } from "expo-linear-gradient";
+import { useState } from "react";
 import { ScrollView, StyleSheet, useWindowDimensions } from "react-native";
 
 export default function HomeScreen() {
   const dimensions = useWindowDimensions();
+  const [selectedDay, setSelectedDay] = useState((getDay(new Date()) + 6) % 7);
 
-  const meals =
-    useQuery(api.meals.getTodaysMeals.default, {
+  const weekMeals =
+    useQuery(api.meals.getWeekMeals.default, {
       timezoneOffsetMinutes: new Date().getTimezoneOffset(),
     }) ?? [];
+  const dayMeals = weekMeals[selectedDay];
 
-  const totals = meals?.reduce(
-    (acc, meal) => ({
-      calories: acc.calories + (meal.totals?.calories ?? 0),
-      protein: acc.protein + (meal.totals?.protein ?? 0),
-      carbs: acc.carbs + (meal.totals?.carbs ?? 0),
-      fat: acc.fat + (meal.totals?.fat ?? 0),
-    }),
-    { calories: 0, protein: 0, carbs: 0, fat: 0 }
+  const weekTotals = weekMeals.map((meals) =>
+    meals.reduce(
+      (acc, meal) => ({
+        calories: acc.calories + (meal.totals?.calories ?? 0),
+        protein: acc.protein + (meal.totals?.protein ?? 0),
+        carbs: acc.carbs + (meal.totals?.carbs ?? 0),
+        fat: acc.fat + (meal.totals?.fat ?? 0),
+      }),
+      { calories: 0, protein: 0, carbs: 0, fat: 0 }
+    )
   );
+  const dayTotals = weekTotals[selectedDay];
 
   return (
     <ScrollView
@@ -40,8 +47,11 @@ export default function HomeScreen() {
         />
 
         <HomeHeader />
-        <HomeDaySelector />
-        <HomeMacroSummary totals={totals} />
+        <HomeDaySelector
+          selectedDay={selectedDay}
+          setSelectedDay={setSelectedDay}
+        />
+        <HomeMacroSummary totals={dayTotals} />
         <HomeRecentlyLogged />
       </SafeArea>
     </ScrollView>
