@@ -7,12 +7,16 @@ import { SparklesIcon } from "lucide-react-native";
 import Text from "../ui/Text";
 import getColor from "@/lib/ui/getColor";
 
-export default function MealFooter() {
+interface Props {
+  loading: boolean;
+}
+
+export default function MealFooter({ loading }: Props) {
   const router = useRouter();
 
   return (
     <SafeArea edges={["bottom", "left", "right"]} style={styles.container}>
-      <Button style={styles.button} variant="outline">
+      <Button style={styles.button} variant="outline" disabled={loading}>
         <SparklesIcon
           size={16}
           color={getColor("foreground")}
@@ -22,7 +26,11 @@ export default function MealFooter() {
           Corregir
         </Text>
       </Button>
-      <Button style={styles.button} onPress={() => router.back()}>
+      <Button
+        style={styles.button}
+        onPress={() => router.back()}
+        disabled={loading}
+      >
         Hecho
       </Button>
     </SafeArea>

@@ -5,18 +5,24 @@ import Skeleton from "./Skeleton";
 interface Props {
   loading: boolean;
   skeletonStyle?: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
   children: React.ReactNode;
 }
 
 export default function WithSkeleton({
   loading,
   skeletonStyle,
+  containerStyle,
   children,
 }: Props) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <View style={{ opacity: loading ? 0 : 1 }}>{children}</View>
-      {loading && <Skeleton style={[StyleSheet.absoluteFill, skeletonStyle]} />}
+      {loading && (
+        <View pointerEvents="none" style={styles.overlay}>
+          <Skeleton style={skeletonStyle} />
+        </View>
+      )}
     </View>
   );
 }
@@ -24,6 +30,11 @@ export default function WithSkeleton({
 const styles = StyleSheet.create({
   container: {
     position: "relative",
-    alignSelf: "flex-start",
+    flexShrink: 1,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
 });

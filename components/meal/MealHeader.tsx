@@ -16,9 +16,10 @@ import Animated, {
 interface Props {
   mealId?: Id<"meals">;
   scrollY: SharedValue<number>;
+  loading: boolean;
 }
 
-export default function MealHeader({ mealId, scrollY }: Props) {
+export default function MealHeader({ mealId, scrollY, loading }: Props) {
   const router = useRouter();
   const shadowStyle = useAnimatedStyle(() => ({
     opacity: interpolate(scrollY.value, [0, 24], [0, 1], Extrapolation.CLAMP),
@@ -34,6 +35,7 @@ export default function MealHeader({ mealId, scrollY }: Props) {
         size="sm"
         variant="secondary"
         style={styles.button}
+        disabled={loading}
         onPress={() => router.back()}
       >
         <ArrowLeftIcon size={22} />
@@ -43,7 +45,12 @@ export default function MealHeader({ mealId, scrollY }: Props) {
           Comida
         </Text>
       </View>
-      <Button size="sm" variant="secondary" style={styles.button}>
+      <Button
+        size="sm"
+        variant="secondary"
+        style={styles.button}
+        disabled={loading}
+      >
         <EllipsisVerticalIcon size={22} />
       </Button>
     </SafeArea>

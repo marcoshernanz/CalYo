@@ -33,6 +33,7 @@ export default function Skeleton({ style }: Props) {
 
 const styles = StyleSheet.create({
   base: {
-    backgroundColor: getColor("muted"),
+    // backgroundColor: getColor("muted"),
+    backgroundColor: "red",
   },
 });

@@ -1,10 +1,10 @@
-import { StyleSheet, View } from "react-native";
+import { DimensionValue, StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import Card from "../ui/Card";
 import getColor from "@/lib/ui/getColor";
 import { PlusIcon } from "lucide-react-native";
 import Button from "../ui/Button";
-import Skeleton from "../ui/Skeleton";
+import WithSkeleton from "../ui/WithSkeleton";
 
 interface Props {
   loading: boolean;
@@ -15,7 +15,14 @@ interface Props {
   }[];
 }
 
+const placeholderRows = 4;
+const nameSkeletonWidths: DimensionValue[] = ["70%", "55%", "85%", "60%"];
+
 export default function MealIngredients({ items = [], loading }: Props) {
+  const count = loading
+    ? Math.max(items.length, placeholderRows)
+    : items.length;
+
   return (
     <View>
       <View style={styles.headerContainer}>
@@ -38,29 +45,26 @@ export default function MealIngredients({ items = [], loading }: Props) {
       </View>
 
       <View style={styles.ingredientsContainer}>
-        {loading
-          ? Array.from({ length: 4 }).map((_, i) => (
-              <Card key={`ingredient-skeleton-${i}`} style={styles.card}>
-                <View style={styles.cardLeftContent}>
-                  <Skeleton
-                    style={{ height: 14, width: 140, borderRadius: 4 }}
-                  />
-                  <Text size="14">&middot;</Text>
-                  <Skeleton
-                    style={{ height: 14, width: 60, borderRadius: 4 }}
-                  />
-                </View>
-                <Skeleton style={{ height: 14, width: 50, borderRadius: 4 }} />
-              </Card>
-            ))
-          : items.map((item, i) => (
-              <Button
-                key={`ingredient-${item.name}-${i}`}
-                variant="base"
-                size="base"
-              >
-                <Card style={styles.card}>
-                  <View style={styles.cardLeftContent}>
+        {Array.from({ length: count }).map((_, i) => {
+          const item = items[i];
+          const key = item
+            ? `ingredient-${item.name}-${i}`
+            : `ingredient-skeleton-${i}`;
+          const nameWidth = nameSkeletonWidths[i % nameSkeletonWidths.length];
+
+          return (
+            <Button key={key} variant="base" size="base" disabled={loading}>
+              <Card style={styles.card}>
+                <WithSkeleton
+                  loading={loading}
+                  containerStyle={styles.cardLeftContent}
+                  skeletonStyle={{
+                    height: 14,
+                    width: nameWidth,
+                    borderRadius: 4,
+                  }}
+                >
+                  <View style={styles.cardLeftInner}>
                     <Text
                       size="14"
                       weight="600"
@@ -68,19 +72,27 @@ export default function MealIngredients({ items = [], loading }: Props) {
                       ellipsizeMode="tail"
                       style={styles.foodName}
                     >
-                      {item.name}
+                      {item?.name ?? " "}
                     </Text>
                     <Text size="14">&middot;</Text>
                     <Text size="14" color={getColor("mutedForeground")}>
-                      {item.calories} kcal
+                      {item?.calories ?? 0} kcal
                     </Text>
                   </View>
+                </WithSkeleton>
+
+                <WithSkeleton
+                  loading={loading}
+                  skeletonStyle={{ height: 14, width: 50, borderRadius: 4 }}
+                >
                   <Text size="14" weight="500">
-                    {item.grams} g
+                    {item?.grams ?? 0} g
                   </Text>
-                </Card>
-              </Button>
-            ))}
+                </WithSkeleton>
+              </Card>
+            </Button>
+          );
+        })}
       </View>
     </View>
   );
@@ -109,7 +121,11 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   cardLeftContent: {
+    flex: 1,
+  },
+  cardLeftInner: {
     flexDirection: "row",
+    alignItems: "center",
     gap: 6,
     flex: 1,
     flexShrink: 1,

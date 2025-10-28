@@ -1,15 +1,17 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, BackHandler } from "react-native";
 import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
 } from "react-native-reanimated";
+import { useEffect, useCallback } from "react";
+import { useFocusEffect, useNavigation } from "expo-router";
 import SafeArea from "../ui/SafeArea";
 import MealFooter from "./MealFooter";
 import MealHeader from "./MealHeader";
 import MealIngredients from "./MealIngredients";
 import MealMacros from "./MealMacros";
 import Text from "../ui/Text";
-import Skeleton from "../ui/Skeleton";
+import WithSkeleton from "../ui/WithSkeleton";
 
 interface Props {
   loading: boolean;
@@ -21,6 +23,7 @@ interface Props {
 
 export default function Meal({ loading, name, mealId, totals, items }: Props) {
   const scrollY = useSharedValue(0);
+  const navigation = useNavigation();
 
   const onScroll = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -28,13 +31,21 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
     },
   });
 
-  // TODO: Disable interactions while loading? (like going back)
-  // TODO: Show labels that are known ahead of time? (calories, carbs, protein, fat)
-  // TODO: Make text and elements invisible and render the skeletons instead of shifting them?
+  useEffect(() => {
+    navigation.setOptions?.({ gestureEnabled: !loading });
+  }, [navigation, loading]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!loading) return;
+      const sub = BackHandler.addEventListener("hardwareBackPress", () => true);
+      return () => sub.remove();
+    }, [loading])
+  );
 
   return (
     <SafeArea edges={[]}>
-      <MealHeader mealId={mealId} scrollY={scrollY} />
+      <MealHeader loading={loading} mealId={mealId} scrollY={scrollY} />
       <Animated.ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContent}
@@ -44,19 +55,19 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
       >
         <SafeArea edges={["left", "right"]}>
           <View style={styles.nameContainer}>
-            {loading ? (
-              <Skeleton style={styles.nameSkeleton} />
-            ) : (
+            <WithSkeleton loading={loading} skeletonStyle={styles.nameSkeleton}>
               <Text weight="600" style={styles.name}>
                 {name}
               </Text>
-            )}
+            </WithSkeleton>
           </View>
+
           <MealMacros loading={loading} totals={totals} />
           <MealIngredients loading={loading} items={items} />
         </SafeArea>
       </Animated.ScrollView>
-      <MealFooter />
+
+      <MealFooter loading={loading} />
     </SafeArea>
   );
 }
@@ -76,7 +87,7 @@ const styles = StyleSheet.create({
   },
   nameSkeleton: {
     height: 22,
-    width: "100%",
+    width: "75%",
     borderRadius: 8,
   },
 });
