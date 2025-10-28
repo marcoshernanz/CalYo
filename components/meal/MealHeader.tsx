@@ -14,7 +14,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 interface Props {
-  mealId: Id<"meals">;
+  mealId?: Id<"meals">;
   scrollY: SharedValue<number>;
 }
 

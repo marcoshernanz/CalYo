@@ -66,25 +66,28 @@ export default function MealScreen() {
     initialMealId,
   ]);
 
-  if (!mealId || !data) return null;
+  const meal = data?.meal;
+  const mealItems = data?.mealItems ?? [];
 
-  const { meal, mealItems } = data;
+  const isDone =
+    !!meal && meal.status === "done" && !!meal.name && !!meal.totals;
 
-  if (!meal || meal.status !== "done" || !meal.name || !meal.totals) {
-    return null;
-  }
+  const items = isDone
+    ? mealItems.map((item) => ({
+        name: item.food.description.en,
+        calories: macrosToKcal(item.nutrients),
+        grams: item.grams,
+      }))
+    : undefined;
 
-  const items = mealItems.map((item) => ({
-    name: item.food.description.en,
-    calories: macrosToKcal(item.nutrients),
-    grams: item.grams,
-  }));
+  const isLoading = !mealId || !data || !isDone;
 
   return (
     <Meal
-      name={meal.name}
-      mealId={meal._id}
-      totals={meal.totals}
+      loading={isLoading}
+      name={meal?.name}
+      mealId={meal?._id}
+      totals={meal?.totals}
       items={items}
     />
   );

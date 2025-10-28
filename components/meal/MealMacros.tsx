@@ -8,9 +8,11 @@ import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
 import FatIcon from "../icons/macros/FatIcon";
 import Button from "../ui/Button";
+import Skeleton from "../ui/Skeleton";
 
 interface Props {
-  totals: {
+  loading: boolean;
+  totals?: {
     calories: number;
     protein: number;
     fat: number;
@@ -18,30 +20,63 @@ interface Props {
   };
 }
 
-export default function MealMacros({ totals }: Props) {
+export default function MealMacros({ loading, totals }: Props) {
   const macros = useMemo(
-    () => [
-      {
-        label: "Hidratos",
-        value: totals.carbs,
-        color: getColor("carb"),
-        Icon: CarbIcon,
-      },
-      {
-        label: "Proteína",
-        value: totals.protein,
-        color: getColor("protein"),
-        Icon: ProteinIcon,
-      },
-      {
-        label: "Grasas",
-        value: totals.fat,
-        color: getColor("fat"),
-        Icon: FatIcon,
-      },
-    ],
-    [totals.carbs, totals.protein, totals.fat]
+    () =>
+      totals
+        ? [
+            {
+              label: "Hidratos",
+              value: totals.carbs,
+              color: getColor("carb"),
+              Icon: CarbIcon,
+            },
+            {
+              label: "Proteína",
+              value: totals.protein,
+              color: getColor("protein"),
+              Icon: ProteinIcon,
+            },
+            {
+              label: "Grasas",
+              value: totals.fat,
+              color: getColor("fat"),
+              Icon: FatIcon,
+            },
+          ]
+        : [],
+    [totals]
   );
+
+  if (loading || !totals) {
+    return (
+      <View style={styles.container}>
+        <Card style={styles.caloriesCard}>
+          <View style={styles.caloriesIconContainer}>
+            <Skeleton style={{ height: 28, width: 28, borderRadius: 8 }} />
+          </View>
+          <View style={styles.caloriesTextContainer}>
+            <Skeleton style={{ height: 12, width: 60, marginBottom: 6 }} />
+            <Skeleton style={{ height: 24, width: 120 }} />
+          </View>
+        </Card>
+        <View style={styles.macrosContainer}>
+          {[0, 1, 2].map((i) => (
+            <Card
+              key={`macro-skeleton-${i}`}
+              style={[styles.macroCard, styles.macroCardSkeleton]}
+            >
+              <Skeleton style={{ height: 12, width: 70, marginBottom: 8 }} />
+              <View style={styles.macroValueContainer}>
+                <Skeleton style={{ height: 22, width: 22, borderRadius: 16 }} />
+                <Skeleton style={{ height: 16, width: 50 }} />
+              </View>
+            </Card>
+          ))}
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -117,6 +152,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   macroCard: {
+    flex: 1,
+    padding: 12,
+    gap: 8,
+  },
+  macroCardSkeleton: {
     flex: 1,
     padding: 12,
     gap: 8,
