@@ -45,7 +45,7 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
 
   return (
     <SafeArea edges={[]}>
-      <MealHeader loading={loading} mealId={mealId} scrollY={scrollY} />
+      <MealHeader mealId={mealId} scrollY={scrollY} />
       <Animated.ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContent}
@@ -67,7 +67,7 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
         </SafeArea>
       </Animated.ScrollView>
 
-      <MealFooter loading={loading} />
+      <MealFooter />
     </SafeArea>
   );
 }
