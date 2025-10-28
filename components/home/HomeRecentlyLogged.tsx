@@ -9,12 +9,15 @@ import Card from "../ui/Card";
 import Button from "../ui/Button";
 import { Doc } from "@/convex/_generated/dataModel";
 import getColor from "@/lib/ui/getColor";
+import { useRouter } from "expo-router";
 
 interface LogItemProps {
   meal: Doc<"meals">;
 }
 
 function LogItem({ meal }: LogItemProps) {
+  const router = useRouter();
+
   const macros = [
     {
       value: meal.totals?.carbs ?? 0,
@@ -31,7 +34,16 @@ function LogItem({ meal }: LogItemProps) {
   ];
 
   return (
-    <Button variant="base" size="base">
+    <Button
+      variant="base"
+      size="base"
+      onPress={() =>
+        router.navigate({
+          pathname: "/app/meal",
+          params: { mealId: meal._id },
+        })
+      }
+    >
       <Card style={styles.itemCard}>
         <View style={styles.itemHeaderContainer}>
           <Text
