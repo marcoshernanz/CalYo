@@ -7,17 +7,17 @@ import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 
 export default function MealScreen() {
-  const { photoUri } = useLocalSearchParams<{ photoUri: string }>();
+  const { photoUri, initialMealId } = useLocalSearchParams<{
+    photoUri?: string;
+    initialMealId?: Id<"meals">;
+  }>();
+
   const createMeal = useMutation(api.meals.createMeal.default);
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl.default);
   const analyzeMealPhoto = useAction(api.meals.analyzeMealPhoto.default);
 
-  const [mealId, setMealId] = useState<Id<"meals"> | null>(
-    "kn7bpc59sd228ncdzg33642vmx7szjbj" as Id<"meals">
-  );
-  const startedRef = useRef(true);
-  // const [mealId, setMealId] = useState<Id<"meals"> | null>(null);
-  // const startedRef = useRef(false);
+  const [mealId, setMealId] = useState<Id<"meals"> | undefined>(initialMealId);
+  const startedRef = useRef(false);
 
   const data = useQuery(
     api.meals.getMeal.default,
@@ -25,7 +25,7 @@ export default function MealScreen() {
   );
 
   useEffect(() => {
-    if (!photoUri || startedRef.current) return;
+    if (!photoUri || initialMealId || startedRef.current) return;
     startedRef.current = true;
 
     (async () => {
@@ -44,31 +44,48 @@ export default function MealScreen() {
           headers: { "Content-Type": blob.type || "image/jpeg" },
           body: blob,
         });
-        const { storageId } = await uploadRes.json();
+        if (!uploadRes.ok) {
+          throw new Error(`Upload failed: ${uploadRes.status}`);
+        }
+        const json = await uploadRes.json();
+        if (!json?.storageId) {
+          throw new Error("Upload response missing storageId");
+        }
+        const { storageId } = json;
 
         await analyzeMealPhoto({ mealId: newMealId, storageId });
       } catch (e) {
         console.error("Start meal error", e);
       }
     })();
-  }, [analyzeMealPhoto, createMeal, generateUploadUrl, photoUri]);
+  }, [
+    analyzeMealPhoto,
+    createMeal,
+    generateUploadUrl,
+    photoUri,
+    initialMealId,
+  ]);
 
-  if (!data) return null;
+  if (!mealId || !data) return null;
 
   const { meal, mealItems } = data;
 
-  if (!meal.totals || !meal.name) return null;
+  if (!meal || meal.status !== "done" || !meal.name || !meal.totals) {
+    return null;
+  }
+
+  const items = mealItems.map((item) => ({
+    name: item.food.description.en,
+    calories: macrosToKcal(item.nutrients),
+    grams: item.grams,
+  }));
 
   return (
     <Meal
       name={meal.name}
       mealId={meal._id}
       totals={meal.totals}
-      items={mealItems.map((item) => ({
-        name: item.food.description.en,
-        calories: macrosToKcal(item.nutrients),
-        grams: item.grams,
-      }))}
+      items={items}
     />
   );
 }
