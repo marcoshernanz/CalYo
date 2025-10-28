@@ -1,12 +1,11 @@
 - [ ] Home no meals text
-- [ ] Meal screen loading
 - [ ] Meal screen error
-
+- [ ] Link prefetch
 - [ ] ScrollView over scroll
-
-- [ ] mealItems.food -> mealItems.foodId
-- [ ] Option for the AI to select no option
 - [ ] Home scroll view bounce
+- [ ] mealItems.food -> mealItems.foodId
+
+- [ ] Option for the AI to select no option
 
 - [ ] Animate home macro summary
 - [ ] Text font weight prop
@@ -22,7 +21,6 @@
   - [ ] Wheel Picker
   - [ ] Onboarding Height
 
-- [ ] Link prefetch
 - [ ] Replace router animations with react-native-reanimated animations
 - [ ] Onboarding pre-render
 
