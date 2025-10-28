@@ -1,38 +1,81 @@
-import { StyleProp, StyleSheet, ViewStyle } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  LayoutChangeEvent,
+} from "react-native";
 import Animated, {
-  Easing,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withTiming,
+  cancelAnimation,
 } from "react-native-reanimated";
-import { useEffect } from "react";
+import { LinearGradient } from "expo-linear-gradient";
 import getColor from "@/lib/ui/getColor";
 
+const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
+
 interface Props {
-  style?: StyleProp<ViewStyle> | undefined;
+  style?: StyleProp<ViewStyle>;
 }
 
+const duration = 2000;
+const bandFraction = 1;
+
 export default function Skeleton({ style }: Props) {
-  const opacity = useSharedValue(0.6);
+  const [width, setWidth] = useState(0);
+  const translateX = useSharedValue(0);
+
+  const onLayout = useCallback((e: LayoutChangeEvent) => {
+    setWidth(e.nativeEvent.layout.width);
+  }, []);
 
   useEffect(() => {
-    opacity.value = withRepeat(
-      withTiming(1, { duration: 900, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true
-    );
-  }, [opacity]);
+    if (!width) return;
+    const bandW = Math.max(48, width * bandFraction);
+    translateX.value = -bandW;
+    translateX.value = withRepeat(withTiming(width, { duration }), -1, false);
+    return () => cancelAnimation(translateX);
+  }, [width, translateX]);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
+  const bandW = Math.max(48, width * bandFraction);
+
+  const shimmerStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }],
   }));
 
-  return <Animated.View style={[styles.base, animatedStyle, style]} />;
+  const baseColor = getColor("secondary");
+  const highlightColor = getColor("muted");
+
+  return (
+    <View
+      onLayout={onLayout}
+      style={[styles.base, { backgroundColor: baseColor }, style]}
+    >
+      {width > 0 && (
+        <AnimatedLinearGradient
+          pointerEvents="none"
+          colors={[baseColor, highlightColor, baseColor]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={[styles.shimmer, { width: bandW }, shimmerStyle]}
+        />
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   base: {
-    backgroundColor: getColor("secondary", 0.5),
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  shimmer: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
   },
 });
