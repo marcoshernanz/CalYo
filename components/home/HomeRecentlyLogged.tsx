@@ -97,7 +97,7 @@ export default function HomeRecentlyLogged({ meals }: Props) {
         {meals.length === 0 && (
           <Text
             size="14"
-            color={getColor("mutedForeground")}
+            color={getColor("mutedForeground", 0.5)}
             style={styles.noMealsAdded}
           >
             Añade comidas para verlas aquí...
