@@ -1,10 +1,8 @@
-import { StyleSheet, View, BackHandler } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
 } from "react-native-reanimated";
-import { useEffect, useCallback } from "react";
-import { useFocusEffect, useNavigation } from "expo-router";
 import SafeArea from "../ui/SafeArea";
 import MealFooter from "./MealFooter";
 import MealHeader from "./MealHeader";
@@ -23,25 +21,12 @@ interface Props {
 
 export default function Meal({ loading, name, mealId, totals, items }: Props) {
   const scrollY = useSharedValue(0);
-  const navigation = useNavigation();
 
   const onScroll = useAnimatedScrollHandler({
     onScroll: (event) => {
       scrollY.value = event.contentOffset.y;
     },
   });
-
-  useEffect(() => {
-    navigation.setOptions?.({ gestureEnabled: !loading });
-  }, [navigation, loading]);
-
-  useFocusEffect(
-    useCallback(() => {
-      if (!loading) return;
-      const sub = BackHandler.addEventListener("hardwareBackPress", () => true);
-      return () => sub.remove();
-    }, [loading])
-  );
 
   return (
     <SafeArea edges={[]}>
