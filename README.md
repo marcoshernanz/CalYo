@@ -1,5 +1,6 @@
 - [ ] Home no meals text
 - [ ] Meal screen loading
+- [ ] Meal screen error
 
 - [ ] ScrollView over scroll
 
