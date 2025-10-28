@@ -72,21 +72,26 @@ export default function MealIngredients({ items = [], loading }: Props) {
                       ellipsizeMode="tail"
                       style={styles.foodName}
                     >
-                      {item?.name ?? " "}
+                      {item?.name}
                     </Text>
                     <Text size="14">&middot;</Text>
                     <Text size="14" color={getColor("mutedForeground")}>
-                      {item?.calories ?? 0} kcal
+                      {item?.calories} kcal
                     </Text>
                   </View>
                 </WithSkeleton>
 
                 <WithSkeleton
                   loading={loading}
-                  skeletonStyle={{ height: 14, width: 50, borderRadius: 4 }}
+                  skeletonStyle={{
+                    height: 14,
+                    width: 50,
+                    borderRadius: 4,
+                    alignSelf: "flex-end",
+                  }}
                 >
                   <Text size="14" weight="500">
-                    {item?.grams ?? 0} g
+                    {item?.grams} g
                   </Text>
                 </WithSkeleton>
               </Card>
