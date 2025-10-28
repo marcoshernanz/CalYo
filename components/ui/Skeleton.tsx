@@ -34,6 +34,5 @@ export default function Skeleton({ style }: Props) {
 const styles = StyleSheet.create({
   base: {
     backgroundColor: getColor("muted"),
-    borderRadius: 8,
   },
 });
