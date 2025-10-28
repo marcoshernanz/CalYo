@@ -84,11 +84,11 @@ export default function HomeRecentlyLogged({ meals }: Props) {
         ))}
         {meals.length === 0 && (
           <Text
-            size="16"
+            size="14"
             color={getColor("mutedForeground")}
-            style={{ textAlign: "center", paddingTop: 32 }}
+            style={styles.noMealsAdded}
           >
-            Añade comidas para verlas aquí
+            Añade comidas para verlas aquí...
           </Text>
         )}
       </View>
@@ -105,6 +105,10 @@ const styles = StyleSheet.create({
   },
   itemsContainer: {
     gap: 12,
+  },
+  noMealsAdded: {
+    textAlign: "center",
+    paddingTop: 16,
   },
 
   itemCard: {
