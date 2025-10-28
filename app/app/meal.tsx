@@ -16,13 +16,8 @@ export default function MealScreen() {
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl.default);
   const analyzeMealPhoto = useAction(api.meals.analyzeMealPhoto.default);
 
-  const [mealId, setMealId] = useState<Id<"meals"> | undefined>(
-    // "kn7bpc59sd228ncdzg33642vmx7szjbj" as Id<"meals">
-    undefined
-  );
-  const startedRef = useRef(true);
-  // const [mealId, setMealId] = useState<Id<"meals"> | undefined>(initialMealId);
-  // const startedRef = useRef(false);
+  const [mealId, setMealId] = useState<Id<"meals"> | undefined>(initialMealId);
+  const startedRef = useRef(false);
 
   const data = useQuery(
     api.meals.getMeal.default,
