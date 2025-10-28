@@ -16,7 +16,7 @@ interface Props {
 }
 
 const placeholderRows = 4;
-const nameSkeletonWidths: DimensionValue[] = ["70%", "55%", "85%", "60%"];
+const nameSkeletonWidths: DimensionValue[] = ["75%", "65%", "75%", "65%"];
 
 export default function MealIngredients({ items = [], loading }: Props) {
   const count = loading
@@ -27,12 +27,7 @@ export default function MealIngredients({ items = [], loading }: Props) {
     <View>
       <View style={styles.headerContainer}>
         <Text weight="600">Ingredientes</Text>
-        <Button
-          variant="base"
-          size="base"
-          style={styles.addMoreButton}
-          disabled={loading}
-        >
+        <Button variant="base" size="base" style={styles.addMoreButton}>
           <PlusIcon
             size={14}
             strokeWidth={2.25}
@@ -53,7 +48,7 @@ export default function MealIngredients({ items = [], loading }: Props) {
           const nameWidth = nameSkeletonWidths[i % nameSkeletonWidths.length];
 
           return (
-            <Button key={key} variant="base" size="base" disabled={loading}>
+            <Button key={key} variant="base" size="base">
               <Card style={styles.card}>
                 <WithSkeleton
                   loading={loading}
@@ -114,6 +109,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 2,
+    height: "100%",
   },
   ingredientsContainer: {
     gap: 8,

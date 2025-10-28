@@ -55,7 +55,14 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
       >
         <SafeArea edges={["left", "right"]}>
           <View style={styles.nameContainer}>
-            <WithSkeleton loading={loading} skeletonStyle={styles.nameSkeleton}>
+            <WithSkeleton
+              loading={loading}
+              skeletonStyle={{
+                height: 22,
+                width: "75%",
+                borderRadius: 8,
+              }}
+            >
               <Text weight="600" style={styles.name}>
                 {name}
               </Text>
@@ -84,10 +91,5 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     paddingBottom: 16,
-  },
-  nameSkeleton: {
-    height: 22,
-    width: "75%",
-    borderRadius: 8,
   },
 });

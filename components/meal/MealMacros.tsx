@@ -43,7 +43,7 @@ export default function MealMacros({ loading, totals }: Props) {
 
   return (
     <View style={styles.container}>
-      <Button variant="base" size="base" disabled={loading}>
+      <Button variant="base" size="base">
         <Card style={styles.caloriesCard}>
           <View style={styles.caloriesIconContainer}>
             <FlameIcon />
@@ -54,10 +54,10 @@ export default function MealMacros({ loading, totals }: Props) {
             </Text>
             <WithSkeleton
               loading={loading}
-              skeletonStyle={{ height: 24, width: 120, borderRadius: 6 }}
+              skeletonStyle={{ height: 24, width: 100, borderRadius: 6 }}
             >
               <Text size="24" weight="700">
-                {totals?.calories ?? 0} kcal
+                {totals?.calories} kcal
               </Text>
             </WithSkeleton>
           </View>
@@ -71,7 +71,6 @@ export default function MealMacros({ loading, totals }: Props) {
             variant="base"
             size="base"
             style={styles.macroCardButton}
-            disabled={loading}
           >
             <Card style={styles.macroCard}>
               <Text size="12" color={getColor("mutedForeground")}>
@@ -83,7 +82,7 @@ export default function MealMacros({ loading, totals }: Props) {
                 </View>
                 <WithSkeleton
                   loading={loading}
-                  skeletonStyle={{ height: 16, width: 50, borderRadius: 4 }}
+                  skeletonStyle={{ height: 16, width: 40, borderRadius: 4 }}
                 >
                   <Text size="16" weight="600">
                     {macro.value} g
