@@ -9,15 +9,13 @@ import Card from "../ui/Card";
 import Button from "../ui/Button";
 import { Doc } from "@/convex/_generated/dataModel";
 import getColor from "@/lib/ui/getColor";
-import { useRouter } from "expo-router";
+import { Link } from "expo-router";
 
 interface LogItemProps {
   meal: Doc<"meals">;
 }
 
 function LogItem({ meal }: LogItemProps) {
-  const router = useRouter();
-
   const macros = [
     {
       value: meal.totals?.carbs ?? 0,
@@ -34,51 +32,48 @@ function LogItem({ meal }: LogItemProps) {
   ];
 
   return (
-    <Button
-      variant="base"
-      size="base"
-      onPress={() =>
-        router.navigate({
-          pathname: "/app/meal",
-          params: { mealId: meal._id },
-        })
-      }
+    <Link
+      href={{ pathname: "/app/meal", params: { mealId: meal._id } }}
+      asChild
+      prefetch
     >
-      <Card style={styles.itemCard}>
-        <View style={styles.itemHeaderContainer}>
-          <Text
-            size="16"
-            weight="600"
-            numberOfLines={1}
-            style={styles.itemName}
-          >
-            {meal.name ?? "Comida sin nombre"}
-          </Text>
-          <Text size="14">{format(meal._creationTime, "HH:mm")}</Text>
-        </View>
-        <View style={styles.itemDetailsContainer}>
-          <View
-            key={`macro-calories`}
-            style={[styles.itemMacroContainer, { marginRight: "auto" }]}
-          >
-            <View style={styles.itemMacroIcon}>
-              <CalorieIcon size={16} strokeWidth={2.25} />
-            </View>
-            <Text size="14" weight="500">
-              {meal.totals?.calories ?? 0}
+      <Button variant="base" size="base">
+        <Card style={styles.itemCard}>
+          <View style={styles.itemHeaderContainer}>
+            <Text
+              size="16"
+              weight="600"
+              numberOfLines={1}
+              style={styles.itemName}
+            >
+              {meal.name ?? "Comida sin nombre"}
             </Text>
+            <Text size="14">{format(meal._creationTime, "HH:mm")}</Text>
           </View>
-          {macros.map((macro, index) => (
-            <View key={`macro-${index}`} style={styles.itemMacroContainer}>
+          <View style={styles.itemDetailsContainer}>
+            <View
+              key={`macro-calories`}
+              style={[styles.itemMacroContainer, { marginRight: "auto" }]}
+            >
               <View style={styles.itemMacroIcon}>
-                <macro.Icon size={16} strokeWidth={2.25} />
+                <CalorieIcon size={16} strokeWidth={2.25} />
               </View>
-              <Text size="14">{macro.value}</Text>
+              <Text size="14" weight="500">
+                {meal.totals?.calories ?? 0}
+              </Text>
             </View>
-          ))}
-        </View>
-      </Card>
-    </Button>
+            {macros.map((macro, index) => (
+              <View key={`macro-${index}`} style={styles.itemMacroContainer}>
+                <View style={styles.itemMacroIcon}>
+                  <macro.Icon size={16} strokeWidth={2.25} />
+                </View>
+                <Text size="14">{macro.value}</Text>
+              </View>
+            ))}
+          </View>
+        </Card>
+      </Button>
+    </Link>
   );
 }
 
