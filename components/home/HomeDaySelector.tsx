@@ -19,9 +19,9 @@ type DayData = {
   weekDay: number;
   letter: string;
   number: string;
-  carbs: number;
-  protein: number;
-  fat: number;
+  carbsRatio: number;
+  proteinRatio: number;
+  fatRatio: number;
 };
 
 interface DaySelectorItemProps {
@@ -38,9 +38,11 @@ function DaySelectorItem({
   onPress,
 }: DaySelectorItemProps) {
   const progress = useSharedValue(0);
-  const progressCarbs = useDerivedValue(() => day.carbs * progress.value);
-  const progressProtein = useDerivedValue(() => day.protein * progress.value);
-  const progressFat = useDerivedValue(() => day.fat * progress.value);
+  const progressCarbs = useDerivedValue(() => day.carbsRatio * progress.value);
+  const progressProtein = useDerivedValue(
+    () => day.proteinRatio * progress.value
+  );
+  const progressFat = useDerivedValue(() => day.fatRatio * progress.value);
 
   useEffect(() => {
     progress.value = withTiming(1, { duration: 1500 });
@@ -109,7 +111,10 @@ export default function HomeDaySelector({
   const start = startOfWeek(new Date(), { weekStartsOn: 1 });
   const weekDays: DayData[] = Array.from({ length: 7 }, (_, index) => {
     const date = addDays(start, index);
-    const calories = weekTotals[index].calories;
+    const calories = Math.max(
+      weekTotals[index].calories,
+      macrosToKcal(weekTotals[index])
+    );
     const carbsRatio =
       macrosToKcal({ carbs: weekTotals[index].carbs }) / calories;
     const proteinRatio =
@@ -120,9 +125,9 @@ export default function HomeDaySelector({
       weekDay: (getDay(date) + 6) % 7,
       letter: format(date, "EEEEE", { locale: es }).toUpperCase(),
       number: format(date, "dd", { locale: es }),
-      carbs: isNaN(carbsRatio) ? 0 : carbsRatio,
-      protein: isNaN(proteinRatio) ? 0 : proteinRatio,
-      fat: isNaN(fatRatio) ? 0 : fatRatio,
+      carbsRatio: isNaN(carbsRatio) ? 0 : carbsRatio,
+      proteinRatio: isNaN(proteinRatio) ? 0 : proteinRatio,
+      fatRatio: isNaN(fatRatio) ? 0 : fatRatio,
     };
   });
 
