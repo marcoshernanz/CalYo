@@ -1,78 +1,54 @@
 import getColor from "@/lib/ui/getColor";
-import { Canvas, Group, Path, Skia } from "@shopify/react-native-skia";
-import { useState } from "react";
-import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import {
-  SharedValue,
-  useDerivedValue,
-  useSharedValue,
-} from "react-native-reanimated";
-import Svg, { Circle } from "react-native-svg";
+  Canvas,
+  Group,
+  Path,
+  Skia,
+  type SkPath,
+} from "@shopify/react-native-skia";
+import { useMemo, useState } from "react";
+import { LayoutChangeEvent, StyleSheet, View } from "react-native";
+import { SharedValue, useDerivedValue } from "react-native-reanimated";
 
-interface CircularProgressItemProps {
-  progress: ProgressValue;
-  previousProgresses: ProgressValue[];
-  size: number;
-  strokeWidth: number;
-  color: string;
-}
+type ProgressValue = number | SharedValue<number>;
 
 function CircularProgressItem({
+  path,
   progress,
   previousProgresses,
-  size,
   strokeWidth,
   color,
-}: CircularProgressItemProps) {
-  const radius = (size - strokeWidth) / 2;
-
-  const isStaticProgress = typeof progress === "number";
-  const staticProgress = useSharedValue(isStaticProgress ? progress : 0);
-  const sharedProgress = isStaticProgress ? staticProgress : progress;
-
-  const path = Skia.Path.Make();
-  path.addCircle(size / 2, size / 2, radius);
-
-  const startAngle = useDerivedValue(() => {
+}: {
+  path: SkPath;
+  progress: ProgressValue;
+  previousProgresses: ProgressValue[];
+  strokeWidth: number;
+  color: string;
+}) {
+  const start = useDerivedValue(() => {
     let total = 0;
-
-    previousProgresses.forEach((previousProgress) => {
-      total +=
-        typeof previousProgress === "number"
-          ? previousProgress
-          : previousProgress.value;
-    });
-
+    for (const p of previousProgresses)
+      total += typeof p === "number" ? p : p.value;
     return Math.min(Math.max(total, 0), 1);
   }, [previousProgresses]);
 
-  const endAngle = useDerivedValue(() =>
-    Math.min(
-      Math.max(startAngle.value + sharedProgress.value, startAngle.value),
-      1
-    )
-  );
-
-  const transform = useDerivedValue(() => [{ rotate: -Math.PI / 2 }]);
+  const end = useDerivedValue(() => {
+    const v = typeof progress === "number" ? progress : progress.value;
+    return Math.min(Math.max(start.value + v, start.value), 1);
+  }, [progress, start]);
 
   return (
-    <Canvas style={{ height: size, width: size, position: "absolute" }}>
-      <Group origin={{ x: size / 2, y: size / 2 }} transform={transform}>
-        <Path
-          start={startAngle}
-          path={path}
-          end={endAngle}
-          style={"stroke"}
-          strokeCap={"round"}
-          color={color}
-          strokeWidth={strokeWidth}
-        />
-      </Group>
-    </Canvas>
+    <Path
+      path={path}
+      start={start}
+      end={end}
+      style="stroke"
+      strokeCap="round"
+      color={color}
+      strokeWidth={strokeWidth}
+    />
   );
 }
-
-type ProgressValue = number | SharedValue<number>;
 
 interface Props {
   progress: ProgressValue | ProgressValue[];
@@ -89,52 +65,65 @@ export default function CircularProgress({
   color = getColor("foreground"),
   trackColor = getColor("secondary"),
 }: Props) {
-  const [resolvedSize, setResolvedSize] = useState(0);
+  const [measured, setMeasured] = useState(0);
+  const resolvedSize = size ?? measured;
 
-  const radius = (resolvedSize - strokeWidth) / 2;
+  const onLayout = ({ nativeEvent }: LayoutChangeEvent) => {
+    if (size) return;
+    const next = Math.min(nativeEvent.layout.width, nativeEvent.layout.height);
+    if (next && next !== measured) setMeasured(next);
+  };
+
+  const circlePath = useMemo(() => {
+    if (!resolvedSize) return null;
+    const r = (resolvedSize - strokeWidth) / 2;
+    const p = Skia.Path.Make();
+    p.addCircle(resolvedSize / 2, resolvedSize / 2, r);
+    return p;
+  }, [resolvedSize, strokeWidth]);
+
   const progresses = Array.isArray(progress) ? progress : [progress];
   const colors = Array.isArray(color) ? color : [color];
 
-  const handleLayout = ({ nativeEvent }: LayoutChangeEvent) => {
-    const nextSize = Math.min(
-      nativeEvent.layout.width,
-      nativeEvent.layout.height
-    );
-
-    if (nextSize && nextSize !== size) {
-      setResolvedSize(size ?? nextSize);
-    }
-  };
+  if (!resolvedSize || !circlePath) {
+    return <View style={styles.container} onLayout={onLayout} />;
+  }
 
   return (
-    <View style={styles.container} onLayout={handleLayout}>
-      <Svg width={resolvedSize} height={resolvedSize}>
-        <Circle
-          cx={resolvedSize / 2}
-          cy={resolvedSize / 2}
-          r={radius}
-          stroke={trackColor}
-          strokeWidth={strokeWidth}
-          fill="none"
-        />
-        {progresses.map((progress, index) => (
-          <CircularProgressItem
-            key={`circular-progress-item-${index}`}
-            previousProgresses={progresses.slice(0, index)}
-            progress={progress}
-            size={resolvedSize}
+    <View
+      style={[styles.container, { height: resolvedSize, width: resolvedSize }]}
+      onLayout={onLayout}
+    >
+      <Canvas style={{ height: resolvedSize, width: resolvedSize }}>
+        <Group
+          origin={{ x: resolvedSize / 2, y: resolvedSize / 2 }}
+          transform={[{ rotate: -Math.PI / 2 }]}
+        >
+          <Path
+            path={circlePath}
+            style="stroke"
+            color={trackColor}
             strokeWidth={strokeWidth}
-            color={colors[index] ?? colors[0]}
           />
-        ))}
-      </Svg>
+          {progresses.map((p, i) => (
+            <CircularProgressItem
+              key={i}
+              path={circlePath}
+              progress={p}
+              previousProgresses={progresses.slice(0, i)}
+              strokeWidth={strokeWidth}
+              color={colors[i] ?? colors[0]}
+            />
+          ))}
+        </Group>
+      </Canvas>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
     width: "100%",
+    height: "100%",
   },
 });

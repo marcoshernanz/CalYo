@@ -60,6 +60,7 @@ function MacroCard({ macro, progress }: MacroCardProps) {
             progress={progressMacro}
             color={macro.color}
             strokeWidth={4}
+            size={80}
           />
           <View style={styles.caloriesIconContainer}>
             <macro.Icon size={18} strokeWidth={2.25} />
@@ -145,6 +146,7 @@ export default function HomeMacroSummary({ totals }: Props) {
               progress={progressCalories}
               color={getColor("foreground")}
               strokeWidth={5}
+              size={80}
             />
             <View style={styles.caloriesIconContainer}>
               <CalorieIcon size={20} strokeWidth={2.25} />
