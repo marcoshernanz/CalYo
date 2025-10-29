@@ -33,7 +33,7 @@ interface MacroCardProps {
 
 function MacroCard({ macro, progress }: MacroCardProps) {
   const progressMacro = useDerivedValue(
-    () => progress.value * (macro.value / macro.target)
+    () => Math.min(1, macro.value / macro.target) * progress.value
   );
 
   return (
@@ -80,10 +80,12 @@ interface Props {
   };
 }
 
+const CALORIE_TARGET = 2000;
+
 export default function HomeMacroSummary({ totals }: Props) {
   const progress = useSharedValue(0);
   const progressCalories = useDerivedValue(
-    () => (totals.calories / 2000) * progress.value
+    () => Math.min(1, totals.calories / CALORIE_TARGET) * progress.value
   );
 
   const macros: Macro[] = [
