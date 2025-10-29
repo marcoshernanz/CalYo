@@ -62,9 +62,11 @@ function LogItem({ meal }: LogItemProps) {
             style={[styles.itemMacroContainer, { marginRight: "auto" }]}
           >
             <View style={styles.itemMacroIcon}>
-              <CalorieIcon size={18} strokeWidth={2.25} />
+              <CalorieIcon size={16} strokeWidth={2.25} />
             </View>
-            <Text size="16">{meal.totals?.calories ?? 0}</Text>
+            <Text size="14" weight="500">
+              {meal.totals?.calories ?? 0}
+            </Text>
           </View>
           {macros.map((macro, index) => (
             <View key={`macro-${index}`} style={styles.itemMacroContainer}>
