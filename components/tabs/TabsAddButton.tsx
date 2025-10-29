@@ -15,7 +15,10 @@ export default function TabsAddButton() {
   const paddingBottom = Math.max(4, tabsHeight - size + 10);
 
   return (
-    <View style={[styles.container, { paddingBottom }]}>
+    <View
+      pointerEvents="box-none"
+      style={[styles.container, { paddingBottom }]}
+    >
       <Button
         variant="primary"
         style={[styles.button, { height: size, width: size }]}
