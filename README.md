@@ -1,6 +1,5 @@
 - [ ] Home no meals text
 - [ ] Meal screen error
-- [ ] Link prefetch
 - [ ] ScrollView over scroll
 - [ ] Home scroll view bounce
 - [ ] mealItems.food -> mealItems.foodId

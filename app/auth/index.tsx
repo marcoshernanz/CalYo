@@ -11,10 +11,9 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useRouter } from "expo-router";
+import { Link } from "expo-router";
 
 export default function AuthScreen() {
-  const router = useRouter();
   const [pointerEvents, setPointerEvents] = useState<"auto" | "none">("none");
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const overlayOpacity = useSharedValue(0);
@@ -37,10 +36,6 @@ export default function AuthScreen() {
     bottomSheetModalRef.current?.present();
   };
 
-  const handleStart = () => {
-    router.navigate("/auth/onboarding");
-  };
-
   return (
     <SafeArea>
       <Title style={{ textAlign: "center" }}>
@@ -50,9 +45,9 @@ export default function AuthScreen() {
         <View style={styles.image}></View>
       </View>
       <View style={styles.footerContainer}>
-        <Button size="lg" onPress={handleStart}>
-          Comenzar
-        </Button>
+        <Link href="/auth/onboarding" asChild>
+          <Button size="lg">Comenzar</Button>
+        </Link>
         <View style={styles.footerText}>
           <Text size="16" style={{ textAlign: "center" }}>
             ¿Ya tienes cuenta?
