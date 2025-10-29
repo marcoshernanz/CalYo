@@ -27,7 +27,12 @@ export default function MealIngredients({ items = [], loading }: Props) {
     <View>
       <View style={styles.headerContainer}>
         <Text weight="600">Ingredientes</Text>
-        <Button variant="base" size="base" style={styles.addMoreButton}>
+        <Button
+          variant="base"
+          size="base"
+          style={styles.addMoreButton}
+          hitSlop={10}
+        >
           <PlusIcon
             size={14}
             strokeWidth={2.25}
@@ -109,7 +114,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 2,
-    height: "100%",
   },
   ingredientsContainer: {
     gap: 8,
