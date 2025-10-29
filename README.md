@@ -1,5 +1,4 @@
-- [ ] ScrollView over scroll
-- [ ] Home scroll view bounce
+- [ ] Android 14 over scroll
 
 - [ ] Link prefetch
 - [ ] Meal screen error

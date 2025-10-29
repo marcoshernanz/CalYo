@@ -9,7 +9,12 @@ import { useQuery } from "convex/react";
 import { getDay } from "date-fns";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
-import { ScrollView, StyleSheet, useWindowDimensions } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from "react-native";
 
 export default function HomeScreen() {
   const dimensions = useWindowDimensions();
@@ -41,32 +46,45 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-      <SafeArea>
-        <LinearGradient
-          colors={[getColor("primaryLight", 0.75), getColor("background")]}
-          style={[styles.gradient, { height: dimensions.height * 0.75 }]}
-        />
+    <View style={styles.container}>
+      <LinearGradient
+        colors={[getColor("primaryLight", 0.75), getColor("background")]}
+        style={[styles.gradient, { height: dimensions.height * 0.75 }]}
+        pointerEvents="none"
+      />
 
-        <HomeHeader />
-        <HomeDaySelector
-          selectedDay={selectedDay}
-          setSelectedDay={setSelectedDay}
-          weekTotals={weekTotals}
-        />
-        <HomeMacroSummary totals={dayTotals} />
-        <HomeRecentlyLogged meals={dayMeals} />
-      </SafeArea>
-    </ScrollView>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
+        <SafeArea style={styles.safeAreaContent}>
+          <HomeHeader />
+          <HomeDaySelector
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+            weekTotals={weekTotals}
+          />
+          <HomeMacroSummary totals={dayTotals} />
+          <HomeRecentlyLogged meals={dayMeals} />
+        </SafeArea>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
+  container: {
     flex: 1,
     backgroundColor: getColor("background"),
   },
+  scrollView: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
   gradient: {
     ...StyleSheet.absoluteFillObject,
+  },
+  safeAreaContent: {
+    backgroundColor: "transparent",
   },
 });
