@@ -7,9 +7,9 @@ import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 
 export default function MealScreen() {
-  const { photoUri, initialMealId } = useLocalSearchParams<{
+  const { photoUri, mealId: initialMealId } = useLocalSearchParams<{
     photoUri?: string;
-    initialMealId?: Id<"meals">;
+    mealId?: Id<"meals">;
   }>();
 
   const createMeal = useMutation(api.meals.createMeal.default);
