@@ -79,7 +79,6 @@ export default function WheelPicker({
           keyExtractor={(item, index) => `${item}-${index}`}
           snapToInterval={itemHeight}
           showsVerticalScrollIndicator={false}
-          overScrollMode="never"
           scrollEventThrottle={16}
           onMomentumScrollEnd={handleMomentumScrollEnd}
           initialScrollIndex={safeInitialScrollIndex}

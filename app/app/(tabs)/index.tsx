@@ -41,12 +41,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView
-      overScrollMode="never"
-      bounces={false}
-      showsVerticalScrollIndicator={false}
-      style={styles.scrollView}
-    >
+    <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
       <SafeArea>
         <LinearGradient
           colors={[getColor("primaryLight", 0.75), getColor("background")]}

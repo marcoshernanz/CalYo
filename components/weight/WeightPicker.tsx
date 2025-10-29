@@ -133,7 +133,6 @@ export default function WeightPicker({
         contentOffset={{ x: defaultOffset, y: 0 }}
         style={styles.scrollView}
         showsHorizontalScrollIndicator={false}
-        overScrollMode="never"
         snapToInterval={space}
         scrollEventThrottle={16}
       >
