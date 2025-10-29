@@ -2,12 +2,14 @@ import { StyleSheet } from "react-native";
 import Button from "../ui/Button";
 import SafeArea from "../ui/SafeArea";
 import getShadow from "@/lib/ui/getShadow";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { SparklesIcon } from "lucide-react-native";
 import Text from "../ui/Text";
 import getColor from "@/lib/ui/getColor";
 
 export default function MealFooter() {
+  const router = useRouter();
+
   return (
     <SafeArea edges={["bottom", "left", "right"]} style={styles.container}>
       <Button style={styles.button} variant="outline">
@@ -20,9 +22,9 @@ export default function MealFooter() {
           Corregir
         </Text>
       </Button>
-      <Link href="/app" asChild>
-        <Button style={styles.button}>Hecho</Button>
-      </Link>
+      <Button style={styles.button} onPress={() => router.back()}>
+        Hecho
+      </Button>
     </SafeArea>
   );
 }

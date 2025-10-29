@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import Button from "../ui/Button";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { ArrowLeftIcon, EllipsisVerticalIcon } from "lucide-react-native";
 import Text from "../ui/Text";
 import { Id } from "@/convex/_generated/dataModel";
@@ -19,6 +19,8 @@ interface Props {
 }
 
 export default function MealHeader({ mealId, scrollY }: Props) {
+  const router = useRouter();
+
   const shadowStyle = useAnimatedStyle(() => ({
     opacity: interpolate(scrollY.value, [0, 24], [0, 1], Extrapolation.CLAMP),
   }));
@@ -29,11 +31,14 @@ export default function MealHeader({ mealId, scrollY }: Props) {
         pointerEvents="none"
         style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
       />
-      <Link href="/app" asChild>
-        <Button size="sm" variant="secondary" style={styles.button}>
-          <ArrowLeftIcon size={22} />
-        </Button>
-      </Link>
+      <Button
+        size="sm"
+        variant="secondary"
+        style={styles.button}
+        onPress={() => router.back()}
+      >
+        <ArrowLeftIcon size={22} />
+      </Button>
       <View style={styles.title}>
         <Text size="18" weight="600">
           Comida
