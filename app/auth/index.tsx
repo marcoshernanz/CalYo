@@ -11,12 +11,13 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function AuthScreen() {
   const [pointerEvents, setPointerEvents] = useState<"auto" | "none">("none");
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const overlayOpacity = useSharedValue(0);
+  const router = useRouter();
 
   const handleAnimate = (fromIndex: number, toIndex: number) => {
     if (toIndex === -1) {
@@ -45,9 +46,9 @@ export default function AuthScreen() {
         <View style={styles.image}></View>
       </View>
       <View style={styles.footerContainer}>
-        <Link href="/auth/onboarding" asChild>
-          <Button size="lg">Comenzar</Button>
-        </Link>
+        <Button size="lg" onPress={() => router.navigate("/auth/onboarding")}>
+          Comenzar
+        </Button>
         <View style={styles.footerText}>
           <Text size="16" style={{ textAlign: "center" }}>
             ¿Ya tienes cuenta?
