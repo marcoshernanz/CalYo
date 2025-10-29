@@ -1,4 +1,4 @@
-import { ConfigContext, ExpoConfig } from "expo/config";
+import { ExpoConfig } from "expo/config";
 
 const appVariant = process.env.APP_VARIANT;
 const isDevelopment = appVariant === "development";
@@ -20,8 +20,7 @@ const getAppName = () => {
   }
 };
 
-export default ({ config }: ConfigContext): ExpoConfig => ({
-  ...config,
+export default (): ExpoConfig => ({
   name: getAppName(),
   slug: "Calyo",
   version: "1.0.0",
@@ -71,6 +70,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 
   experiments: {
     typedRoutes: true,
+    reactCompiler: true,
   },
   extra: {
     APP_VARIANT: appVariant,

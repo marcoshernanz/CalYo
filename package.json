@@ -28,10 +28,12 @@
     "@shopify/react-native-skia": "v2.0.0-next.4",
     "@tabler/icons-react-native": "^3.34.1",
     "ai": "^5.0.76",
+    "babel-plugin-react-compiler": "^19.0.0-beta-af1b7da-20250417",
     "convex": "^1.27.3",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "expo": "~53.0.22",
+    "expo-apple-authentication": "~7.2.4",
     "expo-auth-session": "~6.2.1",
     "expo-blur": "~14.1.5",
     "expo-camera": "~16.1.11",
@@ -66,8 +68,7 @@
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
     "resend": "^6.1.1",
-    "zod": "^4.1.5",
-    "expo-apple-authentication": "~7.2.4"
+    "zod": "^4.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -75,6 +76,7 @@
     "@types/stream-json": "^1.7.8",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
+    "eslint-plugin-react-compiler": "^19.1.0-rc.2",
     "react-native-svg-transformer": "^1.5.1",
     "stream-chain": "^3.4.0",
     "stream-json": "^1.9.1",
