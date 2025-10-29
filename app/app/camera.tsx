@@ -14,7 +14,7 @@ export default function CameraScreen() {
   const isBusyRef = useRef(false);
 
   const navigateToMeal = (uri: string) => {
-    router.navigate({
+    router.replace({
       pathname: "/app/meal",
       params: { photoUri: uri },
     });

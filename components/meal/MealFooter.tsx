@@ -22,7 +22,7 @@ export default function MealFooter() {
           Corregir
         </Text>
       </Button>
-      <Button style={styles.button} onPress={() => router.back()}>
+      <Button style={styles.button} onPress={() => router.replace("/app")}>
         Hecho
       </Button>
     </SafeArea>
