@@ -80,7 +80,7 @@ export default function MealIngredients({ items = [], loading }: Props) {
                   loading={loading}
                   skeletonStyle={{
                     height: 14,
-                    width: 50,
+                    width: 32,
                     borderRadius: 4,
                     alignSelf: "flex-end",
                   }}
