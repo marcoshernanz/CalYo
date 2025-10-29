@@ -16,8 +16,6 @@ import Animated, {
 import { LinearGradient } from "expo-linear-gradient";
 import getColor from "@/lib/ui/getColor";
 
-const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
-
 interface Props {
   style?: StyleProp<ViewStyle>;
 }
@@ -56,13 +54,17 @@ export default function Skeleton({ style }: Props) {
       style={[styles.base, { backgroundColor: baseColor }, style]}
     >
       {width > 0 && (
-        <AnimatedLinearGradient
+        <Animated.View
           pointerEvents="none"
-          colors={[baseColor, highlightColor, baseColor]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
           style={[styles.shimmer, { width: bandW }, shimmerStyle]}
-        />
+        >
+          <LinearGradient
+            colors={[baseColor, highlightColor, baseColor]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.gradient}
+          />
+        </Animated.View>
       )}
     </View>
   );
@@ -77,5 +79,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     bottom: 0,
+  },
+  gradient: {
+    ...StyleSheet.absoluteFillObject,
   },
 });
