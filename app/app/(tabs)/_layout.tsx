@@ -1,12 +1,8 @@
+import TabsAddButton from "@/components/tabs/TabsAddButton";
 import Button from "@/components/ui/Button";
 import getColor from "@/lib/ui/getColor";
 import { Tabs } from "expo-router";
-import {
-  ActivityIcon,
-  DumbbellIcon,
-  HomeIcon,
-  SettingsIcon,
-} from "lucide-react-native";
+import { HomeIcon, SettingsIcon } from "lucide-react-native";
 import { PressableProps, View } from "react-native";
 
 function TabBarButton(props: PressableProps) {
@@ -20,12 +16,13 @@ export default function TabLayout() {
       <Tabs
         screenOptions={{
           headerShown: false,
-          tabBarActiveTintColor: getColor("primary"),
-          tabBarInactiveTintColor: getColor("mutedForeground"),
+          tabBarActiveTintColor: getColor("foreground"),
+          tabBarInactiveTintColor: getColor("mutedForeground", 0.5),
           tabBarStyle: {
             backgroundColor: getColor("background"),
-            borderColor: getColor("foreground"), // TODO
+            borderColor: getColor("secondary"),
             borderTopWidth: 1,
+            paddingHorizontal: 25,
           },
           tabBarButton: (props) => <TabBarButton {...props} />,
         }}
@@ -40,29 +37,11 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="activity"
-          options={{
-            tabBarLabel: "Activity",
-            tabBarIcon: ({ color, size }) => (
-              <ActivityIcon color={color} strokeWidth={1.75} size={size} />
-            ),
-          }}
-        />
-        <Tabs.Screen
           name="add"
           options={{
             tabBarLabel: "",
             tabBarIcon: () => null,
-            tabBarButton: () => <TabBarButton />,
-          }}
-        />
-        <Tabs.Screen
-          name="exercises"
-          options={{
-            tabBarLabel: "Exercises",
-            tabBarIcon: ({ color, size }) => (
-              <DumbbellIcon color={color} strokeWidth={1.75} size={size} />
-            ),
+            tabBarButton: () => null,
           }}
         />
         <Tabs.Screen
@@ -76,7 +55,7 @@ export default function TabLayout() {
         />
       </Tabs>
 
-      {/* <TabsAddButton /> */}
+      <TabsAddButton />
     </View>
   );
 }
