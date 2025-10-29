@@ -1,6 +1,6 @@
 import getColor from "@/lib/ui/getColor";
 import { Canvas, Group, Path, Skia } from "@shopify/react-native-skia";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import {
   SharedValue,
@@ -30,11 +30,8 @@ function CircularProgressItem({
   const staticProgress = useSharedValue(isStaticProgress ? progress : 0);
   const sharedProgress = isStaticProgress ? staticProgress : progress;
 
-  const path = useMemo(() => {
-    const skPath = Skia.Path.Make();
-    skPath.addCircle(size / 2, size / 2, radius);
-    return skPath;
-  }, [radius, size]);
+  const path = Skia.Path.Make();
+  path.addCircle(size / 2, size / 2, radius);
 
   const startAngle = useDerivedValue(() => {
     let total = 0;

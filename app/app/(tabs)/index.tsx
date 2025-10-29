@@ -8,7 +8,7 @@ import getColor from "@/lib/ui/getColor";
 import { useQuery } from "convex/react";
 import { getDay } from "date-fns";
 import { LinearGradient } from "expo-linear-gradient";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ScrollView, StyleSheet, useWindowDimensions } from "react-native";
 
 export default function HomeScreen() {
@@ -18,35 +18,27 @@ export default function HomeScreen() {
   const rawWeekMeals = useQuery(api.meals.getWeekMeals.default, {
     timezoneOffsetMinutes: new Date().getTimezoneOffset(),
   });
-  const weekMeals = useMemo(
-    () => rawWeekMeals ?? [[], [], [], [], [], [], []],
-    [rawWeekMeals]
-  );
-  const dayMeals = useMemo(
-    () => weekMeals[selectedDay] ?? [],
-    [weekMeals, selectedDay]
+  const weekMeals = rawWeekMeals ?? Array.from({ length: 7 }, () => []);
+  const dayMeals = weekMeals[selectedDay] ?? [];
+
+  const weekTotals = weekMeals.map((meals) =>
+    meals.reduce(
+      (acc, meal) => ({
+        calories: acc.calories + (meal.totals?.calories ?? 0),
+        protein: acc.protein + (meal.totals?.protein ?? 0),
+        carbs: acc.carbs + (meal.totals?.carbs ?? 0),
+        fat: acc.fat + (meal.totals?.fat ?? 0),
+      }),
+      { calories: 0, protein: 0, carbs: 0, fat: 0 }
+    )
   );
 
-  const weekTotals = useMemo(
-    () =>
-      weekMeals.map((meals) =>
-        meals.reduce(
-          (acc, meal) => ({
-            calories: acc.calories + (meal.totals?.calories ?? 0),
-            protein: acc.protein + (meal.totals?.protein ?? 0),
-            carbs: acc.carbs + (meal.totals?.carbs ?? 0),
-            fat: acc.fat + (meal.totals?.fat ?? 0),
-          }),
-          { calories: 0, protein: 0, carbs: 0, fat: 0 }
-        )
-      ),
-    [weekMeals]
-  );
-  const dayTotals = useMemo(
-    () =>
-      weekTotals[selectedDay] ?? { calories: 0, protein: 0, carbs: 0, fat: 0 },
-    [weekTotals, selectedDay]
-  );
+  const dayTotals = weekTotals[selectedDay] ?? {
+    calories: 0,
+    protein: 0,
+    carbs: 0,
+    fat: 0,
+  };
 
   return (
     <ScrollView

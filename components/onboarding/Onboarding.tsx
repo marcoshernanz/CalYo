@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   OnboardingData,
   useOnboardingContext,
@@ -131,51 +131,47 @@ export default function Onboarding() {
     setHasMounted(true);
   }, []);
 
-  const enteringAnimation = useMemo(() => {
-    return () => {
-      "worklet";
-      return {
-        initialValues: {
-          transform: [
-            {
-              translateX: direction.value * screenWidth,
-            },
-          ],
-        },
-        animations: {
-          transform: [
-            {
-              translateX: withTiming(0, { duration: animationDuration }),
-            },
-          ],
-        },
-      };
+  const enteringAnimation = () => {
+    "worklet";
+    return {
+      initialValues: {
+        transform: [
+          {
+            translateX: direction.value * screenWidth,
+          },
+        ],
+      },
+      animations: {
+        transform: [
+          {
+            translateX: withTiming(0, { duration: animationDuration }),
+          },
+        ],
+      },
     };
-  }, [direction, screenWidth, animationDuration]);
+  };
 
-  const exitingAnimation = useMemo(() => {
-    return () => {
-      "worklet";
-      return {
-        initialValues: {
-          transform: [
-            {
-              translateX: 0,
-            },
-          ],
-        },
-        animations: {
-          transform: [
-            {
-              translateX: withTiming(-direction.value * screenWidth, {
-                duration: animationDuration,
-              }),
-            },
-          ],
-        },
-      };
+  const exitingAnimation = () => {
+    "worklet";
+    return {
+      initialValues: {
+        transform: [
+          {
+            translateX: 0,
+          },
+        ],
+      },
+      animations: {
+        transform: [
+          {
+            translateX: withTiming(-direction.value * screenWidth, {
+              duration: animationDuration,
+            }),
+          },
+        ],
+      },
     };
-  }, [direction, screenWidth, animationDuration]);
+  };
 
   const currentSection = sections[section];
   const sectionName = currentSection.name;

@@ -1,10 +1,12 @@
 import Slider from "@/components/ui/Slider";
 import Text from "@/components/ui/Text";
-import { useOnboardingContext } from "@/context/OnboardingContext";
+import {
+  type OnboardingData,
+  useOnboardingContext,
+} from "@/context/OnboardingContext";
 import kgToLbs from "@/lib/units/kgToLbs";
 import lbsToKg from "@/lib/units/lbsToKg";
 import getColor from "@/lib/ui/getColor";
-import { useCallback, useMemo } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import AnimateableText from "react-native-animateable-text";
 import {
@@ -31,23 +33,15 @@ export default function OnboardingWeightChangeRate() {
 
   const isMetric = data.measurementSystem !== "imperial";
 
-  const displayBounds = useMemo(() => {
-    const min = isMetric ? minKg : minLbs;
-    const max = isMetric ? maxKg : maxLbs;
-    const def = isMetric ? defaultKg : defaultLbs;
-    const rec: [number, number] = isMetric ? recommendedKg : recommendedLbs;
-    return { min, max, def, rec } as const;
-  }, [isMetric]);
+  const displayBounds = isMetric
+    ? { min: minKg, max: maxKg, def: defaultKg, rec: recommendedKg }
+    : { min: minLbs, max: maxLbs, def: defaultLbs, rec: recommendedLbs };
 
-  const initialDisplayValue = useMemo(() => {
-    if (!data.weightChangeRate) {
-      return displayBounds.def;
-    } else {
-      return isMetric
-        ? data.weightChangeRate
-        : kgToLbs(data.weightChangeRate * 10) / 10;
-    }
-  }, [data.weightChangeRate, displayBounds.def, isMetric]);
+  const initialDisplayValue = data.weightChangeRate
+    ? isMetric
+      ? data.weightChangeRate
+      : kgToLbs(data.weightChangeRate * 10) / 10
+    : displayBounds.def;
 
   const changeRate = useSharedValue(initialDisplayValue);
 
@@ -91,26 +85,13 @@ export default function OnboardingWeightChangeRate() {
     })),
   };
 
-  const updateWeightChangeRate = useCallback(
-    (roundedDisplayValue: number) => {
-      const valueKg = isMetric
-        ? roundedDisplayValue
-        : Math.round(lbsToKg(roundedDisplayValue) * 10) / 10;
-      setData((prev) => ({
-        ...prev,
-        weightChangeRate: valueKg,
-      }));
-    },
-    [isMetric, setData]
-  );
-
   useAnimatedReaction(
     () => changeRate.value,
     (value) => {
       const roundedValue = Math.round(value * 10) / 10;
-      runOnJS(updateWeightChangeRate)(roundedValue);
+      runOnJS(syncWeightChangeRate)(roundedValue, isMetric, setData);
     },
-    [updateWeightChangeRate]
+    [isMetric, setData]
   );
 
   return (
@@ -146,6 +127,20 @@ export default function OnboardingWeightChangeRate() {
       </View>
     </OnboardingStep>
   );
+}
+
+function syncWeightChangeRate(
+  roundedDisplayValue: number,
+  isMetric: boolean,
+  setData: (updater: (prev: OnboardingData) => OnboardingData) => void
+) {
+  const valueKg = isMetric
+    ? roundedDisplayValue
+    : Math.round(lbsToKg(roundedDisplayValue) * 10) / 10;
+  setData((prev) => ({
+    ...prev,
+    weightChangeRate: valueKg,
+  }));
 }
 
 interface WeightChangeRowProps {

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext } from "react";
 import {
   useAuthActions,
   type ConvexAuthActionsContext,
@@ -23,14 +23,12 @@ export function AuthContextProvider({ children }: Props) {
   const { isLoading, isAuthenticated } = useConvexAuth();
   const { signIn, signOut } = useAuthActions();
 
-  const value = useMemo<AuthContextValue>(() => {
-    return {
-      isAuthenticated,
-      isLoading,
-      signIn,
-      signOut,
-    };
-  }, [isLoading, isAuthenticated, signIn, signOut]);
+  const value: AuthContextValue = {
+    isAuthenticated,
+    isLoading,
+    signIn,
+    signOut,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -29,9 +29,9 @@ export default function Skeleton({ style }: Props) {
   const [width, setWidth] = useState(0);
   const translateX = useSharedValue(0);
 
-  const onLayout = useCallback((e: LayoutChangeEvent) => {
+  const onLayout = (e: LayoutChangeEvent) => {
     setWidth(e.nativeEvent.layout.width);
-  }, []);
+  };
 
   useEffect(() => {
     if (!width) return;

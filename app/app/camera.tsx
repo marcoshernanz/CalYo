@@ -3,7 +3,7 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { UploadIcon } from "lucide-react-native";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { View } from "react-native";
 
 export default function CameraScreen() {
@@ -13,17 +13,14 @@ export default function CameraScreen() {
   const cameraRef = useRef<CameraView>(null);
   const isBusyRef = useRef(false);
 
-  const navigateToMeal = useCallback(
-    (uri: string) => {
-      router.navigate({
-        pathname: "/app/meal",
-        params: { photoUri: uri },
-      });
-    },
-    [router]
-  );
+  const navigateToMeal = (uri: string) => {
+    router.navigate({
+      pathname: "/app/meal",
+      params: { photoUri: uri },
+    });
+  };
 
-  const takePhoto = useCallback(async () => {
+  const takePhoto = async () => {
     if (!cameraRef.current || isBusyRef.current) return;
     isBusyRef.current = true;
 
@@ -39,9 +36,9 @@ export default function CameraScreen() {
     } finally {
       isBusyRef.current = false;
     }
-  }, [navigateToMeal]);
+  };
 
-  const handleUpload = useCallback(async () => {
+  const handleUpload = async () => {
     if (isBusyRef.current) return;
 
     try {
@@ -70,7 +67,7 @@ export default function CameraScreen() {
     } finally {
       isBusyRef.current = false;
     }
-  }, [navigateToMeal]);
+  };
 
   useEffect(() => {
     if (!permission?.granted) {

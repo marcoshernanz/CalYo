@@ -10,7 +10,7 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useEffect, useMemo, type ComponentType } from "react";
+import { useEffect, type ComponentType } from "react";
 import FatIcon from "../icons/macros/FatIcon";
 import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
@@ -85,32 +85,29 @@ export default function HomeMacroSummary({ totals }: Props) {
     () => (totals.calories / 2000) * progress.value
   );
 
-  const macros = useMemo<Macro[]>(
-    () => [
-      {
-        name: "Hidratos",
-        value: totals.carbs,
-        target: 300,
-        Icon: CarbIcon,
-        color: getColor("carb"),
-      },
-      {
-        name: "Proteína",
-        value: totals.protein,
-        target: 200,
-        Icon: ProteinIcon,
-        color: getColor("protein"),
-      },
-      {
-        name: "Grasas",
-        value: totals.fat,
-        target: 100,
-        Icon: FatIcon,
-        color: getColor("fat"),
-      },
-    ],
-    [totals]
-  );
+  const macros: Macro[] = [
+    {
+      name: "Hidratos",
+      value: totals.carbs,
+      target: 300,
+      Icon: CarbIcon,
+      color: getColor("carb"),
+    },
+    {
+      name: "Proteína",
+      value: totals.protein,
+      target: 200,
+      Icon: ProteinIcon,
+      color: getColor("protein"),
+    },
+    {
+      name: "Grasas",
+      value: totals.fat,
+      target: 100,
+      Icon: FatIcon,
+      color: getColor("fat"),
+    },
+  ];
 
   useEffect(() => {
     progress.value = withTiming(1, { duration: 1500 });

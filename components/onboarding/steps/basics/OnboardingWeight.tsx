@@ -3,7 +3,6 @@ import WeightPicker from "@/components/weight/WeightPicker";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import kgToLbs from "@/lib/units/kgToLbs";
 import lbsToKg from "@/lib/units/lbsToKg";
-import { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import OnboardingStep from "../../OnboardingStep";
 
@@ -14,57 +13,52 @@ export default function OnboardingWeight() {
 
   const weight = data.weight ?? defaultWeight;
 
-  const metricProps = useMemo<React.ComponentProps<typeof WeightPicker>>(() => {
-    const minWeight = 30;
-    const maxWeight = 300;
+  const metricMinWeight = 30;
+  const metricMaxWeight = 300;
+  const metricInitialWeight = Math.min(
+    Math.max(Math.round(weight * 10) / 10, metricMinWeight),
+    metricMaxWeight
+  );
+  const metricProps: React.ComponentProps<typeof WeightPicker> = {
+    minWeight: metricMinWeight,
+    maxWeight: metricMaxWeight,
+    initialWeight: metricInitialWeight,
+    formatWeight: (nextWeight: number) => {
+      "worklet";
+      return `${nextWeight} kg`;
+    },
+    onChange: (nextWeight: number) => {
+      setData((prev) => ({
+        ...prev,
+        weight: nextWeight,
+        targetWeight: nextWeight,
+      }));
+    },
+  };
 
-    const initialWeight = Math.min(
-      Math.max(Math.round(weight * 10) / 10, minWeight),
-      maxWeight
-    );
-
-    return {
-      minWeight,
-      maxWeight,
-      initialWeight,
-      formatWeight: (weight: number) => {
-        "worklet";
-        return `${weight} kg`;
-      },
-      onChange: (weight: number) => {
-        setData((prev) => ({ ...prev, weight, targetWeight: weight }));
-      },
-    };
-  }, [setData, weight]);
-
-  const imperialProps = useMemo<
-    React.ComponentProps<typeof WeightPicker>
-  >(() => {
-    const minWeight = 70;
-    const maxWeight = 700;
-
-    const initialWeight = Math.min(
-      Math.max(Math.round(kgToLbs(weight) * 10) / 10, minWeight),
-      maxWeight
-    );
-
-    return {
-      minWeight,
-      maxWeight,
-      initialWeight,
-      formatWeight: (weight: number) => {
-        "worklet";
-        return `${weight} lbs`;
-      },
-      onChange: (weight: number) => {
-        setData((prev) => ({
-          ...prev,
-          weight: lbsToKg(weight),
-          targetWeight: lbsToKg(weight),
-        }));
-      },
-    };
-  }, [setData, weight]);
+  const imperialMinWeight = 70;
+  const imperialMaxWeight = 700;
+  const imperialInitialWeight = Math.min(
+    Math.max(Math.round(kgToLbs(weight) * 10) / 10, imperialMinWeight),
+    imperialMaxWeight
+  );
+  const imperialProps: React.ComponentProps<typeof WeightPicker> = {
+    minWeight: imperialMinWeight,
+    maxWeight: imperialMaxWeight,
+    initialWeight: imperialInitialWeight,
+    formatWeight: (nextWeight: number) => {
+      "worklet";
+      return `${nextWeight} lbs`;
+    },
+    onChange: (nextWeight: number) => {
+      const weightKg = lbsToKg(nextWeight);
+      setData((prev) => ({
+        ...prev,
+        weight: weightKg,
+        targetWeight: weightKg,
+      }));
+    },
+  };
 
   const handleMeasurementSystemChange = (system: string) => {
     if (system !== "Kilogramos" && system !== "Libras") return;

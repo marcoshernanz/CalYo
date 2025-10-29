@@ -23,7 +23,6 @@ import {
   TextAlign,
   useFonts,
 } from "@shopify/react-native-skia";
-import { useMemo } from "react";
 import getColor from "@/lib/ui/getColor";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -75,48 +74,35 @@ export default function WeightPicker({
     return Math.min(Math.max(roundedWeight, minWeight), maxWeight);
   });
 
-  const primaryLinesPath = useMemo(() => {
-    const path = Skia.Path.Make();
+  const primaryLinesPath = Skia.Path.Make();
+  for (let w = startInt; w <= endInt; w++) {
+    const xPos = (w - minWeight) * 10 * space;
+    primaryLinesPath.moveTo(xPos, height);
+    primaryLinesPath.lineTo(xPos, height - bigLineHeight);
+  }
 
-    for (let w = startInt; w <= endInt; w++) {
-      const xPos = (w - minWeight) * 10 * space;
-      path.moveTo(xPos, height);
-      path.lineTo(xPos, height - bigLineHeight);
+  const secondaryLinesPath = Skia.Path.Make();
+  for (let k = 1; k <= Math.max(0, totalTenths - 1); k++) {
+    const w = minWeight + k / 10;
+    const isInteger = Math.abs(w - Math.round(w)) < 1e-6;
+    if (isInteger) {
+      continue;
     }
 
-    return path;
-  }, [startInt, endInt, minWeight, space]);
+    const xPos = k * space;
+    secondaryLinesPath.moveTo(xPos, height);
+    secondaryLinesPath.lineTo(xPos, height - smallLineHeight);
+  }
 
-  const secondaryLinesPath = useMemo(() => {
-    const path = Skia.Path.Make();
-
-    for (let k = 1; k <= Math.max(0, totalTenths - 1); k++) {
-      const w = minWeight + k / 10;
-      const isInteger = Math.abs(w - Math.round(w)) < 1e-6;
-      if (isInteger) continue;
-
-      const xPos = k * space;
-      path.moveTo(xPos, height);
-      path.lineTo(xPos, height - smallLineHeight);
-    }
-
-    return path;
-  }, [minWeight, totalTenths, space]);
-
-  const highlightedLinePath = useMemo(() => {
-    const path = Skia.Path.Make();
-
-    if (!highlightedWeight) return path;
-
+  const highlightedLinePath = Skia.Path.Make();
+  if (highlightedWeight) {
     const xPos = (highlightedWeight - minWeight) * space * 10;
     const lineHeight =
       highlightedWeight % 1 === 0 ? bigLineHeight : smallLineHeight;
 
-    path.moveTo(xPos, height);
-    path.lineTo(xPos, height - lineHeight);
-
-    return path;
-  }, [highlightedWeight, minWeight, space]);
+    highlightedLinePath.moveTo(xPos, height);
+    highlightedLinePath.lineTo(xPos, height - lineHeight);
+  }
 
   const handleScroll = useAnimatedScrollHandler((event) => {
     panX.value = -event.contentOffset.x + center;

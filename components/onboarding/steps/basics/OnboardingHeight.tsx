@@ -4,7 +4,6 @@ import { useOnboardingContext } from "@/context/OnboardingContext";
 import cmToIn from "@/lib/units/cmToIn";
 import inToCm from "@/lib/units/inToCm";
 import inToFtIn from "@/lib/units/inToFtIn";
-import { useMemo } from "react";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
 import OnboardingStep from "../../OnboardingStep";
 
@@ -16,59 +15,54 @@ export default function OnboardingHeight() {
 
   const height = data.height ?? defaultHeight;
 
-  const metricProps = useMemo<React.ComponentProps<typeof WheelPicker>>(() => {
-    const minHeight = 120;
-    const maxHeight = 240;
+  const metricMinHeight = 120;
+  const metricMaxHeight = 240;
+  const metricInitialHeight = Math.min(
+    Math.max(Math.round(height), metricMinHeight),
+    metricMaxHeight
+  );
+  const metricData = Array.from(
+    { length: metricMaxHeight - metricMinHeight + 1 },
+    (_, i) => `${metricMinHeight + i} cm`
+  );
+  const metricProps: React.ComponentProps<typeof WheelPicker> = {
+    data: metricData,
+    initialValue: `${metricInitialHeight} cm`,
+    onValueChange: (value: string) => {
+      const match = value.match(/^(\d+)\s*cm$/);
+      if (!match) return;
+      const nextHeight = parseInt(match[1]);
+      setData((prev) => ({ ...prev, height: nextHeight }));
+    },
+  };
 
-    const initialHeight = Math.min(
-      Math.max(Math.round(height), minHeight),
-      maxHeight
-    );
-
-    return {
-      data: Array.from(
-        { length: maxHeight - minHeight + 1 },
-        (_, i) => `${minHeight + i} cm`
-      ),
-      initialValue: `${initialHeight} cm`,
-      onValueChange: (value: string) => {
-        const match = value.match(/^(\d+)\s*cm$/);
-        if (!match) return;
-        const height = parseInt(match[1]);
-        setData((prev) => ({ ...prev, height }));
-      },
-    };
-  }, [height, setData]);
-
-  const imperialProps = useMemo<
-    React.ComponentProps<typeof WheelPicker>
-  >(() => {
-    const minHeight = 48;
-    const maxHeight = 96;
-
-    const initialHeight = Math.min(
-      Math.max(Math.round(cmToIn(height)), minHeight),
-      maxHeight
-    );
-    const { feet, inches } = inToFtIn(initialHeight);
-
-    return {
-      data: Array.from({ length: maxHeight - minHeight + 1 }, (_, i) => {
-        const { feet, inches } = inToFtIn(minHeight + i);
-        return `${feet} ft ${inches} in`;
-      }),
-      initialValue: `${feet} ft ${inches} in`,
-      onValueChange: (value: string) => {
-        const match = value.match(/^(\d+)\s*ft\s*(\d+)\s*in$/);
-        if (!match) return;
-        const feet = parseInt(match[1]);
-        const inches = parseInt(match[2]);
-        const totalInches = feet * 12 + inches;
-        const height = Math.round(inToCm(totalInches));
-        setData((prev) => ({ ...prev, height }));
-      },
-    };
-  }, [height, setData]);
+  const imperialMinHeight = 48;
+  const imperialMaxHeight = 96;
+  const imperialInitialHeight = Math.min(
+    Math.max(Math.round(cmToIn(height)), imperialMinHeight),
+    imperialMaxHeight
+  );
+  const initialImperial = inToFtIn(imperialInitialHeight);
+  const imperialData = Array.from(
+    { length: imperialMaxHeight - imperialMinHeight + 1 },
+    (_, i) => {
+      const { feet, inches } = inToFtIn(imperialMinHeight + i);
+      return `${feet} ft ${inches} in`;
+    }
+  );
+  const imperialProps: React.ComponentProps<typeof WheelPicker> = {
+    data: imperialData,
+    initialValue: `${initialImperial.feet} ft ${initialImperial.inches} in`,
+    onValueChange: (value: string) => {
+      const match = value.match(/^(\d+)\s*ft\s*(\d+)\s*in$/);
+      if (!match) return;
+      const feet = parseInt(match[1]);
+      const inches = parseInt(match[2]);
+      const totalInches = feet * 12 + inches;
+      const nextHeight = Math.round(inToCm(totalInches));
+      setData((prev) => ({ ...prev, height: nextHeight }));
+    },
+  };
 
   const handleMeasurementSystemChange = (system: string) => {
     if (system !== "Centímetros" && system !== "Pies y Pulgadas") return;
