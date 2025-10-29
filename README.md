@@ -1,15 +1,14 @@
-- [ ] Link prefetch
-- [ ] Home no meals text
-- [ ] Meal screen error
 - [ ] ScrollView over scroll
 - [ ] Home scroll view bounce
+
+- [ ] Link prefetch
+- [ ] Meal screen error
 - [ ] mealItems.food -> mealItems.foodId
+- [ ] Animate home macro summary
 
 - [ ] Option for the AI to select no option
-
-- [ ] Animate home macro summary
+- [ ] Home no meals text
 - [ ] Text font weight prop
-- [ ] SafeArea padding vertical
 
 - [ ] Fix OTP resend
 
