@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import Button from "./Button";
 import Card from "./Card";
+import getShadow from "@/lib/ui/getShadow";
 
 interface Props {
   options: {
@@ -35,6 +36,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
     width: 140,
     padding: 0,
+    ...getShadow("md"),
   },
   button: {
     justifyContent: "center",
