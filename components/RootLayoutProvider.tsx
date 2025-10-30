@@ -13,6 +13,7 @@ import {
   SafeAreaProvider,
 } from "react-native-safe-area-context";
 import { SplashScreenController } from "./SplashScreenController";
+import { PortalHost } from "@rn-primitives/portal";
 
 interface Props {
   children: React.ReactNode;
@@ -48,6 +49,7 @@ export default function RootLayoutProvider({ children }: Props) {
                 <AppContextProvider>
                   <SplashScreenController />
                   {children}
+                  <PortalHost />
                 </AppContextProvider>
               </BottomSheetModalProvider>
             </KeyboardProvider>

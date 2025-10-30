@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import Button from "../ui/Button";
 import { useRouter } from "expo-router";
@@ -19,6 +18,8 @@ import Animated, {
 } from "react-native-reanimated";
 import Popover from "../ui/Popover";
 import getColor from "@/lib/ui/getColor";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 interface Props {
   mealId?: Id<"meals">;
@@ -27,11 +28,17 @@ interface Props {
 
 export default function MealHeader({ mealId, scrollY }: Props) {
   const router = useRouter();
-  const [isPopoverVisible, setIsPopoverVisible] = useState(false);
+  const deleteMeal = useMutation(api.meals.deleteMeal.default);
 
   const shadowStyle = useAnimatedStyle(() => ({
     opacity: interpolate(scrollY.value, [0, 24], [0, 1], Extrapolation.CLAMP),
   }));
+
+  const handleDelete = () => {
+    if (mealId) {
+      deleteMeal({ id: mealId });
+    }
+  };
 
   return (
     <SafeArea edges={["top", "left", "right"]} style={styles.container}>
@@ -53,17 +60,12 @@ export default function MealHeader({ mealId, scrollY }: Props) {
         </Text>
       </View>
       <View style={{ position: "relative" }}>
-        <Button
-          size="sm"
-          variant="secondary"
-          style={styles.button}
-          onPress={() => setIsPopoverVisible(true)}
-        >
-          <EllipsisVerticalIcon size={22} />
-        </Button>
         <Popover
-          visible={isPopoverVisible}
-          onClose={() => setIsPopoverVisible(false)}
+          trigger={
+            <Button size="sm" variant="secondary" style={styles.button}>
+              <EllipsisVerticalIcon size={22} />
+            </Button>
+          }
           options={[
             {
               Item: (
@@ -80,7 +82,7 @@ export default function MealHeader({ mealId, scrollY }: Props) {
                   </Text>
                 </View>
               ),
-              onPress: () => {},
+              onPress: handleDelete,
             },
           ]}
         />

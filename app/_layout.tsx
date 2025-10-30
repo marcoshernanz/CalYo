@@ -6,7 +6,7 @@ import { useAuthContext } from "@/context/AuthContext";
 export default function RootLayout() {
   return (
     <RootLayoutProvider>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <RootNavigator />
     </RootLayoutProvider>
   );
