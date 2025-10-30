@@ -5,10 +5,7 @@ import * as PopoverPrimitive from "@rn-primitives/popover";
 import Button from "./Button";
 import { useRef } from "react";
 import { TriggerRef } from "@rn-primitives/popover";
-import Animated, {
-  ZoomInEasyUp,
-  ZoomOutEasyDown,
-} from "react-native-reanimated";
+import Animated, { Easing, Keyframe } from "react-native-reanimated";
 
 interface Props {
   trigger: React.ReactNode;
@@ -17,6 +14,30 @@ interface Props {
 }
 
 const AnimatedCard = Animated.createAnimatedComponent(Card);
+
+const EnterFromTopRight = new Keyframe({
+  0: {
+    opacity: 0,
+    transform: [{ translateX: 5 }, { translateY: -10 }, { scale: 0.9 }],
+  },
+  100: {
+    opacity: 1,
+    transform: [{ translateX: 0 }, { translateY: 0 }, { scale: 1 }],
+    easing: Easing.out(Easing.cubic),
+  },
+}).duration(500);
+
+const ExitToTopRight = new Keyframe({
+  0: {
+    opacity: 1,
+    transform: [{ translateX: 0 }, { translateY: 0 }, { scale: 1 }],
+  },
+  100: {
+    opacity: 0,
+    transform: [{ translateX: 5 }, { translateY: -10 }, { scale: 0.9 }],
+    easing: Easing.in(Easing.cubic),
+  },
+}).duration(500);
 
 export default function Popover({ trigger, options, width = 160 }: Props) {
   const popoverTriggerRef = useRef<TriggerRef>(null);
@@ -32,8 +53,8 @@ export default function Popover({ trigger, options, width = 160 }: Props) {
           <View collapsable={false}>
             <AnimatedCard
               style={[styles.card, { minWidth: width }]}
-              entering={ZoomInEasyUp.duration(250)}
-              exiting={ZoomOutEasyDown.duration(250)}
+              entering={EnterFromTopRight}
+              exiting={ExitToTopRight}
             >
               {options.map((option, index) => (
                 <Button
@@ -41,7 +62,7 @@ export default function Popover({ trigger, options, width = 160 }: Props) {
                   size="sm"
                   key={`popover-option-${index}`}
                   onPress={() => {
-                    // option.onPress(); TODO
+                    // option.onPress(); // if needed
                     popoverTriggerRef.current?.close();
                   }}
                   style={styles.button}
