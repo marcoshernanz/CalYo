@@ -111,10 +111,7 @@ export default function HomeDaySelector({
   const start = startOfWeek(new Date(), { weekStartsOn: 1 });
   const weekDays: DayData[] = Array.from({ length: 7 }, (_, index) => {
     const date = addDays(start, index);
-    const calories = Math.max(
-      weekTotals[index].calories,
-      macrosToKcal(weekTotals[index])
-    );
+    const calories = Math.max(2000, macrosToKcal(weekTotals[index]));
     const carbsRatio =
       macrosToKcal({ carbs: weekTotals[index].carbs }) / calories;
     const proteinRatio =
