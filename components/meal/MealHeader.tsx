@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import Button from "../ui/Button";
 import { useRouter } from "expo-router";
@@ -26,6 +27,7 @@ interface Props {
 
 export default function MealHeader({ mealId, scrollY }: Props) {
   const router = useRouter();
+  const [isPopoverVisible, setIsPopoverVisible] = useState(false);
 
   const shadowStyle = useAnimatedStyle(() => ({
     opacity: interpolate(scrollY.value, [0, 24], [0, 1], Extrapolation.CLAMP),
@@ -51,10 +53,17 @@ export default function MealHeader({ mealId, scrollY }: Props) {
         </Text>
       </View>
       <View style={{ position: "relative" }}>
-        <Button size="sm" variant="secondary" style={styles.button}>
+        <Button
+          size="sm"
+          variant="secondary"
+          style={styles.button}
+          onPress={() => setIsPopoverVisible(true)}
+        >
           <EllipsisVerticalIcon size={22} />
         </Button>
         <Popover
+          visible={isPopoverVisible}
+          onClose={() => setIsPopoverVisible(false)}
           options={[
             {
               Item: (
