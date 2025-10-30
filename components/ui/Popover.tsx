@@ -25,7 +25,7 @@ const EnterFromTopRight = new Keyframe({
     transform: [{ translateX: 0 }, { translateY: 0 }, { scale: 1 }],
     easing: Easing.out(Easing.cubic),
   },
-}).duration(500);
+}).duration(200);
 
 const ExitToTopRight = new Keyframe({
   0: {
@@ -37,7 +37,7 @@ const ExitToTopRight = new Keyframe({
     transform: [{ translateX: 5 }, { translateY: -10 }, { scale: 0.9 }],
     easing: Easing.in(Easing.cubic),
   },
-}).duration(500);
+}).duration(200);
 
 export default function Popover({ trigger, options, width = 160 }: Props) {
   const popoverTriggerRef = useRef<TriggerRef>(null);
