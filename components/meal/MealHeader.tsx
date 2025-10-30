@@ -1,7 +1,11 @@
 import { StyleSheet, View } from "react-native";
 import Button from "../ui/Button";
 import { useRouter } from "expo-router";
-import { ArrowLeftIcon, EllipsisVerticalIcon } from "lucide-react-native";
+import {
+  ArrowLeftIcon,
+  EllipsisVerticalIcon,
+  TrashIcon,
+} from "lucide-react-native";
 import Text from "../ui/Text";
 import { Id } from "@/convex/_generated/dataModel";
 import SafeArea from "../ui/SafeArea";
@@ -12,6 +16,8 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
+import Popover from "../ui/Popover";
+import getColor from "@/lib/ui/getColor";
 
 interface Props {
   mealId?: Id<"meals">;
@@ -44,9 +50,32 @@ export default function MealHeader({ mealId, scrollY }: Props) {
           Comida
         </Text>
       </View>
-      <Button size="sm" variant="secondary" style={styles.button}>
-        <EllipsisVerticalIcon size={22} />
-      </Button>
+      <View style={{ position: "relative" }}>
+        <Button size="sm" variant="secondary" style={styles.button}>
+          <EllipsisVerticalIcon size={22} />
+        </Button>
+        <Popover
+          options={[
+            {
+              Item: (
+                <View
+                  style={{ alignItems: "center", flexDirection: "row", gap: 6 }}
+                >
+                  <TrashIcon
+                    size={16}
+                    strokeWidth={2.25}
+                    color={getColor("red")}
+                  />
+                  <Text size="16" weight="500" color={getColor("red")}>
+                    Eliminar
+                  </Text>
+                </View>
+              ),
+              onPress: () => {},
+            },
+          ]}
+        />
+      </View>
     </SafeArea>
   );
 }
