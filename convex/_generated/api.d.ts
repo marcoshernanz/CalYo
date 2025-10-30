@@ -25,6 +25,7 @@ import type * as meals_analyze_searchFdcCandidates from "../meals/analyze/search
 import type * as meals_analyze_selectCandidates from "../meals/analyze/selectCandidates.js";
 import type * as meals_analyzeMealPhoto from "../meals/analyzeMealPhoto.js";
 import type * as meals_createMeal from "../meals/createMeal.js";
+import type * as meals_deleteMeal from "../meals/deleteMeal.js";
 import type * as meals_getMeal from "../meals/getMeal.js";
 import type * as meals_getWeekMeals from "../meals/getWeekMeals.js";
 import type * as meals_insertMealItem from "../meals/insertMealItem.js";
@@ -57,6 +58,7 @@ declare const fullApi: ApiFromModules<{
   "meals/analyze/selectCandidates": typeof meals_analyze_selectCandidates;
   "meals/analyzeMealPhoto": typeof meals_analyzeMealPhoto;
   "meals/createMeal": typeof meals_createMeal;
+  "meals/deleteMeal": typeof meals_deleteMeal;
   "meals/getMeal": typeof meals_getMeal;
   "meals/getWeekMeals": typeof meals_getWeekMeals;
   "meals/insertMealItem": typeof meals_insertMealItem;
