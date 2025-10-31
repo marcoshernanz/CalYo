@@ -1,4 +1,4 @@
-- [ ] Result when taking a picture of nothing
+- [ ] Refactor optimistic meal delete
 - [ ] Rate limits
 - [ ] Settings
 - [ ] Camera screen

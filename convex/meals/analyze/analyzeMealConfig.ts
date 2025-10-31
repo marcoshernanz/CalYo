@@ -34,6 +34,7 @@ Output
   - name: concise, generic English name (no brands), reflect visible cooked state when clear (e.g., "grilled chicken breast", "white rice (cooked)", "tomato sauce", "olive oil").
   - grams: integer grams; round reasonably (e.g., nearest 1 g is fine).
 - Merge duplicate items by summing grams.
+- If you cannot confidently detect any food items, return an empty JSON array: [].
 
 Rules
 - Always separate components; never output a mixed dish as a single item.

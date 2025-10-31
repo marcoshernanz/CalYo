@@ -14,7 +14,10 @@ const analyzeMealPhoto = action({
     mealId: v.id("meals"),
     storageId: v.id("_storage"),
   },
-  handler: async (ctx, { mealId, storageId }): Promise<null> => {
+  handler: async (
+    ctx,
+    { mealId, storageId }
+  ): Promise<{ status: "success" | "error" }> => {
     try {
       const userId = await getAuthUserId(ctx);
       if (userId === null) throw new Error("Unauthorized");
@@ -40,7 +43,7 @@ const analyzeMealPhoto = action({
           id: mealId,
           meal: { status: "error" },
         });
-        return null;
+        return { status: "error" };
       }
 
       const mealNamePromise = nameMeal({ items: detectedItems });
@@ -100,7 +103,7 @@ const analyzeMealPhoto = action({
         },
       });
 
-      return null;
+      return { status: "success" };
     } catch (error) {
       console.error("analyzeMealPhoto error", error);
       try {
