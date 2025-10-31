@@ -38,6 +38,7 @@ export default function MealHeader({ mealId, scrollY }: Props) {
     if (mealId) {
       deleteMeal({ id: mealId });
     }
+    router.replace("/app");
   };
 
   return (

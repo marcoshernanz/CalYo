@@ -65,7 +65,7 @@ export default function Popover({ trigger, options, width = 160 }: Props) {
                   size="sm"
                   key={`popover-option-${index}`}
                   onPress={() => {
-                    // option.onPress(); // if needed
+                    option.onPress();
                     popoverTriggerRef.current?.close();
                   }}
                   style={styles.button}
