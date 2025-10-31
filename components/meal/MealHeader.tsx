@@ -29,20 +29,49 @@ interface Props {
 
 export default function MealHeader({ mealId, scrollY }: Props) {
   const router = useRouter();
-  const deleteMeal = useMutation(api.meals.deleteMeal.default);
+  const deleteMeal = useMutation(
+    api.meals.deleteMeal.default
+  ).withOptimisticUpdate((localStore, args) => {
+    const { id } = args;
+
+    const existingMeal = localStore.getQuery(api.meals.getMeal.default, {
+      mealId: id,
+    });
+    if (existingMeal !== undefined) {
+      localStore.setQuery(api.meals.getMeal.default, { mealId: id }, null);
+    }
+
+    const weekQueries = localStore.getAllQueries(
+      api.meals.getWeekMeals.default
+    );
+    for (const { args: weekArgs, value } of weekQueries) {
+      if (!value) continue;
+
+      const updatedWeek = value.map((dayMeals) =>
+        dayMeals.filter((meal) => meal._id !== id)
+      );
+
+      localStore.setQuery(
+        api.meals.getWeekMeals.default,
+        weekArgs,
+        updatedWeek
+      );
+    }
+  });
   const isDeletingRef = useRef(false);
 
   const shadowStyle = useAnimatedStyle(() => ({
     opacity: interpolate(scrollY.value, [0, 24], [0, 1], Extrapolation.CLAMP),
   }));
 
-  const handleDelete = async () => {
-    if (mealId) {
-      if (isDeletingRef.current) return;
-      isDeletingRef.current = true;
-      await deleteMeal({ id: mealId });
-      router.replace("/app");
-    }
+  const handleDelete = () => {
+    if (!mealId || isDeletingRef.current) return;
+
+    isDeletingRef.current = true;
+
+    router.replace("/app");
+
+    void deleteMeal({ id: mealId });
   };
 
   return (
