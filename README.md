@@ -11,6 +11,7 @@
 - [ ] mealItems.food -> mealItems.foodId
 - [ ] Animate home macro summary
 - [ ] Android 14 over scroll
+- [ ] Scroll safe area to keep status bar visible
 
 - [ ] Option for the AI to select no option
 - [ ] Home no meals text
