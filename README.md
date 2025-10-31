@@ -1,9 +1,17 @@
-- [ ] Android 14 over scroll
-
+- [ ] Result when taking a picture of nothing
+- [ ] Rate limits
+- [ ] Settings
+- [ ] Camera screen
+- [ ] Fix results
+- [ ] Upgrade to expo sdk 54
+- [ ] Navigation (pressing back from the meal screen)
+- [ ] Navigation (remove stack)
+- [ ] React-native-reanimated performance
 - [ ] Link prefetch
 - [ ] Meal screen error
 - [ ] mealItems.food -> mealItems.foodId
 - [ ] Animate home macro summary
+- [ ] Android 14 over scroll
 
 - [ ] Option for the AI to select no option
 - [ ] Home no meals text
