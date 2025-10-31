@@ -14,6 +14,7 @@ import {
 } from "react-native-safe-area-context";
 import { SplashScreenController } from "./SplashScreenController";
 import { PortalHost } from "@rn-primitives/portal";
+import ToastProvider from "./ui/Toast";
 
 interface Props {
   children: React.ReactNode;
@@ -49,6 +50,7 @@ export default function RootLayoutProvider({ children }: Props) {
                 <AppContextProvider>
                   <SplashScreenController />
                   {children}
+                  <ToastProvider />
                   <PortalHost />
                 </AppContextProvider>
               </BottomSheetModalProvider>

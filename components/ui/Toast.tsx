@@ -19,10 +19,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Text from "./Text";
 import uuidv4 from "@/lib/utils/uuidv4";
 import getColor from "@/lib/ui/getColor";
+import getShadow from "@/lib/ui/getShadow";
 
 export type ToastOptions = {
   text: string;
-  variant?: "default";
+  variant?: "default" | "success" | "error";
 };
 
 type ToastItemType = ToastOptions & { id: string };
@@ -91,13 +92,10 @@ function ToastItem({
   onDismiss,
 }: ToastItemType & { onDismiss: () => void }) {
   const colorMap = {
-    default: "foreground",
-    // primary: "primary",
-    // success: "green",
-    // error: "red",
+    default: "secondary",
+    success: "green",
+    error: "red",
   } as const;
-
-  const borderColor = getColor(colorMap[variant]);
 
   const translateY = useSharedValue(0);
   const panGesture = Gesture.Pan()
@@ -122,9 +120,15 @@ function ToastItem({
         entering={SlideInUp.springify().damping(22).stiffness(200)}
         exiting={SlideOutUp.springify().damping(22).stiffness(200)}
         layout={LinearTransition.springify()}
-        style={[styles.toast, { borderColor }, animatedStyle]}
+        style={[
+          styles.toast,
+          { borderColor: colorMap[variant] },
+          animatedStyle,
+        ]}
       >
-        <Text style={styles.text}>{text}</Text>
+        <Text size="16" style={styles.text}>
+          {text}
+        </Text>
       </Animated.View>
     </GestureDetector>
   );
@@ -142,10 +146,10 @@ const styles = StyleSheet.create({
   toast: {
     width: Dimensions.get("window").width - 32,
     padding: 12,
-    backgroundColor: getColor("background"),
+    backgroundColor: getColor("base"),
+    borderRadius: 12,
     borderWidth: 1,
-    borderRadius: 8,
-    elevation: 4,
+    ...getShadow("md"),
   },
   text: {
     textAlign: "center",
