@@ -20,6 +20,7 @@ import Popover from "../ui/Popover";
 import getColor from "@/lib/ui/getColor";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useRef } from "react";
 
 interface Props {
   mealId?: Id<"meals">;
@@ -29,16 +30,19 @@ interface Props {
 export default function MealHeader({ mealId, scrollY }: Props) {
   const router = useRouter();
   const deleteMeal = useMutation(api.meals.deleteMeal.default);
+  const isDeletingRef = useRef(false);
 
   const shadowStyle = useAnimatedStyle(() => ({
     opacity: interpolate(scrollY.value, [0, 24], [0, 1], Extrapolation.CLAMP),
   }));
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (mealId) {
-      deleteMeal({ id: mealId });
+      if (isDeletingRef.current) return;
+      isDeletingRef.current = true;
+      await deleteMeal({ id: mealId });
+      router.replace("/app");
     }
-    router.replace("/app");
   };
 
   return (

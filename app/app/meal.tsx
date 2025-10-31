@@ -3,7 +3,7 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import { useAction, useMutation, useQuery } from "convex/react";
-import { useLocalSearchParams } from "expo-router";
+import { Redirect, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 
 export default function MealScreen() {
@@ -25,7 +25,7 @@ export default function MealScreen() {
   );
 
   useEffect(() => {
-    if (!photoUri || initialMealId || startedRef.current) return;
+    if (!photoUri || initialMealId || startedRef.current || mealId) return;
     startedRef.current = true;
 
     (async () => {
@@ -64,7 +64,12 @@ export default function MealScreen() {
     generateUploadUrl,
     photoUri,
     initialMealId,
+    mealId,
   ]);
+
+  if (mealId && data === null) {
+    return <Redirect href="/app" />;
+  }
 
   const meal = data?.meal;
   const mealItems = data?.mealItems ?? [];
