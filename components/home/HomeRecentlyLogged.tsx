@@ -32,7 +32,7 @@ function LogItem({ meal }: LogItemProps) {
     },
   ];
 
-  const isLoading = meal.status === "pending" || meal.status === "processing";
+  const isLoading = meal.status !== "done";
 
   return (
     <Link

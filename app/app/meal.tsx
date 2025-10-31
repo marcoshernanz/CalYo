@@ -1,18 +1,22 @@
 import Meal from "@/components/meal/Meal";
+import { Toast } from "@/components/ui/Toast";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
+import tryCatch from "@/lib/utils/tryCatch";
 import { useAction, useMutation, useQuery } from "convex/react";
-import { Redirect, useLocalSearchParams } from "expo-router";
+import { Redirect, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 
 export default function MealScreen() {
+  const router = useRouter();
   const { photoUri, mealId: initialMealId } = useLocalSearchParams<{
     photoUri?: string;
     mealId?: Id<"meals">;
   }>();
 
   const createMeal = useMutation(api.meals.createMeal.default);
+  const deleteMeal = useMutation(api.meals.deleteMeal.default);
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl.default);
   const analyzeMealPhoto = useAction(api.meals.analyzeMealPhoto.default);
 
@@ -53,9 +57,14 @@ export default function MealScreen() {
         }
         const { storageId } = json;
 
-        await analyzeMealPhoto({ mealId: newMealId, storageId });
+        await tryCatch(analyzeMealPhoto({ mealId: newMealId, storageId }));
       } catch (e) {
         console.error("Start meal error", e);
+        if (mealId) {
+          await deleteMeal({ id: mealId });
+          Toast.show({ text: "Error al analizar la comida", variant: "error" });
+          router.navigate("/app");
+        }
       }
     })();
   }, [
@@ -65,6 +74,8 @@ export default function MealScreen() {
     photoUri,
     initialMealId,
     mealId,
+    deleteMeal,
+    router,
   ]);
 
   if (mealId && data === null) {
