@@ -2,7 +2,6 @@ import { DimensionValue, StyleSheet, View } from "react-native";
 import Text from "../ui/Text";
 import Card from "../ui/Card";
 import getColor from "@/lib/ui/getColor";
-import { PlusIcon } from "lucide-react-native";
 import Button from "../ui/Button";
 import WithSkeleton from "../ui/WithSkeleton";
 
@@ -27,7 +26,7 @@ export default function MealIngredients({ items = [], loading }: Props) {
     <View>
       <View style={styles.headerContainer}>
         <Text weight="600">Ingredientes</Text>
-        <Button
+        {/* <Button
           variant="base"
           size="base"
           style={styles.addMoreButton}
@@ -41,7 +40,7 @@ export default function MealIngredients({ items = [], loading }: Props) {
           <Text size="14" color={getColor("mutedForeground")}>
             Añadir más
           </Text>
-        </Button>
+        </Button> */}
       </View>
 
       <View style={styles.ingredientsContainer}>
