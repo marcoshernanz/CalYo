@@ -81,7 +81,7 @@ const analyzeMealPhoto = action({
 
         await ctx.runMutation(api.meals.insertMealItem.default, {
           mealId,
-          food: fdcFood._id,
+          foodId: fdcFood._id,
           grams: selectedItem.grams,
           nutrients,
         });

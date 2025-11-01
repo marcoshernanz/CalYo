@@ -4,7 +4,7 @@ import { v } from "convex/values";
 export const mealItemsFields = {
   mealId: v.id("meals"),
   grams: v.number(),
-  food: v.id("fdcFoods"),
+  foodId: v.id("fdcFoods"),
   nutrients: v.object({
     protein: v.number(),
     fat: v.number(),

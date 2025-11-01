@@ -7,7 +7,6 @@
 - [ ] Navigation (remove stack)
 - [ ] React-native-reanimated performance
 - [ ] Link prefetch
-- [ ] mealItems.food -> mealItems.foodId
 - [ ] Animate home macro summary
 - [ ] Android 14 over scroll
 - [ ] Scroll safe area to keep status bar visible
