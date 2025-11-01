@@ -1,4 +1,3 @@
-- [ ] Refactor optimistic meal delete
 - [ ] Rate limits
 - [ ] Settings
 - [ ] Camera screen

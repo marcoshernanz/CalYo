@@ -2,6 +2,7 @@ import Meal from "@/components/meal/Meal";
 import { Toast } from "@/components/ui/Toast";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import useDeleteMeal from "@/lib/hooks/useDeleteMeal";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { Redirect, useLocalSearchParams, useRouter } from "expo-router";
@@ -17,35 +18,7 @@ export default function MealScreen() {
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl.default);
   const analyzeMealPhoto = useAction(api.meals.analyzeMealPhoto.default);
   const createMeal = useMutation(api.meals.createMeal.default);
-  const deleteMeal = useMutation(
-    api.meals.deleteMeal.default
-  ).withOptimisticUpdate((localStore, args) => {
-    const { id } = args;
-
-    const existingMeal = localStore.getQuery(api.meals.getMeal.default, {
-      mealId: id,
-    });
-    if (existingMeal !== undefined) {
-      localStore.setQuery(api.meals.getMeal.default, { mealId: id }, null);
-    }
-
-    const weekQueries = localStore.getAllQueries(
-      api.meals.getWeekMeals.default
-    );
-    for (const { args: weekArgs, value } of weekQueries) {
-      if (!value) continue;
-
-      const updatedWeek = value.map((dayMeals) =>
-        dayMeals.filter((meal) => meal._id !== id)
-      );
-
-      localStore.setQuery(
-        api.meals.getWeekMeals.default,
-        weekArgs,
-        updatedWeek
-      );
-    }
-  });
+  const deleteMeal = useDeleteMeal();
 
   const [mealId, setMealId] = useState<Id<"meals"> | undefined>(initialMealId);
   const startedRef = useRef(false);

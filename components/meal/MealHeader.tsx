@@ -18,9 +18,8 @@ import Animated, {
 } from "react-native-reanimated";
 import Popover from "../ui/Popover";
 import getColor from "@/lib/ui/getColor";
-import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { useRef } from "react";
+import useDeleteMeal from "@/lib/hooks/useDeleteMeal";
 
 interface Props {
   mealId?: Id<"meals">;
@@ -29,35 +28,7 @@ interface Props {
 
 export default function MealHeader({ mealId, scrollY }: Props) {
   const router = useRouter();
-  const deleteMeal = useMutation(
-    api.meals.deleteMeal.default
-  ).withOptimisticUpdate((localStore, args) => {
-    const { id } = args;
-
-    const existingMeal = localStore.getQuery(api.meals.getMeal.default, {
-      mealId: id,
-    });
-    if (existingMeal !== undefined) {
-      localStore.setQuery(api.meals.getMeal.default, { mealId: id }, null);
-    }
-
-    const weekQueries = localStore.getAllQueries(
-      api.meals.getWeekMeals.default
-    );
-    for (const { args: weekArgs, value } of weekQueries) {
-      if (!value) continue;
-
-      const updatedWeek = value.map((dayMeals) =>
-        dayMeals.filter((meal) => meal._id !== id)
-      );
-
-      localStore.setQuery(
-        api.meals.getWeekMeals.default,
-        weekArgs,
-        updatedWeek
-      );
-    }
-  });
+  const deleteMeal = useDeleteMeal();
   const isDeletingRef = useRef(false);
 
   const shadowStyle = useAnimatedStyle(() => ({
