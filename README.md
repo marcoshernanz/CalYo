@@ -1,11 +1,10 @@
-- [ ] Rate limits
-- [ ] Settings
+- [ ] React-native-reanimated performance
 - [ ] Camera screen
+- [ ] Settings
+- [ ] Rate limits
 - [ ] Fix results
-- [ ] Upgrade to expo sdk 54
 - [ ] Navigation (pressing back from the meal screen)
 - [ ] Navigation (remove stack)
-- [ ] React-native-reanimated performance
 - [ ] Link prefetch
 - [ ] Animate home macro summary
 - [ ] Android 14 over scroll
