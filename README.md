@@ -12,6 +12,8 @@
 - [ ] react-native-animateable-text Expo SDK 54
 - [ ] Spanish
 - [ ] react-native-reanimated performance
+- [ ] Inverted shadow prop
+- [ ] Refactor meal and ingredients
 
 - [ ] Option for the AI to select no option
 - [ ] Home no meals text
