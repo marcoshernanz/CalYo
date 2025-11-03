@@ -46,63 +46,71 @@ export default function MealHeader({ mealId, scrollY }: Props) {
   };
 
   return (
-    <SafeArea edges={["top", "left", "right"]} style={styles.container}>
-      <Animated.View
-        pointerEvents="none"
-        style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
-      />
-      <Button
-        size="sm"
-        variant="secondary"
-        style={styles.button}
-        onPress={() => router.back()}
-      >
-        <ArrowLeftIcon size={22} />
-      </Button>
-      <View style={styles.title}>
-        <Text size="18" weight="600">
-          Comida
-        </Text>
-      </View>
-      <View style={{ position: "relative" }}>
-        <Popover
-          trigger={
-            <Button size="sm" variant="secondary" style={styles.button}>
-              <EllipsisVerticalIcon size={22} />
-            </Button>
-          }
-          options={[
-            {
-              Item: (
-                <View
-                  style={{ alignItems: "center", flexDirection: "row", gap: 6 }}
-                >
-                  <TrashIcon
-                    size={16}
-                    strokeWidth={2.25}
-                    color={getColor("red")}
-                  />
-                  <Text size="16" weight="500" color={getColor("red")}>
-                    Eliminar
-                  </Text>
-                </View>
-              ),
-              onPress: handleDelete,
-            },
-          ]}
+    <SafeArea edges={["top", "left", "right"]} style={styles.safeArea}>
+      <View style={styles.container}>
+        <Animated.View
+          pointerEvents="none"
+          style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
         />
+        <Button
+          size="sm"
+          variant="secondary"
+          style={styles.button}
+          onPress={() => router.back()}
+        >
+          <ArrowLeftIcon size={22} />
+        </Button>
+        <View style={styles.title}>
+          <Text size="18" weight="600">
+            Comida
+          </Text>
+        </View>
+        <View style={{ position: "relative" }}>
+          <Popover
+            trigger={
+              <Button size="sm" variant="secondary" style={styles.button}>
+                <EllipsisVerticalIcon size={22} />
+              </Button>
+            }
+            options={[
+              {
+                Item: (
+                  <View
+                    style={{
+                      alignItems: "center",
+                      flexDirection: "row",
+                      gap: 6,
+                    }}
+                  >
+                    <TrashIcon
+                      size={16}
+                      strokeWidth={2.25}
+                      color={getColor("red")}
+                    />
+                    <Text size="16" weight="500" color={getColor("red")}>
+                      Eliminar
+                    </Text>
+                  </View>
+                ),
+                onPress: handleDelete,
+              },
+            ]}
+          />
+        </View>
       </View>
     </SafeArea>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 0,
     zIndex: 10,
     paddingBottom: 16,
+  },
+  container: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     position: "relative",
   },
@@ -110,7 +118,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   title: {
-    flex: 1,
+    ...StyleSheet.absoluteFillObject,
     alignItems: "center",
     justifyContent: "center",
   },
