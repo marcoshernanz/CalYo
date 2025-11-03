@@ -62,6 +62,7 @@ export default function MealIngredients({ items = [], loading }: Props) {
                 pathname: "/app/mealItem",
                 params: { mealItemId: item?.id },
               }}
+              prefetch
               asChild
             >
               <Button variant="base" size="base">
