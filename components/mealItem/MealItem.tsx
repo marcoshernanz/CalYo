@@ -1,10 +1,13 @@
 import { Doc } from "@/convex/_generated/dataModel";
 import SafeArea from "../ui/SafeArea";
 import MealItemHeader from "./MealItemHeader";
-import {
+import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
 } from "react-native-reanimated";
+import { StyleSheet, View } from "react-native";
+import WithSkeleton from "../ui/WithSkeleton";
+import Text from "../ui/Text";
 
 interface Props {
   name?: string;
@@ -24,7 +27,7 @@ export default function MealItem({ name, mealItem, isLoading }: Props) {
   return (
     <SafeArea edges={[]}>
       <MealItemHeader scrollY={scrollY} />
-      {/* <Animated.ScrollView
+      <Animated.ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContent}
         showsVerticalScrollIndicator={false}
@@ -34,7 +37,7 @@ export default function MealItem({ name, mealItem, isLoading }: Props) {
         <SafeArea edges={["left", "right"]}>
           <View style={styles.nameContainer}>
             <WithSkeleton
-              loading={loading}
+              loading={isLoading}
               skeletonStyle={{
                 height: 22,
                 width: "75%",
@@ -47,12 +50,27 @@ export default function MealItem({ name, mealItem, isLoading }: Props) {
             </WithSkeleton>
           </View>
 
-          <MealMacros loading={loading} totals={totals} />
-          <MealIngredients loading={loading} items={items} />
+          {/* <MealMacros loading={loading} totals={totals} /> */}
+          {/* <MealIngredients loading={loading} items={items} /> */}
         </SafeArea>
       </Animated.ScrollView>
 
-      <MealFooter /> */}
+      {/* <MealFooter /> */}
     </SafeArea>
   );
 }
+
+const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
+  scrollViewContent: {
+    paddingBottom: 16,
+  },
+  name: {
+    fontSize: 22,
+  },
+  nameContainer: {
+    paddingBottom: 16,
+  },
+});
