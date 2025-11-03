@@ -10,6 +10,7 @@ import WithSkeleton from "../ui/WithSkeleton";
 import Text from "../ui/Text";
 import MealMacros from "../meal/MealMacros";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
+import MealItemFooter from "./MealItemFooter";
 
 interface Props {
   name?: string;
@@ -62,7 +63,7 @@ export default function MealItem({ name, mealItem, isLoading }: Props) {
         </SafeArea>
       </Animated.ScrollView>
 
-      {/* <MealFooter /> */}
+      <MealItemFooter />
     </SafeArea>
   );
 }
