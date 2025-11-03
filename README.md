@@ -1,4 +1,3 @@
-- [ ] Ingredients screen
 - [ ] Camera screen
 - [ ] Settings
 - [ ] Rate limits
