@@ -1,7 +1,6 @@
 - [ ] Camera screen
 - [ ] Settings
 - [ ] Rate limits
-- [ ] Fix results
 - [ ] Navigation (pressing back from the meal screen)
 - [ ] Navigation (remove stack)
 - [ ] Link prefetch
@@ -14,9 +13,9 @@
 - [ ] Inverted shadow prop
 - [ ] Refactor meal and ingredients
 
-- [ ] Option for the AI to select no option
+- [ ] Fix results
+- [ ] Micro nutrients
 - [ ] Home no meals text
-- [ ] Text font weight prop
 
 - [ ] Fix OTP resend
 
