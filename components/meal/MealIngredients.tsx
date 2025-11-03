@@ -4,14 +4,18 @@ import Card from "../ui/Card";
 import getColor from "@/lib/ui/getColor";
 import Button from "../ui/Button";
 import WithSkeleton from "../ui/WithSkeleton";
+import { Link } from "expo-router";
+
+type Item = {
+  id: string;
+  name: string;
+  calories: number;
+  grams: number;
+};
 
 interface Props {
   loading: boolean;
-  items?: {
-    name: string;
-    calories: number;
-    grams: number;
-  }[];
+  items?: Item[];
 }
 
 const placeholderRows = 4;
@@ -45,56 +49,65 @@ export default function MealIngredients({ items = [], loading }: Props) {
 
       <View style={styles.ingredientsContainer}>
         {Array.from({ length: count }).map((_, i) => {
-          const item = items[i];
+          const item: Item | undefined = items[i];
           const key = item
             ? `ingredient-${item.name}-${i}`
             : `ingredient-skeleton-${i}`;
           const nameWidth = nameSkeletonWidths[i % nameSkeletonWidths.length];
 
           return (
-            <Button key={key} variant="base" size="base">
-              <Card style={styles.card}>
-                <WithSkeleton
-                  loading={loading}
-                  containerStyle={styles.cardLeftContent}
-                  skeletonStyle={{
-                    height: 14,
-                    width: nameWidth,
-                    borderRadius: 4,
-                  }}
-                >
-                  <View style={styles.cardLeftInner}>
-                    <Text
-                      size="14"
-                      weight="600"
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                      style={styles.foodName}
-                    >
-                      {item?.name}
-                    </Text>
-                    <Text size="14">&middot;</Text>
-                    <Text size="14" color={getColor("mutedForeground")}>
-                      {item?.calories} kcal
-                    </Text>
-                  </View>
-                </WithSkeleton>
+            <Link
+              key={key}
+              href={{
+                pathname: "/app/mealItem",
+                params: { mealItemId: item?.id },
+              }}
+              asChild
+            >
+              <Button variant="base" size="base">
+                <Card style={styles.card}>
+                  <WithSkeleton
+                    loading={loading}
+                    containerStyle={styles.cardLeftContent}
+                    skeletonStyle={{
+                      height: 14,
+                      width: nameWidth,
+                      borderRadius: 4,
+                    }}
+                  >
+                    <View style={styles.cardLeftInner}>
+                      <Text
+                        size="14"
+                        weight="600"
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                        style={styles.foodName}
+                      >
+                        {item?.name}
+                      </Text>
+                      <Text size="14">&middot;</Text>
+                      <Text size="14" color={getColor("mutedForeground")}>
+                        {item?.calories} kcal
+                      </Text>
+                    </View>
+                  </WithSkeleton>
 
-                <WithSkeleton
-                  loading={loading}
-                  skeletonStyle={{
-                    height: 14,
-                    width: 32,
-                    borderRadius: 4,
-                    alignSelf: "flex-end",
-                  }}
-                >
-                  <Text size="14" weight="500">
-                    {item?.grams} g
-                  </Text>
-                </WithSkeleton>
-              </Card>
-            </Button>
+                  <WithSkeleton
+                    loading={loading}
+                    skeletonStyle={{
+                      height: 14,
+                      width: 32,
+                      borderRadius: 4,
+                      alignSelf: "flex-end",
+                    }}
+                  >
+                    <Text size="14" weight="500">
+                      {item?.grams} g
+                    </Text>
+                  </WithSkeleton>
+                </Card>
+              </Button>
+            </Link>
           );
         })}
       </View>

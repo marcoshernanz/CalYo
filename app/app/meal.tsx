@@ -93,6 +93,7 @@ export default function MealScreen() {
 
   const items = isDone
     ? mealItems.map((item) => ({
+        id: item._id,
         name: item.food.description.en,
         calories: macrosToKcal(item.nutrients),
         grams: item.grams,
