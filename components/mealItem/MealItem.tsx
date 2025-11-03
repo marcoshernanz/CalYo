@@ -8,6 +8,8 @@ import Animated, {
 import { StyleSheet, View } from "react-native";
 import WithSkeleton from "../ui/WithSkeleton";
 import Text from "../ui/Text";
+import MealMacros from "../meal/MealMacros";
+import macrosToKcal from "@/lib/utils/macrosToKcal";
 
 interface Props {
   name?: string;
@@ -23,6 +25,12 @@ export default function MealItem({ name, mealItem, isLoading }: Props) {
       scrollY.value = event.contentOffset.y;
     },
   });
+
+  const carbs = mealItem?.nutrients?.carbs ?? 0;
+  const protein = mealItem?.nutrients?.protein ?? 0;
+  const fat = mealItem?.nutrients?.fat ?? 0;
+  const calories = macrosToKcal({ carbs, protein, fat });
+  const totals = { calories, carbs, protein, fat };
 
   return (
     <SafeArea edges={[]}>
@@ -50,8 +58,7 @@ export default function MealItem({ name, mealItem, isLoading }: Props) {
             </WithSkeleton>
           </View>
 
-          {/* <MealMacros loading={loading} totals={totals} /> */}
-          {/* <MealIngredients loading={loading} items={items} /> */}
+          <MealMacros loading={isLoading} totals={totals} />
         </SafeArea>
       </Animated.ScrollView>
 
