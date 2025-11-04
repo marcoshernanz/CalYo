@@ -35,6 +35,7 @@ import type * as storage_generateUploadUrl from "../storage/generateUploadUrl.js
 import type * as tables_fdcFoods from "../tables/fdcFoods.js";
 import type * as tables_mealItems from "../tables/mealItems.js";
 import type * as tables_meals from "../tables/meals.js";
+import type * as tables_profiles from "../tables/profiles.js";
 import type * as utils_backfillFdcEmbeddings from "../utils/backfillFdcEmbeddings.js";
 import type * as utils_countFdcEmbeddings from "../utils/countFdcEmbeddings.js";
 
@@ -69,6 +70,7 @@ declare const fullApi: ApiFromModules<{
   "tables/fdcFoods": typeof tables_fdcFoods;
   "tables/mealItems": typeof tables_mealItems;
   "tables/meals": typeof tables_meals;
+  "tables/profiles": typeof tables_profiles;
   "utils/backfillFdcEmbeddings": typeof utils_backfillFdcEmbeddings;
   "utils/countFdcEmbeddings": typeof utils_countFdcEmbeddings;
 }>;
