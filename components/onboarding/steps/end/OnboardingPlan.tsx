@@ -14,7 +14,7 @@ import {
 } from "react-native-reanimated";
 import OnboardingStep from "../../OnboardingStep";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
-import calcRatio from "@/lib/utils/getProgressRatio";
+import calcRatio from "@/lib/utils/calcRatio";
 
 const carbs = 400;
 const protein = 200;

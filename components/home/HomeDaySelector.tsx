@@ -14,7 +14,7 @@ import {
 import getShadow from "@/lib/ui/getShadow";
 import Button from "../ui/Button";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
-import calcRatio from "@/lib/utils/getProgressRatio";
+import calcRatio from "@/lib/utils/calcRatio";
 
 type DayData = {
   weekDay: number;

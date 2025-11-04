@@ -21,7 +21,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import { profilesConfig } from "@/config/profilesConfig";
-import calcRatio from "@/lib/utils/getProgressRatio";
+import calcRatio from "@/lib/utils/calcRatio";
 
 type Macro = {
   name: string;
@@ -86,8 +86,9 @@ interface Props {
 }
 
 export default function HomeMacroSummary({ totals }: Props) {
-  const targets =
-    useQuery(api.profiles.getTargets.default) ?? profilesConfig.defaultTargets;
+  // const targets =
+  //   useQuery(api.profiles.getTargets.default) ?? profilesConfig.defaultTargets;
+  const targets = profilesConfig.defaultTargets;
 
   const calorieTarget = macrosToKcal(targets);
   const progress = useSharedValue(0);
