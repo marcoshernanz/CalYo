@@ -8,7 +8,10 @@ export default function MealItemScreen() {
   const { mealItemId } = useLocalSearchParams<{
     mealItemId: Id<"mealItems">;
   }>();
-  const mealItem = useQuery(api.mealItems.getMealItem.default, { mealItemId });
+  const mealItem = useQuery(
+    api.mealItems.getMealItem.default,
+    mealItemId ? { mealItemId } : "skip"
+  );
 
   const isLoading = !mealItem;
 
