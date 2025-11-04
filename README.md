@@ -1,4 +1,5 @@
 - [ ] Camera screen
+- [ ] Fix crop aspect ratio
 - [ ] Settings
 - [ ] Rate limits
 - [ ] Navigation (pressing back from the meal screen)
