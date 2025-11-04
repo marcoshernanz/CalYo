@@ -1,4 +1,3 @@
-- [ ] Camera screen
 - [ ] Settings
 - [ ] Rate limits
 - [ ] Navigation (pressing back from the meal screen)
