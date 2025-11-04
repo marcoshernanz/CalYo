@@ -10,4 +10,6 @@ export const profilesFields = {
   }),
 };
 
-export const profiles = defineTable(profilesFields);
+export const profiles = defineTable(profilesFields).index("byUserId", [
+  "userId",
+]);
