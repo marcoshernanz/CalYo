@@ -14,6 +14,7 @@ import {
 } from "react-native-reanimated";
 import OnboardingStep from "../../OnboardingStep";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
+import calcRatio from "@/lib/utils/getProgressRatio";
 
 const carbs = 400;
 const protein = 200;
@@ -34,7 +35,7 @@ const macros = [
   {
     name: "Hidratos",
     amount: carbs,
-    ratio: macrosToKcal({ carbs }) / calories,
+    ratio: calcRatio(macrosToKcal({ carbs }), calories),
     color: getColor("carb"),
     formatAmount: (amount: number) => {
       "worklet";
@@ -44,7 +45,7 @@ const macros = [
   {
     name: "Proteína",
     amount: protein,
-    ratio: macrosToKcal({ protein }) / calories,
+    ratio: calcRatio(macrosToKcal({ protein }), calories),
     color: getColor("protein"),
     formatAmount: (amount: number) => {
       "worklet";
@@ -54,7 +55,7 @@ const macros = [
   {
     name: "Grasas",
     amount: fat,
-    ratio: macrosToKcal({ fat }) / calories,
+    ratio: calcRatio(macrosToKcal({ fat }), calories),
     color: getColor("fat"),
     formatAmount: (amount: number) => {
       "worklet";

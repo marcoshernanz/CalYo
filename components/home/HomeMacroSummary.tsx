@@ -21,6 +21,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import { profilesConfig } from "@/config/profilesConfig";
+import calcRatio from "@/lib/utils/getProgressRatio";
 
 type Macro = {
   name: string;
@@ -37,7 +38,7 @@ interface MacroCardProps {
 
 function MacroCard({ macro, progress }: MacroCardProps) {
   const progressMacro = useDerivedValue(
-    () => Math.min(1, macro.value / macro.target) * progress.value
+    () => calcRatio(macro.value, macro.target) * progress.value
   );
 
   return (
@@ -91,7 +92,7 @@ export default function HomeMacroSummary({ totals }: Props) {
   const calorieTarget = macrosToKcal(targets);
   const progress = useSharedValue(0);
   const progressCalories = useDerivedValue(
-    () => Math.min(1, totals.calories / calorieTarget) * progress.value
+    () => calcRatio(totals.calories, calorieTarget) * progress.value
   );
 
   const macros: Macro[] = [

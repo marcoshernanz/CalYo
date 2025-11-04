@@ -14,6 +14,7 @@ import {
 import getShadow from "@/lib/ui/getShadow";
 import Button from "../ui/Button";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
+import calcRatio from "@/lib/utils/getProgressRatio";
 
 type DayData = {
   weekDay: number;
@@ -112,11 +113,18 @@ export default function HomeDaySelector({
   const weekDays: DayData[] = Array.from({ length: 7 }, (_, index) => {
     const date = addDays(start, index);
     const calories = Math.max(2000, macrosToKcal(weekTotals[index]));
-    const carbsRatio =
-      macrosToKcal({ carbs: weekTotals[index].carbs }) / calories;
-    const proteinRatio =
-      macrosToKcal({ protein: weekTotals[index].protein }) / calories;
-    const fatRatio = macrosToKcal({ fat: weekTotals[index].fat }) / calories;
+    const carbsRatio = calcRatio(
+      macrosToKcal({ carbs: weekTotals[index].carbs }),
+      calories
+    );
+    const proteinRatio = calcRatio(
+      macrosToKcal({ protein: weekTotals[index].protein }),
+      calories
+    );
+    const fatRatio = calcRatio(
+      macrosToKcal({ fat: weekTotals[index].fat }),
+      calories
+    );
 
     return {
       weekDay: (getDay(date) + 6) % 7,
