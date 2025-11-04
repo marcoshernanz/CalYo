@@ -1,5 +1,4 @@
 import Meal from "@/components/meal/Meal";
-import { Toast } from "@/components/ui/Toast";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import useDeleteMeal from "@/lib/hooks/useDeleteMeal";
@@ -7,16 +6,22 @@ import macrosToKcal from "@/lib/utils/macrosToKcal";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { Redirect, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Image, useWindowDimensions, View } from "react-native";
+import { useWindowDimensions } from "react-native";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import type { ImageRef } from "expo-image-manipulator";
+import { Toast } from "@/components/ui/Toast";
 
 export default function MealScreen() {
   const dimensions = useWindowDimensions();
   const router = useRouter();
-  const { photoUri, mealId: initialMealId } = useLocalSearchParams<{
+  const {
+    photoUri,
+    mealId: initialMealId,
+    source,
+  } = useLocalSearchParams<{
     photoUri?: string;
     mealId?: Id<"meals">;
+    source?: "camera" | "library";
   }>();
 
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl.default);
@@ -35,6 +40,8 @@ export default function MealScreen() {
     api.meals.getMeal.default,
     mealId ? { mealId } : "skip"
   );
+
+  const fromCamera = source === "camera";
 
   const cropToDeviceAspect = useCallback(
     async (uri: string) => {
@@ -131,47 +138,42 @@ export default function MealScreen() {
     [dimensions.height, dimensions.width]
   );
 
-  const [initialUri, setInitialUri] = useState<string | null>(null);
-  const [uri, setUri] = useState<string | null>(null);
   useEffect(() => {
     if (!photoUri || initialMealId || startedRef.current || mealId) return;
     startedRef.current = true;
 
     (async () => {
-      // TODO: Only crop aspect ratio for pictures taken with the camera, not uploaded ones
-      setInitialUri(photoUri);
-      const croppedUri = await cropToDeviceAspect(photoUri);
-      setUri(croppedUri);
+      try {
+        const croppedUri = fromCamera
+          ? await cropToDeviceAspect(photoUri)
+          : photoUri;
 
-      return;
+        const uploadUrl = await generateUploadUrl();
 
-      // try {
-      //   const uploadUrl = await generateUploadUrl();
+        const fileRes = await fetch(croppedUri);
+        const blob = await fileRes.blob();
 
-      //   const fileRes = await fetch(photoUri);
-      //   const blob = await fileRes.blob();
+        const uploadRes = await fetch(uploadUrl, {
+          method: "POST",
+          headers: { "Content-Type": blob.type || "image/jpeg" },
+          body: blob,
+        });
+        if (!uploadRes.ok) {
+          throw new Error(`Upload failed: ${uploadRes.status}`);
+        }
+        const json = await uploadRes.json();
+        if (!json?.storageId) {
+          throw new Error("Upload response missing storageId");
+        }
+        const { storageId } = json;
 
-      //   const uploadRes = await fetch(uploadUrl, {
-      //     method: "POST",
-      //     headers: { "Content-Type": blob.type || "image/jpeg" },
-      //     body: blob,
-      //   });
-      //   if (!uploadRes.ok) {
-      //     throw new Error(`Upload failed: ${uploadRes.status}`);
-      //   }
-      //   const json = await uploadRes.json();
-      //   if (!json?.storageId) {
-      //     throw new Error("Upload response missing storageId");
-      //   }
-      //   const { storageId } = json;
-
-      //   const mealId = await analyzeMealPhoto({ storageId });
-      //   setMealId(mealId);
-      // } catch (e) {
-      //   console.error("Start meal error", e);
-      //   Toast.show({ text: "Error al analizar la comida", variant: "error" });
-      //   router.replace("/app");
-      // }
+        const mealId = await analyzeMealPhoto({ storageId });
+        setMealId(mealId);
+      } catch (e) {
+        console.error("Start meal error", e);
+        Toast.show({ text: "Error al analizar la comida", variant: "error" });
+        router.replace("/app");
+      }
     })();
   }, [
     analyzeMealPhoto,
@@ -183,6 +185,7 @@ export default function MealScreen() {
     mealId,
     deleteMeal,
     router,
+    fromCamera,
   ]);
 
   if (mealId && data === null) {
@@ -205,25 +208,6 @@ export default function MealScreen() {
     : undefined;
 
   const isLoading = !mealId || !data || !isDone;
-
-  if (uri && initialUri) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "red",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Image
-          // source={{ uri: initialUri }}
-          source={{ uri }}
-          style={{ height: 600, width: 300, resizeMode: "contain" }}
-        />
-      </View>
-    );
-  }
 
   return (
     <Meal

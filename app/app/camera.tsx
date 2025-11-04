@@ -14,10 +14,16 @@ export default function CameraScreen() {
   const isBusyRef = useRef(false);
   const isFocused = useIsFocused();
 
-  const navigateToMeal = (uri: string) => {
+  const navigateToMeal = ({
+    uri,
+    source,
+  }: {
+    uri: string;
+    source: "camera" | "library";
+  }) => {
     router.replace({
       pathname: "/app/meal",
-      params: { photoUri: uri },
+      params: { photoUri: uri, source },
     });
   };
 
@@ -28,7 +34,7 @@ export default function CameraScreen() {
     try {
       const photo = await cameraRef.current.takePictureAsync();
 
-      navigateToMeal(photo.uri);
+      navigateToMeal({ uri: photo.uri, source: "camera" });
     } catch (error) {
       console.error("Error taking photo:", error);
     } finally {
@@ -51,7 +57,7 @@ export default function CameraScreen() {
       if (!asset?.uri) return;
 
       isBusyRef.current = true;
-      navigateToMeal(asset.uri);
+      navigateToMeal({ uri: asset.uri, source: "library" });
     } catch (error) {
       console.error("Error picking photo:", error);
     } finally {
