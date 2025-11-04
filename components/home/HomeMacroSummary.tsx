@@ -17,6 +17,9 @@ import ProteinIcon from "../icons/macros/ProteinIcon";
 import CalorieIcon from "../icons/macros/CalorieIcon";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import macrosToKcal from "@/lib/utils/macrosToKcal";
 
 type Macro = {
   name: string;
@@ -80,33 +83,35 @@ interface Props {
   };
 }
 
-const CALORIE_TARGET = 2000;
-
 export default function HomeMacroSummary({ totals }: Props) {
+  const targets = useQuery(api.profiles.getTargets.default);
+  const calorieTarget = macrosToKcal(
+    targets ?? { protein: 0, carbs: 0, fat: 0 }
+  );
   const progress = useSharedValue(0);
   const progressCalories = useDerivedValue(
-    () => Math.min(1, totals.calories / CALORIE_TARGET) * progress.value
+    () => Math.min(1, totals.calories / calorieTarget) * progress.value
   );
 
   const macros: Macro[] = [
     {
       name: "Hidratos",
       value: totals.carbs,
-      target: 300,
+      target: targets?.carbs ?? 0,
       Icon: CarbIcon,
       color: getColor("carb"),
     },
     {
       name: "Proteína",
       value: totals.protein,
-      target: 200,
+      target: targets?.protein ?? 0,
       Icon: ProteinIcon,
       color: getColor("protein"),
     },
     {
       name: "Grasas",
       value: totals.fat,
-      target: 100,
+      target: targets?.fat ?? 0,
       Icon: FatIcon,
       color: getColor("fat"),
     },
@@ -139,7 +144,7 @@ export default function HomeMacroSummary({ totals }: Props) {
                 style={styles.caloriesTargetText}
               >
                 {" "}
-                / 2000
+                / {calorieTarget}
               </Text>
             </View>
           </View>
