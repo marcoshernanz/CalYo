@@ -20,4 +20,20 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
     }),
     ResendOTP,
   ],
+  callbacks: {
+    async afterUserCreatedOrUpdated(ctx, args) {
+      if (args.existingUserId !== null) {
+        return;
+      }
+
+      const profile = await ctx.db
+        .query("profiles")
+        .filter((q) => q.eq(q.field("userId"), args.userId))
+        .first();
+
+      if (profile === null) {
+        await ctx.db.insert("profiles", { userId: args.userId });
+      }
+    },
+  },
 });
