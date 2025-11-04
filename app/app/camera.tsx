@@ -1,10 +1,13 @@
 import Button from "@/components/ui/Button";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
-import { UploadIcon } from "lucide-react-native";
-import { useEffect, useRef } from "react";
-import { View } from "react-native";
-import { useIsFocused } from "@react-navigation/native";
+import {
+  FlashlightIcon,
+  FlashlightOffIcon,
+  ImageIcon,
+} from "lucide-react-native";
+import { useEffect, useRef, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 export default function CameraScreen() {
@@ -12,7 +15,7 @@ export default function CameraScreen() {
   const router = useRouter();
   const cameraRef = useRef<CameraView>(null);
   const isBusyRef = useRef(false);
-  const isFocused = useIsFocused();
+  const [enableTorch, setEnableTorch] = useState(false);
 
   const navigateToMeal = ({
     uri,
@@ -78,52 +81,82 @@ export default function CameraScreen() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <CameraView
-        style={{ flex: 1 }}
+        style={styles.camera}
         ref={cameraRef}
         facing="back"
-        active={isFocused} // only run preview when focused
-        // Optional: choose preview ratio close to device ratio for nicer framing
-        // flash="off"
-        // animateShutter
+        enableTorch={enableTorch}
       />
-      <View
-        style={{
-          position: "absolute",
-          bottom: 40,
-          alignSelf: "center",
-          height: 80,
-          width: 80,
-          borderRadius: 999,
-          borderWidth: 2,
-          borderColor: "#FFF",
-          backgroundColor: "#00000040",
-          padding: 3,
-        }}
-      >
+      <View style={styles.controlsContainer}>
         <Button
           variant="base"
           size="base"
-          style={{ backgroundColor: "#FFF", flex: 1, borderRadius: 999 }}
-          onPress={takePhoto}
-        />
+          style={styles.button}
+          onPress={handleUpload}
+        >
+          <ImageIcon color="white" />
+        </Button>
+        <View style={styles.shutterOuter}>
+          <Button
+            variant="base"
+            size="base"
+            style={styles.shutterInner}
+            onPress={takePhoto}
+          />
+        </View>
+        <Button
+          variant="base"
+          size="base"
+          style={styles.button}
+          onPress={() => setEnableTorch((enableTorch) => !enableTorch)}
+        >
+          {enableTorch ? (
+            <FlashlightOffIcon color="white" />
+          ) : (
+            <FlashlightIcon color="white" />
+          )}
+        </Button>
       </View>
-
-      <Button
-        variant="base"
-        size="base"
-        style={{
-          position: "absolute",
-          bottom: 40,
-          right: 40,
-          flex: 1,
-          borderRadius: 999,
-        }}
-        onPress={handleUpload}
-      >
-        <UploadIcon color="#FFF" />
-      </Button>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  camera: {
+    flex: 1,
+  },
+  controlsContainer: {
+    position: "absolute",
+    bottom: 40,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    width: "100%",
+  },
+  button: {
+    height: 56,
+    width: 56,
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 999,
+  },
+  shutterOuter: {
+    height: 72,
+    width: 72,
+    borderRadius: 999,
+    borderWidth: 2,
+    borderColor: "#FFF",
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    padding: 4,
+  },
+  shutterInner: {
+    flex: 1,
+    borderRadius: 999,
+    backgroundColor: "#FFF",
+  },
+});
