@@ -8,26 +8,20 @@ import selectCandidates from "./analyze/selectCandidates";
 import scaleNutrients from "../../lib/utils/scaleNutrients";
 import nameMeal from "./analyze/nameMeal";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { Id } from "../_generated/dataModel";
 
 const analyzeMealPhoto = action({
-  args: {
-    mealId: v.id("meals"),
-    storageId: v.id("_storage"),
-  },
-  handler: async (
-    ctx,
-    { mealId, storageId }
-  ): Promise<{ status: "success" | "error" }> => {
+  args: { storageId: v.id("_storage") },
+  handler: async (ctx, { storageId }): Promise<Id<"meals">> => {
+    let mealId: Id<"meals"> | undefined = undefined;
     try {
       const userId = await getAuthUserId(ctx);
       if (userId === null) throw new Error("Unauthorized");
 
-      const meal = await ctx.runQuery(api.meals.getMeal.default, { mealId });
-      if (!meal) throw new Error("Meal not found");
-      if (meal.meal.userId !== userId) throw new Error("Forbidden");
-
       const imageUrl = await ctx.storage.getUrl(storageId);
       if (!imageUrl) throw new Error("Image not found");
+
+      mealId = await ctx.runMutation(api.meals.createMeal.default);
 
       await ctx.runMutation(api.meals.updateMeal.default, {
         id: mealId,
@@ -39,11 +33,7 @@ const analyzeMealPhoto = action({
 
       const detectedItems = await detectMealItems({ imageUrl });
       if (!detectedItems || detectedItems.length === 0) {
-        await ctx.runMutation(api.meals.updateMeal.default, {
-          id: mealId,
-          meal: { status: "error" },
-        });
-        return { status: "error" };
+        throw new Error("No meal items detected");
       }
 
       const mealNamePromise = nameMeal({ items: detectedItems });
@@ -103,14 +93,16 @@ const analyzeMealPhoto = action({
         },
       });
 
-      return { status: "success" };
+      return mealId;
     } catch (error) {
       console.error("analyzeMealPhoto error", error);
       try {
-        await ctx.runMutation(api.meals.updateMeal.default, {
-          id: mealId,
-          meal: { status: "error" },
-        });
+        if (mealId) {
+          await ctx.runMutation(api.meals.updateMeal.default, {
+            id: mealId,
+            meal: { status: "error" },
+          });
+        }
       } catch (updateError) {
         console.error("Failed to mark meal as error", updateError);
       }
