@@ -32,7 +32,8 @@ const getWeekMeals = query({
             .eq("userId", userId)
             .gte("_creationTime", weekStartUtc)
             .lt("_creationTime", weekEndUtc)
-        );
+        )
+        .filter((q) => q.neq(q.field("status"), "error"));
 
       const meals = await mealsQuery.collect();
 
