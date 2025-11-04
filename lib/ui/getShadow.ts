@@ -4,7 +4,8 @@ type ShadowSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export default function getShadow(
   size: ShadowSize,
-  opacity: number = 0.05
+  opacity: number = 0.05,
+  inverted: boolean = false
 ): ViewStyle {
   const shadowMap = {
     xs: { offsetX: 0, offsetY: 1, blurRadius: 2, spreadDistance: 0 },
@@ -16,12 +17,13 @@ export default function getShadow(
   };
 
   const { offsetX, offsetY, blurRadius, spreadDistance } = shadowMap[size];
+  const resolvedOffsetY = inverted ? -offsetY : offsetY;
 
   return {
     boxShadow: [
       {
         offsetX,
-        offsetY,
+        offsetY: resolvedOffsetY,
         blurRadius,
         spreadDistance,
         color: `rgba(0, 0, 0, ${opacity})`,

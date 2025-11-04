@@ -10,7 +10,6 @@
 - [ ] react-native-animateable-text Expo SDK 54
 - [ ] Spanish
 - [ ] react-native-reanimated performance
-- [ ] Inverted shadow prop
 - [ ] Refactor meal and ingredients
 
 - [ ] Fix results
