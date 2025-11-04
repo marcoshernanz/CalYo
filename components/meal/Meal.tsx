@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollViewContent: {
-    flex: 1,
+    flexGrow: 1,
     paddingBottom: 16,
   },
   name: {
