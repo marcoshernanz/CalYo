@@ -2,10 +2,14 @@ import { ViewStyle } from "react-native";
 
 type ShadowSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
+type ShadowOptions = {
+  opacity?: number;
+  inverted?: boolean;
+};
+
 export default function getShadow(
   size: ShadowSize,
-  opacity: number = 0.05,
-  inverted: boolean = false
+  options: ShadowOptions = {}
 ): ViewStyle {
   const shadowMap = {
     xs: { offsetX: 0, offsetY: 1, blurRadius: 2, spreadDistance: 0 },
@@ -15,6 +19,8 @@ export default function getShadow(
     xl: { offsetX: 0, offsetY: 12, blurRadius: 20, spreadDistance: 0 },
     "2xl": { offsetX: 0, offsetY: 16, blurRadius: 24, spreadDistance: 0 },
   };
+
+  const { opacity = 0.05, inverted = false } = options;
 
   const { offsetX, offsetY, blurRadius, spreadDistance } = shadowMap[size];
   const resolvedOffsetY = inverted ? -offsetY : offsetY;

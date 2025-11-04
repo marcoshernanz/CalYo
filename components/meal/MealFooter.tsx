@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     position: "relative",
     gap: 8,
-    ...getShadow("lg", 0.05, true),
+    ...getShadow("lg", { inverted: true }),
   },
   button: {
     flex: 1,

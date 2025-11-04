@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
     flexDirection: "row",
     paddingTop: 12,
-    ...getShadow("lg", 0.05, true),
+    ...getShadow("lg", { inverted: true }),
   },
   button: {
     flex: 1,
