@@ -47,11 +47,11 @@ export default function MealHeader({ mealId, scrollY }: Props) {
 
   return (
     <SafeArea edges={["top", "left", "right"]} style={styles.safeArea}>
+      <Animated.View
+        pointerEvents="none"
+        style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
+      />
       <View style={styles.container}>
-        <Animated.View
-          pointerEvents="none"
-          style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
-        />
         <Button
           size="sm"
           variant="secondary"
