@@ -1,17 +1,18 @@
 import Button from "@/components/ui/Button";
 import { CameraView, useCameraPermissions } from "expo-camera";
-import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { UploadIcon } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { View } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
+import * as ImagePicker from "expo-image-picker";
 
 export default function CameraScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const router = useRouter();
-
   const cameraRef = useRef<CameraView>(null);
   const isBusyRef = useRef(false);
+  const isFocused = useIsFocused();
 
   const navigateToMeal = (uri: string) => {
     router.replace({
@@ -25,10 +26,7 @@ export default function CameraScreen() {
     isBusyRef.current = true;
 
     try {
-      const photo = await cameraRef.current.takePictureAsync({
-        quality: 0.8,
-        skipProcessing: true,
-      });
+      const photo = await cameraRef.current.takePictureAsync();
 
       navigateToMeal(photo.uri);
     } catch (error) {
@@ -42,17 +40,9 @@ export default function CameraScreen() {
     if (isBusyRef.current) return;
 
     try {
-      const libraryPermission =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (!libraryPermission.granted) {
-        console.warn("Media library permission not granted");
-        return;
-      }
-
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: "images",
         allowsMultipleSelection: false,
-        quality: 0.8,
       });
 
       if (result.canceled || !result.assets?.length) return;
@@ -77,17 +67,21 @@ export default function CameraScreen() {
     }
   }, [permission?.granted, requestPermission]);
 
-  if (!permission) {
-    return null;
-  }
-
-  if (!permission.granted) {
+  if (!permission || !permission.granted) {
     return null;
   }
 
   return (
     <View style={{ flex: 1 }}>
-      <CameraView style={{ flex: 1 }} ref={cameraRef} facing="back" />
+      <CameraView
+        style={{ flex: 1 }}
+        ref={cameraRef}
+        facing="back"
+        active={isFocused} // only run preview when focused
+        // Optional: choose preview ratio close to device ratio for nicer framing
+        // flash="off"
+        // animateShutter
+      />
       <View
         style={{
           position: "absolute",
@@ -107,8 +101,9 @@ export default function CameraScreen() {
           size="base"
           style={{ backgroundColor: "#FFF", flex: 1, borderRadius: 999 }}
           onPress={takePhoto}
-        ></Button>
+        />
       </View>
+
       <Button
         variant="base"
         size="base"
