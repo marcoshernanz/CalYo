@@ -66,6 +66,12 @@ export default (): ExpoConfig => ({
         recordAudioAndroid: false,
       },
     ],
+    [
+      "expo-image-picker",
+      {
+        photosPermission: "Allow CalYo to access your photos",
+      },
+    ],
   ],
 
   experiments: {
