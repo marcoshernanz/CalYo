@@ -1,3 +1,5 @@
+- [ ] Typescript check
+- [ ] Store onboarding data
 - [ ] Settings
 - [ ] Rate limits
 - [ ] Navigation (pressing back from the meal screen)
