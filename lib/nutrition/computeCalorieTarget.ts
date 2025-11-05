@@ -19,7 +19,8 @@ export default function computeCalorieTarget({
   sex,
   bmr,
 }: Params) {
-  const rateKgPerWeek = goal === "maintain" ? 0 : weightChangeRate;
+  const safeRate = Math.min(Math.max(weightChangeRate, 0.1), 1.5);
+  const rateKgPerWeek = goal === "maintain" ? 0 : safeRate;
   const dailyDelta = rateKgPerWeek * (kcalPerKg / 7);
 
   const maxDeficit = maintenanceCalories * 0.3;
