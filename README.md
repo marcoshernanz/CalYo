@@ -14,6 +14,7 @@
 - [ ] Refactor meal and ingredients
 - [ ] import type
 
+- [ ] Settings user card with name and profile picture
 - [ ] Fix results
 - [ ] Micro nutrients
 - [ ] Home no meals text
