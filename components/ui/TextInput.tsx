@@ -20,10 +20,10 @@ import Text from "./Text";
 const AnimatedTextInput = Animated.createAnimatedComponent(RNTextInput);
 const AnimatedText = Animated.createAnimatedComponent(Text);
 
-export type TextInputHandle = {
+export interface TextInputHandle {
   focus: () => void;
   flashError: () => void;
-};
+}
 
 interface Props extends TextInputProps {
   ref?: React.Ref<TextInputHandle>;
@@ -45,13 +45,16 @@ export default function TextInput({
   const shake = useSharedValue(0);
   const isFocusedShared = useSharedValue(0);
 
-  const handleFocus = (e: any) => {
+  type FocusEventArg = Parameters<NonNullable<TextInputProps["onFocus"]>>[0];
+  type BlurEventArg = Parameters<NonNullable<TextInputProps["onBlur"]>>[0];
+
+  const handleFocus = (e: FocusEventArg) => {
     setIsFocused(true);
     isFocusedShared.value = withTiming(1, { duration: 200 });
     onFocus?.(e);
   };
 
-  const handleBlur = (e: any) => {
+  const handleBlur = (e: BlurEventArg) => {
     setIsFocused(false);
     isFocusedShared.value = withTiming(0, { duration: 200 });
     onBlur?.(e);

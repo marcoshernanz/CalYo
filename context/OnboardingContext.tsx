@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
-export type OnboardingValues = {
+export interface OnboardingValues {
   measurementSystem: "metric" | "imperial";
   sex: "male" | "female";
   weightTrend: "lose" | "maintain" | "gain" | "unsure";
@@ -9,9 +9,9 @@ export type OnboardingValues = {
   experience: "none" | "beginner" | "intermediate" | "advanced";
   goal: "lose" | "maintain" | "gain";
   training: "none" | "lifting" | "cardio" | "both";
-};
+}
 
-export type OnboardingData = {
+export interface OnboardingData {
   measurementSystem: OnboardingValues["measurementSystem"];
   sex: OnboardingValues["sex"] | null;
   bornDate: Date;
@@ -27,7 +27,7 @@ export type OnboardingData = {
   weightChangeRate: number;
   training: OnboardingValues["training"] | null;
   hasCreatedPlan: boolean;
-};
+}
 
 interface OnboardingContextValue {
   section: number;

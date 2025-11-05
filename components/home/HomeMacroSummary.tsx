@@ -17,19 +17,17 @@ import ProteinIcon from "../icons/macros/ProteinIcon";
 import CalorieIcon from "../icons/macros/CalorieIcon";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import { profilesConfig } from "@/config/profilesConfig";
 import calcRatio from "@/lib/utils/calcRatio";
 
-type Macro = {
+interface Macro {
   name: string;
   value: number;
   target: number;
   Icon: ComponentType<LucideProps>;
   color: string;
-};
+}
 
 interface MacroCardProps {
   macro: Macro;

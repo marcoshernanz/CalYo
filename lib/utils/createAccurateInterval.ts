@@ -7,13 +7,13 @@ interface AccurateInterval {
 
 export default function createAccurateInterval(
   callback: () => void,
-  interval: number = 1000
+  interval = 1000
 ): AccurateInterval {
-  let expected: number = 0;
+  let expected = 0;
   let timeout: NodeJS.Timeout | null = null;
-  let paused: boolean = true;
-  let pauseTime: number = 0;
-  let remainingTimeAtPause: number = 0;
+  let paused = true;
+  let pauseTime = 0;
+  let remainingTimeAtPause = 0;
 
   const step = () => {
     const now = Date.now();

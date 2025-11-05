@@ -21,12 +21,14 @@ import uuidv4 from "@/lib/utils/uuidv4";
 import getColor from "@/lib/ui/getColor";
 import getShadow from "@/lib/ui/getShadow";
 
-export type ToastOptions = {
+export interface ToastOptions {
   text: string;
   variant?: "default" | "success" | "error";
-};
+}
 
-type ToastItemType = ToastOptions & { id: string };
+interface ToastItemType extends ToastOptions {
+  id: string;
+}
 
 class ToastEmitter {
   private handlers: ((options: ToastOptions) => void)[] = [];

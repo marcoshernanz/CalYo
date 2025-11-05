@@ -2,10 +2,10 @@ import { ViewStyle } from "react-native";
 
 type ShadowSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
-type ShadowOptions = {
+interface ShadowOptions {
   opacity?: number;
   inverted?: boolean;
-};
+}
 
 export default function getShadow(
   size: ShadowSize,

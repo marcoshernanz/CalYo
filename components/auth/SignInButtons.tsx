@@ -25,10 +25,18 @@ export default function SignInButtons({ onEmailLogin }: Props) {
     if (Platform.OS === "web") {
       return;
     }
-    const result = await openAuthSessionAsync(redirect!.toString(), redirectTo);
+    if (!redirect) {
+      console.warn("Missing redirect URL from signIn response");
+      return;
+    }
+    const result = await openAuthSessionAsync(redirect.toString(), redirectTo);
     if (result.type === "success") {
       const { url } = result;
-      const code = new URL(url).searchParams.get("code")!;
+      const code = new URL(url).searchParams.get("code");
+      if (!code) {
+        console.warn("Authorization code not found in redirect callback");
+        return;
+      }
       await signIn(provider, { code });
       router.replace("/app");
     }

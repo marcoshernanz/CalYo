@@ -7,14 +7,14 @@ import { v } from "convex/values";
 import macrosToKcal from "../../../lib/utils/macrosToKcal";
 import { analyzeMealConfig } from "./analyzeMealConfig";
 
-export type Candidate = {
+export interface Candidate {
   fdcId: number;
   name: string;
   category: string | null;
   nutrientsPer100g: { protein: number; fat: number; carbs: number };
   caloriesPer100g: number;
   score: number;
-};
+}
 
 export const mapResult = internalQuery({
   args: {

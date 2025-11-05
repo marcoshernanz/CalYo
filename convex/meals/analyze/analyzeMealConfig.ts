@@ -1,14 +1,14 @@
 import { EmbeddingModel, LanguageModel } from "ai";
 import { google } from "@ai-sdk/google";
 
-type AnalyzeMealConfig = {
+interface AnalyzeMealConfig {
   temperature: number;
   candidatesPerItem: number;
   imageProcessingModel: LanguageModel;
   embeddingsModel: EmbeddingModel;
   candidateSelectionModel: LanguageModel;
   namingModel: LanguageModel;
-};
+}
 
 export const analyzeMealConfig: AnalyzeMealConfig = {
   temperature: 0.2,

@@ -2,7 +2,7 @@ import Button from "@/components/ui/Button";
 import Text from "@/components/ui/Text";
 import getColor from "@/lib/ui/getColor";
 import { StyleSheet, View } from "react-native";
-import React, { useEffect } from "react";
+import React, { ComponentType, useEffect } from "react";
 import Animated, {
   Easing,
   interpolateColor,
@@ -15,7 +15,11 @@ import Animated, {
 
 const AnimatedText = Animated.createAnimatedComponent(Text);
 
-type IconProp = React.ReactElement | React.ComponentType<any>;
+interface IconComponentProps {
+  color?: string;
+}
+
+type IconProp = React.ReactElement | ComponentType<IconComponentProps>;
 
 interface OptionItemProps {
   label: string;
@@ -105,10 +109,9 @@ function OptionItem({
         <View style={styles.iconContainer}>
           {React.isValidElement(Icon)
             ? Icon
-            : (() => {
-                const Cmp = Icon as React.ComponentType<any>;
-                return <Cmp color={getColor("foreground")} />;
-              })()}
+            : React.createElement(Icon as ComponentType<IconComponentProps>, {
+                color: getColor("foreground"),
+              })}
         </View>
 
         <View style={styles.labelContainer}>
@@ -132,12 +135,12 @@ function OptionItem({
   );
 }
 
-export type SelectOption = {
+export interface SelectOption {
   name: string;
   label: string;
   description?: string;
   Icon: IconProp;
-};
+}
 
 interface Props {
   options: SelectOption[];

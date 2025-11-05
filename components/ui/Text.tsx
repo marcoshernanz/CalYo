@@ -51,12 +51,12 @@ function normalizeWeight(
 }
 
 function TextWrapper(props: RNTextProps) {
-  const flat = StyleSheet.flatten(props.style) || {};
-  const weight = normalizeWeight(flat.fontWeight as any);
+  const flat = StyleSheet.flatten<TextStyle>(props.style) ?? {};
+  const weight = normalizeWeight(flat.fontWeight);
   const styleKey = flat.fontStyle === "italic" ? "italic" : "normal";
   const fontFamily = interFamilies[styleKey][weight];
 
-  const { fontWeight, ...rest } = flat as TextStyle;
+  const { fontWeight, ...rest } = flat;
 
   return (
     <RNText

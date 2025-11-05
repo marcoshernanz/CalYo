@@ -3,7 +3,7 @@ import { internalAction, internalQuery } from "../_generated/server";
 import { internal } from "../_generated/api";
 import { Id } from "../_generated/dataModel";
 
-type PageFoodsForCountResult = {
+interface PageFoodsForCountResult {
   page: {
     _id: Id<"fdcFoods">;
     hasEmbedding: boolean | undefined;
@@ -11,7 +11,7 @@ type PageFoodsForCountResult = {
   }[];
   isDone: boolean;
   cursor: string | null;
-};
+}
 
 export const pageFoodsForCount = internalQuery({
   args: { cursor: v.optional(v.string()), pageSize: v.number() },

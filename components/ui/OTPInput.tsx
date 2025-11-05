@@ -20,10 +20,10 @@ import getColor from "@/lib/ui/getColor";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export type OTPInputHandle = {
+export interface OTPInputHandle {
   focus: () => void;
   flashError: () => void;
-};
+}
 
 interface Props extends TextInputProps {
   ref?: React.Ref<OTPInputHandle>;
@@ -133,13 +133,16 @@ export default function OTPInput({
     }
   };
 
-  const handleFocus = (e: any) => {
+  type FocusEventArg = Parameters<NonNullable<TextInputProps["onFocus"]>>[0];
+  type BlurEventArg = Parameters<NonNullable<TextInputProps["onBlur"]>>[0];
+
+  const handleFocus = (e: FocusEventArg) => {
     setIsFocused(true);
     isFocusedShared.value = withTiming(1, { duration: 200 });
     props.onFocus?.(e);
   };
 
-  const handleBlur = (e: any) => {
+  const handleBlur = (e: BlurEventArg) => {
     setIsFocused(false);
     isFocusedShared.value = withTiming(0, { duration: 200 });
     props.onBlur?.(e);

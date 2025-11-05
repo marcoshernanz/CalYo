@@ -16,14 +16,14 @@ import Button from "../ui/Button";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import calcRatio from "@/lib/utils/calcRatio";
 
-type DayData = {
+interface DayData {
   weekDay: number;
   letter: string;
   number: string;
   carbsRatio: number;
   proteinRatio: number;
   fatRatio: number;
-};
+}
 
 interface DaySelectorItemProps {
   day: DayData;

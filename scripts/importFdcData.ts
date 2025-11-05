@@ -106,7 +106,7 @@ async function detectRootKey(jsonPath: string): Promise<string> {
     const p = chain([fs.createReadStream(jsonPath), parser()]);
     let found = false;
 
-    p.on("data", (token: any) => {
+    p.on("data", (token: { name: string; value: unknown }) => {
       if (!found && token?.name === "keyValue") {
         found = true;
         resolve(token.value as string);
@@ -148,7 +148,7 @@ async function importFdcData(jsonPath: string) {
       streamArray(),
     ]);
 
-    pipeline.on("data", async (data: any) => {
+    pipeline.on("data", async (data: { value: unknown; key: number }) => {
       const value = data.value;
       const parsed = FdcFood.safeParse(value);
       if (!parsed.success) {
@@ -201,7 +201,7 @@ async function importFdcData(jsonPath: string) {
       }
     });
 
-    pipeline.on("error", (err: any) => {
+    pipeline.on("error", (err: unknown) => {
       reject(err);
     });
   });
@@ -217,7 +217,7 @@ async function main() {
   await importFdcData(jsonPath);
 }
 
-main().catch((e) => {
+main().catch((e: unknown) => {
   console.error(e);
   process.exit(1);
 });

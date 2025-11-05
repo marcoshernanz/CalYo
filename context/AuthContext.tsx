@@ -6,12 +6,12 @@ import {
 } from "@convex-dev/auth/react";
 import { useConvexAuth } from "convex/react";
 
-type AuthContextValue = {
+interface AuthContextValue {
   isAuthenticated: boolean;
   isLoading: boolean;
   signIn: ConvexAuthActionsContext["signIn"];
   signOut: ConvexAuthActionsContext["signOut"];
-};
+}
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 

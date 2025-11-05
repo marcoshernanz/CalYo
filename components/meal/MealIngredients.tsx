@@ -6,12 +6,12 @@ import Button from "../ui/Button";
 import WithSkeleton from "../ui/WithSkeleton";
 import { Link } from "expo-router";
 
-type Item = {
+interface Item {
   id: string;
   name: string;
   calories: number;
   grams: number;
-};
+}
 
 interface Props {
   loading: boolean;

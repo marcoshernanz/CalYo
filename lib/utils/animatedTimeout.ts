@@ -9,8 +9,10 @@ function removeFromPendingTimeouts(id: AnimatedTimeoutID): void {
   "worklet";
   PENDING_TIMEOUTS.modify((pendingTimeouts) => {
     "worklet";
-    delete pendingTimeouts[id];
-    return pendingTimeouts;
+    return {
+      ...pendingTimeouts,
+      [id]: false,
+    };
   });
 }
 
