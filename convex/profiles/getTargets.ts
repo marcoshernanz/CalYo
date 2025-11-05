@@ -1,12 +1,12 @@
 import { query } from "../_generated/server";
-import { api } from "../_generated/api";
+import { internal } from "../_generated/api";
 import { Doc } from "../_generated/dataModel";
 
 const getTargets = query({
   handler: async (ctx): Promise<Doc<"profiles">["targets"] | null> => {
     try {
-      const profile = await ctx.runQuery(api.profiles.getProfile.default);
-      if (!profile) return null;
+      const profile = await ctx.runQuery(internal.profiles.getProfile.default);
+      if (!profile) throw new Error("Profile not found");
 
       return profile.targets;
     } catch (error) {
