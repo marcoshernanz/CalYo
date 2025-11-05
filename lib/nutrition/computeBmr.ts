@@ -9,6 +9,6 @@ interface Params {
 
 export default function computeBmr({ sex, weight, height, age }: Params) {
   const add = sex === "male" ? 5 : -161;
-  const bmr = 10 * weight + 6.25 * height - 5 * age + add;
+  const bmr = 10 * weight + 625 * height - 5 * age + add;
   return bmr;
 }

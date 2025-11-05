@@ -11,7 +11,7 @@ export type OnboardingValues = {
   training: "none" | "lifting" | "cardio" | "both";
 };
 
-type OnboardingData = {
+export type OnboardingData = {
   measurementSystem: OnboardingValues["measurementSystem"];
   sex: OnboardingValues["sex"] | null;
   bornDate: Date;
@@ -53,7 +53,7 @@ export default function OnboardingContextProvider({ children }: Props) {
     measurementSystem: "metric",
     sex: null,
     bornDate: new Date(2000, 6, 15),
-    height: 170,
+    height: 1.7,
     weight: 80,
     weightTrend: null,
     weeklyWorkouts: null,

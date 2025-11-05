@@ -1,37 +1,37 @@
 import SegmentedControl from "@/components/ui/SegmentedControl";
 import WheelPicker from "@/components/ui/WheelPicker";
 import { useOnboardingContext } from "@/context/OnboardingContext";
-import cmToIn from "@/lib/units/cmToIn";
-import inToCm from "@/lib/units/inToCm";
 import inToFtIn from "@/lib/units/inToFtIn";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
 import OnboardingStep from "../../OnboardingStep";
+import mToIn from "@/lib/units/mToIn";
+import inToM from "@/lib/units/inToM";
 
-const defaultHeight = 170;
+const defaultHeight = 1.7;
 
 export default function OnboardingHeight() {
   const dimensions = useWindowDimensions();
   const { data, setData } = useOnboardingContext();
 
-  const height = data.height ?? defaultHeight;
+  const heightCm = (data.height ?? defaultHeight) * 100;
 
-  const metricMinHeight = 120;
-  const metricMaxHeight = 240;
-  const metricInitialHeight = Math.min(
-    Math.max(Math.round(height), metricMinHeight),
-    metricMaxHeight
+  const metricMinHeightCm = 120;
+  const metricMaxHeightCm = 240;
+  const metricInitialHeightCm = Math.min(
+    Math.max(Math.round(heightCm), metricMinHeightCm),
+    metricMaxHeightCm
   );
   const metricData = Array.from(
-    { length: metricMaxHeight - metricMinHeight + 1 },
-    (_, i) => `${metricMinHeight + i} cm`
+    { length: metricMaxHeightCm - metricMinHeightCm + 1 },
+    (_, i) => `${metricMinHeightCm + i} cm`
   );
   const metricProps: React.ComponentProps<typeof WheelPicker> = {
     data: metricData,
-    initialValue: `${metricInitialHeight} cm`,
+    initialValue: `${metricInitialHeightCm} cm`,
     onValueChange: (value: string) => {
       const match = value.match(/^(\d+)\s*cm$/);
       if (!match) return;
-      const nextHeight = parseInt(match[1]);
+      const nextHeight = parseInt(match[1]) / 100;
       setData((prev) => ({ ...prev, height: nextHeight }));
     },
   };
@@ -39,7 +39,7 @@ export default function OnboardingHeight() {
   const imperialMinHeight = 48;
   const imperialMaxHeight = 96;
   const imperialInitialHeight = Math.min(
-    Math.max(Math.round(cmToIn(height)), imperialMinHeight),
+    Math.max(Math.round(mToIn(heightCm / 100)), imperialMinHeight),
     imperialMaxHeight
   );
   const initialImperial = inToFtIn(imperialInitialHeight);
@@ -59,7 +59,7 @@ export default function OnboardingHeight() {
       const feet = parseInt(match[1]);
       const inches = parseInt(match[2]);
       const totalInches = feet * 12 + inches;
-      const nextHeight = Math.round(inToCm(totalInches));
+      const nextHeight = Math.round(inToM(totalInches) * 100) / 100;
       setData((prev) => ({ ...prev, height: nextHeight }));
     },
   };
