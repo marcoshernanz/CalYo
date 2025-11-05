@@ -1,20 +1,31 @@
 import React, { createContext, useContext, useState } from "react";
 
-export type OnboardingData = {
+export type OnboardingValues = {
   measurementSystem: "metric" | "imperial";
-  sex: "male" | "female" | null;
+  sex: "male" | "female";
+  weightTrend: "lose" | "maintain" | "gain" | "unsure";
+  weeklyWorkouts: "0-2" | "3-5" | "6+";
+  activityLevel: "low" | "medium" | "high";
+  experience: "none" | "beginner" | "intermediate" | "advanced";
+  goal: "lose" | "maintain" | "gain";
+  training: "none" | "lifting" | "cardio" | "both";
+};
+
+type OnboardingData = {
+  measurementSystem: OnboardingValues["measurementSystem"];
+  sex: OnboardingValues["sex"] | null;
   bornDate: Date;
   height: number;
   weight: number;
-  weightTrend: "lose" | "maintain" | "gain" | "unsure" | null;
-  weeklyWorkouts: "0-2" | "3-5" | "6+" | null;
-  activityLevel: "low" | "medium" | "high" | null;
-  liftingExperience: "none" | "beginner" | "intermediate" | "advanced" | null;
-  cardioExperience: "none" | "beginner" | "intermediate" | "advanced" | null;
-  goal: "lose" | "maintain" | "gain" | null;
+  weightTrend: OnboardingValues["weightTrend"] | null;
+  weeklyWorkouts: OnboardingValues["weeklyWorkouts"] | null;
+  activityLevel: OnboardingValues["activityLevel"] | null;
+  liftingExperience: OnboardingValues["experience"] | null;
+  cardioExperience: OnboardingValues["experience"] | null;
+  goal: OnboardingValues["goal"] | null;
   targetWeight: number;
   weightChangeRate: number;
-  training: "none" | "lifting" | "cardio" | "both" | null;
+  training: OnboardingValues["training"] | null;
   hasCreatedPlan: boolean;
 };
 
