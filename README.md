@@ -10,6 +10,7 @@
 - [ ] Spanish
 - [ ] react-native-reanimated performance
 - [ ] Refactor meal and ingredients
+- [ ] import type
 
 - [ ] Fix results
 - [ ] Micro nutrients
