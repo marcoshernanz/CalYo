@@ -1,3 +1,5 @@
+// @ts-check
+
 import eslint from "@eslint/js";
 import { defineConfig } from "eslint/config";
 import { configs as tseslintConfigs } from "typescript-eslint";
