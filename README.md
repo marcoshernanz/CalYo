@@ -1,6 +1,7 @@
-- [ ] Typescript check
-- [ ] Store onboarding data
+- [ ] Calorie goal
 - [ ] Settings
+- [ ] Adjust macros screen
+- [ ] Store onboarding data
 - [ ] Rate limits
 - [ ] Navigation (pressing back from the meal screen)
 - [ ] Navigation (remove stack)
