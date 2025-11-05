@@ -28,7 +28,7 @@ type Props = {
   children?:
     | React.ReactNode
     | ((state: PressableStateCallbackType) => React.ReactNode);
-} & Omit<PressableProps, "children">
+} & Omit<PressableProps, "children">;
 
 export default function Button({
   variant = "primary",
