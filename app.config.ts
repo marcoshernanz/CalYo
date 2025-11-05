@@ -1,9 +1,8 @@
-import { ExpoConfig } from "expo/config";
+import type { ExpoConfig } from "expo/config";
 
 const appVariant = process.env.APP_VARIANT;
 const isDevelopment = appVariant === "development";
 
-// eas credentials
 const getUniqueIdentifier = () => {
   if (isDevelopment) {
     return "com.marcoshernanz.calyo.dev";

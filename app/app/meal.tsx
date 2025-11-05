@@ -7,8 +7,7 @@ import { useAction, useMutation, useQuery } from "convex/react";
 import { Redirect, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useWindowDimensions } from "react-native";
-import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
-import type { ImageRef } from "expo-image-manipulator";
+import { ImageManipulator, SaveFormat, ImageRef } from "expo-image-manipulator";
 import { Toast } from "@/components/ui/Toast";
 
 export default function MealScreen() {
