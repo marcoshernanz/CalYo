@@ -11,6 +11,7 @@
     "eas:dev": "eas build --profile development",
     "eas:prod": "eas build --profile production",
     "lint": "expo lint",
+    "tsc": "tsc",
     "import:fdc": "npx ts-node scripts/importFdcData.ts"
   },
   "dependencies": {
