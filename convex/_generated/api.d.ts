@@ -31,6 +31,7 @@ import type * as meals_getMeal from "../meals/getMeal.js";
 import type * as meals_getWeekMeals from "../meals/getWeekMeals.js";
 import type * as meals_insertMealItem from "../meals/insertMealItem.js";
 import type * as meals_updateMeal from "../meals/updateMeal.js";
+import type * as onboarding_updateMacroTargets from "../onboarding/updateMacroTargets.js";
 import type * as profiles_getProfile from "../profiles/getProfile.js";
 import type * as profiles_getTargets from "../profiles/getTargets.js";
 import type * as storage_generateUploadUrl from "../storage/generateUploadUrl.js";
@@ -68,6 +69,7 @@ declare const fullApi: ApiFromModules<{
   "meals/getWeekMeals": typeof meals_getWeekMeals;
   "meals/insertMealItem": typeof meals_insertMealItem;
   "meals/updateMeal": typeof meals_updateMeal;
+  "onboarding/updateMacroTargets": typeof onboarding_updateMacroTargets;
   "profiles/getProfile": typeof profiles_getProfile;
   "profiles/getTargets": typeof profiles_getTargets;
   "storage/generateUploadUrl": typeof storage_generateUploadUrl;
