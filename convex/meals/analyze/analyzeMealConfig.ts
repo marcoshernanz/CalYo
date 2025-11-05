@@ -1,7 +1,7 @@
 import { EmbeddingModel, LanguageModel } from "ai";
 import { google } from "@ai-sdk/google";
 
-interface AnalyzeMealConfig {
+type AnalyzeMealConfig = {
   temperature: number;
   candidatesPerItem: number;
   imageProcessingModel: LanguageModel;

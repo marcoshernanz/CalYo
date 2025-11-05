@@ -3,7 +3,7 @@ import { storage } from "@/lib/storage/mmkv";
 import { AppDataSchema, type AppData } from "@/zod/schemas/AppDataSchema";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-interface AppContextValue {
+type AppContextValue = {
   appData: AppData;
   setAppData: React.Dispatch<React.SetStateAction<AppData>>;
 }
@@ -11,7 +11,7 @@ interface AppContextValue {
 const defaultState = AppDataSchema.parse(undefined);
 const AppContext = createContext<AppContextValue | undefined>(undefined);
 
-interface Props {
+type Props = {
   children: React.ReactNode;
 }
 

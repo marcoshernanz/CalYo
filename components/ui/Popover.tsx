@@ -7,7 +7,7 @@ import { useRef } from "react";
 import { TriggerRef } from "@rn-primitives/popover";
 import Animated, { Easing, Keyframe } from "react-native-reanimated";
 
-interface Props {
+type Props = {
   trigger: React.ReactNode;
   options: { Item: React.ReactNode; onPress: () => void }[];
   width?: number;

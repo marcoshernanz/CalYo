@@ -21,7 +21,7 @@ import getColor from "@/lib/ui/getColor";
 import { useRef } from "react";
 import useDeleteMeal from "@/lib/hooks/useDeleteMeal";
 
-interface Props {
+type Props = {
   mealId?: Id<"meals">;
   scrollY: SharedValue<number>;
 }

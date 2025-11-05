@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
-export interface OnboardingValues {
+export type OnboardingValues = {
   measurementSystem: "metric" | "imperial";
   sex: "male" | "female";
   weightTrend: "lose" | "maintain" | "gain" | "unsure";
@@ -11,7 +11,7 @@ export interface OnboardingValues {
   training: "none" | "lifting" | "cardio" | "both";
 }
 
-export interface OnboardingData {
+export type OnboardingData = {
   measurementSystem: OnboardingValues["measurementSystem"];
   sex: OnboardingValues["sex"] | null;
   bornDate: Date;
@@ -29,7 +29,7 @@ export interface OnboardingData {
   hasCreatedPlan: boolean;
 }
 
-interface OnboardingContextValue {
+type OnboardingContextValue = {
   section: number;
   setSection: React.Dispatch<React.SetStateAction<number>>;
   step: number;
@@ -42,7 +42,7 @@ const OnboardingContext = createContext<OnboardingContextValue | undefined>(
   undefined
 );
 
-interface Props {
+type Props = {
   children: React.ReactNode;
 }
 

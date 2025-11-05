@@ -11,7 +11,7 @@ import MealMacros from "./MealMacros";
 import Text from "../ui/Text";
 import WithSkeleton from "../ui/WithSkeleton";
 
-interface Props {
+type Props = {
   loading: boolean;
   name?: string;
   mealId?: React.ComponentProps<typeof MealHeader>["mealId"];

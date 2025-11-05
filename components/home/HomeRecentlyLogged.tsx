@@ -12,7 +12,7 @@ import getColor from "@/lib/ui/getColor";
 import { Link } from "expo-router";
 import WithSkeleton from "../ui/WithSkeleton";
 
-interface LogItemProps {
+type LogItemProps = {
   meal: Doc<"meals">;
 }
 
@@ -96,7 +96,7 @@ function LogItem({ meal }: LogItemProps) {
   );
 }
 
-interface Props {
+type Props = {
   meals: Doc<"meals">[];
 }
 

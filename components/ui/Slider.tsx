@@ -9,7 +9,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 
-interface Props {
+type Props = {
   minValue: number;
   maxValue: number;
   value: SharedValue<number>;

@@ -16,7 +16,7 @@ import { SplashScreenController } from "./SplashScreenController";
 import { PortalHost } from "@rn-primitives/portal";
 import ToastProvider from "./ui/Toast";
 
-interface Props {
+type Props = {
   children: React.ReactNode;
 }
 

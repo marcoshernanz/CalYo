@@ -1,4 +1,4 @@
-interface Params {
+type Params = {
   protein?: number;
   fat?: number;
   carbs?: number;

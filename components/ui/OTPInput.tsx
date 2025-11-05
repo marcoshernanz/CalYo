@@ -20,16 +20,16 @@ import getColor from "@/lib/ui/getColor";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export interface OTPInputHandle {
+export type OTPInputHandle = {
   focus: () => void;
   flashError: () => void;
 }
 
-interface Props extends TextInputProps {
+type Props = {
   ref?: React.Ref<OTPInputHandle>;
   length?: number;
   onFilled?: (code: string) => void;
-}
+} & TextInputProps
 
 export default function OTPInput({
   length = 4,

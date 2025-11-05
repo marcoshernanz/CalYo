@@ -1,6 +1,6 @@
 import { OnboardingValues } from "@/context/OnboardingContext";
 
-interface Params {
+type Params = {
   goal: OnboardingValues["goal"];
   weightChangeRate: number;
   maintenanceCalories: number;

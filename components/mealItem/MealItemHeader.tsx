@@ -12,7 +12,7 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 
-interface Props {
+type Props = {
   scrollY: SharedValue<number>;
 }
 

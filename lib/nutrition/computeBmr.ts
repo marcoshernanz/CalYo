@@ -1,6 +1,6 @@
 import { OnboardingValues } from "@/context/OnboardingContext";
 
-interface Params {
+type Params = {
   sex: OnboardingValues["sex"];
   weight: number;
   height: number;

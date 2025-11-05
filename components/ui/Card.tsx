@@ -2,9 +2,9 @@ import getColor from "@/lib/ui/getColor";
 import getShadow from "@/lib/ui/getShadow";
 import { StyleSheet, View, ViewProps } from "react-native";
 
-interface Props extends ViewProps {
+type Props = {
   children: React.ReactNode;
-}
+} & ViewProps
 
 export default function Card({ children, style, ...props }: Props) {
   return (

@@ -13,7 +13,7 @@ import Animated, {
 } from "react-native-reanimated";
 import type { SharedValue } from "react-native-reanimated";
 
-interface Props {
+type Props = {
   options: string[];
   selectedOption: string;
   onChange: (option: string) => void;
@@ -111,7 +111,7 @@ export default function SegmentedControl({
 
 const AnimatedText = Animated.createAnimatedComponent(Text);
 
-interface OptionLabelProps {
+type OptionLabelProps = {
   label: string;
   index: number;
   selectedIndexSV: SharedValue<number>;

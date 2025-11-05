@@ -7,7 +7,7 @@ import { v } from "convex/values";
 import macrosToKcal from "../../../lib/utils/macrosToKcal";
 import { analyzeMealConfig } from "./analyzeMealConfig";
 
-export interface Candidate {
+export type Candidate = {
   fdcId: number;
   name: string;
   category: string | null;
@@ -40,7 +40,7 @@ export const mapResult = internalQuery({
   },
 });
 
-interface Params {
+type Params = {
   ctx: ActionCtx;
   detectedItems: DetectedItem[];
 }

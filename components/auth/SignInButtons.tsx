@@ -10,7 +10,7 @@ import GoogleLogo from "@/assets/svg/google-logo.svg";
 import { MailIcon } from "lucide-react-native";
 import getColor from "@/lib/ui/getColor";
 
-interface Props {
+type Props = {
   onEmailLogin?: () => void;
 }
 

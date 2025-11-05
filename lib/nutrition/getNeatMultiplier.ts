@@ -1,6 +1,6 @@
 import { OnboardingValues } from "@/context/OnboardingContext";
 
-interface Params {
+type Params = {
   activityLevel: OnboardingValues["activityLevel"];
 }
 

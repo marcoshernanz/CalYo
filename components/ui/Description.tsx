@@ -3,9 +3,9 @@ import { StyleSheet } from "react-native";
 import Text, { TextProps, FontSize } from "./Text";
 import getColor from "@/lib/ui/getColor";
 
-interface Props extends TextProps {
+type Props = {
   size?: FontSize;
-}
+} & TextProps
 
 export default function Description({ size = "16", ...rest }: Props) {
   return (

@@ -1,6 +1,6 @@
 import { OnboardingValues } from "@/context/OnboardingContext";
 
-interface Params {
+type Params = {
   weeklyWorkouts: OnboardingValues["weeklyWorkouts"];
   training: OnboardingValues["training"];
   weight: number;

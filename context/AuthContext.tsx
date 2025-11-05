@@ -6,7 +6,7 @@ import {
 } from "@convex-dev/auth/react";
 import { useConvexAuth } from "convex/react";
 
-interface AuthContextValue {
+type AuthContextValue = {
   isAuthenticated: boolean;
   isLoading: boolean;
   signIn: ConvexAuthActionsContext["signIn"];
@@ -15,7 +15,7 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-interface Props {
+type Props = {
   children: ReactNode;
 }
 

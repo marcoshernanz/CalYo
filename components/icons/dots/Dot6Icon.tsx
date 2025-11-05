@@ -1,7 +1,7 @@
 import getColor from "@/lib/ui/getColor";
 import { StyleSheet, View } from "react-native";
 
-interface Props {
+type Props = {
   size?: number;
   color?: string;
 }

@@ -72,7 +72,7 @@ function ensureSelections({
   return finalItems;
 }
 
-interface Params {
+type Params = {
   detectedItems: DetectedItem[];
   candidatesByItem: Record<string, Candidate[]>;
   imageUrl: string;

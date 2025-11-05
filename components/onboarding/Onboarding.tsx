@@ -27,7 +27,7 @@ import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import OnboardingCreatingPlan from "./steps/end/OnboardingCreatingPlan";
 import OnboardingCreateAccount from "./steps/end/OnboardingCreateAccount";
 
-interface SectionType {
+type SectionType = {
   name: string;
   steps: React.ReactElement[];
 }

@@ -6,14 +6,14 @@ import Button from "../ui/Button";
 import WithSkeleton from "../ui/WithSkeleton";
 import { Link } from "expo-router";
 
-interface Item {
+type Item = {
   id: string;
   name: string;
   calories: number;
   grams: number;
 }
 
-interface Props {
+type Props = {
   loading: boolean;
   items?: Item[];
 }

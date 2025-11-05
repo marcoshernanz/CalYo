@@ -1,9 +1,9 @@
-interface Success<T> {
+type Success<T> = {
   data: T;
   error: null;
 }
 
-interface Failure<E> {
+type Failure<E> = {
   data: null;
   error: E;
 }

@@ -64,7 +64,7 @@ const macros = [
   },
 ];
 
-interface MacroCardProps {
+type MacroCardProps = {
   name: string;
   amount: number;
   ratio: number;

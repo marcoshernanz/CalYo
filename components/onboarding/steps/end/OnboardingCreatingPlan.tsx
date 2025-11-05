@@ -52,7 +52,7 @@ const stageDurations = [2000, 2000, 2000, 2000, 2000] as const;
 
 const AnimatedLoaderIcon = Animated.createAnimatedComponent(Loader2Icon);
 
-interface LucideSpinnerProps {
+type LucideSpinnerProps = {
   color: string;
   size?: number;
 }

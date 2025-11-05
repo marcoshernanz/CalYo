@@ -20,15 +20,15 @@ import Text from "./Text";
 const AnimatedTextInput = Animated.createAnimatedComponent(RNTextInput);
 const AnimatedText = Animated.createAnimatedComponent(Text);
 
-export interface TextInputHandle {
+export type TextInputHandle = {
   focus: () => void;
   flashError: () => void;
 }
 
-interface Props extends TextInputProps {
+type Props = {
   ref?: React.Ref<TextInputHandle>;
   label?: string;
-}
+} & TextInputProps
 
 export default function TextInput({
   label,

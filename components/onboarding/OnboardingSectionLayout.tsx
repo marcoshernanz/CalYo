@@ -3,7 +3,7 @@ import SafeArea from "../ui/SafeArea";
 import Button from "../ui/Button";
 import { ArrowLeftIcon } from "lucide-react-native";
 
-interface Props {
+type Props = {
   children: React.ReactNode;
   onBack: () => void;
   onNext: () => void;

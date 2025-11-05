@@ -1,4 +1,4 @@
-interface Params {
+type Params = {
   bmr: number;
   neatMultiplier: number;
   exerciseCalories: number;

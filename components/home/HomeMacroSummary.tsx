@@ -21,7 +21,7 @@ import macrosToKcal from "@/lib/utils/macrosToKcal";
 import { profilesConfig } from "@/config/profilesConfig";
 import calcRatio from "@/lib/utils/calcRatio";
 
-interface Macro {
+type Macro = {
   name: string;
   value: number;
   target: number;
@@ -29,7 +29,7 @@ interface Macro {
   color: string;
 }
 
-interface MacroCardProps {
+type MacroCardProps = {
   macro: Macro;
   progress: SharedValue<number>;
 }
@@ -74,7 +74,7 @@ function MacroCard({ macro, progress }: MacroCardProps) {
   );
 }
 
-interface Props {
+type Props = {
   totals: {
     calories: number;
     protein: number;

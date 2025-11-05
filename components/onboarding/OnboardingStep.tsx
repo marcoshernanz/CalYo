@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import Title from "../ui/Title";
 
-interface Props {
+type Props = {
   children: React.ReactNode;
   title: string;
 }

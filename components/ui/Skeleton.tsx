@@ -16,7 +16,7 @@ import Animated, {
 import { LinearGradient } from "expo-linear-gradient";
 import getColor from "@/lib/ui/getColor";
 
-interface Props {
+type Props = {
   style?: StyleProp<ViewStyle>;
 }
 

@@ -26,7 +26,7 @@ import {
 import getColor from "@/lib/ui/getColor";
 import { LinearGradient } from "expo-linear-gradient";
 
-interface Props {
+type Props = {
   minWeight: number;
   maxWeight: number;
   initialWeight: number;

@@ -9,7 +9,7 @@ import ProteinIcon from "../icons/macros/ProteinIcon";
 import FatIcon from "../icons/macros/FatIcon";
 import Button from "../ui/Button";
 
-interface Props {
+type Props = {
   loading: boolean;
   totals?: {
     calories: number;

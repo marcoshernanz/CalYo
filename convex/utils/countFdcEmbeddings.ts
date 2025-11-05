@@ -3,7 +3,7 @@ import { internalAction, internalQuery } from "../_generated/server";
 import { internal } from "../_generated/api";
 import { Id } from "../_generated/dataModel";
 
-interface PageFoodsForCountResult {
+type PageFoodsForCountResult = {
   page: {
     _id: Id<"fdcFoods">;
     hasEmbedding: boolean | undefined;

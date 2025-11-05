@@ -8,7 +8,7 @@ import { XIcon } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SignInButtons from "./SignInButtons";
 
-interface Props {
+type Props = {
   ref: React.Ref<BottomSheetModal>;
   onAnimate?: (fromIndex: number, toIndex: number) => void;
   onClose?: () => void;

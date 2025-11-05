@@ -9,7 +9,7 @@ import Animated, {
 import Title from "../ui/Title";
 import getColor from "@/lib/ui/getColor";
 
-interface ProgressStepProps {
+type ProgressStepProps = {
   isActive: boolean;
 }
 
@@ -33,7 +33,7 @@ function ProgressStep({ isActive }: ProgressStepProps) {
   return <Animated.View style={[styles.progressStep, animatedStyle]} />;
 }
 
-interface Props {
+type Props = {
   children: React.ReactNode;
   sectionName: string;
   numSteps: number;

@@ -16,7 +16,7 @@ import Button from "../ui/Button";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import calcRatio from "@/lib/utils/calcRatio";
 
-interface DayData {
+type DayData = {
   weekDay: number;
   letter: string;
   number: string;
@@ -25,7 +25,7 @@ interface DayData {
   fatRatio: number;
 }
 
-interface DaySelectorItemProps {
+type DaySelectorItemProps = {
   day: DayData;
   isSelected: boolean;
   isToday: boolean;
@@ -93,7 +93,7 @@ function DaySelectorItem({
   );
 }
 
-interface Props {
+type Props = {
   selectedDay: number;
   setSelectedDay: Dispatch<SetStateAction<number>>;
   weekTotals: {

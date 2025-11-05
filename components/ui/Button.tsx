@@ -21,14 +21,14 @@ type Size = "sm" | "md" | "lg" | "xl" | "base";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-interface Props extends Omit<PressableProps, "children"> {
+type Props = {
   variant?: Variant;
   size?: Size;
   textProps?: Omit<TextProps, "children">;
   children?:
     | React.ReactNode
     | ((state: PressableStateCallbackType) => React.ReactNode);
-}
+} & Omit<PressableProps, "children">
 
 export default function Button({
   variant = "primary",

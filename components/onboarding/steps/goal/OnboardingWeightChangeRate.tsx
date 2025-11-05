@@ -143,7 +143,7 @@ function syncWeightChangeRate(
   }));
 }
 
-interface WeightChangeRowProps {
+type WeightChangeRowProps = {
   sign: string;
   amount: SharedValue<number>;
   period: string;

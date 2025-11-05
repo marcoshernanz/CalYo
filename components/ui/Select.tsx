@@ -15,13 +15,13 @@ import Animated, {
 
 const AnimatedText = Animated.createAnimatedComponent(Text);
 
-interface IconComponentProps {
+type IconComponentProps = {
   color?: string;
 }
 
 type IconProp = React.ReactElement | ComponentType<IconComponentProps>;
 
-interface OptionItemProps {
+type OptionItemProps = {
   label: string;
   description?: string;
   Icon: IconProp;
@@ -135,14 +135,14 @@ function OptionItem({
   );
 }
 
-export interface SelectOption {
+export type SelectOption = {
   name: string;
   label: string;
   description?: string;
   Icon: IconProp;
 }
 
-interface Props {
+type Props = {
   options: SelectOption[];
   selectedOptions?: string[];
   onSelectOption?: (optionName: string) => void;

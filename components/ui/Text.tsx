@@ -96,12 +96,12 @@ export type FontWeight =
   | "800"
   | "900";
 
-export interface TextProps extends RNTextProps {
+export type TextProps = {
   children: React.ReactNode;
   size?: FontSize;
   weight?: FontWeight;
   color?: string;
-}
+} & RNTextProps
 
 export default function Text({
   size = "18",

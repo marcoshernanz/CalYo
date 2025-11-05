@@ -9,7 +9,7 @@ const detectionSchema = z.object({
 
 export type DetectedItem = z.infer<typeof detectionSchema>;
 
-interface Params {
+type Params = {
   imageUrl: string;
 }
 

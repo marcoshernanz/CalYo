@@ -1,7 +1,7 @@
 import { OnboardingValues } from "@/context/OnboardingContext";
 import estimateBodyFatPercentage from "./estimateBodyFatPercentage";
 
-interface Params {
+type Params = {
   weight: number;
   height: number;
   age: number;

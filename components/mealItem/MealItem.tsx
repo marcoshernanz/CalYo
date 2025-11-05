@@ -12,7 +12,7 @@ import MealMacros from "../meal/MealMacros";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import MealItemFooter from "./MealItemFooter";
 
-interface Props {
+type Props = {
   name?: string;
   mealItem?: Doc<"mealItems">;
   isLoading: boolean;

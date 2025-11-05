@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import Skeleton from "./Skeleton";
 
-interface Props {
+type Props = {
   loading: boolean;
   skeletonStyle?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;

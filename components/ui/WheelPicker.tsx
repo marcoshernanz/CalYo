@@ -10,7 +10,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Text from "./Text";
 import getColor from "@/lib/ui/getColor";
 
-interface Props {
+type Props = {
   data: string[];
   onValueChange?: (value: string) => void;
   initialValue?: string;

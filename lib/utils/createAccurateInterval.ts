@@ -1,4 +1,4 @@
-interface AccurateInterval {
+type AccurateInterval = {
   start: () => void;
   stop: () => void;
   pause: () => void;

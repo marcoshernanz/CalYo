@@ -50,7 +50,7 @@ function CircularProgressItem({
   );
 }
 
-interface Props {
+type Props = {
   progress: ProgressValue | ProgressValue[];
   size?: number;
   strokeWidth?: number;

@@ -26,7 +26,7 @@ const sections = [
   },
 ];
 
-interface Props {
+type Props = {
   section: number;
 }
 
