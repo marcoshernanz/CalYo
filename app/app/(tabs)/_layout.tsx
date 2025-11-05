@@ -19,6 +19,7 @@ export default function TabLayout() {
           headerShown: false,
           tabBarActiveTintColor: getColor("foreground"),
           tabBarInactiveTintColor: getColor("mutedForeground", 0.5),
+          animation: "shift",
           tabBarStyle: {
             backgroundColor: getColor("background"),
             borderColor: getColor("secondary"),
@@ -31,7 +32,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            tabBarLabel: "Home",
+            tabBarLabel: "Inicio",
             tabBarIcon: ({ color, size }) => (
               <HomeIcon color={color} strokeWidth={1.75} size={size} />
             ),
@@ -49,7 +50,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="settings"
           options={{
-            tabBarLabel: "Settings",
+            tabBarLabel: "Ajustes",
             tabBarIcon: ({ color, size }) => (
               <SettingsIcon color={color} strokeWidth={1.75} size={size} />
             ),
