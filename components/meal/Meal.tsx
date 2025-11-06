@@ -1,4 +1,3 @@
-import MealHeader from "./MealHeader";
 import MealIngredients from "./MealIngredients";
 import MealMacros from "./MealMacros";
 import {
@@ -24,11 +23,12 @@ import {
   ScreenMainTitle,
 } from "../ui/screen/ScreenMain";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
+import { Id } from "@/convex/_generated/dataModel";
 
 type Props = {
   loading: boolean;
   name?: string;
-  mealId?: React.ComponentProps<typeof MealHeader>["mealId"];
+  mealId?: Id<"meals">;
   totals?: React.ComponentProps<typeof MealMacros>["totals"];
   items?: React.ComponentProps<typeof MealIngredients>["items"];
 };
