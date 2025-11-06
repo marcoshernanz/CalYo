@@ -1,14 +1,10 @@
-import { StyleSheet, View } from "react-native";
-import Animated, {
+import {
   useAnimatedScrollHandler,
   useSharedValue,
 } from "react-native-reanimated";
-import SafeArea from "../ui/SafeArea";
 import MealHeader from "./MealHeader";
 import MealIngredients from "./MealIngredients";
 import MealMacros from "./MealMacros";
-import Text from "../ui/Text";
-import WithSkeleton from "../ui/WithSkeleton";
 import {
   ScreenHeader,
   ScreenHeaderActions,
@@ -26,6 +22,11 @@ import {
   ScreenFooterButtonText,
 } from "../ui/screen/ScreenFooter";
 import getColor from "@/lib/ui/getColor";
+import {
+  ScreenMain,
+  ScreenMainScrollView,
+  ScreenMainTitle,
+} from "../ui/screen/ScreenMain";
 
 type Props = {
   loading: boolean;
@@ -55,7 +56,7 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
   };
 
   return (
-    <SafeArea edges={[]}>
+    <ScreenMain edges={[]}>
       <ScreenHeader>
         <ScreenHeaderBackButton />
         <ScreenHeaderTitle title="Comida" />
@@ -70,33 +71,15 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
           ]}
         />
       </ScreenHeader>
-      <Animated.ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollViewContent}
-        showsVerticalScrollIndicator={false}
-        onScroll={onScroll}
-        scrollEventThrottle={16}
-      >
-        <SafeArea edges={["left", "right"]}>
-          <View style={styles.nameContainer}>
-            <WithSkeleton
-              loading={loading}
-              skeletonStyle={{
-                height: 22,
-                width: "75%",
-                borderRadius: 8,
-              }}
-            >
-              <Text weight="600" style={styles.name}>
-                {name}
-              </Text>
-            </WithSkeleton>
-          </View>
 
-          <MealMacros loading={loading} totals={totals} />
-          <MealIngredients loading={loading} items={items} />
-        </SafeArea>
-      </Animated.ScrollView>
+      <ScreenMainScrollView
+        scrollViewProps={{ onScroll }}
+        safeAreaProps={{ edges: ["left", "right"] }}
+      >
+        <ScreenMainTitle title={name} loading={loading} />
+        <MealMacros loading={loading} totals={totals} />
+        <MealIngredients loading={loading} items={items} />
+      </ScreenMainScrollView>
 
       <ScreenFooter>
         <ScreenFooterButton variant="outline">
@@ -110,22 +93,6 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
           Hecho
         </ScreenFooterButton>
       </ScreenFooter>
-    </SafeArea>
+    </ScreenMain>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-  },
-  scrollViewContent: {
-    flexGrow: 1,
-    paddingBottom: 24,
-  },
-  name: {
-    fontSize: 22,
-  },
-  nameContainer: {
-    paddingBottom: 16,
-  },
-});
