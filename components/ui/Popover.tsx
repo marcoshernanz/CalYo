@@ -80,15 +80,7 @@ export default function Popover({ trigger, options, width = 160 }: Props) {
                   }}
                   style={styles.button}
                 >
-                  {/* {option.Item} */}
-
-                  <View
-                    style={{
-                      alignItems: "center",
-                      flexDirection: "row",
-                      gap: 6,
-                    }}
-                  >
+                  <View style={styles.optionContainer}>
                     <option.Icon
                       size={16}
                       strokeWidth={2.25}
@@ -130,5 +122,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     height: 48,
     borderRadius: 16,
+  },
+  optionContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 6,
   },
 });
