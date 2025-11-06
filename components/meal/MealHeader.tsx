@@ -24,7 +24,7 @@ import useDeleteMeal from "@/lib/hooks/useDeleteMeal";
 type Props = {
   mealId?: Id<"meals">;
   scrollY: SharedValue<number>;
-}
+};
 
 export default function MealHeader({ mealId, scrollY }: Props) {
   const router = useRouter();
@@ -37,34 +37,18 @@ export default function MealHeader({ mealId, scrollY }: Props) {
 
   const handleDelete = () => {
     if (!mealId || isDeletingRef.current) return;
-
     isDeletingRef.current = true;
-
     router.replace("/app");
-
     void deleteMeal({ id: mealId });
   };
 
   return (
     <SafeArea edges={["top", "left", "right"]} style={styles.safeArea}>
-      <Animated.View
+      {/* <Animated.View
         pointerEvents="none"
         style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
-      />
+      /> */}
       <View style={styles.container}>
-        <Button
-          size="sm"
-          variant="secondary"
-          style={styles.button}
-          onPress={() => router.back()}
-        >
-          <ArrowLeftIcon size={22} />
-        </Button>
-        <View style={styles.title}>
-          <Text size="18" weight="600">
-            Comida
-          </Text>
-        </View>
         <View style={{ position: "relative" }}>
           <Popover
             trigger={
@@ -74,25 +58,10 @@ export default function MealHeader({ mealId, scrollY }: Props) {
             }
             options={[
               {
-                Item: (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      flexDirection: "row",
-                      gap: 6,
-                    }}
-                  >
-                    <TrashIcon
-                      size={16}
-                      strokeWidth={2.25}
-                      color={getColor("red")}
-                    />
-                    <Text size="16" weight="500" color={getColor("red")}>
-                      Eliminar
-                    </Text>
-                  </View>
-                ),
+                Icon: TrashIcon,
+                text: "Eliminar",
                 onPress: handleDelete,
+                destructive: true,
               },
             ]}
           />

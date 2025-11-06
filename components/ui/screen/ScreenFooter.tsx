@@ -15,8 +15,8 @@ export function ScreenFooter({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function ScreenFooterButton(buttonProps: ComponentProps<typeof Button>) {
-  return <Button style={styles.button} {...buttonProps} />;
+export function ScreenFooterButton(props: ComponentProps<typeof Button>) {
+  return <Button style={styles.button} {...props} />;
 }
 
 export function ScreenFooterButtonText({ text }: { text: string }) {
