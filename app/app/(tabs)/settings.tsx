@@ -7,9 +7,12 @@ import { ScrollView, StyleSheet } from "react-native";
 
 export default function ActivityScreen() {
   return (
-    <SafeArea>
-      <ScrollView>
-        <Title style={styles.title}>Ajustes</Title>
+    <SafeArea edges={["top", "left", "right"]}>
+      <Title style={styles.title}>Ajustes</Title>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <SettingsGroup>
           <SettingsItem
             text="Ajustar Macronutrientes"
@@ -30,6 +33,11 @@ export default function ActivityScreen() {
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flexGrow: 1,
+    gap: 12,
+    paddingBottom: 24,
+  },
   title: {
     paddingBottom: 16,
   },

@@ -5,7 +5,7 @@ type ShadowSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 type ShadowOptions = {
   opacity?: number;
   inverted?: boolean;
-}
+};
 
 export default function getShadow(
   size: ShadowSize,
