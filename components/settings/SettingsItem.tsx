@@ -7,7 +7,7 @@ import Text from "../ui/Text";
 type Props = {
   text: string;
   Icon: LucideIcon;
-  onPress: () => void;
+  onPress?: () => void;
   isLast?: boolean;
 };
 
