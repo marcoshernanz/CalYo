@@ -23,12 +23,12 @@ const AnimatedText = Animated.createAnimatedComponent(Text);
 export type TextInputHandle = {
   focus: () => void;
   flashError: () => void;
-}
+};
 
 type Props = {
   ref?: React.Ref<TextInputHandle>;
   label?: string;
-} & TextInputProps
+} & TextInputProps;
 
 export default function TextInput({
   label,
@@ -131,7 +131,6 @@ export default function TextInput({
       onFocus={handleFocus}
       onBlur={handleBlur}
       placeholderTextColor={getColor("mutedForeground")}
-      keyboardAppearance="light"
       selectionColor={getColor("foreground")}
       {...props}
     />
