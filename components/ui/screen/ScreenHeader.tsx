@@ -11,18 +11,35 @@ import getShadow from "@/lib/ui/getShadow";
 import { useRouter } from "expo-router";
 import Popover, { PopoverOption } from "../Popover";
 import { ComponentProps } from "react";
+import Animated, {
+  Extrapolation,
+  interpolate,
+  SharedValue,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 
-export function ScreenHeader({ children }: { children: React.ReactNode }) {
-  // const shadowStyle = useAnimatedStyle(() => ({
-  //   opacity: interpolate(scrollY.value, [0, 24], [0, 1], Extrapolation.CLAMP),
-  // }));
+export function ScreenHeader({
+  children,
+  scrollY,
+}: {
+  children: React.ReactNode;
+  scrollY?: SharedValue<number>;
+}) {
+  const shadowStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(
+      scrollY?.value ?? 0,
+      [0, 24],
+      [0, 1],
+      Extrapolation.CLAMP
+    ),
+  }));
 
   return (
     <SafeArea edges={["top", "left", "right"]} style={styles.safeArea}>
-      {/* <Animated.View
+      <Animated.View
         pointerEvents="none"
         style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
-      /> */}
+      />
       <View style={styles.container}>{children}</View>
     </SafeArea>
   );
