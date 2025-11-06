@@ -1,24 +1,28 @@
 import { Doc } from "@/convex/_generated/dataModel";
-import SafeArea from "../ui/SafeArea";
-import MealItemHeader from "./MealItemHeader";
-import Animated, {
+import {
   useAnimatedScrollHandler,
   useSharedValue,
 } from "react-native-reanimated";
-import { StyleSheet, View } from "react-native";
-import WithSkeleton from "../ui/WithSkeleton";
-import Text from "../ui/Text";
 import MealMacros from "../meal/MealMacros";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
-import MealItemFooter from "./MealItemFooter";
+import {
+  ScreenMain,
+  ScreenMainScrollView,
+  ScreenMainTitle,
+} from "../ui/screen/ScreenMain";
+import {
+  ScreenHeader,
+  ScreenHeaderBackButton,
+  ScreenHeaderTitle,
+} from "../ui/screen/ScreenHeader";
 
 type Props = {
   name?: string;
   mealItem?: Doc<"mealItems">;
-  isLoading: boolean;
+  loading: boolean;
 };
 
-export default function MealItem({ name, mealItem, isLoading }: Props) {
+export default function MealItem({ name, mealItem, loading }: Props) {
   const scrollY = useSharedValue(0);
 
   const onScroll = useAnimatedScrollHandler({
@@ -34,48 +38,19 @@ export default function MealItem({ name, mealItem, isLoading }: Props) {
   const totals = { calories, carbs, protein, fat };
 
   return (
-    <SafeArea edges={[]}>
-      <MealItemHeader scrollY={scrollY} />
-      <Animated.ScrollView
-        contentContainerStyle={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-        onScroll={onScroll}
-        scrollEventThrottle={16}
+    <ScreenMain edges={[]}>
+      <ScreenHeader scrollY={scrollY}>
+        <ScreenHeaderBackButton />
+        <ScreenHeaderTitle title="Ingrediente" />
+      </ScreenHeader>
+
+      <ScreenMainScrollView
+        scrollViewProps={{ onScroll }}
+        safeAreaProps={{ edges: ["left", "right", "bottom"] }}
       >
-        <SafeArea edges={["left", "right"]}>
-          <View style={styles.nameContainer}>
-            <WithSkeleton
-              loading={isLoading}
-              skeletonStyle={{
-                height: 22,
-                width: "75%",
-                borderRadius: 8,
-              }}
-            >
-              <Text weight="600" style={styles.name}>
-                {name}
-              </Text>
-            </WithSkeleton>
-          </View>
-
-          <MealMacros loading={isLoading} totals={totals} />
-        </SafeArea>
-      </Animated.ScrollView>
-
-      <MealItemFooter />
-    </SafeArea>
+        <ScreenMainTitle title={name} loading={loading} />
+        <MealMacros loading={loading} totals={totals} />
+      </ScreenMainScrollView>
+    </ScreenMain>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    flexGrow: 1,
-    paddingBottom: 24,
-  },
-  name: {
-    fontSize: 22,
-  },
-  nameContainer: {
-    paddingBottom: 16,
-  },
-});

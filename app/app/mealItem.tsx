@@ -19,7 +19,7 @@ export default function MealItemScreen() {
     <MealItem
       name={mealItem?.food.description.en}
       mealItem={mealItem ?? undefined}
-      isLoading={isLoading}
+      loading={isLoading}
     />
   );
 }
