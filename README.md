@@ -18,6 +18,7 @@
 - [ ] Fix results
 - [ ] Micro nutrients
 - [ ] Home no meals text
+- [ ] Screen Footer shadow only when not fully scrolled
 
 - [ ] Fix OTP resend
 
