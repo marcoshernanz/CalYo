@@ -8,6 +8,9 @@ import computeCalorieTarget from "../../lib/nutrition/computeCalorieTarget";
 import computeMacroTargets from "../../lib/nutrition/computeMacroTargets";
 import getAge from "../../lib/utils/getAge";
 import { internal } from "../_generated/api";
+import macrosToKcal from "@/lib/utils/macrosToKcal";
+import { WithoutSystemFields } from "convex/server";
+import { Doc } from "../_generated/dataModel";
 
 const updateMacroTargets = mutation({
   args: {
@@ -67,11 +70,16 @@ const updateMacroTargets = mutation({
         bmr,
         maintenanceCalories,
       });
-      const targets = computeMacroTargets({
+      const macroTargets = computeMacroTargets({
         ...args,
         age,
         calorieTarget,
       });
+
+      const targets: WithoutSystemFields<Doc<"profiles">>["targets"] = {
+        calories: macrosToKcal(macroTargets),
+        ...macroTargets,
+      };
 
       await ctx.db.patch(profile._id, { targets });
       return targets;

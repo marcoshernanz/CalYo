@@ -1,4 +1,3 @@
-- [ ] Calorie goal
 - [ ] Settings
 - [ ] Adjust macros screen
 - [ ] Store onboarding data
