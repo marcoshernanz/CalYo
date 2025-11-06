@@ -1,9 +1,15 @@
-import SafeArea from "../../SafeArea";
+import SafeArea from "../SafeArea";
 import { PressableProps, StyleSheet, View } from "react-native";
-import Button from "../../Button";
-import { LucideIcon } from "lucide-react-native";
-import Text from "../../Text";
+import Button from "../Button";
+import {
+  ArrowLeftIcon,
+  EllipsisVerticalIcon,
+  LucideIcon,
+} from "lucide-react-native";
+import Text from "../Text";
 import getShadow from "@/lib/ui/getShadow";
+import { useRouter } from "expo-router";
+import Popover, { PopoverOption } from "../Popover";
 
 export function ScreenHeader({ children }: { children: React.ReactNode }) {
   // const shadowStyle = useAnimatedStyle(() => ({
@@ -46,6 +52,23 @@ export function ScreenHeaderTitle({ title }: { title: string }) {
         {title}
       </Text>
     </View>
+  );
+}
+
+export function ScreenHeaderBackButton() {
+  const router = useRouter();
+
+  return (
+    <ScreenHeaderButton Icon={ArrowLeftIcon} onPress={() => router.back()} />
+  );
+}
+
+export function ScreenHeaderActions({ options }: { options: PopoverOption[] }) {
+  return (
+    <Popover
+      trigger={<ScreenHeaderButton Icon={EllipsisVerticalIcon} />}
+      options={options}
+    />
   );
 }
 
