@@ -1,7 +1,3 @@
-import {
-  useAnimatedScrollHandler,
-  useSharedValue,
-} from "react-native-reanimated";
 import MealHeader from "./MealHeader";
 import MealIngredients from "./MealIngredients";
 import MealMacros from "./MealMacros";
@@ -27,6 +23,7 @@ import {
   ScreenMainScrollView,
   ScreenMainTitle,
 } from "../ui/screen/ScreenMain";
+import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 
 type Props = {
   loading: boolean;
@@ -40,13 +37,8 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
   const router = useRouter();
   const deleteMeal = useDeleteMeal();
   const isDeletingRef = useRef(false);
-  const scrollY = useSharedValue(0);
 
-  const onScroll = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      scrollY.value = event.contentOffset.y;
-    },
-  });
+  const { scrollY, onScroll } = useScrollY();
 
   const handleDelete = () => {
     if (!mealId || isDeletingRef.current) return;
@@ -57,7 +49,7 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
 
   return (
     <ScreenMain edges={[]}>
-      <ScreenHeader>
+      <ScreenHeader scrollY={scrollY}>
         <ScreenHeaderBackButton />
         <ScreenHeaderTitle title="Comida" />
         <ScreenHeaderActions
