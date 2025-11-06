@@ -1,3 +1,4 @@
+- [ ] TextInput
 - [ ] Settings
 - [ ] Adjust macros screen
 - [ ] Store onboarding data
