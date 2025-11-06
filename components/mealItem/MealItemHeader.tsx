@@ -14,7 +14,7 @@ import Animated, {
 
 type Props = {
   scrollY: SharedValue<number>;
-}
+};
 
 export default function MealItemHeader({ scrollY }: Props) {
   const router = useRouter();
@@ -25,11 +25,11 @@ export default function MealItemHeader({ scrollY }: Props) {
 
   return (
     <SafeArea edges={["top", "left", "right"]} style={styles.safeArea}>
+      <Animated.View
+        pointerEvents="none"
+        style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
+      />
       <View style={styles.container}>
-        <Animated.View
-          pointerEvents="none"
-          style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
-        />
         <Button
           size="sm"
           variant="secondary"

@@ -5,7 +5,7 @@ import Title from "@/components/ui/Title";
 import { LogOutIcon, PieChartIcon } from "lucide-react-native";
 import { ScrollView, StyleSheet } from "react-native";
 
-export default function ActivityScreen() {
+export default function SettingsScreen() {
   return (
     <SafeArea edges={["top", "left", "right"]}>
       <Title style={styles.title}>Ajustes</Title>

@@ -17,7 +17,7 @@ type Props = {
   mealId?: React.ComponentProps<typeof MealHeader>["mealId"];
   totals?: React.ComponentProps<typeof MealMacros>["totals"];
   items?: React.ComponentProps<typeof MealIngredients>["items"];
-}
+};
 
 export default function Meal({ loading, name, mealId, totals, items }: Props) {
   const scrollY = useSharedValue(0);
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     flexGrow: 1,
-    paddingBottom: 16,
+    paddingBottom: 24,
   },
   name: {
     fontSize: 22,

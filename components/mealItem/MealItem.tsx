@@ -16,7 +16,7 @@ type Props = {
   name?: string;
   mealItem?: Doc<"mealItems">;
   isLoading: boolean;
-}
+};
 
 export default function MealItem({ name, mealItem, isLoading }: Props) {
   const scrollY = useSharedValue(0);
@@ -37,8 +37,7 @@ export default function MealItem({ name, mealItem, isLoading }: Props) {
     <SafeArea edges={[]}>
       <MealItemHeader scrollY={scrollY} />
       <Animated.ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollViewContent}
+        contentContainerStyle={styles.scrollView}
         showsVerticalScrollIndicator={false}
         onScroll={onScroll}
         scrollEventThrottle={16}
@@ -70,11 +69,8 @@ export default function MealItem({ name, mealItem, isLoading }: Props) {
 
 const styles = StyleSheet.create({
   scrollView: {
-    flex: 1,
-  },
-  scrollViewContent: {
     flexGrow: 1,
-    paddingBottom: 16,
+    paddingBottom: 24,
   },
   name: {
     fontSize: 22,
