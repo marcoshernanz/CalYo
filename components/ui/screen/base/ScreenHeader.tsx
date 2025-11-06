@@ -1,0 +1,75 @@
+import SafeArea from "../../SafeArea";
+import { PressableProps, StyleSheet, View } from "react-native";
+import Button from "../../Button";
+import { LucideIcon } from "lucide-react-native";
+import Text from "../../Text";
+import getShadow from "@/lib/ui/getShadow";
+
+export function ScreenHeader({ children }: { children: React.ReactNode }) {
+  // const shadowStyle = useAnimatedStyle(() => ({
+  //   opacity: interpolate(scrollY.value, [0, 24], [0, 1], Extrapolation.CLAMP),
+  // }));
+
+  return (
+    <SafeArea edges={["top", "left", "right"]} style={styles.safeArea}>
+      {/* <Animated.View
+        pointerEvents="none"
+        style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
+      /> */}
+      <View style={styles.container}>{children}</View>
+    </SafeArea>
+  );
+}
+
+export function ScreenHeaderButton({
+  Icon,
+  ...pressableProps
+}: {
+  Icon: LucideIcon;
+} & PressableProps) {
+  return (
+    <Button
+      size="sm"
+      variant="secondary"
+      style={styles.button}
+      {...pressableProps}
+    >
+      <Icon size={22} />
+    </Button>
+  );
+}
+
+export function ScreenHeaderTitle({ title }: { title: string }) {
+  return (
+    <View style={styles.title}>
+      <Text size="18" weight="600">
+        {title}
+      </Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 0,
+    zIndex: 10,
+    paddingBottom: 16,
+  },
+  container: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    position: "relative",
+  },
+  button: {
+    aspectRatio: 1,
+  },
+  title: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  shadow: {
+    ...getShadow("lg"),
+  },
+});
