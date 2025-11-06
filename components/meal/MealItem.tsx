@@ -1,8 +1,4 @@
 import { Doc } from "@/convex/_generated/dataModel";
-import {
-  useAnimatedScrollHandler,
-  useSharedValue,
-} from "react-native-reanimated";
 import MealMacros from "./MealMacros";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import {
@@ -15,6 +11,7 @@ import {
   ScreenHeaderBackButton,
   ScreenHeaderTitle,
 } from "../ui/screen/ScreenHeader";
+import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 
 type Props = {
   name?: string;
@@ -23,13 +20,7 @@ type Props = {
 };
 
 export default function MealItem({ name, mealItem, loading }: Props) {
-  const scrollY = useSharedValue(0);
-
-  const onScroll = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      scrollY.value = event.contentOffset.y;
-    },
-  });
+  const { scrollY, onScroll } = useScrollY();
 
   const carbs = mealItem?.nutrients?.carbs ?? 0;
   const protein = mealItem?.nutrients?.protein ?? 0;
