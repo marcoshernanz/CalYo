@@ -1,5 +1,5 @@
 import SafeArea from "../SafeArea";
-import { PressableProps, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Button from "../Button";
 import {
   ArrowLeftIcon,
@@ -10,6 +10,7 @@ import Text from "../Text";
 import getShadow from "@/lib/ui/getShadow";
 import { useRouter } from "expo-router";
 import Popover, { PopoverOption } from "../Popover";
+import { ComponentProps } from "react";
 
 export function ScreenHeader({ children }: { children: React.ReactNode }) {
   // const shadowStyle = useAnimatedStyle(() => ({
@@ -29,16 +30,16 @@ export function ScreenHeader({ children }: { children: React.ReactNode }) {
 
 export function ScreenHeaderButton({
   Icon,
-  ...pressableProps
+  ...buttonProps
 }: {
   Icon: LucideIcon;
-} & PressableProps) {
+} & ComponentProps<typeof Button>) {
   return (
     <Button
       size="sm"
       variant="secondary"
       style={styles.button}
-      {...pressableProps}
+      {...buttonProps}
     >
       <Icon size={22} />
     </Button>
