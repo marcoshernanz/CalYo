@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Card from "./Card";
 import getShadow from "@/lib/ui/getShadow";
 import * as PopoverPrimitive from "@rn-primitives/popover";
@@ -6,12 +6,9 @@ import Button from "./Button";
 import { useRef } from "react";
 import { TriggerRef } from "@rn-primitives/popover";
 import Animated, { Easing, Keyframe } from "react-native-reanimated";
-
-type Props = {
-  trigger: React.ReactNode;
-  options: { Item: React.ReactNode; onPress: () => void }[];
-  width?: number;
-}
+import { LucideIcon } from "lucide-react-native";
+import getColor from "@/lib/ui/getColor";
+import Text from "./Text";
 
 const EnterFromTopRight = new Keyframe({
   0: {
@@ -41,6 +38,19 @@ const AnimatedPopoverContent = Animated.createAnimatedComponent(
   PopoverPrimitive.Content
 );
 
+export type PopoverOption = {
+  Icon: LucideIcon;
+  text: string;
+  onPress: () => void;
+  destructive?: boolean;
+};
+
+type Props = {
+  trigger: React.ReactNode;
+  options: PopoverOption[];
+  width?: number;
+};
+
 export default function Popover({ trigger, options, width = 160 }: Props) {
   const popoverTriggerRef = useRef<TriggerRef>(null);
 
@@ -63,14 +73,43 @@ export default function Popover({ trigger, options, width = 160 }: Props) {
                 <Button
                   variant="base"
                   size="sm"
-                  key={`popover-option-${index}`}
+                  key={`popover-option-${option.text}-${index}`}
                   onPress={() => {
                     option.onPress();
                     popoverTriggerRef.current?.close();
                   }}
                   style={styles.button}
                 >
-                  {option.Item}
+                  {/* {option.Item} */}
+
+                  <View
+                    style={{
+                      alignItems: "center",
+                      flexDirection: "row",
+                      gap: 6,
+                    }}
+                  >
+                    <option.Icon
+                      size={16}
+                      strokeWidth={2.25}
+                      color={
+                        option.destructive
+                          ? getColor("red")
+                          : getColor("foreground")
+                      }
+                    />
+                    <Text
+                      size="16"
+                      weight="500"
+                      color={
+                        option.destructive
+                          ? getColor("red")
+                          : getColor("foreground")
+                      }
+                    >
+                      {option.text}
+                    </Text>
+                  </View>
                 </Button>
               ))}
             </Card>
