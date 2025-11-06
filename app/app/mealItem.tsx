@@ -1,4 +1,4 @@
-import MealItem from "@/components/mealItem/MealItem";
+import MealItem from "@/components/meal/MealItem";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";

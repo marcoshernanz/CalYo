@@ -3,7 +3,7 @@ import {
   useAnimatedScrollHandler,
   useSharedValue,
 } from "react-native-reanimated";
-import MealMacros from "../meal/MealMacros";
+import MealMacros from "./MealMacros";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import {
   ScreenMain,
