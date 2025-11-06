@@ -3,6 +3,7 @@ import SettingsItem from "@/components/settings/SettingsItem";
 import SafeArea from "@/components/ui/SafeArea";
 import Title from "@/components/ui/Title";
 import { useAuthContext } from "@/context/AuthContext";
+import { Link } from "expo-router";
 import { LogOutIcon, PieChartIcon } from "lucide-react-native";
 import { ScrollView, StyleSheet } from "react-native";
 
@@ -17,7 +18,9 @@ export default function SettingsScreen() {
         showsVerticalScrollIndicator={false}
       >
         <SettingsGroup>
-          <SettingsItem text="Ajustar Macronutrientes" Icon={PieChartIcon} />
+          <Link href="/app/adjustMacros" asChild prefetch>
+            <SettingsItem text="Ajustar Macronutrientes" Icon={PieChartIcon} />
+          </Link>
         </SettingsGroup>
         <SettingsGroup>
           <SettingsItem
