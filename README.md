@@ -1,7 +1,8 @@
-- [ ] Check for deprecated (eslint)
 - [ ] TextInput - https://s3-figma-hubfile-images-production.figma.com/hub/file/carousel/img/10dbba8cf46da8081af108e743b7d701394c8992
+- [ ] Adjust macros percentages
 - [ ] Settings
 - [ ] Adjust macros screen
+- [ ] Check for deprecated (eslint)
 - [ ] Store onboarding data
 - [ ] Rate limits
 - [ ] Navigation (pressing back from the meal screen)
