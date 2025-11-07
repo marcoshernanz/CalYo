@@ -6,6 +6,7 @@ import {
   TextInput as RNTextInput,
   StyleSheet,
   Platform,
+  View,
 } from "react-native";
 import Animated, {
   interpolateColor,
@@ -110,19 +111,21 @@ export default function TextInput({ ref, label }: Props) {
         <AnimatedText size="12" weight="500" style={animatedStyles.label}>
           {label}
         </AnimatedText>
-        <RNTextInput
-          ref={textInputRef}
-          style={styles.textInput}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          placeholderTextColor={getColor("mutedForeground")}
-          cursorColor={getColor("foreground")}
-          selectionColor={Platform.select({
-            ios: getColor("foreground"),
-            android: getColor("foreground", 0.2),
-          })}
-          selectionHandleColor={getColor("foreground")}
-        />
+        <View pointerEvents="none">
+          <RNTextInput
+            ref={textInputRef}
+            style={styles.textInput}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            placeholderTextColor={getColor("mutedForeground")}
+            cursorColor={getColor("foreground")}
+            selectionColor={Platform.select({
+              ios: getColor("foreground"),
+              android: getColor("foreground", 0.2),
+            })}
+            selectionHandleColor={getColor("foreground")}
+          />
+        </View>
       </AnimatedCard>
     </Button>
   );

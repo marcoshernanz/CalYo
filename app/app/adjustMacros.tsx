@@ -1,4 +1,3 @@
-import Card from "@/components/ui/Card";
 import {
   ScreenFooter,
   ScreenFooterButton,
@@ -14,7 +13,6 @@ import {
 } from "@/components/ui/screen/ScreenMain";
 import TextInput from "@/components/ui/TextInput";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
-import getColor from "@/lib/ui/getColor";
 
 export default function AdjustMacrosScreen() {
   const { scrollY, onScroll } = useScrollY();
@@ -30,6 +28,9 @@ export default function AdjustMacrosScreen() {
         scrollViewProps={{ onScroll }}
         safeAreaProps={{ edges: ["left", "right"] }}
       >
+        <TextInput label="Calorías" />
+        <TextInput label="Calorías" />
+        <TextInput label="Calorías" />
         <TextInput label="Calorías" />
       </ScreenMainScrollView>
 
