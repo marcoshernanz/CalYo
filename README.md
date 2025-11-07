@@ -1,4 +1,5 @@
-- [ ] TextInput
+- [ ] Check for deprecated (eslint)
+- [ ] TextInput - https://s3-figma-hubfile-images-production.figma.com/hub/file/carousel/img/10dbba8cf46da8081af108e743b7d701394c8992
 - [ ] Settings
 - [ ] Adjust macros screen
 - [ ] Store onboarding data
