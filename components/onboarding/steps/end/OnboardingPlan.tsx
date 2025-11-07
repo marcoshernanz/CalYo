@@ -3,7 +3,7 @@ import Description from "@/components/ui/Description";
 import Title from "@/components/ui/Title";
 import getColor from "@/lib/ui/getColor";
 import { useEffect } from "react";
-import { Platform, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import AnimateableText from "react-native-animateable-text";
 import {
   cancelAnimation,
@@ -15,6 +15,7 @@ import {
 import OnboardingStep from "../../OnboardingStep";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import calcRatio from "@/lib/utils/calcRatio";
+import resolveFontFamily from "@/lib/ui/resolveFontFamily";
 
 const carbs = 400;
 const protein = 200;
@@ -70,7 +71,7 @@ type MacroCardProps = {
   ratio: number;
   formatAmount: (amount: number) => string;
   color: string;
-}
+};
 
 function MacroCard({
   name,
@@ -190,8 +191,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     position: "absolute",
     fontWeight: 700,
-    fontFamily: "Inter_700Bold",
+    fontFamily: resolveFontFamily({ weight: 700 }),
     color: getColor("foreground"),
-    ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
+    includeFontPadding: false,
   },
 });

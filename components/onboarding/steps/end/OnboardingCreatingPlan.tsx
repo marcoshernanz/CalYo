@@ -3,7 +3,7 @@ import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
 import getColor from "@/lib/ui/getColor";
 import { CheckIcon, Loader2Icon } from "lucide-react-native";
-import { LayoutChangeEvent, Platform, StyleSheet, View } from "react-native";
+import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import { useEffect, useState } from "react";
 import AnimateableText from "react-native-animateable-text";
 import Animated, {
@@ -22,6 +22,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import OnboardingPlan from "./OnboardingPlan";
+import resolveFontFamily from "@/lib/ui/resolveFontFamily";
 
 const dailyRecommendations = [
   "Calorías",
@@ -55,7 +56,7 @@ const AnimatedLoaderIcon = Animated.createAnimatedComponent(Loader2Icon);
 type LucideSpinnerProps = {
   color: string;
   size?: number;
-}
+};
 
 function LucideSpinner({ color, size = 18 }: LucideSpinnerProps) {
   const rotation = useSharedValue(0);
@@ -282,9 +283,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     fontSize: 48,
     fontWeight: 600,
-    fontFamily: "Inter_600SemiBold",
+    fontFamily: resolveFontFamily({ weight: 600 }),
     color: getColor("foreground"),
-    ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
+    includeFontPadding: false,
   },
   title: {
     textAlign: "center",

@@ -7,7 +7,7 @@ import {
 import kgToLbs from "@/lib/units/kgToLbs";
 import lbsToKg from "@/lib/units/lbsToKg";
 import getColor from "@/lib/ui/getColor";
-import { Platform, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import AnimateableText from "react-native-animateable-text";
 import {
   runOnJS,
@@ -18,6 +18,7 @@ import {
   useSharedValue,
 } from "react-native-reanimated";
 import OnboardingStep from "../../OnboardingStep";
+import resolveFontFamily from "@/lib/ui/resolveFontFamily";
 
 const minKg = 0.1;
 const minLbs = 0.2;
@@ -148,7 +149,7 @@ type WeightChangeRowProps = {
   amount: SharedValue<number>;
   period: string;
   unit: string;
-}
+};
 
 function WeightChangeRow({ sign, amount, period, unit }: WeightChangeRowProps) {
   const animatedProps = {
@@ -192,9 +193,9 @@ const styles = StyleSheet.create({
   tooltip: {
     fontSize: 16,
     fontWeight: 600,
-    fontFamily: "Inter_600SemiBold",
+    fontFamily: resolveFontFamily({ weight: 600 }),
     color: getColor("foreground"),
-    ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
+    includeFontPadding: false,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 999,
@@ -223,9 +224,9 @@ const styles = StyleSheet.create({
   valueNumber: {
     fontSize: 16,
     fontWeight: 600,
-    fontFamily: "Inter_600SemiBold",
+    fontFamily: resolveFontFamily({ weight: 600 }),
     color: getColor("foreground"),
-    ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
+    includeFontPadding: false,
   },
   periodLabel: {
     paddingLeft: 8,

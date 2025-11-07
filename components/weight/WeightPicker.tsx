@@ -1,7 +1,6 @@
 import AnimateableText from "react-native-animateable-text";
 import {
   PixelRatio,
-  Platform,
   StyleSheet,
   useWindowDimensions,
   View,
@@ -25,6 +24,7 @@ import {
 } from "@shopify/react-native-skia";
 import getColor from "@/lib/ui/getColor";
 import { LinearGradient } from "expo-linear-gradient";
+import resolveFontFamily from "@/lib/ui/resolveFontFamily";
 
 type Props = {
   minWeight: number;
@@ -34,7 +34,7 @@ type Props = {
   highlightSide?: "left" | "right";
   formatWeight: (weight: number) => string;
   onChange?: (weight: number) => void;
-}
+};
 
 export default function WeightPicker({
   minWeight,
@@ -203,6 +203,7 @@ export default function WeightPicker({
                   textAlign: TextAlign.Center,
                 };
 
+                // TODO: Check
                 const textStyle: SkTextStyle = {
                   color: Skia.Color(getColor("mutedForeground")),
                   fontFamilies: ["Inter"],
@@ -271,9 +272,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     position: "absolute",
     fontWeight: 700,
-    fontFamily: "Inter_700Bold",
+    fontFamily: resolveFontFamily({ weight: 700 }),
     color: getColor("foreground"),
-    ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
+    includeFontPadding: false,
   },
   leftGradient: {
     position: "absolute",

@@ -2,7 +2,6 @@ import getColor from "@/lib/ui/getColor";
 import resolveFontFamily from "@/lib/ui/resolveFontFamily";
 import React from "react";
 import {
-  Platform,
   Text as RNText,
   TextProps as RNTextProps,
   StyleSheet,
@@ -21,13 +20,7 @@ function TextWrapper(props: RNTextProps) {
   return (
     <RNText
       {...props}
-      style={[
-        {
-          fontFamily,
-          ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
-        },
-        rest,
-      ]}
+      style={[{ fontFamily, includeFontPadding: false }, rest]}
     />
   );
 }
