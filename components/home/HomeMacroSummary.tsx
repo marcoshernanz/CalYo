@@ -233,13 +233,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
   },
-  macroCardIconContainer: {
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 32,
-    height: 32,
-    borderRadius: 999,
-    backgroundColor: getColor("muted"),
-  },
 });
