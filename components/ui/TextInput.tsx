@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Platform,
   View,
+  TextInputProps,
 } from "react-native";
 import Animated, {
   interpolateColor,
@@ -30,9 +31,9 @@ export type TextInputHandle = {
 type Props = {
   ref?: React.Ref<TextInputHandle>;
   label: string;
-};
+} & TextInputProps;
 
-export default function TextInput({ ref, label }: Props) {
+export default function TextInput({ ref, label, ...props }: Props) {
   const textInputRef = useRef<RNTextInput>(null);
   const focused = useSharedValue(0);
   const shake = useSharedValue(0);
@@ -40,12 +41,12 @@ export default function TextInput({ ref, label }: Props) {
 
   const handleFocus = (e: FocusEvent) => {
     focused.value = withTiming(1, { duration: 200 });
-    // onFocus?.(e);
+    props.onFocus?.(e);
   };
 
   const handleBlur = (e: BlurEvent) => {
     focused.value = withTiming(0, { duration: 200 });
-    // onBlur?.(e);
+    props.onBlur?.(e);
   };
 
   useImperativeHandle(
@@ -105,6 +106,7 @@ export default function TextInput({ ref, label }: Props) {
     <Button
       variant="base"
       size="base"
+      style={styles.button}
       onPress={() => textInputRef.current?.focus()}
     >
       <AnimatedCard style={[styles.card, animatedStyles.card]}>
@@ -124,6 +126,7 @@ export default function TextInput({ ref, label }: Props) {
               android: getColor("foreground", 0.2),
             })}
             selectionHandleColor={getColor("foreground")}
+            {...props}
           />
         </View>
       </AnimatedCard>
@@ -132,6 +135,9 @@ export default function TextInput({ ref, label }: Props) {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    flex: 1,
+  },
   card: {
     padding: 12,
     paddingHorizontal: 16,
