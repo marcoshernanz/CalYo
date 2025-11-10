@@ -1,4 +1,3 @@
-- [ ] TextInput - https://s3-figma-hubfile-images-production.figma.com/hub/file/carousel/img/10dbba8cf46da8081af108e743b7d701394c8992
 - [ ] Adjust macros percentages
 - [ ] Settings
 - [ ] Adjust macros screen
@@ -9,7 +8,6 @@
 - [ ] Navigation (remove stack)
 - [ ] Link prefetch
 - [ ] Animate home macro summary
-- [ ] Android 14 over scroll
 - [ ] Scroll safe area to keep status bar visible
 - [ ] react-native-animateable-text Expo SDK 54
 - [ ] Spanish
@@ -17,11 +15,14 @@
 - [ ] Refactor meal and ingredients
 - [ ] import type
 
+- [ ] Fix text input filtering
+- [ ] Android 14 over scroll
+
 - [ ] Settings user card with name and profile picture
 - [ ] Fix results
 - [ ] Micro nutrients
 - [ ] Home no meals text
-- [ ] Screen Footer shadow only when not fully scrolled
+- [ ] Screen Footer shadow only when not fully scrolled
 
 - [ ] Fix OTP resend
 
