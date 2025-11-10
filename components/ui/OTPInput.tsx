@@ -23,13 +23,13 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 export type OTPInputHandle = {
   focus: () => void;
   flashError: () => void;
-}
+};
 
 type Props = {
   ref?: React.Ref<OTPInputHandle>;
   length?: number;
   onFilled?: (code: string) => void;
-} & TextInputProps
+} & TextInputProps;
 
 export default function OTPInput({
   length = 4,
@@ -153,7 +153,7 @@ export default function OTPInput({
       {Array(length)
         .fill(0)
         .map((_, index) => {
-          const char = text[index] || "";
+          const char = text.at(index) ?? "";
           const isFocusedInput =
             Boolean(isFocused) &&
             (index === focusedInputIndex ||

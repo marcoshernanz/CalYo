@@ -17,7 +17,7 @@ type Props = {
   options: string[];
   selectedOption: string;
   onChange: (option: string) => void;
-}
+};
 
 export default function SegmentedControl({
   options,
@@ -45,7 +45,7 @@ export default function SegmentedControl({
       optionsWidths.every((w) => w > 0);
     if (!allMeasured) return;
 
-    const width = optionsWidths[selectedIndex];
+    const width = optionsWidths.at(selectedIndex) ?? 0;
     const left = optionsWidths
       .slice(0, Math.max(0, selectedIndex))
       .reduce((acc, w) => acc + w, 0);
@@ -94,8 +94,12 @@ export default function SegmentedControl({
             key={`option-${option}-${index}`}
             size="sm"
             variant="ghost"
-            onLayout={(event) => { onOptionLayout(event, index); }}
-            onPress={() => { onChange(option); }}
+            onLayout={(event) => {
+              onOptionLayout(event, index);
+            }}
+            onPress={() => {
+              onChange(option);
+            }}
           >
             <OptionLabel
               label={option}
@@ -115,7 +119,7 @@ type OptionLabelProps = {
   label: string;
   index: number;
   selectedIndexSV: SharedValue<number>;
-}
+};
 
 function OptionLabel({ label, index, selectedIndexSV }: OptionLabelProps) {
   const progress = useDerivedValue(() =>

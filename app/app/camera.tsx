@@ -56,8 +56,8 @@ export default function CameraScreen() {
 
       if (result.canceled || !result.assets.length) return;
 
-      const asset = result.assets[0];
-      if (!asset.uri) return;
+      const asset = result.assets.at(0);
+      if (!asset?.uri) return;
 
       isBusyRef.current = true;
       navigateToMeal({ uri: asset.uri, source: "library" });

@@ -24,7 +24,7 @@ export default function HomeScreen() {
     timezoneOffsetMinutes: new Date().getTimezoneOffset(),
   });
   const weekMeals = rawWeekMeals ?? Array.from({ length: 7 }, () => []);
-  const dayMeals = weekMeals[selectedDay] ?? [];
+  const dayMeals = weekMeals.at(selectedDay) ?? [];
 
   const weekTotals = weekMeals.map((meals) =>
     meals.reduce(
@@ -38,7 +38,7 @@ export default function HomeScreen() {
     )
   );
 
-  const dayTotals = weekTotals[selectedDay] ?? {
+  const dayTotals = weekTotals.at(selectedDay) ?? {
     calories: 0,
     protein: 0,
     carbs: 0,

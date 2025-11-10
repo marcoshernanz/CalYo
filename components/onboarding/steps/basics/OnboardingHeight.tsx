@@ -29,7 +29,7 @@ export default function OnboardingHeight() {
     onValueChange: (value: string) => {
       const match = /^(\d+)\s*cm$/.exec(value);
       if (!match) return;
-      const nextHeight = parseInt(match[1]) / 100;
+      const nextHeight = parseInt(match.at(1) ?? "0") / 100;
       setData((prev) => ({ ...prev, height: nextHeight }));
     },
   };
@@ -54,8 +54,8 @@ export default function OnboardingHeight() {
     onValueChange: (value: string) => {
       const match = /^(\d+)\s*ft\s*(\d+)\s*in$/.exec(value);
       if (!match) return;
-      const feet = parseInt(match[1]);
-      const inches = parseInt(match[2]);
+      const feet = parseInt(match.at(1) ?? "0");
+      const inches = parseInt(match.at(2) ?? "0");
       const totalInches = feet * 12 + inches;
       const nextHeight = Math.round(inToM(totalInches) * 100) / 100;
       setData((prev) => ({ ...prev, height: nextHeight }));

@@ -51,7 +51,7 @@ const backfillFdcEmbeddings = internalAction({
     let tokensUsed = 0;
     let batches = 0;
 
-    while (true) {
+    for (;;) {
       const batch = await ctx.runQuery(
         internal.utils.backfillFdcEmbeddings.nextFoodsToEmbed,
         { limit: batchSize }

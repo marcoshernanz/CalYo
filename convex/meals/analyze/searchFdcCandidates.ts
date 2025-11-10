@@ -14,7 +14,7 @@ export type Candidate = {
   nutrientsPer100g: { protein: number; fat: number; carbs: number };
   caloriesPer100g: number;
   score: number;
-}
+};
 
 export const mapResult = internalQuery({
   args: {
@@ -43,7 +43,7 @@ export const mapResult = internalQuery({
 type Params = {
   ctx: ActionCtx;
   detectedItems: DetectedItem[];
-}
+};
 
 export default async function searchFdcCandidates({
   ctx,

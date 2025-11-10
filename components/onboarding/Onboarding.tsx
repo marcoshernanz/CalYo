@@ -113,8 +113,10 @@ export default function Onboarding() {
 
   const shouldSkipStep = useCallback(
     (targetSectionIndex: number, targetStepIndex: number) => {
-      const targetSection = sections[targetSectionIndex];
-      const targetStepElement = targetSection.steps[targetStepIndex];
+      const targetSection = sections.at(targetSectionIndex);
+      if (!targetSection) return false;
+      const targetStepElement = targetSection.steps.at(targetStepIndex);
+      if (!targetStepElement) return false;
 
       return (
         (targetStepElement.type === OnboardingTargetWeight ||
@@ -171,12 +173,12 @@ export default function Onboarding() {
     };
   };
 
-  const currentSection = sections[section];
-  const sectionName = currentSection.name;
-  const sectionSteps = currentSection.steps;
-  const currentStep = currentSection.steps[step];
+  const currentSection = sections.at(section);
+  const sectionName = currentSection?.name ?? "";
+  const sectionSteps = currentSection?.steps ?? [];
+  const currentStep = sectionSteps.at(step);
   const isCurrentStepComplete =
-    stepCompletionCheckers[section]?.[step]?.(data) ?? true;
+    stepCompletionCheckers.at(section)?.at(step)?.(data) ?? true;
   const isNextDisabled = !isCurrentStepComplete;
 
   const handleNext = () => {

@@ -23,14 +23,14 @@ type DayData = {
   carbsRatio: number;
   proteinRatio: number;
   fatRatio: number;
-}
+};
 
 type DaySelectorItemProps = {
   day: DayData;
   isSelected: boolean;
   isToday: boolean;
   onPress: () => void;
-}
+};
 
 function DaySelectorItem({
   day,
@@ -102,7 +102,7 @@ type Props = {
     carbs: number;
     fat: number;
   }[];
-}
+};
 
 export default function HomeDaySelector({
   selectedDay,
@@ -112,17 +112,17 @@ export default function HomeDaySelector({
   const start = startOfWeek(new Date(), { weekStartsOn: 1 });
   const weekDays: DayData[] = Array.from({ length: 7 }, (_, index) => {
     const date = addDays(start, index);
-    const calories = Math.max(2000, macrosToKcal(weekTotals[index]));
+    const calories = Math.max(2000, macrosToKcal(weekTotals.at(index) ?? {}));
     const carbsRatio = calcRatio(
-      macrosToKcal({ carbs: weekTotals[index].carbs }),
+      macrosToKcal({ carbs: weekTotals.at(index)?.carbs }),
       calories
     );
     const proteinRatio = calcRatio(
-      macrosToKcal({ protein: weekTotals[index].protein }),
+      macrosToKcal({ protein: weekTotals.at(index)?.protein }),
       calories
     );
     const fatRatio = calcRatio(
-      macrosToKcal({ fat: weekTotals[index].fat }),
+      macrosToKcal({ fat: weekTotals.at(index)?.fat }),
       calories
     );
 
@@ -144,7 +144,9 @@ export default function HomeDaySelector({
           day={day}
           isSelected={selectedDay === day.weekDay}
           isToday={day.weekDay === (getDay(new Date()) + 6) % 7}
-          onPress={() => { setSelectedDay(day.weekDay); }}
+          onPress={() => {
+            setSelectedDay(day.weekDay);
+          }}
         />
       ))}
     </View>

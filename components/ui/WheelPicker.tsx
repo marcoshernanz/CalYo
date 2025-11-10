@@ -50,7 +50,7 @@ export default function WheelPicker({
       0,
       Math.min(centeredIndex, paddedData.length - 1)
     );
-    const value = paddedData[clampedIndex];
+    const value = paddedData.at(clampedIndex);
     if (value && onValueChange) {
       onValueChange(value);
     }

@@ -56,7 +56,7 @@ type Props = {
   strokeWidth?: number;
   color?: string | string[];
   trackColor?: string;
-}
+};
 
 export default function CircularProgress({
   progress,
@@ -112,7 +112,7 @@ export default function CircularProgress({
               progress={p}
               previousProgresses={progresses.slice(0, i)}
               strokeWidth={strokeWidth}
-              color={colors[i] ?? colors[0]}
+              color={colors.at(i) ?? colors.at(0) ?? getColor("foreground")}
             />
           ))}
         </Group>

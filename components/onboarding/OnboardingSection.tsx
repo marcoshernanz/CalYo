@@ -28,7 +28,7 @@ const sections = [
 
 type Props = {
   section: number;
-}
+};
 
 export default function OnboardingSection({ section: sectionNumber }: Props) {
   const [positions, setPositions] = useState<{ x: number; y: number }[]>([]);
@@ -75,7 +75,9 @@ export default function OnboardingSection({ section: sectionNumber }: Props) {
           <View
             key={`${section.title}-${index}`}
             style={styles.sectionContainer}
-            onLayout={(event) => { handleRowLayout(index, event); }}
+            onLayout={(event) => {
+              handleRowLayout(index, event);
+            }}
           >
             <View
               style={[

@@ -6,7 +6,7 @@ type Params = {
   weight: number;
   liftingExperience: OnboardingValues["experience"];
   cardioExperience: OnboardingValues["experience"];
-}
+};
 
 const workoutsMap: Record<OnboardingValues["weeklyWorkouts"], number> = {
   "0-2": 1.5,

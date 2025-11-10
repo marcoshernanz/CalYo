@@ -146,14 +146,17 @@ export default function OnboardingCreatingPlan() {
 
     const runStages = async () => {
       for (let i = 0; i < stageConfiguration.length; i++) {
-        const { descriptionIndex, target } = stageConfiguration[i];
+        const { descriptionIndex, target } = stageConfiguration.at(i) ?? {
+          descriptionIndex: descriptions.length - 1,
+          target: 100,
+        };
 
         setCurrentDescriptionIndex(descriptionIndex);
         setActiveRecommendationIndex(
           i < dailyRecommendations.length ? i : null
         );
 
-        await animateTo(target, stageDurations[i]);
+        await animateTo(target, stageDurations.at(i) ?? 2000);
 
         setCompletedRecommendations((prev) => {
           const next = Math.min(i + 1, dailyRecommendations.length);
@@ -200,7 +203,7 @@ export default function OnboardingCreatingPlan() {
           exiting={FadeOutDown.duration(350)}
         >
           <Description style={styles.description}>
-            {descriptions[currentDescriptionIndex]}
+            {descriptions.at(currentDescriptionIndex) ?? ""}
           </Description>
         </Animated.View>
         <View style={styles.recommendationsContainer}>

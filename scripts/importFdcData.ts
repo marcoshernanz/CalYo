@@ -208,7 +208,7 @@ async function importFdcData(jsonPath: string) {
 }
 
 async function main() {
-  const jsonPath = process.argv[2];
+  const jsonPath = process.argv.at(2);
   if (!jsonPath) {
     console.error("Pass path to the bulk JSON file.");
     process.exit(1);
