@@ -77,7 +77,7 @@ export function ScreenHeaderBackButton() {
   const router = useRouter();
 
   return (
-    <ScreenHeaderButton Icon={ArrowLeftIcon} onPress={() => router.back()} />
+    <ScreenHeaderButton Icon={ArrowLeftIcon} onPress={() => { router.back(); }} />
   );
 }
 

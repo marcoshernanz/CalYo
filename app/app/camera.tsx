@@ -76,7 +76,7 @@ export default function CameraScreen() {
     }
   }, [permission?.granted, requestPermission]);
 
-  if (!permission || !permission.granted) {
+  if (!permission?.granted) {
     return null;
   }
 
@@ -109,7 +109,7 @@ export default function CameraScreen() {
           variant="base"
           size="base"
           style={styles.button}
-          onPress={() => setEnableTorch((enableTorch) => !enableTorch)}
+          onPress={() => { setEnableTorch((enableTorch) => !enableTorch); }}
         >
           {enableTorch ? (
             <FlashlightOffIcon color="white" />

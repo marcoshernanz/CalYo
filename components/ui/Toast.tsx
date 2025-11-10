@@ -35,13 +35,13 @@ class ToastEmitter {
 
   on(handler: (options: ToastOptions) => void) {
     this.handlers.push(handler);
-    return () => this.off(handler);
+    return () => { this.off(handler); };
   }
   off(handler: (options: ToastOptions) => void) {
     this.handlers = this.handlers.filter((h) => h !== handler);
   }
   emit(options: ToastOptions) {
-    this.handlers.forEach((h) => h(options));
+    this.handlers.forEach((h) => { h(options); });
   }
 }
 
@@ -65,7 +65,7 @@ export default function ToastProvider() {
 
       const duration = 3000;
       setTimeout(
-        () => setToasts((current) => current.filter((t) => t.id !== id)),
+        () => { setToasts((current) => current.filter((t) => t.id !== id)); },
         duration
       );
     });
@@ -80,7 +80,7 @@ export default function ToastProvider() {
           key={toast.id}
           {...toast}
           onDismiss={() =>
-            setToasts((current) => current.filter((t) => t.id !== toast.id))
+            { setToasts((current) => current.filter((t) => t.id !== toast.id)); }
           }
         />
       ))}

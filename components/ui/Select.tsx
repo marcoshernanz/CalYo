@@ -109,7 +109,7 @@ function OptionItem({
         <View style={styles.iconContainer}>
           {React.isValidElement(Icon)
             ? Icon
-            : React.createElement(Icon as ComponentType<IconComponentProps>, {
+            : React.createElement(Icon, {
                 color: getColor("foreground"),
               })}
         </View>

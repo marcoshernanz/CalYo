@@ -94,8 +94,8 @@ export default function SegmentedControl({
             key={`option-${option}-${index}`}
             size="sm"
             variant="ghost"
-            onLayout={(event) => onOptionLayout(event, index)}
-            onPress={() => onChange(option)}
+            onLayout={(event) => { onOptionLayout(event, index); }}
+            onPress={() => { onChange(option); }}
           >
             <OptionLabel
               label={option}

@@ -36,7 +36,7 @@ export default function Skeleton({ style }: Props) {
     const bandW = Math.max(48, width * bandFraction);
     translateX.value = -bandW;
     translateX.value = withRepeat(withTiming(width, { duration }), -1, false);
-    return () => cancelAnimation(translateX);
+    return () => { cancelAnimation(translateX); };
   }, [width, translateX]);
 
   const bandW = Math.max(48, width * bandFraction);

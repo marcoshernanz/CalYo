@@ -85,7 +85,7 @@ function MacroCard({
 
   const animatedProps = {
     weightText: useAnimatedProps(() => ({
-      text: `${formatAmount(Math.round(amount * progress.value))}`,
+      text: formatAmount(Math.round(amount * progress.value)),
     })),
   };
 

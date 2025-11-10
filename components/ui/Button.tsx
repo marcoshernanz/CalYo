@@ -258,7 +258,7 @@ export default function Button({
           {...textProps}
           style={composedTextStyle}
         >
-          {children as React.ReactNode}
+          {children}
         </Text>
       ) : (
         children

@@ -29,7 +29,7 @@ export default function OnboardingHeight() {
     data: metricData,
     initialValue: `${metricInitialHeightCm} cm`,
     onValueChange: (value: string) => {
-      const match = value.match(/^(\d+)\s*cm$/);
+      const match = /^(\d+)\s*cm$/.exec(value);
       if (!match) return;
       const nextHeight = parseInt(match[1]) / 100;
       setData((prev) => ({ ...prev, height: nextHeight }));
@@ -54,7 +54,7 @@ export default function OnboardingHeight() {
     data: imperialData,
     initialValue: `${initialImperial.feet} ft ${initialImperial.inches} in`,
     onValueChange: (value: string) => {
-      const match = value.match(/^(\d+)\s*ft\s*(\d+)\s*in$/);
+      const match = /^(\d+)\s*ft\s*(\d+)\s*in$/.exec(value);
       if (!match) return;
       const feet = parseInt(match[1]);
       const inches = parseInt(match[2]);

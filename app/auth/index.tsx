@@ -46,7 +46,7 @@ export default function AuthScreen() {
         <View style={styles.image}></View>
       </View>
       <View style={styles.footerContainer}>
-        <Button size="lg" onPress={() => router.navigate("/auth/onboarding")}>
+        <Button size="lg" onPress={() => { router.navigate("/auth/onboarding"); }}>
           Comenzar
         </Button>
         <View style={styles.footerText}>

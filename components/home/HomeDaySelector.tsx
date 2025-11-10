@@ -144,7 +144,7 @@ export default function HomeDaySelector({
           day={day}
           isSelected={selectedDay === day.weekDay}
           isToday={day.weekDay === (getDay(new Date()) + 6) % 7}
-          onPress={() => setSelectedDay(day.weekDay)}
+          onPress={() => { setSelectedDay(day.weekDay); }}
         />
       ))}
     </View>

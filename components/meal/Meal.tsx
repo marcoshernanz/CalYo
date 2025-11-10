@@ -81,7 +81,7 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
           />
           <ScreenFooterButtonText text="Corregir" />
         </ScreenFooterButton>
-        <ScreenFooterButton onPress={() => router.replace("/app")}>
+        <ScreenFooterButton onPress={() => { router.replace("/app"); }}>
           Hecho
         </ScreenFooterButton>
       </ScreenFooter>

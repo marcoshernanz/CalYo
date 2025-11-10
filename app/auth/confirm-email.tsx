@@ -91,7 +91,7 @@ export default function ConfirmEmailScreen() {
           size="sm"
           variant="secondary"
           style={styles.backButton}
-          onPress={() => router.back()}
+          onPress={() => { router.back(); }}
         >
           <ArrowLeftIcon size={22} />
         </Button>
