@@ -76,7 +76,9 @@ function CenterAddButton() {
         style={{ height: size, width: size, ...getShadow("sm") }}
         hitSlop={10}
         accessibilityLabel="Add"
-        onPress={() => router.navigate("/app/camera")}
+        onPress={() => {
+          router.navigate("/app/camera");
+        }}
       >
         <PlusIcon color={getColor("background")} size={28} />
       </Button>

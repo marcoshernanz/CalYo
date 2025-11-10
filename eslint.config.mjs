@@ -10,11 +10,17 @@ export default defineConfig(
   eslint.configs.recommended,
   expoConfig,
   reactCompiler.configs.recommended,
-  tseslintConfigs.strict,
-  tseslintConfigs.stylistic,
+  tseslintConfigs.strictTypeChecked,
+  tseslintConfigs.stylisticTypeChecked,
   {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+      },
+    },
     rules: {
       "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+      "@typescript-eslint/no-deprecated": "error",
     },
   }
 );

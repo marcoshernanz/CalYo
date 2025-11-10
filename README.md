@@ -1,4 +1,3 @@
-- [ ] Check for deprecated (eslint)
 - [ ] Home header scroll
 
 - [ ] Settings
