@@ -7,13 +7,11 @@ import OnboardingStep from "../../OnboardingStep";
 import mToIn from "@/lib/units/mToIn";
 import inToM from "@/lib/units/inToM";
 
-const defaultHeight = 1.7;
-
 export default function OnboardingHeight() {
   const dimensions = useWindowDimensions();
   const { data, setData } = useOnboardingContext();
 
-  const heightCm = (data.height ?? defaultHeight) * 100;
+  const heightCm = data.height * 100;
 
   const metricMinHeightCm = 120;
   const metricMaxHeightCm = 240;

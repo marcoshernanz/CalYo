@@ -26,7 +26,9 @@ export default function SettingsScreen() {
           <SettingsItem
             text="Cerrar Sesión"
             Icon={LogOutIcon}
-            onPress={signOut}
+            onPress={() => {
+              void signOut();
+            }}
           />
         </SettingsGroup>
       </ScrollView>

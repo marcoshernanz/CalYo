@@ -8,7 +8,6 @@ import {
 import Animated, {
   interpolate,
   LinearTransition,
-  runOnJS,
   SlideInUp,
   SlideOutUp,
   useAnimatedStyle,
@@ -20,28 +19,33 @@ import Text from "./Text";
 import uuidv4 from "@/lib/utils/uuidv4";
 import getColor from "@/lib/ui/getColor";
 import getShadow from "@/lib/ui/getShadow";
+import { scheduleOnRN } from "react-native-worklets";
 
 export type ToastOptions = {
   text: string;
   variant?: "default" | "success" | "error";
-}
+};
 
 type ToastItemType = {
   id: string;
-} & ToastOptions
+} & ToastOptions;
 
 class ToastEmitter {
   private handlers: ((options: ToastOptions) => void)[] = [];
 
   on(handler: (options: ToastOptions) => void) {
     this.handlers.push(handler);
-    return () => { this.off(handler); };
+    return () => {
+      this.off(handler);
+    };
   }
   off(handler: (options: ToastOptions) => void) {
     this.handlers = this.handlers.filter((h) => h !== handler);
   }
   emit(options: ToastOptions) {
-    this.handlers.forEach((h) => { h(options); });
+    this.handlers.forEach((h) => {
+      h(options);
+    });
   }
 }
 
@@ -64,10 +68,9 @@ export default function ToastProvider() {
       setToasts((current) => [...current, toast]);
 
       const duration = 3000;
-      setTimeout(
-        () => { setToasts((current) => current.filter((t) => t.id !== id)); },
-        duration
-      );
+      setTimeout(() => {
+        setToasts((current) => current.filter((t) => t.id !== id));
+      }, duration);
     });
 
     return unsubscribe;
@@ -79,9 +82,9 @@ export default function ToastProvider() {
         <ToastItem
           key={toast.id}
           {...toast}
-          onDismiss={() =>
-            { setToasts((current) => current.filter((t) => t.id !== toast.id)); }
-          }
+          onDismiss={() => {
+            setToasts((current) => current.filter((t) => t.id !== toast.id));
+          }}
         />
       ))}
     </GestureHandlerRootView>
@@ -106,7 +109,7 @@ function ToastItem({
     })
     .onEnd((event) => {
       if (event.translationY < -20) {
-        runOnJS(onDismiss)();
+        scheduleOnRN(onDismiss);
       } else {
         translateY.value = withSpring(0, { damping: 15, stiffness: 150 });
       }

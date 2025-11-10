@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 function TextWrapper(props: RNTextProps) {
-  const flat = StyleSheet.flatten<TextStyle>(props.style) ?? {};
+  const flat = StyleSheet.flatten<TextStyle>(props.style);
   const fontFamily = resolveFontFamily({
     weight: flat.fontWeight,
     style: flat.fontStyle,
@@ -62,7 +62,7 @@ export default function Text({
   color = getColor("foreground"),
   ...rest
 }: TextProps) {
-  const fontSize = size ? parseInt(size) : 18;
+  const fontSize = Number(size);
   return (
     <TextWrapper
       {...rest}

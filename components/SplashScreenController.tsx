@@ -47,7 +47,7 @@ export function SplashScreenController() {
   });
 
   if (!isAuthLoading && fontsLoaded) {
-    SplashScreen.hideAsync();
+    void SplashScreen.hideAsync();
   }
 
   return null;

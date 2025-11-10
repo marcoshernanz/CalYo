@@ -13,13 +13,13 @@ import Animated, {
   FadeInDown,
   FadeOut,
   FadeOutDown,
-  runOnJS,
   useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import OnboardingPlan from "./OnboardingPlan";
 import resolveFontFamily from "@/lib/ui/resolveFontFamily";
@@ -138,7 +138,7 @@ export default function OnboardingCreatingPlan() {
           { duration, easing: Easing.inOut(Easing.ease) },
           (finished) => {
             if (finished && !isCancelled) {
-              runOnJS(resolve)();
+              scheduleOnRN(resolve);
             }
           }
         );
@@ -146,10 +146,6 @@ export default function OnboardingCreatingPlan() {
 
     const runStages = async () => {
       for (let i = 0; i < stageConfiguration.length; i++) {
-        if (isCancelled) {
-          break;
-        }
-
         const { descriptionIndex, target } = stageConfiguration[i];
 
         setCurrentDescriptionIndex(descriptionIndex);
@@ -159,27 +155,21 @@ export default function OnboardingCreatingPlan() {
 
         await animateTo(target, stageDurations[i]);
 
-        if (isCancelled) {
-          break;
-        }
-
         setCompletedRecommendations((prev) => {
           const next = Math.min(i + 1, dailyRecommendations.length);
           return prev === next ? prev : next;
         });
 
-        if (!isCancelled && i === stageConfiguration.length - 1) {
+        if (i === stageConfiguration.length - 1) {
           setActiveRecommendationIndex(null);
           setCurrentDescriptionIndex(descriptions.length - 1);
         }
       }
 
-      if (!isCancelled) {
-        setData((prev) => ({ ...prev, hasCreatedPlan: true }));
-      }
+      setData((prev) => ({ ...prev, hasCreatedPlan: true }));
     };
 
-    runStages();
+    void runStages();
 
     return () => {
       isCancelled = true;

@@ -54,10 +54,10 @@ export default function CameraScreen() {
         allowsMultipleSelection: false,
       });
 
-      if (result.canceled || !result.assets?.length) return;
+      if (result.canceled || !result.assets.length) return;
 
       const asset = result.assets[0];
-      if (!asset?.uri) return;
+      if (!asset.uri) return;
 
       isBusyRef.current = true;
       navigateToMeal({ uri: asset.uri, source: "library" });
@@ -70,7 +70,7 @@ export default function CameraScreen() {
 
   useEffect(() => {
     if (!permission?.granted) {
-      requestPermission().catch((error) => {
+      requestPermission().catch((error: unknown) => {
         console.error("Error requesting camera permission:", error);
       });
     }
@@ -93,7 +93,9 @@ export default function CameraScreen() {
           variant="base"
           size="base"
           style={styles.button}
-          onPress={handleUpload}
+          onPress={() => {
+            void handleUpload();
+          }}
         >
           <ImageIcon color="white" />
         </Button>
@@ -102,14 +104,18 @@ export default function CameraScreen() {
             variant="base"
             size="base"
             style={styles.shutterInner}
-            onPress={takePhoto}
+            onPress={() => {
+              void takePhoto;
+            }}
           />
         </View>
         <Button
           variant="base"
           size="base"
           style={styles.button}
-          onPress={() => { setEnableTorch((enableTorch) => !enableTorch); }}
+          onPress={() => {
+            setEnableTorch((enableTorch) => !enableTorch);
+          }}
         >
           {enableTorch ? (
             <FlashlightOffIcon color="white" />

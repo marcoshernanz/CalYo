@@ -16,7 +16,7 @@ type Props = {
   initialValue?: string;
   itemStyle?: ViewStyle;
   ref?: React.Ref<FlatList<string>>;
-}
+};
 
 export default function WheelPicker({
   data,
@@ -29,11 +29,10 @@ export default function WheelPicker({
   const itemHeight = 40;
   const containerHeight = itemHeight * numVisibleItems;
 
-  const paddedData = [
-    ...Array(Math.floor(numVisibleItems / 2)).fill(""),
-    ...data,
-    ...Array(Math.floor(numVisibleItems / 2)).fill(""),
-  ];
+  const paddingCount = Math.floor(numVisibleItems / 2);
+  const paddingItems: string[] = Array.from({ length: paddingCount }, () => "");
+
+  const paddedData: string[] = [...paddingItems, ...data, ...paddingItems];
 
   const initialScrollIndex = initialValue ? data.indexOf(initialValue) : 0;
   const safeInitialScrollIndex =

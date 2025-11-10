@@ -12,7 +12,7 @@ import getColor from "@/lib/ui/getColor";
 
 type Props = {
   onEmailLogin?: () => void;
-}
+};
 
 const redirectTo = makeRedirectUri();
 
@@ -54,7 +54,7 @@ export default function SignInButtons({ onEmailLogin }: Props) {
           size="lg"
           variant="primary"
           style={styles.button}
-          onPress={() => handleLogin("apple")}
+          onPress={() => void handleLogin("apple")}
         >
           <FontAwesome5 name="apple" size={28} color={getColor("background")} />
           <Text
@@ -71,7 +71,7 @@ export default function SignInButtons({ onEmailLogin }: Props) {
         size="lg"
         variant={Platform.OS === "android" ? "primary" : "outline"}
         style={styles.button}
-        onPress={() => handleLogin("google")}
+        onPress={() => void handleLogin("google")}
       >
         <GoogleLogo height={24} width={24} />
         <Text

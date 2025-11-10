@@ -22,9 +22,9 @@ type Props = {
 export default function MealItem({ name, mealItem, loading }: Props) {
   const { scrollY, onScroll } = useScrollY();
 
-  const carbs = mealItem?.nutrients?.carbs ?? 0;
-  const protein = mealItem?.nutrients?.protein ?? 0;
-  const fat = mealItem?.nutrients?.fat ?? 0;
+  const carbs = mealItem?.nutrients.carbs ?? 0;
+  const protein = mealItem?.nutrients.protein ?? 0;
+  const fat = mealItem?.nutrients.fat ?? 0;
   const calories = macrosToKcal({ carbs, protein, fat });
   const totals = { calories, carbs, protein, fat };
 

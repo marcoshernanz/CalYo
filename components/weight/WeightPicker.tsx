@@ -22,6 +22,7 @@ import {
   TextAlign,
   useFonts,
 } from "@shopify/react-native-skia";
+import type { DataModule } from "@shopify/react-native-skia";
 import getColor from "@/lib/ui/getColor";
 import { LinearGradient } from "expo-linear-gradient";
 import resolveFontFamily from "@/lib/ui/resolveFontFamily";
@@ -112,15 +113,16 @@ export default function WeightPicker({
     onChange?.(weight.value);
   };
 
+  const interRegular =
+    require("@/node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf") as DataModule;
+
   const fontManager = useFonts({
-    Inter: [
-      require("@/node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf"),
-    ],
+    Inter: [interRegular],
   });
 
   const animatedProps = {
     weightText: useAnimatedProps(() => ({
-      text: String(formatWeight(weight.value)),
+      text: formatWeight(weight.value),
     })),
   };
 
@@ -223,7 +225,7 @@ export default function WeightPicker({
                 return paragraph;
               })();
 
-              const paragraphHeight = paragraph?.getHeight() || 0;
+              const paragraphHeight = paragraph?.getHeight() ?? 0;
 
               return (
                 <Paragraph

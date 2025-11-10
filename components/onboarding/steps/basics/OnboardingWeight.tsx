@@ -6,12 +6,10 @@ import lbsToKg from "@/lib/units/lbsToKg";
 import { StyleSheet, View } from "react-native";
 import OnboardingStep from "../../OnboardingStep";
 
-const defaultWeight = 80;
-
 export default function OnboardingWeight() {
   const { data, setData } = useOnboardingContext();
 
-  const weight = data.weight ?? defaultWeight;
+  const weight = data.weight;
 
   const metricMinWeight = 30;
   const metricMaxWeight = 300;

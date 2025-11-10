@@ -43,9 +43,7 @@ export default function Button({
   ...restPressable
 }: Props) {
   const isFunctionChild = typeof children === "function";
-  const childArray = isFunctionChild
-    ? []
-    : (React.Children.toArray(children) ?? []);
+  const childArray = isFunctionChild ? [] : React.Children.toArray(children);
   const shouldWrapInText =
     !isFunctionChild &&
     childArray.length > 0 &&
@@ -153,8 +151,8 @@ export default function Button({
     base: {},
   };
 
-  const variantStyle = variantStyles[variant] ?? {};
-  const sizeStyle = sizeStyles[size] ?? {};
+  const variantStyle = variantStyles[variant];
+  const sizeStyle = sizeStyles[size];
 
   const composedContainerStyle: PressableProps["style"] =
     typeof incomingStyle === "function"

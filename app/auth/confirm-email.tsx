@@ -48,7 +48,7 @@ export default function ConfirmEmailScreen() {
   const startResendCountdown = () => {
     if (resendIn > 0) return;
 
-    resendTimerRef.current?.stop?.();
+    resendTimerRef.current?.stop();
 
     setResendIn(59);
     const timer = createAccurateInterval(() => {
@@ -76,7 +76,7 @@ export default function ConfirmEmailScreen() {
 
   useEffect(() => {
     return () => {
-      resendTimerRef.current?.stop?.();
+      resendTimerRef.current?.stop();
     };
   }, []);
 
@@ -91,7 +91,9 @@ export default function ConfirmEmailScreen() {
           size="sm"
           variant="secondary"
           style={styles.backButton}
-          onPress={() => { router.back(); }}
+          onPress={() => {
+            router.back();
+          }}
         >
           <ArrowLeftIcon size={22} />
         </Button>
@@ -106,7 +108,11 @@ export default function ConfirmEmailScreen() {
             </Description>
           </Header>
 
-          <OTPInput ref={inputRef} onFilled={handleSubmit} autoFocus />
+          <OTPInput
+            ref={inputRef}
+            onFilled={(code) => void handleSubmit(code)}
+            autoFocus
+          />
 
           <View style={styles.footerText}>
             <Description>¿No has recibido el código?</Description>
@@ -114,7 +120,7 @@ export default function ConfirmEmailScreen() {
               size="md"
               variant="text"
               disabled={resendIn > 0}
-              onPress={handleResend}
+              onPress={() => void handleResend()}
               textProps={{
                 style: {
                   color: resendIn > 0 ? getColor("mutedForeground") : undefined,

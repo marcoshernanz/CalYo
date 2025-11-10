@@ -30,7 +30,7 @@ import OnboardingCreateAccount from "./steps/end/OnboardingCreateAccount";
 type SectionType = {
   name: string;
   steps: React.ReactElement[];
-}
+};
 
 const sections: SectionType[] = [
   {
@@ -114,9 +114,7 @@ export default function Onboarding() {
   const shouldSkipStep = useCallback(
     (targetSectionIndex: number, targetStepIndex: number) => {
       const targetSection = sections[targetSectionIndex];
-      if (!targetSection) return false;
       const targetStepElement = targetSection.steps[targetStepIndex];
-      if (!targetStepElement) return false;
 
       return (
         (targetStepElement.type === OnboardingTargetWeight ||

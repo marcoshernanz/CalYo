@@ -18,9 +18,9 @@ import ToastProvider from "./ui/Toast";
 
 type Props = {
   children: React.ReactNode;
-}
+};
 
-SplashScreen.preventAutoHideAsync();
+void SplashScreen.preventAutoHideAsync();
 
 const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL;
 if (!convexUrl) {

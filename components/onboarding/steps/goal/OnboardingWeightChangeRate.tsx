@@ -10,13 +10,13 @@ import getColor from "@/lib/ui/getColor";
 import { StyleSheet, View } from "react-native";
 import AnimateableText from "react-native-animateable-text";
 import {
-  runOnJS,
   SharedValue,
   useAnimatedProps,
   useAnimatedReaction,
   useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 import OnboardingStep from "../../OnboardingStep";
 import resolveFontFamily from "@/lib/ui/resolveFontFamily";
 
@@ -90,7 +90,7 @@ export default function OnboardingWeightChangeRate() {
     () => changeRate.value,
     (value) => {
       const roundedValue = Math.round(value * 10) / 10;
-      runOnJS(syncWeightChangeRate)(roundedValue, isMetric, setData);
+      scheduleOnRN(syncWeightChangeRate, roundedValue, isMetric, setData);
     },
     [isMetric, setData]
   );
@@ -117,7 +117,7 @@ export default function OnboardingWeightChangeRate() {
             { amount: monthlyRate, period: "Por Mes" },
           ].map(({ amount, period }) => (
             <WeightChangeRow
-              key={`row-${amount}-${period}`}
+              key={`row-${period}`}
               sign={changeSign}
               amount={amount}
               period={period}

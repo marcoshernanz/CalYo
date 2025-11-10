@@ -11,12 +11,12 @@ type Item = {
   name: string;
   calories: number;
   grams: number;
-}
+};
 
 type Props = {
   loading: boolean;
   items?: Item[];
-}
+};
 
 const placeholderRows = 4;
 const nameSkeletonWidths: DimensionValue[] = ["75%", "65%", "75%", "65%"];
@@ -49,7 +49,7 @@ export default function MealIngredients({ items = [], loading }: Props) {
 
       <View style={styles.ingredientsContainer}>
         {Array.from({ length: count }).map((_, i) => {
-          const item: Item | undefined = items[i];
+          const item: Item | undefined = items.at(i);
           const key = item
             ? `ingredient-${item.name}-${i}`
             : `ingredient-skeleton-${i}`;

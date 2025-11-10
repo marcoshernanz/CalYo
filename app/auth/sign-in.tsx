@@ -45,7 +45,9 @@ export default function SignInScreen() {
           size="sm"
           variant="secondary"
           style={styles.backButton}
-          onPress={() => { router.back(); }}
+          onPress={() => {
+            router.back();
+          }}
         >
           <ArrowLeftIcon size={22} />
         </Button>
@@ -62,7 +64,7 @@ export default function SignInScreen() {
             autoFocus
           />
         </View>
-        <Button onPress={handleSubmit}>Continuar</Button>
+        <Button onPress={() => void handleSubmit()}>Continuar</Button>
       </KeyboardAvoidingView>
     </SafeArea>
   );

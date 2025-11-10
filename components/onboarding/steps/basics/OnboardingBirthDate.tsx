@@ -5,13 +5,11 @@ import { format, getDaysInMonth } from "date-fns";
 import { es } from "date-fns/locale";
 import OnboardingStep from "../../OnboardingStep";
 
-const defaultDate = new Date(2000, 6, 15);
-
 export default function OnboardingBirthDate() {
   const dimensions = useWindowDimensions();
   const { data, setData } = useOnboardingContext();
 
-  const date = data?.bornDate ?? defaultDate;
+  const date = data.bornDate;
 
   const currentYear = new Date().getFullYear();
   const startYear = 1900;

@@ -9,6 +9,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useWindowDimensions } from "react-native";
 import { ImageManipulator, SaveFormat, ImageRef } from "expo-image-manipulator";
 import { Toast } from "@/components/ui/Toast";
+import { z } from "zod";
 
 export default function MealScreen() {
   const dimensions = useWindowDimensions();
@@ -54,10 +55,6 @@ export default function MealScreen() {
         return uri;
       } finally {
         loaderContext.release();
-      }
-
-      if (!baseImage) {
-        return uri;
       }
 
       let croppedImage: ImageRef | null = null;
@@ -113,10 +110,6 @@ export default function MealScreen() {
           cropContext.release();
         }
 
-        if (!croppedImage) {
-          return uri;
-        }
-
         const result = await croppedImage.saveAsync({
           format: SaveFormat.PNG,
         });
@@ -129,9 +122,7 @@ export default function MealScreen() {
         if (croppedImage) {
           croppedImage.release();
         }
-        if (baseImage) {
-          baseImage.release();
-        }
+        baseImage.release();
       }
     },
     [dimensions.height, dimensions.width]
@@ -141,7 +132,7 @@ export default function MealScreen() {
     if (!photoUri || initialMealId || startedRef.current || mealId) return;
     startedRef.current = true;
 
-    (async () => {
+    void (async () => {
       try {
         const croppedUri = fromCamera
           ? await cropToDeviceAspect(photoUri)
@@ -160,11 +151,17 @@ export default function MealScreen() {
         if (!uploadRes.ok) {
           throw new Error(`Upload failed: ${uploadRes.status}`);
         }
-        const json = await uploadRes.json();
-        if (!json?.storageId) {
+        const json: unknown = await uploadRes.json();
+        const schema = z.object({
+          storageId: z.string(),
+        });
+
+        const { data, success } = schema.safeParse(json);
+
+        if (!success) {
           throw new Error("Upload response missing storageId");
         }
-        const { storageId } = json;
+        const storageId = data.storageId as Id<"_storage">;
 
         const mealId = await analyzeMealPhoto({ storageId });
         setMealId(mealId);
