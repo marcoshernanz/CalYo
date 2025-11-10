@@ -1,19 +1,20 @@
-- [ ] Adjust macros percentages
+- [ ] Check for deprecated (eslint)
+- [ ] Home header scroll
+
 - [ ] Settings
 - [ ] Adjust macros screen
-- [ ] Check for deprecated (eslint)
+- [ ] Adjust macros auto generate goal
 - [ ] Store onboarding data
 - [ ] Rate limits
 - [ ] Navigation (pressing back from the meal screen)
 - [ ] Navigation (remove stack)
 - [ ] Link prefetch
 - [ ] Animate home macro summary
-- [ ] Scroll safe area to keep status bar visible
 - [ ] react-native-animateable-text Expo SDK 54
 - [ ] Spanish
 - [ ] react-native-reanimated performance
-- [ ] Refactor meal and ingredients
-- [ ] import type
+
+---
 
 - [ ] Fix text input filtering
 - [ ] Android 14 over scroll

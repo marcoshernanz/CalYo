@@ -28,7 +28,6 @@ import { StyleSheet, View } from "react-native";
 import {
   cancelAnimation,
   SharedValue,
-  useDerivedValue,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
@@ -54,26 +53,10 @@ export default function AdjustMacrosScreen() {
 
   const macrosCalories = macrosToKcal({ carbs, protein, fat });
 
-  const progress = useSharedValue(0);
-
-  const caloriesRatio = useDerivedValue(() => {
-    return progress.value;
-  });
-  const carbsRatio = useDerivedValue(() => {
-    const calories = macrosToKcal({ carbs });
-    const ratio = macrosCalories ? calories / macrosCalories : 0;
-    return progress.value * ratio;
-  });
-  const proteinRatio = useDerivedValue(() => {
-    const calories = macrosToKcal({ protein });
-    const ratio = macrosCalories ? calories / macrosCalories : 0;
-    return progress.value * ratio;
-  });
-  const fatRatio = useDerivedValue(() => {
-    const calories = macrosToKcal({ fat });
-    const ratio = macrosCalories ? calories / macrosCalories : 0;
-    return progress.value * ratio;
-  });
+  const caloriesRatio = useSharedValue(0);
+  const carbsRatio = useSharedValue(0);
+  const proteinRatio = useSharedValue(0);
+  const fatRatio = useSharedValue(0);
 
   const macros: Macro[] = [
     {
@@ -111,13 +94,41 @@ export default function AdjustMacrosScreen() {
   ];
 
   useEffect(() => {
-    progress.value = withTiming(1, { duration: 1500 });
+    const calcRatio = (macros: Parameters<typeof macrosToKcal>[number]) => {
+      "worklet";
+      const calories = macrosToKcal(macros);
+      const ratio = macrosCalories ? calories / macrosCalories : 0;
+      return ratio;
+    };
+
+    const nextCaloriesRatio = Math.min(
+      1,
+      macrosCalories ? (calories ?? 0) / macrosCalories : 0
+    );
+
+    const duration = 1000;
+
+    caloriesRatio.value = withTiming(nextCaloriesRatio, { duration });
+    carbsRatio.value = withTiming(calcRatio({ carbs }), { duration });
+    proteinRatio.value = withTiming(calcRatio({ protein }), { duration });
+    fatRatio.value = withTiming(calcRatio({ fat }), { duration });
 
     return () => {
-      cancelAnimation(progress);
-      progress.value = 0;
+      cancelAnimation(carbsRatio);
+      cancelAnimation(proteinRatio);
+      cancelAnimation(fatRatio);
     };
-  }, [progress]);
+  }, [
+    calories,
+    caloriesRatio,
+    carbs,
+    carbsRatio,
+    fat,
+    fatRatio,
+    macrosCalories,
+    protein,
+    proteinRatio,
+  ]);
 
   return (
     <ScreenMain edges={[]}>
