@@ -3,7 +3,7 @@ type AccurateInterval = {
   stop: () => void;
   pause: () => void;
   resume: () => void;
-}
+};
 
 export default function createAccurateInterval(
   callback: () => void,
