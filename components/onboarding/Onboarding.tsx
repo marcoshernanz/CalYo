@@ -29,231 +29,264 @@ import OnboardingCreateAccount from "./steps/end/OnboardingCreateAccount";
 
 type SectionType = {
   name: string;
-  steps: React.ReactElement[];
+  steps: {
+    screen: React.ReactElement;
+    completed: (data: OnboardingData) => boolean;
+    skip: (data: OnboardingData) => boolean;
+  }[];
 };
 
 const sections: SectionType[] = [
   {
     name: "Fundamentos",
     steps: [
-      <OnboardingBasicsSection key="basics-section" />,
-      <OnboardingSex key="sex" />,
-      <OnboardingBirthDate key="birth-date" />,
-      <OnboardingHeight key="height" />,
-      <OnboardingWeight key="weight" />,
-      <OnboardingWeightTrend key="weight-trend" />,
-      <OnboardingWeeklyWorkouts key="weekly-workouts" />,
-      <OnboardingActivityLevel key="activity-level" />,
-      <OnboardingLiftingExperience key="lifting-experience" />,
-      <OnboardingCardioExperience key="cardio-experience" />,
+      {
+        screen: <OnboardingBasicsSection key="basics-section" />,
+        completed: () => true,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingSex key="sex" />,
+        completed: (data) => data.sex !== null,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingBirthDate key="birth-date" />,
+        completed: () => true,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingHeight key="height" />,
+        completed: () => true,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingWeight key="weight" />,
+        completed: () => true,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingWeightTrend key="weight-trend" />,
+        completed: (data) => data.weightTrend !== null,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingWeeklyWorkouts key="weekly-workouts" />,
+        completed: (data) => data.weeklyWorkouts !== null,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingActivityLevel key="activity-level" />,
+        completed: (data) => data.activityLevel !== null,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingLiftingExperience key="lifting-experience" />,
+        completed: (data) => data.liftingExperience !== null,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingCardioExperience key="cardio-experience" />,
+        completed: (data) => data.cardioExperience !== null,
+        skip: () => false,
+      },
     ],
   },
   {
     name: "Objetivo",
     steps: [
-      <OnboardingGoalSection key="goal-section" />,
-      <OnboardingGoal key="goal" />,
-      <OnboardingTargetWeight key="target-weight" />,
-      <OnboardingWeightChangeRate key="weight-change-rate" />,
+      {
+        screen: <OnboardingGoalSection key="goal-section" />,
+        completed: () => true,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingGoal key="goal" />,
+        completed: (data) => data.goal !== null,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingTargetWeight key="target-weight" />,
+        completed: () => true,
+        skip: (data) => data.goal === "maintain",
+      },
+      {
+        screen: <OnboardingWeightChangeRate key="weight-change-rate" />,
+        completed: () => true,
+        skip: (data) => data.goal === "maintain",
+      },
     ],
   },
   {
     name: "Programa",
     steps: [
-      <OnboardingProgramSection key="program-section" />,
-      <OnboardingTraining key="training" />,
+      {
+        screen: <OnboardingProgramSection key="program-section" />,
+        completed: () => true,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingTraining key="training" />,
+        completed: (data) => data.training !== null,
+        skip: () => false,
+      },
     ],
   },
   {
     name: "Resultados",
     steps: [
-      <OnboardingCreatingPlan key="creating-plan" />,
-      <OnboardingCreateAccount key="creating-account" />,
+      {
+        screen: <OnboardingCreatingPlan key="creating-plan" />,
+        completed: (data) => data.hasCreatedPlan,
+        skip: () => false,
+      },
+      {
+        screen: <OnboardingCreateAccount key="creating-account" />,
+        completed: () => true,
+        skip: () => false,
+      },
     ],
   },
 ];
 
-const stepCompletionCheckers: ((data: OnboardingData) => boolean)[][] = [
-  [
-    () => true, // Basics Section
-    (data) => data.sex !== null, // Sex
-    () => true, // Birth Date
-    () => true, // Height
-    () => true, // Weight
-    (data) => data.weightTrend !== null, // Weight Trend
-    (data) => data.weeklyWorkouts !== null, // Weekly Workouts
-    (data) => data.activityLevel !== null, // Activity Level
-    (data) => data.liftingExperience !== null, // Lifting Experience
-    (data) => data.cardioExperience !== null, // Cardio Experience
-  ],
-  [
-    () => true, // Goal Section
-    (data) => data.goal !== null, // Goal
-    () => true, // Target Weight
-    () => true, // Weight Change Rate
-  ],
-  [
-    () => true, // Program Section
-    (data) => data.training !== null, // Training
-  ],
-  [
-    (data) => data.hasCreatedPlan, // Creating Plan
-  ],
-];
-
 export default function Onboarding() {
-  const router = useRouter();
-  const navigation = useNavigation();
   const { section, setSection, step, setStep, data } = useOnboardingContext();
-  const direction = useSharedValue<1 | -1>(1);
-  const { width: screenWidth } = useWindowDimensions();
-  const [hasMounted, setHasMounted] = useState(false);
+  const router = useRouter();
+  // const navigation = useNavigation();
+  // const direction = useSharedValue<1 | -1>(1);
+  // const { width: screenWidth } = useWindowDimensions();
+  // const [hasMounted, setHasMounted] = useState(false);
 
-  const animationDuration = 250;
+  // const animationDuration = 250;
 
-  const shouldSkipStep = useCallback(
-    (targetSectionIndex: number, targetStepIndex: number) => {
-      const targetSection = sections.at(targetSectionIndex);
-      if (!targetSection) return false;
-      const targetStepElement = targetSection.steps.at(targetStepIndex);
-      if (!targetStepElement) return false;
+  // const shouldSkipStep = useCallback(
+  //   (targetSectionIndex: number, targetStepIndex: number) => {
+  //     const targetSection = sections.at(targetSectionIndex);
+  //     if (!targetSection) return false;
+  //     const targetStepElement = targetSection.steps.at(targetStepIndex);
+  //     if (!targetStepElement) return false;
 
-      return (
-        (targetStepElement.type === OnboardingTargetWeight ||
-          targetStepElement.type === OnboardingWeightChangeRate) &&
-        data.goal === "maintain"
-      );
-    },
-    [data.goal]
-  );
+  //     return (
+  //       (targetStepElement.type === OnboardingTargetWeight ||
+  //         targetStepElement.type === OnboardingWeightChangeRate) &&
+  //       data.goal === "maintain"
+  //     );
+  //   },
+  //   [data.goal]
+  // );
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
+  // useEffect(() => {
+  //   setHasMounted(true);
+  // }, []);
 
-  const enteringAnimation = () => {
-    "worklet";
-    return {
-      initialValues: {
-        transform: [
-          {
-            translateX: direction.value * screenWidth,
-          },
-        ],
-      },
-      animations: {
-        transform: [
-          {
-            translateX: withTiming(0, { duration: animationDuration }),
-          },
-        ],
-      },
-    };
-  };
+  // const enteringAnimation = () => {
+  //   "worklet";
+  //   return {
+  //     initialValues: {
+  //       transform: [
+  //         {
+  //           translateX: direction.value * screenWidth,
+  //         },
+  //       ],
+  //     },
+  //     animations: {
+  //       transform: [
+  //         {
+  //           translateX: withTiming(0, { duration: animationDuration }),
+  //         },
+  //       ],
+  //     },
+  //   };
+  // };
 
-  const exitingAnimation = () => {
-    "worklet";
-    return {
-      initialValues: {
-        transform: [
-          {
-            translateX: 0,
-          },
-        ],
-      },
-      animations: {
-        transform: [
-          {
-            translateX: withTiming(-direction.value * screenWidth, {
-              duration: animationDuration,
-            }),
-          },
-        ],
-      },
-    };
-  };
+  // const exitingAnimation = () => {
+  //   "worklet";
+  //   return {
+  //     initialValues: {
+  //       transform: [
+  //         {
+  //           translateX: 0,
+  //         },
+  //       ],
+  //     },
+  //     animations: {
+  //       transform: [
+  //         {
+  //           translateX: withTiming(-direction.value * screenWidth, {
+  //             duration: animationDuration,
+  //           }),
+  //         },
+  //       ],
+  //     },
+  //   };
+  // };
 
   const currentSection = sections.at(section);
   const sectionName = currentSection?.name ?? "";
   const sectionSteps = currentSection?.steps ?? [];
   const currentStep = sectionSteps.at(step);
-  const isCurrentStepComplete =
-    stepCompletionCheckers.at(section)?.at(step)?.(data) ?? true;
+  const isCurrentStepComplete = currentStep?.completed(data) ?? true;
   const isNextDisabled = !isCurrentStepComplete;
 
   const handleNext = () => {
-    if (isNextDisabled) {
-      return;
-    }
-    direction.value = 1;
-    if (step < sectionSteps.length - 1) {
-      let nextStepIndex = step + 1;
-      while (shouldSkipStep(section, nextStepIndex)) {
-        nextStepIndex += 1;
-      }
-      if (nextStepIndex < sectionSteps.length) {
-        setStep(nextStepIndex);
-        return;
-      }
-    }
+    if (isNextDisabled) return;
 
-    if (section < sections.length - 1) {
-      setSection(section + 1);
-      let nextSectionStep = 0;
-      while (shouldSkipStep(section + 1, nextSectionStep)) {
-        nextSectionStep += 1;
+    // direction.value = 1;
+
+    let nextStep = step;
+    let nextSection = section;
+    do {
+      nextStep += 1;
+      if (nextStep >= sectionSteps.length) {
+        nextSection += 1;
+        nextStep = 0;
+        if (nextSection >= sections.length) {
+          console.log("Onboarding completed");
+          return;
+        }
       }
-      setStep(nextSectionStep);
-    } else {
-      console.log("Onboarding completed");
-    }
+    } while (sections.at(nextSection)?.steps.at(nextStep)?.skip(data));
+
+    setSection(nextSection);
+    setStep(nextStep);
   };
 
-  const handleBack = useCallback(() => {
-    direction.value = -1;
-    if (step > 0) {
-      let prevStepIndex = step - 1;
-      while (prevStepIndex >= 0 && shouldSkipStep(section, prevStepIndex)) {
-        prevStepIndex -= 1;
-      }
-      if (prevStepIndex >= 0) {
-        setStep(prevStepIndex);
-        return;
-      }
-    } else if (section > 0) {
-      const prevSection = sections[section - 1];
-      setSection(section - 1);
-      let prevSectionStep = prevSection.steps.length - 1;
-      while (
-        prevSectionStep >= 0 &&
-        shouldSkipStep(section - 1, prevSectionStep)
-      ) {
-        prevSectionStep -= 1;
-      }
-      setStep(prevSectionStep >= 0 ? prevSectionStep : 0);
-    } else {
-      router.back();
-    }
-  }, [direction, router, section, setSection, setStep, shouldSkipStep, step]);
+  const handleBack = () => {
+    // direction.value = -1;
 
-  const canGoBackWithinOnboarding = step > 0 || section > 0;
+    let nextStep = step;
+    let nextSection = section;
+    do {
+      nextStep -= 1;
 
-  useEffect(() => {
-    const subscription = navigation.addListener("beforeRemove", (event) => {
-      const actionType = event.data.action.type;
-
-      if (!canGoBackWithinOnboarding) {
-        return;
+      if (nextStep < 0) {
+        nextSection -= 1;
+        if (nextSection < 0) {
+          router.back();
+          return;
+        }
       }
+    } while (sections.at(nextSection)?.steps.at(nextStep)?.skip(data));
+  };
 
-      if (actionType === "GO_BACK" || actionType === "POP") {
-        event.preventDefault();
-        handleBack();
-      }
-    });
+  // const canGoBackWithinOnboarding = step > 0 || section > 0;
 
-    return subscription;
-  }, [canGoBackWithinOnboarding, handleBack, navigation]);
+  // useEffect(() => {
+  //   const subscription = navigation.addListener("beforeRemove", (event) => {
+  //     const actionType = event.data.action.type;
+
+  //     if (!canGoBackWithinOnboarding) {
+  //       return;
+  //     }
+
+  //     if (actionType === "GO_BACK" || actionType === "POP") {
+  //       event.preventDefault();
+  //       handleBack();
+  //     }
+  //   });
+
+  //   return subscription;
+  // }, [canGoBackWithinOnboarding, handleBack, navigation]);
 
   return (
     <OnboardingSectionLayout
@@ -268,7 +301,7 @@ export default function Onboarding() {
           entering={hasMounted ? enteringAnimation : undefined}
           exiting={exitingAnimation}
         >
-          {currentStep}
+          {currentStep?.screen}
         </Animated.View>
       ) : (
         <Animated.View
@@ -288,7 +321,7 @@ export default function Onboarding() {
               entering={hasMounted ? enteringAnimation : undefined}
               exiting={exitingAnimation}
             >
-              {currentStep}
+              {currentStep?.screen}
             </Animated.View>
           </OnboardingStepLayout>
         </Animated.View>
