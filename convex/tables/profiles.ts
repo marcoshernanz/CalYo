@@ -13,7 +13,7 @@ export const profilesFields = {
     v.object({
       measurementSystem: v.union(v.literal("metric"), v.literal("imperial")),
       sex: v.union(v.literal("male"), v.literal("female")),
-      bornDate: v.number(),
+      birthDate: v.number(),
       height: v.number(),
       weight: v.number(),
       weightTrend: v.union(
