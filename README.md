@@ -1,11 +1,12 @@
+- [ ] Navigation (pressing back from the meal screen)
+- [ ] Navigation (remove stack)
+- [ ] Link prefetch
+
 - [ ] Settings
 - [ ] Adjust macros screen
 - [ ] Adjust macros auto generate goal
 - [ ] Store onboarding data
 - [ ] Rate limits
-- [ ] Navigation (pressing back from the meal screen)
-- [ ] Navigation (remove stack)
-- [ ] Link prefetch
 - [ ] Animate home macro summary
 - [ ] react-native-animateable-text Expo SDK 54
 - [ ] Spanish
