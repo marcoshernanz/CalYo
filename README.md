@@ -1,3 +1,4 @@
+- [ ] Onboarding back gesture
 - [ ] Adjust macros done button
 - [ ] Save adjust macros
 - [ ] Settings
