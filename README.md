@@ -1,7 +1,5 @@
-- [ ] Navigation (pressing back from the meal screen)
-- [ ] Navigation (remove stack)
-- [ ] Link prefetch
-
+- [ ] Adjust macros done button
+- [ ] Save adjust macros
 - [ ] Settings
 - [ ] Adjust macros screen
 - [ ] Adjust macros auto generate goal

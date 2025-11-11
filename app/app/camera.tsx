@@ -105,7 +105,7 @@ export default function CameraScreen() {
             size="base"
             style={styles.shutterInner}
             onPress={() => {
-              void takePhoto;
+              void takePhoto();
             }}
           />
         </View>

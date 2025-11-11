@@ -14,7 +14,7 @@ import WithSkeleton from "../ui/WithSkeleton";
 
 type LogItemProps = {
   meal: Doc<"meals">;
-}
+};
 
 function LogItem({ meal }: LogItemProps) {
   const macros = [
@@ -98,7 +98,7 @@ function LogItem({ meal }: LogItemProps) {
 
 type Props = {
   meals: Doc<"meals">[];
-}
+};
 
 export default function HomeRecentlyLogged({ meals }: Props) {
   return (

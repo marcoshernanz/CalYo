@@ -43,7 +43,7 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
   const handleDelete = () => {
     if (!mealId || isDeletingRef.current) return;
     isDeletingRef.current = true;
-    router.replace("/app");
+    router.dismissTo("/app");
     void deleteMeal({ id: mealId });
   };
 
@@ -81,7 +81,11 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
           />
           <ScreenFooterButtonText text="Corregir" />
         </ScreenFooterButton>
-        <ScreenFooterButton onPress={() => { router.replace("/app"); }}>
+        <ScreenFooterButton
+          onPress={() => {
+            router.dismissTo("/app");
+          }}
+        >
           Hecho
         </ScreenFooterButton>
       </ScreenFooter>
