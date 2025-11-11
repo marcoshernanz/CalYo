@@ -28,5 +28,8 @@ export default defineConfig(
         },
       ],
     },
+  },
+  {
+    ignores: ["convex/_generated/**", "babel.config.js", "metro.config.js"],
   }
 );

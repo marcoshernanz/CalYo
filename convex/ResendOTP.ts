@@ -6,7 +6,7 @@ export const ResendOTP = Email({
   id: "resend-otp",
   apiKey: process.env.AUTH_RESEND_KEY,
   maxAge: 60 * 15, // 15 minutes
-  async generateVerificationToken() {
+  generateVerificationToken() {
     const random: RandomReader = {
       read(bytes) {
         crypto.getRandomValues(bytes);

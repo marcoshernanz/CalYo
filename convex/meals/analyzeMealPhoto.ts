@@ -32,7 +32,7 @@ const analyzeMealPhoto = action({
       });
 
       const detectedItems = await detectMealItems({ imageUrl });
-      if (!detectedItems || detectedItems.length === 0) {
+      if (detectedItems.length === 0) {
         throw new Error("No meal items detected");
       }
 

@@ -12,9 +12,11 @@ const selectionSchema = z.object({
 
 type SelectedType = z.infer<typeof selectionSchema>;
 
+type CandidatesByItem = Partial<Record<string, Candidate[]>>;
+
 function buildCandidatesText(
   detectedItems: DetectedItem[],
-  candidatesByItem: Record<string, Candidate[]>
+  candidatesByItem: CandidatesByItem
 ) {
   const lines: string[] = [];
 
@@ -42,7 +44,7 @@ function ensureSelections({
   selectedItems,
 }: {
   detectedItems: DetectedItem[];
-  candidatesByItem: Record<string, Candidate[]>;
+  candidatesByItem: CandidatesByItem;
   selectedItems: SelectedType[];
 }) {
   const byName = new Map(
@@ -60,10 +62,10 @@ function ensureSelections({
       continue;
     }
 
-    const fallback = (candidatesByItem[detectedItem.name] ?? [])[0];
-    if (fallback) {
+    const fallbackCandidate = candidatesByItem[detectedItem.name]?.[0];
+    if (fallbackCandidate !== undefined) {
       finalItems.push({
-        fdcId: fallback.fdcId,
+        fdcId: fallbackCandidate.fdcId,
         grams: Math.max(1, Math.min(1500, Math.round(detectedItem.grams))),
       });
     }
@@ -74,9 +76,9 @@ function ensureSelections({
 
 type Params = {
   detectedItems: DetectedItem[];
-  candidatesByItem: Record<string, Candidate[]>;
+  candidatesByItem: CandidatesByItem;
   imageUrl: string;
-}
+};
 
 export default async function selectCandidates({
   detectedItems,

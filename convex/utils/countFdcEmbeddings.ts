@@ -11,7 +11,7 @@ type PageFoodsForCountResult = {
   }[];
   isDone: boolean;
   cursor: string | null;
-}
+};
 
 export const pageFoodsForCount = internalQuery({
   args: { cursor: v.optional(v.string()), pageSize: v.number() },
@@ -40,7 +40,7 @@ const countFdcEmbeddings = internalAction({
     let total = 0;
     let embedded = 0;
 
-    while (true) {
+    for (;;) {
       const {
         page,
         isDone,

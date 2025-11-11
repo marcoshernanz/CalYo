@@ -21,7 +21,7 @@ export function setAnimatedTimeout(
   delay: number
 ): AnimatedTimeoutID {
   "worklet";
-  let startTimestamp: number;
+  let startTimestamp: number | undefined;
 
   const currentId = TIMEOUT_ID.value;
   PENDING_TIMEOUTS.modify((pendingTimeouts) => {
@@ -36,10 +36,8 @@ export function setAnimatedTimeout(
     if (!PENDING_TIMEOUTS.value[currentId]) {
       return;
     }
-    if (startTimestamp === undefined) {
-      startTimestamp = newTimestamp;
-    }
-    if (newTimestamp >= startTimestamp + delay) {
+    const effectiveStart = (startTimestamp ??= newTimestamp);
+    if (newTimestamp >= effectiveStart + delay) {
       removeFromPendingTimeouts(currentId);
       callback();
       return;

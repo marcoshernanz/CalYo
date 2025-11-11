@@ -57,7 +57,7 @@ function getAmount(
     const amount = nutrient.amount ?? undefined;
     if (amount === undefined) continue;
 
-    const id = nutrient.nutrient?.id;
+    const id = nutrient.nutrient.id;
     if (id && target.includes(id) && amount >= 0) {
       return amount;
     }
@@ -107,7 +107,7 @@ async function detectRootKey(jsonPath: string): Promise<string> {
     let found = false;
 
     p.on("data", (token: { name: string; value: unknown }) => {
-      if (!found && token?.name === "keyValue") {
+      if (!found && token.name === "keyValue") {
         found = true;
         resolve(token.value as string);
         p.destroy();
@@ -140,6 +140,25 @@ async function importFdcData(jsonPath: string) {
 
   console.time(label);
 
+  const toError = (error: unknown): Error =>
+    error instanceof Error ? error : new Error(String(error));
+
+  const flushBatch = async () => {
+    if (!batch.length) return;
+
+    const docs = batch;
+    batch = [];
+
+    const { inserted, updated } = await client.action(
+      api.fdc.ingestFdcFoods.default,
+      { token: ingestToken, docs }
+    );
+
+    totalInserted += inserted;
+    totalUpdated += updated;
+    console.log(`Inserted ${totalInserted}, updated ${totalUpdated}.`);
+  };
+
   await new Promise<void>((resolve, reject) => {
     const pipeline = chain([
       fs.createReadStream(jsonPath),
@@ -148,7 +167,7 @@ async function importFdcData(jsonPath: string) {
       streamArray(),
     ]);
 
-    pipeline.on("data", async (data: { value: unknown; key: number }) => {
+    pipeline.on("data", (data: { value: unknown; key: number }) => {
       const value = data.value;
       const parsed = FdcFood.safeParse(value);
       if (!parsed.success) {
@@ -159,50 +178,33 @@ async function importFdcData(jsonPath: string) {
       batch.push(doc);
       if (batch.length >= batchSize) {
         pipeline.pause();
-        try {
-          const { inserted, updated } = await client.action(
-            api.fdc.ingestFdcFoods.default,
-            { token: ingestToken, docs: batch }
-          );
-
-          totalInserted += inserted;
-          totalUpdated += updated;
-          console.log(`Inserted ${totalInserted}, updated ${totalUpdated}.`);
-
-          batch = [];
-        } catch (e) {
-          console.error("Upsert error:", e);
-          pipeline.destroy(e as Error);
-          return;
-        } finally {
-          pipeline.resume();
-        }
+        void flushBatch()
+          .then(() => {
+            pipeline.resume();
+          })
+          .catch((error: unknown) => {
+            console.error("Upsert error:", error);
+            pipeline.destroy(toError(error));
+          });
       }
     });
 
-    pipeline.on("end", async () => {
-      try {
-        if (batch.length) {
-          const { inserted, updated } = await client.action(
-            api.fdc.ingestFdcFoods.default,
-            { token: ingestToken, docs: batch }
+    pipeline.on("end", () => {
+      void flushBatch()
+        .then(() => {
+          console.timeEnd(label);
+          console.log(
+            `Done. Inserted ${totalInserted}, updated ${totalUpdated} (${rootKey}).`
           );
-          totalInserted += inserted;
-          totalUpdated += updated;
-          batch = [];
-        }
-        console.timeEnd(label);
-        console.log(
-          `Done. Inserted ${totalInserted}, updated ${totalUpdated} (${rootKey}).`
-        );
-        resolve();
-      } catch (e) {
-        reject(e);
-      }
+          resolve();
+        })
+        .catch((error: unknown) => {
+          reject(toError(error));
+        });
     });
 
     pipeline.on("error", (err: unknown) => {
-      reject(err);
+      reject(toError(err));
     });
   });
 }
