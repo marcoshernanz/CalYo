@@ -10,9 +10,12 @@
 - [ ] Spanish
 - [ ] react-native-reanimated performance
 - [ ] Streak
+- [ ] Sign in screen
+- [ ] Initial screen
 
 ---
 
+- [ ] Sign in with email
 - [ ] Fix text input filtering
 - [ ] Android 14 over scroll
 
