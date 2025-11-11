@@ -9,7 +9,7 @@ export type OnboardingValues = {
   experience: "none" | "beginner" | "intermediate" | "advanced";
   goal: "lose" | "maintain" | "gain";
   training: "none" | "lifting" | "cardio" | "both";
-}
+};
 
 export type OnboardingData = {
   measurementSystem: OnboardingValues["measurementSystem"];
@@ -27,7 +27,7 @@ export type OnboardingData = {
   weightChangeRate: number;
   training: OnboardingValues["training"] | null;
   hasCreatedPlan: boolean;
-}
+};
 
 type OnboardingContextValue = {
   section: number;
@@ -36,7 +36,7 @@ type OnboardingContextValue = {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   data: OnboardingData;
   setData: React.Dispatch<React.SetStateAction<OnboardingData>>;
-}
+};
 
 const OnboardingContext = createContext<OnboardingContextValue | undefined>(
   undefined
@@ -44,7 +44,7 @@ const OnboardingContext = createContext<OnboardingContextValue | undefined>(
 
 type Props = {
   children: React.ReactNode;
-}
+};
 
 export default function OnboardingContextProvider({ children }: Props) {
   const [section, setSection] = useState(0);
