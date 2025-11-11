@@ -12,6 +12,7 @@
 - [ ] react-native-animateable-text Expo SDK 54
 - [ ] Spanish
 - [ ] react-native-reanimated performance
+- [ ] Streak
 
 ---
 
