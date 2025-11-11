@@ -9,12 +9,7 @@ import { useQuery } from "convex/react";
 import { getDay } from "date-fns";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-  useWindowDimensions,
-} from "react-native";
+import { ScrollView, StyleSheet, useWindowDimensions } from "react-native";
 
 export default function HomeScreen() {
   const dimensions = useWindowDimensions();
@@ -46,45 +41,35 @@ export default function HomeScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeArea edges={["top", "left", "right"]}>
       <LinearGradient
         colors={[getColor("primaryLight", 0.75), getColor("background")]}
         style={[styles.gradient, { height: dimensions.height * 0.75 }]}
         pointerEvents="none"
       />
-
+      <HomeHeader />
       <ScrollView
-        style={styles.scrollView}
+        contentContainerStyle={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
-        <SafeArea style={styles.safeAreaContent}>
-          <HomeHeader />
-          <HomeDaySelector
-            selectedDay={selectedDay}
-            setSelectedDay={setSelectedDay}
-            weekTotals={weekTotals}
-          />
-          <HomeMacroSummary totals={dayTotals} />
-          <HomeRecentlyLogged meals={dayMeals} />
-        </SafeArea>
+        <HomeDaySelector
+          selectedDay={selectedDay}
+          setSelectedDay={setSelectedDay}
+          weekTotals={weekTotals}
+        />
+        <HomeMacroSummary totals={dayTotals} />
+        <HomeRecentlyLogged meals={dayMeals} />
       </ScrollView>
-    </View>
+    </SafeArea>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: getColor("background"),
-  },
-  scrollView: {
-    flex: 1,
-    backgroundColor: "transparent",
-  },
   gradient: {
     ...StyleSheet.absoluteFillObject,
   },
-  safeAreaContent: {
-    backgroundColor: "transparent",
+  scrollView: {
+    flexGrow: 1,
+    paddingBottom: 24,
   },
 });

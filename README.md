@@ -1,5 +1,3 @@
-- [ ] Home header scroll
-
 - [ ] Settings
 - [ ] Adjust macros screen
 - [ ] Adjust macros auto generate goal
