@@ -1,6 +1,8 @@
+- [ ] Onboarding enforce onboarding after creating account
 - [ ] Onboarding creating plan
 - [ ] Onboarding create account
-- [ ] Lift up onboarding context
+- [ ] Onboarding context
+- [ ] Onboarding lift up onboarding context
 - [ ] Onboarding going back from a section header steps animation bug
 - [ ] Adjust macros done button
 - [ ] Save adjust macros
