@@ -4,7 +4,7 @@ import Title from "../ui/Title";
 type Props = {
   children: React.ReactNode;
   title: string;
-}
+};
 
 export default function OnboardingStep({ children, title }: Props) {
   return (

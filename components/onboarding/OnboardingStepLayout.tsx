@@ -73,7 +73,9 @@ export default function OnboardingStepLayout({
       </ScreenHeader>
       <ScreenMainScrollView
         scrollViewProps={{ onScroll }}
-        safeAreaProps={{ edges: contentEdges }}
+        safeAreaProps={{
+          edges: contentEdges,
+        }}
       >
         {children}
       </ScreenMainScrollView>
@@ -103,9 +105,5 @@ const styles = StyleSheet.create({
     height: 5,
     borderRadius: 999,
     backgroundColor: getColor("secondary"),
-  },
-  scrollView: {
-    flexGrow: 1,
-    paddingBottom: 24,
   },
 });
