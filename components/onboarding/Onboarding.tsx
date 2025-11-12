@@ -3,7 +3,7 @@ import {
   OnboardingData,
   useOnboardingContext,
 } from "@/context/OnboardingContext";
-import { useWindowDimensions } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import OnboardingBasicsSection from "./steps/basics/OnboardingBasicsSection";
 import OnboardingSex from "./steps/basics/OnboardingSex";
 import OnboardingBirthDate from "./steps/basics/OnboardingBirthDate";
@@ -23,7 +23,15 @@ import { useNavigation, useRouter } from "expo-router";
 import OnboardingWeeklyWorkouts from "./steps/basics/OnboardingWeeklyWorkouts";
 import OnboardingSectionLayout from "./OnboardingSectionLayout";
 import OnboardingStepLayout from "./OnboardingStepLayout";
-import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
+import Animated, {
+  FadeInRight,
+  FadeOutRight,
+  SlideInRight,
+  SlideOutLeft,
+  SlideOutRight,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import OnboardingCreatingPlan from "./steps/end/OnboardingCreatingPlan";
 import OnboardingCreateAccount from "./steps/end/OnboardingCreateAccount";
 
@@ -33,6 +41,7 @@ type SectionType = {
     screen: React.ReactElement;
     completed: (data: OnboardingData) => boolean;
     skip: (data: OnboardingData) => boolean;
+    showHeader: boolean;
   }[];
 };
 
@@ -44,51 +53,61 @@ const sections: SectionType[] = [
         screen: <OnboardingBasicsSection key="basics-section" />,
         completed: () => true,
         skip: () => false,
+        showHeader: false,
       },
       {
         screen: <OnboardingSex key="sex" />,
         completed: (data) => data.sex !== null,
         skip: () => false,
+        showHeader: true,
       },
       {
         screen: <OnboardingBirthDate key="birth-date" />,
         completed: () => true,
         skip: () => false,
+        showHeader: true,
       },
       {
         screen: <OnboardingHeight key="height" />,
         completed: () => true,
         skip: () => false,
+        showHeader: true,
       },
       {
         screen: <OnboardingWeight key="weight" />,
         completed: () => true,
         skip: () => false,
+        showHeader: true,
       },
       {
         screen: <OnboardingWeightTrend key="weight-trend" />,
         completed: (data) => data.weightTrend !== null,
         skip: () => false,
+        showHeader: true,
       },
       {
         screen: <OnboardingWeeklyWorkouts key="weekly-workouts" />,
         completed: (data) => data.weeklyWorkouts !== null,
         skip: () => false,
+        showHeader: true,
       },
       {
         screen: <OnboardingActivityLevel key="activity-level" />,
         completed: (data) => data.activityLevel !== null,
         skip: () => false,
+        showHeader: true,
       },
       {
         screen: <OnboardingLiftingExperience key="lifting-experience" />,
         completed: (data) => data.liftingExperience !== null,
         skip: () => false,
+        showHeader: true,
       },
       {
         screen: <OnboardingCardioExperience key="cardio-experience" />,
         completed: (data) => data.cardioExperience !== null,
         skip: () => false,
+        showHeader: true,
       },
     ],
   },
@@ -99,21 +118,25 @@ const sections: SectionType[] = [
         screen: <OnboardingGoalSection key="goal-section" />,
         completed: () => true,
         skip: () => false,
+        showHeader: false,
       },
       {
         screen: <OnboardingGoal key="goal" />,
         completed: (data) => data.goal !== null,
         skip: () => false,
+        showHeader: true,
       },
       {
         screen: <OnboardingTargetWeight key="target-weight" />,
         completed: () => true,
         skip: (data) => data.goal === "maintain",
+        showHeader: true,
       },
       {
         screen: <OnboardingWeightChangeRate key="weight-change-rate" />,
         completed: () => true,
         skip: (data) => data.goal === "maintain",
+        showHeader: true,
       },
     ],
   },
@@ -124,11 +147,13 @@ const sections: SectionType[] = [
         screen: <OnboardingProgramSection key="program-section" />,
         completed: () => true,
         skip: () => false,
+        showHeader: false,
       },
       {
         screen: <OnboardingTraining key="training" />,
         completed: (data) => data.training !== null,
         skip: () => false,
+        showHeader: true,
       },
     ],
   },
@@ -139,11 +164,13 @@ const sections: SectionType[] = [
         screen: <OnboardingCreatingPlan key="creating-plan" />,
         completed: (data) => data.hasCreatedPlan,
         skip: () => false,
+        showHeader: false,
       },
       {
         screen: <OnboardingCreateAccount key="creating-account" />,
         completed: () => true,
         skip: () => false,
+        showHeader: false,
       },
     ],
   },
@@ -156,24 +183,6 @@ export default function Onboarding() {
   // const direction = useSharedValue<1 | -1>(1);
   // const { width: screenWidth } = useWindowDimensions();
   // const [hasMounted, setHasMounted] = useState(false);
-
-  // const animationDuration = 250;
-
-  // const shouldSkipStep = useCallback(
-  //   (targetSectionIndex: number, targetStepIndex: number) => {
-  //     const targetSection = sections.at(targetSectionIndex);
-  //     if (!targetSection) return false;
-  //     const targetStepElement = targetSection.steps.at(targetStepIndex);
-  //     if (!targetStepElement) return false;
-
-  //     return (
-  //       (targetStepElement.type === OnboardingTargetWeight ||
-  //         targetStepElement.type === OnboardingWeightChangeRate) &&
-  //       data.goal === "maintain"
-  //     );
-  //   },
-  //   [data.goal]
-  // );
 
   // useEffect(() => {
   //   setHasMounted(true);
@@ -232,6 +241,7 @@ export default function Onboarding() {
     if (isNextDisabled) return;
 
     // direction.value = 1;
+    direction.value = "right";
 
     let nextStep = step;
     let nextSection = section;
@@ -253,6 +263,7 @@ export default function Onboarding() {
 
   const handleBack = useCallback(() => {
     // direction.value = -1;
+    direction.value = "left";
 
     let nextStep = step;
     let nextSection = section;
@@ -288,39 +299,53 @@ export default function Onboarding() {
       onBack={handleBack}
       isNextDisabled={isNextDisabled}
     >
-      {currentStep?.screen}
-      {/* {step === 0 || section === 3 ? (
-        <Animated.View
-          style={{ flex: 1 }}
-          key={`section-overview-${section}-${step}`}
-          entering={hasMounted ? enteringAnimation : undefined}
-          exiting={exitingAnimation}
+      <Animated.View
+        key={`section-${section}-step-${step}`}
+        style={{ flex: 1 }}
+        entering={SlideInRight}
+        exiting={SlideOutLeft}
+      >
+        <OnboardingStepLayout
+          sectionName={sectionName}
+          numSteps={sectionSteps.length - 1}
+          currentStep={step - 1}
+          showHeader={currentStep?.showHeader ?? true}
         >
           {currentStep?.screen}
-        </Animated.View>
-      ) : (
-        <Animated.View
-          style={{ flex: 1 }}
-          key={`section-layout-${section}`}
-          entering={hasMounted ? enteringAnimation : undefined}
-          exiting={exitingAnimation}
-        >
-          <OnboardingStepLayout
-            sectionName={sectionName}
-            numSteps={sectionSteps.length - 1}
-            currentStep={step - 1}
-          >
-            <Animated.View
-              style={{ flex: 1 }}
-              key={`step-${section}-${step}`}
-              entering={hasMounted ? enteringAnimation : undefined}
-              exiting={exitingAnimation}
-            >
-              {currentStep?.screen}
-            </Animated.View>
-          </OnboardingStepLayout>
-        </Animated.View>
-      )} */}
+        </OnboardingStepLayout>
+      </Animated.View>
     </OnboardingSectionLayout>
+    // {/* {step === 0 || section === 3 ? (
+    //   <Animated.View
+    //     style={{ flex: 1 }}
+    //     key={`section-overview-${section}-${step}`}
+    //     entering={hasMounted ? enteringAnimation : undefined}
+    //     exiting={exitingAnimation}
+    //   >
+    //     {currentStep?.screen}
+    //   </Animated.View>
+    // ) : (
+    //   <Animated.View
+    //     style={{ flex: 1 }}
+    //     key={`section-layout-${section}`}
+    //     entering={hasMounted ? enteringAnimation : undefined}
+    //     exiting={exitingAnimation}
+    //   >
+    //     <OnboardingStepLayout
+    //       sectionName={sectionName}
+    //       numSteps={sectionSteps.length - 1}
+    //       currentStep={step - 1}
+    //     >
+    //       <Animated.View
+    //         style={{ flex: 1 }}
+    //         key={`step-${section}-${step}`}
+    //         entering={hasMounted ? enteringAnimation : undefined}
+    //         exiting={exitingAnimation}
+    //       >
+    //         {currentStep?.screen}
+    //       </Animated.View>
+    //     </OnboardingStepLayout>
+    //   </Animated.View>
+    // )} */}
   );
 }
