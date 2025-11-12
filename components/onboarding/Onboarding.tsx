@@ -53,7 +53,7 @@ const sections: SectionType[] = [
         screen: <OnboardingBasicsSection key="basics-section" />,
         completed: () => true,
         skip: () => false,
-        showHeader: false,
+        showHeader: true,
         scrollView: true,
       },
       {
@@ -128,7 +128,7 @@ const sections: SectionType[] = [
         screen: <OnboardingGoalSection key="goal-section" />,
         completed: () => true,
         skip: () => false,
-        showHeader: false,
+        showHeader: true,
         scrollView: true,
       },
       {
@@ -161,7 +161,7 @@ const sections: SectionType[] = [
         screen: <OnboardingProgramSection key="program-section" />,
         completed: () => true,
         skip: () => false,
-        showHeader: false,
+        showHeader: true,
         scrollView: true,
       },
       {
@@ -185,7 +185,7 @@ const sections: SectionType[] = [
       },
       {
         screen: <OnboardingCreateAccount key="creating-account" />,
-        completed: () => true,
+        completed: () => false,
         skip: () => false,
         showHeader: false,
         scrollView: true,

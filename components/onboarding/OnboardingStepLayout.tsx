@@ -62,18 +62,20 @@ export default function OnboardingStepLayout({
 
   return (
     <View style={styles.container}>
-      <ScreenHeader scrollY={scrollY} safeAreaStyle={styles.headerSafeArea}>
-        <View style={styles.headerContainer}>
-          <Title size="18">{sectionName}</Title>
-          <View style={styles.progressContainer}>
-            {Array(numSteps)
-              .fill(0)
-              .map((_, index) => (
-                <ProgressStep key={index} isActive={index <= currentStep} />
-              ))}
+      {showHeader && (
+        <ScreenHeader scrollY={scrollY} safeAreaStyle={styles.headerSafeArea}>
+          <View style={styles.headerContainer}>
+            <Title size="18">{sectionName}</Title>
+            <View style={styles.progressContainer}>
+              {Array(numSteps)
+                .fill(0)
+                .map((_, index) => (
+                  <ProgressStep key={index} isActive={index <= currentStep} />
+                ))}
+            </View>
           </View>
-        </View>
-      </ScreenHeader>
+        </ScreenHeader>
+      )}
       {scrollView ? (
         <ScreenMainScrollView
           scrollViewProps={{ onScroll }}
