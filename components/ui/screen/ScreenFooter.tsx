@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, ViewStyle } from "react-native";
 import Button from "../Button";
 import SafeArea from "../SafeArea";
 import getColor from "@/lib/ui/getColor";
@@ -7,9 +7,18 @@ import { ComponentProps } from "react";
 import Text from "../Text";
 import { LucideIcon, LucideProps } from "lucide-react-native";
 
-export function ScreenFooter({ children }: { children: React.ReactNode }) {
+export function ScreenFooter({
+  children,
+  style,
+}: {
+  children: React.ReactNode;
+  style?: ViewStyle;
+}) {
   return (
-    <SafeArea edges={["bottom", "left", "right"]} style={styles.container}>
+    <SafeArea
+      edges={["bottom", "left", "right"]}
+      style={[styles.container, style]}
+    >
       {children}
     </SafeArea>
   );
@@ -42,7 +51,6 @@ const styles = StyleSheet.create({
     zIndex: 10,
     flexDirection: "row",
     paddingTop: 12,
-    position: "relative",
     gap: 8,
     ...getShadow("lg", { inverted: true }),
   },
