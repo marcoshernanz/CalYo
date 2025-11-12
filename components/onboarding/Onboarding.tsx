@@ -197,11 +197,12 @@ export default function Onboarding() {
       nextStep += 1;
       if (nextStep >= sectionSteps.length) {
         nextSection += 1;
-        nextStep = 0;
         if (nextSection >= sections.length) {
           console.log("Onboarding completed");
           return;
         }
+
+        nextStep = 0;
       }
     } while (sections.at(nextSection)?.steps.at(nextStep)?.skip(data));
 
@@ -216,14 +217,14 @@ export default function Onboarding() {
     let nextSection = section;
     do {
       nextStep -= 1;
-
       if (nextStep < 0) {
         nextSection -= 1;
-        nextStep = sections[nextSection].steps.length - 1;
         if (nextSection < 0) {
           router.back();
           return;
         }
+
+        nextStep = sections[nextSection].steps.length - 1;
       }
     } while (sections.at(nextSection)?.steps.at(nextStep)?.skip(data));
 
