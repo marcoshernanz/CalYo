@@ -17,9 +17,9 @@ export default function OnboardingSectionLayout({
   isNextDisabled = false,
 }: Props) {
   return (
-    <SafeArea>
+    <SafeArea edges={["bottom"]}>
       <View style={styles.mainContainer}>{children}</View>
-      <View style={styles.footerContainer}>
+      <SafeArea edges={["left", "right"]} style={styles.footerContainer}>
         <Button
           variant="secondary"
           size="md"
@@ -37,7 +37,7 @@ export default function OnboardingSectionLayout({
         >
           Siguiente
         </Button>
-      </View>
+      </SafeArea>
     </SafeArea>
   );
 }
@@ -47,8 +47,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   footerContainer: {
+    flex: 0,
     flexDirection: "row",
     gap: 6,
+    paddingTop: 12,
   },
   backButton: {
     aspectRatio: 1,

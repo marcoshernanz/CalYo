@@ -8,10 +8,14 @@ import Animated, {
 } from "react-native-reanimated";
 import Title from "../ui/Title";
 import getColor from "@/lib/ui/getColor";
+import { Edge } from "react-native-safe-area-context";
+import { ScreenHeader } from "../ui/screen/ScreenHeader";
+import useScrollY from "@/lib/hooks/reanimated/useScrollY";
+import { ScreenMainScrollView } from "../ui/screen/ScreenMain";
 
 type ProgressStepProps = {
   isActive: boolean;
-}
+};
 
 function ProgressStep({ isActive }: ProgressStepProps) {
   const progress = useSharedValue(isActive ? 1 : 0);
@@ -38,27 +42,41 @@ type Props = {
   sectionName: string;
   numSteps: number;
   currentStep: number;
-}
+  showHeader: boolean;
+};
 
 export default function OnboardingStepLayout({
   children,
   sectionName,
   numSteps,
   currentStep,
+  showHeader,
 }: Props) {
+  const contentEdges: Edge[] = showHeader
+    ? ["left", "right"]
+    : ["top", "left", "right"];
+  const { scrollY, onScroll } = useScrollY();
+
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Title size="18">{sectionName}</Title>
-        <View style={styles.progressContainer}>
-          {Array(numSteps)
-            .fill(0)
-            .map((_, index) => (
-              <ProgressStep key={index} isActive={index <= currentStep} />
-            ))}
+      <ScreenHeader scrollY={scrollY} safeAreaStyle={styles.headerSafeArea}>
+        <View style={styles.headerContainer}>
+          <Title size="18">{sectionName}</Title>
+          <View style={styles.progressContainer}>
+            {Array(numSteps)
+              .fill(0)
+              .map((_, index) => (
+                <ProgressStep key={index} isActive={index <= currentStep} />
+              ))}
+          </View>
         </View>
-      </View>
-      <View style={styles.content}>{children}</View>
+      </ScreenHeader>
+      <ScreenMainScrollView
+        scrollViewProps={{ onScroll }}
+        safeAreaProps={{ edges: contentEdges }}
+      >
+        {children}
+      </ScreenMainScrollView>
     </View>
   );
 }
@@ -67,7 +85,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  headerSafeArea: {
+    paddingBottom: 24,
+  },
   headerContainer: {
+    flex: 1,
     alignItems: "center",
     gap: 12,
   },
@@ -82,8 +104,8 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     backgroundColor: getColor("secondary"),
   },
-  content: {
-    flex: 1,
-    paddingVertical: 24,
+  scrollView: {
+    flexGrow: 1,
+    paddingBottom: 24,
   },
 });
