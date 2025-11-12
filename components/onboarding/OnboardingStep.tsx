@@ -18,10 +18,9 @@ export default function OnboardingStep({ children, title }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 36,
+    gap: 24,
   },
   content: {
     flex: 1,
-    gap: 36,
   },
 });
