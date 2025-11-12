@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import {
   OnboardingData,
   useOnboardingContext,
@@ -18,7 +18,7 @@ import OnboardingTargetWeight from "./steps/goal/OnboardingTargetWeight";
 import OnboardingWeightChangeRate from "./steps/goal/OnboardingWeightChangeRate";
 import OnboardingProgramSection from "./steps/program/OnboardingProgramSection";
 import OnboardingTraining from "./steps/program/OnboardingTraining";
-import { useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import OnboardingWeeklyWorkouts from "./steps/basics/OnboardingWeeklyWorkouts";
 import OnboardingSectionLayout from "./OnboardingSectionLayout";
 import OnboardingStepLayout from "./OnboardingStepLayout";
@@ -31,6 +31,8 @@ import Animated, {
 } from "react-native-reanimated";
 import OnboardingCreatingPlan from "./steps/end/OnboardingCreatingPlan";
 import OnboardingCreateAccount from "./steps/end/OnboardingCreateAccount";
+import { usePreventRemove } from "@react-navigation/native";
+import { Platform } from "react-native";
 
 type SectionType = {
   name: string;
@@ -176,8 +178,7 @@ const sections: SectionType[] = [
 export default function Onboarding() {
   const { section, setSection, step, setStep, data } = useOnboardingContext();
   const router = useRouter();
-  const navigation = useNavigation();
-  const transitionDirection = useSharedValue<-1 | 1>(1);
+  const transitionDirection = useSharedValue<-1 | 0 | 1>(0);
 
   const currentSection = sections.at(section);
   const sectionName = currentSection?.name ?? "";
@@ -258,14 +259,11 @@ export default function Onboarding() {
     };
   };
 
-  useEffect(() => {
-    const subscription = navigation.addListener("beforeRemove", (event) => {
-      event.preventDefault();
-      handleBack();
-    });
-
-    return subscription;
-  }, [handleBack, navigation]);
+  const isFirstStep = section === 0 && step === 0;
+  const isAndroid = Platform.OS === "android";
+  usePreventRemove(!isFirstStep && isAndroid, () => {
+    handleBack();
+  });
 
   return (
     <OnboardingSectionLayout
