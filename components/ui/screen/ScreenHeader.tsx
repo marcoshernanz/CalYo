@@ -1,5 +1,5 @@
 import SafeArea from "../SafeArea";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import Button from "../Button";
 import {
   ArrowLeftIcon,
@@ -21,9 +21,11 @@ import Animated, {
 export function ScreenHeader({
   children,
   scrollY,
+  safeAreaStyle,
 }: {
   children: React.ReactNode;
   scrollY?: SharedValue<number>;
+  safeAreaStyle?: ViewStyle;
 }) {
   const shadowStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
@@ -35,7 +37,10 @@ export function ScreenHeader({
   }));
 
   return (
-    <SafeArea edges={["top", "left", "right"]} style={styles.safeArea}>
+    <SafeArea
+      edges={["top", "left", "right"]}
+      style={[styles.safeArea, safeAreaStyle]}
+    >
       <Animated.View
         pointerEvents="none"
         style={[StyleSheet.absoluteFillObject, styles.shadow, shadowStyle]}
@@ -77,7 +82,12 @@ export function ScreenHeaderBackButton() {
   const router = useRouter();
 
   return (
-    <ScreenHeaderButton Icon={ArrowLeftIcon} onPress={() => { router.back(); }} />
+    <ScreenHeaderButton
+      Icon={ArrowLeftIcon}
+      onPress={() => {
+        router.back();
+      }}
+    />
   );
 }
 
