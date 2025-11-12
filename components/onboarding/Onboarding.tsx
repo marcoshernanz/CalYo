@@ -152,7 +152,7 @@ const sections: SectionType[] = [
 export default function Onboarding() {
   const { section, setSection, step, setStep, data } = useOnboardingContext();
   const router = useRouter();
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
   // const direction = useSharedValue<1 | -1>(1);
   // const { width: screenWidth } = useWindowDimensions();
   // const [hasMounted, setHasMounted] = useState(false);
@@ -251,7 +251,7 @@ export default function Onboarding() {
     setStep(nextStep);
   };
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     // direction.value = -1;
 
     let nextStep = step;
@@ -261,32 +261,26 @@ export default function Onboarding() {
 
       if (nextStep < 0) {
         nextSection -= 1;
+        nextStep = sections[nextSection].steps.length - 1;
         if (nextSection < 0) {
           router.back();
           return;
         }
       }
     } while (sections.at(nextSection)?.steps.at(nextStep)?.skip(data));
-  };
 
-  // const canGoBackWithinOnboarding = step > 0 || section > 0;
+    setSection(nextSection);
+    setStep(nextStep);
+  }, [data, router, section, setSection, setStep, step]);
 
-  // useEffect(() => {
-  //   const subscription = navigation.addListener("beforeRemove", (event) => {
-  //     const actionType = event.data.action.type;
+  useEffect(() => {
+    const subscription = navigation.addListener("beforeRemove", (event) => {
+      event.preventDefault();
+      handleBack();
+    });
 
-  //     if (!canGoBackWithinOnboarding) {
-  //       return;
-  //     }
-
-  //     if (actionType === "GO_BACK" || actionType === "POP") {
-  //       event.preventDefault();
-  //       handleBack();
-  //     }
-  //   });
-
-  //   return subscription;
-  // }, [canGoBackWithinOnboarding, handleBack, navigation]);
+    return subscription;
+  }, [handleBack, navigation]);
 
   return (
     <OnboardingSectionLayout
@@ -294,7 +288,8 @@ export default function Onboarding() {
       onBack={handleBack}
       isNextDisabled={isNextDisabled}
     >
-      {step === 0 || section === 3 ? (
+      {currentStep?.screen}
+      {/* {step === 0 || section === 3 ? (
         <Animated.View
           style={{ flex: 1 }}
           key={`section-overview-${section}-${step}`}
@@ -325,7 +320,7 @@ export default function Onboarding() {
             </Animated.View>
           </OnboardingStepLayout>
         </Animated.View>
-      )}
+      )} */}
     </OnboardingSectionLayout>
   );
 }

@@ -8,7 +8,7 @@ type Props = {
   onBack: () => void;
   onNext: () => void;
   isNextDisabled?: boolean;
-}
+};
 
 export default function OnboardingSectionLayout({
   children,
