@@ -41,6 +41,7 @@ type SectionType = {
     completed: (data: OnboardingData) => boolean;
     skip: (data: OnboardingData) => boolean;
     showHeader: boolean;
+    scrollView: boolean;
   }[];
 };
 
@@ -53,60 +54,70 @@ const sections: SectionType[] = [
         completed: () => true,
         skip: () => false,
         showHeader: false,
+        scrollView: true,
       },
       {
         screen: <OnboardingSex key="sex" />,
         completed: (data) => data.sex !== null,
         skip: () => false,
         showHeader: true,
+        scrollView: true,
       },
       {
         screen: <OnboardingBirthDate key="birth-date" />,
         completed: () => true,
         skip: () => false,
         showHeader: true,
+        scrollView: false,
       },
       {
         screen: <OnboardingHeight key="height" />,
         completed: () => true,
         skip: () => false,
         showHeader: true,
+        scrollView: false,
       },
       {
         screen: <OnboardingWeight key="weight" />,
         completed: () => true,
         skip: () => false,
         showHeader: true,
+        scrollView: false,
       },
       {
         screen: <OnboardingWeightTrend key="weight-trend" />,
         completed: (data) => data.weightTrend !== null,
         skip: () => false,
         showHeader: true,
+        scrollView: true,
       },
       {
         screen: <OnboardingWeeklyWorkouts key="weekly-workouts" />,
         completed: (data) => data.weeklyWorkouts !== null,
         skip: () => false,
         showHeader: true,
+        scrollView: true,
       },
       {
         screen: <OnboardingActivityLevel key="activity-level" />,
         completed: (data) => data.activityLevel !== null,
         skip: () => false,
         showHeader: true,
+        scrollView: true,
       },
       {
         screen: <OnboardingLiftingExperience key="lifting-experience" />,
         completed: (data) => data.liftingExperience !== null,
         skip: () => false,
         showHeader: true,
+        scrollView: true,
       },
       {
         screen: <OnboardingCardioExperience key="cardio-experience" />,
         completed: (data) => data.cardioExperience !== null,
         skip: () => false,
         showHeader: true,
+        scrollView: true,
       },
     ],
   },
@@ -118,24 +129,28 @@ const sections: SectionType[] = [
         completed: () => true,
         skip: () => false,
         showHeader: false,
+        scrollView: true,
       },
       {
         screen: <OnboardingGoal key="goal" />,
         completed: (data) => data.goal !== null,
         skip: () => false,
         showHeader: true,
+        scrollView: true,
       },
       {
         screen: <OnboardingTargetWeight key="target-weight" />,
         completed: () => true,
         skip: (data) => data.goal === "maintain",
         showHeader: true,
+        scrollView: false,
       },
       {
         screen: <OnboardingWeightChangeRate key="weight-change-rate" />,
         completed: () => true,
         skip: (data) => data.goal === "maintain",
         showHeader: true,
+        scrollView: false,
       },
     ],
   },
@@ -147,12 +162,14 @@ const sections: SectionType[] = [
         completed: () => true,
         skip: () => false,
         showHeader: false,
+        scrollView: true,
       },
       {
         screen: <OnboardingTraining key="training" />,
         completed: (data) => data.training !== null,
         skip: () => false,
         showHeader: true,
+        scrollView: true,
       },
     ],
   },
@@ -164,12 +181,14 @@ const sections: SectionType[] = [
         completed: (data) => data.hasCreatedPlan,
         skip: () => false,
         showHeader: false,
+        scrollView: true,
       },
       {
         screen: <OnboardingCreateAccount key="creating-account" />,
         completed: () => true,
         skip: () => false,
         showHeader: false,
+        scrollView: true,
       },
     ],
   },
@@ -282,6 +301,7 @@ export default function Onboarding() {
           numSteps={sectionSteps.length - 1}
           currentStep={step - 1}
           showHeader={currentStep?.showHeader ?? true}
+          scrollView={currentStep?.scrollView ?? true}
         >
           {currentStep?.screen}
         </OnboardingStepLayout>

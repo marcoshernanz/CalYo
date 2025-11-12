@@ -12,6 +12,7 @@ import { Edge } from "react-native-safe-area-context";
 import { ScreenHeader } from "../ui/screen/ScreenHeader";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 import { ScreenMainScrollView } from "../ui/screen/ScreenMain";
+import SafeArea from "../ui/SafeArea";
 
 type ProgressStepProps = {
   isActive: boolean;
@@ -43,6 +44,7 @@ type Props = {
   numSteps: number;
   currentStep: number;
   showHeader: boolean;
+  scrollView: boolean;
 };
 
 export default function OnboardingStepLayout({
@@ -51,6 +53,7 @@ export default function OnboardingStepLayout({
   numSteps,
   currentStep,
   showHeader,
+  scrollView,
 }: Props) {
   const contentEdges: Edge[] = showHeader
     ? ["left", "right"]
@@ -71,14 +74,18 @@ export default function OnboardingStepLayout({
           </View>
         </View>
       </ScreenHeader>
-      <ScreenMainScrollView
-        scrollViewProps={{ onScroll }}
-        safeAreaProps={{
-          edges: contentEdges,
-        }}
-      >
-        {children}
-      </ScreenMainScrollView>
+      {scrollView ? (
+        <ScreenMainScrollView
+          scrollViewProps={{ onScroll }}
+          safeAreaProps={{
+            edges: contentEdges,
+          }}
+        >
+          {children}
+        </ScreenMainScrollView>
+      ) : (
+        <SafeArea edges={contentEdges}>{children}</SafeArea>
+      )}
     </View>
   );
 }
