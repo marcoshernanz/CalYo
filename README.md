@@ -1,4 +1,5 @@
 - [ ] Onboarding can't nest scroll views
+- [ ] Lift up onboarding context
 - [ ] Onboarding going back from a section header steps animation bug
 - [ ] Onboarding back gesture
 - [ ] Adjust macros done button
