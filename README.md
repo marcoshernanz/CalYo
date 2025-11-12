@@ -1,4 +1,3 @@
-- [ ] Onboarding animation only in header on section change
 - [ ] Onboarding creating plan
 - [ ] Onboarding create account
 - [ ] Lift up onboarding context
@@ -20,6 +19,7 @@
 
 ---
 
+- [ ] Onboarding animation only in header on section change
 - [ ] Sign in with email
 - [ ] Fix text input filtering
 - [ ] Android 14 over scroll
