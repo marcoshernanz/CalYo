@@ -9,6 +9,7 @@ export const profilesFields = {
     protein: v.number(),
     fat: v.number(),
   }),
+  hasCompletedOnboarding: v.boolean(),
   data: v.optional(
     v.object({
       measurementSystem: v.union(v.literal("metric"), v.literal("imperial")),

@@ -41,7 +41,7 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
       if (profile === null) {
         await ctx.db.insert("profiles", {
           userId,
-          targets: profilesConfig.defaultTargets,
+          ...profilesConfig.defaultValues,
         });
       }
     },
