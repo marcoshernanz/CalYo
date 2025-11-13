@@ -21,6 +21,9 @@
 
 ---
 
+- [ ] Onboarding pickers
+- [ ] Onboarding pickers unit change
+- [ ] Onboarding target weight kg cropped
 - [ ] Onboarding animation only in header on section change
 - [ ] Sign in with email
 - [ ] Fix text input filtering
