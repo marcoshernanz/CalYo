@@ -1,10 +1,10 @@
-import { OnboardingValues } from "@/context/OnboardingContext";
+import { ProfileData } from "@/convex/tables/profiles";
 
 type Params = {
-  activityLevel: OnboardingValues["activityLevel"];
-}
+  activityLevel: ProfileData["activityLevel"];
+};
 
-const neatMap: Record<OnboardingValues["activityLevel"], number> = {
+const neatMap: Record<ProfileData["activityLevel"], number> = {
   low: 1.25,
   medium: 1.45,
   high: 1.65,

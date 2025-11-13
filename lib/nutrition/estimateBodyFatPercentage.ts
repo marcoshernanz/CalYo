@@ -1,11 +1,11 @@
-import { OnboardingValues } from "@/context/OnboardingContext";
+import { ProfileData } from "@/convex/tables/profiles";
 
 type Params = {
   weight: number;
   height: number;
   age: number;
-  sex: OnboardingValues["sex"];
-}
+  sex: ProfileData["sex"];
+};
 
 export default function estimateBodyFatPercentage({
   weight,

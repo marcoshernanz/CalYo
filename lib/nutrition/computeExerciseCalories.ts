@@ -1,14 +1,14 @@
-import { OnboardingValues } from "@/context/OnboardingContext";
+import { ProfileData } from "@/convex/tables/profiles";
 
 type Params = {
-  weeklyWorkouts: OnboardingValues["weeklyWorkouts"];
-  training: OnboardingValues["training"];
+  weeklyWorkouts: ProfileData["weeklyWorkouts"];
+  training: ProfileData["training"];
   weight: number;
-  liftingExperience: OnboardingValues["experience"];
-  cardioExperience: OnboardingValues["experience"];
+  liftingExperience: ProfileData["liftingExperience"];
+  cardioExperience: ProfileData["cardioExperience"];
 };
 
-const workoutsMap: Record<OnboardingValues["weeklyWorkouts"], number> = {
+const workoutsMap: Record<ProfileData["weeklyWorkouts"], number> = {
   "0-2": 1.5,
   "3-5": 4,
   "6+": 6.5,
@@ -50,7 +50,7 @@ function sessionsSplit({
   training,
 }: {
   totalWeeklySessions: number;
-  training: OnboardingValues["training"];
+  training: ProfileData["training"];
 }) {
   if (training === "none") {
     return { lifting: 0, cardio: 0 };
@@ -67,14 +67,17 @@ function sessionsSplit({
 
 type MetType = "lifting" | "cardio";
 
-const mets: Record<MetType, Record<OnboardingValues["experience"], number>> = {
+const mets: Record<
+  MetType,
+  Record<ProfileData["liftingExperience"], number>
+> = {
   lifting: { none: 2.0, beginner: 3.5, intermediate: 5.0, advanced: 6.0 },
   cardio: { none: 2.5, beginner: 5.0, intermediate: 7.0, advanced: 9.0 },
 };
 
 const sessionMinutes: Record<
   MetType,
-  Record<OnboardingValues["experience"], number>
+  Record<ProfileData["liftingExperience"], number>
 > = {
   lifting: { none: 0, beginner: 45, intermediate: 60, advanced: 70 },
   cardio: { none: 0, beginner: 35, intermediate: 45, advanced: 55 },
@@ -86,7 +89,7 @@ function caloriesPerSession({
   metType,
 }: {
   weight: number;
-  experience: OnboardingValues["experience"];
+  experience: ProfileData["liftingExperience"];
   metType: MetType;
 }) {
   const met = mets[metType][experience];

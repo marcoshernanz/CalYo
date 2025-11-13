@@ -1,12 +1,12 @@
-import { OnboardingValues } from "@/context/OnboardingContext";
+import { ProfileData } from "@/convex/tables/profiles";
 
 type Params = {
-  goal: OnboardingValues["goal"];
+  goal: ProfileData["goal"];
   weightChangeRate: number;
   maintenanceCalories: number;
-  sex: OnboardingValues["sex"];
+  sex: ProfileData["sex"];
   bmr: number;
-}
+};
 
 const kcalPerKg = 7700;
 const minKcalMale = 1600;

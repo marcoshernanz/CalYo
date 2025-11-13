@@ -1,11 +1,11 @@
-import { OnboardingValues } from "@/context/OnboardingContext";
+import { ProfileData } from "@/convex/tables/profiles";
 
 type Params = {
-  sex: OnboardingValues["sex"];
+  sex: ProfileData["sex"];
   weight: number;
   height: number;
   age: number;
-}
+};
 
 export default function computeBmr({ sex, weight, height, age }: Params) {
   const add = sex === "male" ? 5 : -161;

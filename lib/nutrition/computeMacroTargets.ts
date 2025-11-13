@@ -1,15 +1,15 @@
-import { OnboardingValues } from "@/context/OnboardingContext";
+import { ProfileData } from "@/convex/tables/profiles";
 import estimateBodyFatPercentage from "./estimateBodyFatPercentage";
 
 type Params = {
   weight: number;
   height: number;
   age: number;
-  sex: OnboardingValues["sex"];
-  training: OnboardingValues["training"];
-  goal: OnboardingValues["goal"];
+  sex: ProfileData["sex"];
+  training: ProfileData["training"];
+  goal: ProfileData["goal"];
   calorieTarget: number;
-}
+};
 
 export default function computeMacroTargets({
   weight,
