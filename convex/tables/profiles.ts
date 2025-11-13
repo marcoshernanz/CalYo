@@ -1,5 +1,6 @@
 import { defineTable } from "convex/server";
 import { v } from "convex/values";
+import { Doc } from "../_generated/dataModel";
 
 export const profilesFields = {
   userId: v.id("users"),
@@ -65,3 +66,5 @@ export const profilesFields = {
 export const profiles = defineTable(profilesFields).index("byUserId", [
   "userId",
 ]);
+
+export type ProfileData = NonNullable<Partial<Doc<"profiles">["data"]>>;
