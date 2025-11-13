@@ -6,14 +6,14 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 type AppContextValue = {
   appData: AppData;
   setAppData: React.Dispatch<React.SetStateAction<AppData>>;
-}
+};
 
 const defaultState = AppDataSchema.parse(undefined);
 const AppContext = createContext<AppContextValue | undefined>(undefined);
 
 type Props = {
   children: React.ReactNode;
-}
+};
 
 export default function AppContextProvider({ children }: Props) {
   const [appData, setAppData] = useState<AppData>(() => {
