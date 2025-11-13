@@ -86,7 +86,8 @@ type Props = {
 
 export default function HomeMacroSummary({ totals }: Props) {
   const targets =
-    useQuery(api.profiles.getTargets.default) ?? profilesConfig.defaultTargets;
+    useQuery(api.profiles.getProfile.default)?.targets ??
+    profilesConfig.defaultValues.targets;
 
   const progress = useSharedValue(0);
   const progressCalories = useDerivedValue(

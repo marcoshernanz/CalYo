@@ -1,5 +1,4 @@
 - [ ] updateProfile
-- [ ] Home macro summary error
 - [ ] Onboarding create plan
 - [ ] Store onboarding data
 - [ ] Onboarding enforce onboarding after creating account
