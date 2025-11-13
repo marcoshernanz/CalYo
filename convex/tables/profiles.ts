@@ -68,4 +68,4 @@ export const profiles = defineTable(profilesFields).index("byUserId", [
   "userId",
 ]);
 
-export type ProfileData = NonNullable<Partial<Doc<"profiles">["data"]>>;
+export type ProfileData = NonNullable<Doc<"profiles">["data"]>;

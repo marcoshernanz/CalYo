@@ -1,11 +1,11 @@
+import { OnboardingData } from "@/context/OnboardingContext";
 import { Doc } from "@/convex/_generated/dataModel";
-import { ProfileData } from "@/convex/tables/profiles";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import { WithoutSystemFields } from "convex/server";
 
 type ProfilesConfig = {
   defaultValues: Omit<WithoutSystemFields<Doc<"profiles">>, "userId">;
-  defaultDataValues: ProfileData;
+  defaultDataValues: OnboardingData;
 };
 
 export const profilesConfig: ProfilesConfig = {

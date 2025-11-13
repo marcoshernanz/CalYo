@@ -1,6 +1,9 @@
 import Slider from "@/components/ui/Slider";
 import Text from "@/components/ui/Text";
-import { useOnboardingContext } from "@/context/OnboardingContext";
+import {
+  OnboardingData,
+  useOnboardingContext,
+} from "@/context/OnboardingContext";
 import kgToLbs from "@/lib/units/kgToLbs";
 import lbsToKg from "@/lib/units/lbsToKg";
 import getColor from "@/lib/ui/getColor";
@@ -16,7 +19,6 @@ import {
 import { scheduleOnRN } from "react-native-worklets";
 import OnboardingStep from "../../OnboardingStep";
 import resolveFontFamily from "@/lib/ui/resolveFontFamily";
-import { ProfileData } from "@/convex/tables/profiles";
 
 const minKg = 0.1;
 const minLbs = 0.2;
@@ -36,11 +38,9 @@ export default function OnboardingWeightChangeRate() {
     ? { min: minKg, max: maxKg, def: defaultKg, rec: recommendedKg }
     : { min: minLbs, max: maxLbs, def: defaultLbs, rec: recommendedLbs };
 
-  const initialDisplayValue = data.weightChangeRate
-    ? isMetric
-      ? data.weightChangeRate
-      : kgToLbs(data.weightChangeRate * 10) / 10
-    : displayBounds.def;
+  const initialDisplayValue = isMetric
+    ? data.weightChangeRate
+    : kgToLbs(data.weightChangeRate * 10) / 10;
 
   const changeRate = useSharedValue(initialDisplayValue);
 
@@ -131,7 +131,7 @@ export default function OnboardingWeightChangeRate() {
 function syncWeightChangeRate(
   roundedDisplayValue: number,
   isMetric: boolean,
-  setData: (updater: (prev: ProfileData) => ProfileData) => void
+  setData: (updater: (prev: OnboardingData) => OnboardingData) => void
 ) {
   const valueKg = isMetric
     ? roundedDisplayValue

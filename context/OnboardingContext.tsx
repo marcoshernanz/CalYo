@@ -1,14 +1,27 @@
 import { profilesConfig } from "@/config/profilesConfig";
 import { ProfileData } from "@/convex/tables/profiles";
+import Optional from "@/lib/typescript/optional";
 import React, { createContext, useContext, useState } from "react";
+
+export type OnboardingData = Optional<
+  ProfileData,
+  | "sex"
+  | "weightTrend"
+  | "weeklyWorkouts"
+  | "activityLevel"
+  | "liftingExperience"
+  | "cardioExperience"
+  | "goal"
+  | "training"
+>;
 
 type OnboardingContextValue = {
   section: number;
   setSection: React.Dispatch<React.SetStateAction<number>>;
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  data: ProfileData;
-  setData: React.Dispatch<React.SetStateAction<ProfileData>>;
+  data: OnboardingData;
+  setData: React.Dispatch<React.SetStateAction<OnboardingData>>;
 };
 
 const OnboardingContext = createContext<OnboardingContextValue | undefined>(
@@ -22,7 +35,7 @@ type Props = {
 export default function OnboardingContextProvider({ children }: Props) {
   const [section, setSection] = useState(0);
   const [step, setStep] = useState(0);
-  const [data, setData] = useState<ProfileData>(
+  const [data, setData] = useState<OnboardingData>(
     profilesConfig.defaultDataValues
   );
 

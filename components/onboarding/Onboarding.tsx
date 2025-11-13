@@ -1,5 +1,8 @@
 import { useCallback } from "react";
-import { useOnboardingContext } from "@/context/OnboardingContext";
+import {
+  OnboardingData,
+  useOnboardingContext,
+} from "@/context/OnboardingContext";
 import OnboardingBasicsSection from "./steps/basics/OnboardingBasicsSection";
 import OnboardingSex from "./steps/basics/OnboardingSex";
 import OnboardingBirthDate from "./steps/basics/OnboardingBirthDate";
@@ -30,14 +33,13 @@ import OnboardingCreatingPlan from "./steps/end/OnboardingCreatingPlan";
 import OnboardingCreateAccount from "./steps/end/OnboardingCreateAccount";
 import { usePreventRemove } from "@react-navigation/native";
 import { Platform } from "react-native";
-import { ProfileData } from "@/convex/tables/profiles";
 
 type SectionType = {
   name: string;
   steps: {
     screen: React.ReactElement;
-    completed: (data: ProfileData) => boolean;
-    skip: (data: ProfileData) => boolean;
+    completed: (data: OnboardingData) => boolean;
+    skip: (data: OnboardingData) => boolean;
     showHeader: boolean;
     scrollView: boolean;
   }[];
@@ -176,7 +178,7 @@ const sections: SectionType[] = [
     steps: [
       {
         screen: <OnboardingCreatingPlan key="creating-plan" />,
-        completed: (data) => data.hasCreatedPlan === true,
+        completed: (data) => data.hasCreatedPlan,
         skip: () => false,
         showHeader: false,
         scrollView: true,

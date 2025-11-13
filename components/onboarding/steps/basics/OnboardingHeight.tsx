@@ -11,7 +11,7 @@ export default function OnboardingHeight() {
   const dimensions = useWindowDimensions();
   const { data, setData } = useOnboardingContext();
 
-  const heightCm = (data.height ?? 100) * 100;
+  const heightCm = data.height * 100;
 
   const metricMinHeightCm = 120;
   const metricMaxHeightCm = 240;

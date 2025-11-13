@@ -9,7 +9,7 @@ export default function OnboardingBirthDate() {
   const dimensions = useWindowDimensions();
   const { data, setData } = useOnboardingContext();
 
-  const date = new Date(data.birthDate ?? Date.now());
+  const date = new Date(data.birthDate);
 
   const currentYear = new Date().getFullYear();
   const startYear = 1900;
