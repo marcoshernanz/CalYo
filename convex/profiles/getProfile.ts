@@ -1,7 +1,7 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { internalQuery } from "../_generated/server";
+import { query } from "../_generated/server";
 
-const getProfile = internalQuery({
+const getProfile = query({
   handler: async (ctx) => {
     try {
       const userId = await getAuthUserId(ctx);

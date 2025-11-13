@@ -1,4 +1,3 @@
-- [ ] Remove getTargets
 - [ ] updateProfile
 - [ ] Home macro summary error
 - [ ] Onboarding create plan

@@ -42,7 +42,7 @@ type Macro = {
 };
 
 export default function AdjustMacrosScreen() {
-  const targets = useQuery(api.profiles.getTargets.default);
+  const targets = useQuery(api.profiles.getProfile.default)?.targets;
 
   const { scrollY, onScroll } = useScrollY();
 
