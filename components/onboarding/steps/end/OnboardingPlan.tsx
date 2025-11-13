@@ -190,7 +190,6 @@ const styles = StyleSheet.create({
   macroAmountText: {
     fontSize: 20,
     position: "absolute",
-    fontWeight: 700,
     fontFamily: resolveFontFamily({ weight: 700 }),
     color: getColor("foreground"),
     includeFontPadding: false,

@@ -275,7 +275,6 @@ const styles = StyleSheet.create({
   progressText: {
     alignItems: "center",
     fontSize: 48,
-    fontWeight: 600,
     fontFamily: resolveFontFamily({ weight: 600 }),
     color: getColor("foreground"),
     includeFontPadding: false,

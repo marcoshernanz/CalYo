@@ -192,7 +192,6 @@ const styles = StyleSheet.create({
   },
   tooltip: {
     fontSize: 16,
-    fontWeight: 600,
     fontFamily: resolveFontFamily({ weight: 600 }),
     color: getColor("foreground"),
     includeFontPadding: false,
@@ -223,7 +222,6 @@ const styles = StyleSheet.create({
   },
   valueNumber: {
     fontSize: 16,
-    fontWeight: 600,
     fontFamily: resolveFontFamily({ weight: 600 }),
     color: getColor("foreground"),
     includeFontPadding: false,
