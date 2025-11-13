@@ -1,9 +1,6 @@
 import Slider from "@/components/ui/Slider";
 import Text from "@/components/ui/Text";
-import {
-  type OnboardingData,
-  useOnboardingContext,
-} from "@/context/OnboardingContext";
+import { useOnboardingContext } from "@/context/OnboardingContext";
 import kgToLbs from "@/lib/units/kgToLbs";
 import lbsToKg from "@/lib/units/lbsToKg";
 import getColor from "@/lib/ui/getColor";
@@ -19,6 +16,7 @@ import {
 import { scheduleOnRN } from "react-native-worklets";
 import OnboardingStep from "../../OnboardingStep";
 import resolveFontFamily from "@/lib/ui/resolveFontFamily";
+import { ProfileData } from "@/convex/tables/profiles";
 
 const minKg = 0.1;
 const minLbs = 0.2;
@@ -133,7 +131,7 @@ export default function OnboardingWeightChangeRate() {
 function syncWeightChangeRate(
   roundedDisplayValue: number,
   isMetric: boolean,
-  setData: (updater: (prev: OnboardingData) => OnboardingData) => void
+  setData: (updater: (prev: ProfileData) => ProfileData) => void
 ) {
   const valueKg = isMetric
     ? roundedDisplayValue

@@ -9,7 +9,7 @@ import OnboardingStep from "../../OnboardingStep";
 export default function OnboardingWeight() {
   const { data, setData } = useOnboardingContext();
 
-  const weight = data.weight;
+  const weight = data.weight ?? 70;
 
   const metricMinWeight = 30;
   const metricMaxWeight = 300;

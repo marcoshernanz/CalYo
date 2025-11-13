@@ -1,12 +1,11 @@
+- [ ] Onboarding create plan
+- [ ] Store onboarding data
 - [ ] Onboarding enforce onboarding after creating account
-- [ ] Onboarding context
-- [ ] Onboarding going back from a section header steps animation bug
 - [ ] Adjust macros done button
 - [ ] Save adjust macros
 - [ ] Settings
 - [ ] Adjust macros screen
 - [ ] Adjust macros auto generate goal
-- [ ] Store onboarding data
 - [ ] Rate limits
 - [ ] Animate home macro summary
 - [ ] react-native-animateable-text Expo SDK 54
@@ -24,6 +23,7 @@
 - [ ] Onboarding pickers unit change
 - [ ] Onboarding target weight kg cropped
 - [ ] Onboarding animation only in header on section change
+- [ ] Onboarding going back from a section header steps animation bug
 - [ ] Sign in with email
 - [ ] Fix text input filtering
 - [ ] Android 14 over scroll

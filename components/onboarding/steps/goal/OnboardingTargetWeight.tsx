@@ -9,9 +9,9 @@ import OnboardingStep from "../../OnboardingStep";
 export default function OnboardingTargetWeight() {
   const { data, setData } = useOnboardingContext();
 
-  const initialWeight = data.weight;
+  const initialWeight = data.weight ?? 70;
   const initialWeightLbs = Math.round(kgToLbs(initialWeight) * 10) / 10;
-  const targetWeight = data.targetWeight;
+  const targetWeight = data.targetWeight ?? initialWeight;
   const targetWeightLbs = Math.round(kgToLbs(targetWeight) * 10) / 10;
 
   const metricProps: React.ComponentProps<typeof WeightPicker> = {
