@@ -1,6 +1,4 @@
 - [ ] Onboarding enforce onboarding after creating account
-- [ ] Onboarding creating plan
-- [ ] Onboarding create account
 - [ ] Onboarding context
 - [ ] Onboarding lift up onboarding context
 - [ ] Onboarding going back from a section header steps animation bug
@@ -21,6 +19,8 @@
 
 ---
 
+- [ ] Onboarding creating plan
+- [ ] Onboarding create account
 - [ ] Onboarding pickers
 - [ ] Onboarding pickers unit change
 - [ ] Onboarding target weight kg cropped

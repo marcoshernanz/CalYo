@@ -15,7 +15,7 @@ type Props = {
   value: SharedValue<number>;
   initialValue?: number;
   highlightedRange?: [number, number];
-}
+};
 
 export default function Slider({
   minValue = 0,
