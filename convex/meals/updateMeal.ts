@@ -1,31 +1,12 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { mutation } from "../_generated/server";
 import { v } from "convex/values";
+import { mealsFields } from "../tables/meals";
 
 const updateMeal = mutation({
   args: {
     id: v.id("meals"),
-    meal: v.object({
-      userId: v.optional(v.id("users")),
-      status: v.optional(
-        v.union(
-          v.literal("pending"),
-          v.literal("processing"),
-          v.literal("done"),
-          v.literal("error")
-        )
-      ),
-      name: v.optional(v.string()),
-      photoStorageId: v.optional(v.id("_storage")),
-      totals: v.optional(
-        v.object({
-          calories: v.number(),
-          protein: v.number(),
-          fat: v.number(),
-          carbs: v.number(),
-        })
-      ),
-    }),
+    meal: v.object(mealsFields),
   },
   handler: async (ctx, args): Promise<null> => {
     try {
