@@ -2,11 +2,12 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { mutation } from "../_generated/server";
 import { v } from "convex/values";
 import { mealsFields } from "../tables/meals";
+import { partial } from "convex-helpers/validators";
 
 const updateMeal = mutation({
   args: {
     id: v.id("meals"),
-    meal: v.object(mealsFields),
+    meal: v.object(partial(mealsFields)),
   },
   handler: async (ctx, args): Promise<null> => {
     try {

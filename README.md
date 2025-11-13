@@ -1,5 +1,4 @@
-- [ ] updateProfile
-- [ ] updateMeal totals
+- [ ] updateProfile and updateMeal partial objects
 - [ ] Onboarding create plan
 - [ ] Store onboarding data
 - [ ] Onboarding enforce onboarding after creating account
@@ -16,6 +15,7 @@
 - [ ] Streak
 - [ ] Sign in screen
 - [ ] Initial screen
+- [ ] Fix convex functions https://stack.convex.dev/argument-validation-without-repetition#handling-partial-updates
 
 ---
 

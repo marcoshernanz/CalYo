@@ -33,6 +33,7 @@ import type * as meals_insertMealItem from "../meals/insertMealItem.js";
 import type * as meals_updateMeal from "../meals/updateMeal.js";
 import type * as nutrition_computeNutritionTargets from "../nutrition/computeNutritionTargets.js";
 import type * as profiles_getProfile from "../profiles/getProfile.js";
+import type * as profiles_updateProfile from "../profiles/updateProfile.js";
 import type * as storage_generateUploadUrl from "../storage/generateUploadUrl.js";
 import type * as tables_fdcFoods from "../tables/fdcFoods.js";
 import type * as tables_mealItems from "../tables/mealItems.js";
@@ -70,6 +71,7 @@ declare const fullApi: ApiFromModules<{
   "meals/updateMeal": typeof meals_updateMeal;
   "nutrition/computeNutritionTargets": typeof nutrition_computeNutritionTargets;
   "profiles/getProfile": typeof profiles_getProfile;
+  "profiles/updateProfile": typeof profiles_updateProfile;
   "storage/generateUploadUrl": typeof storage_generateUploadUrl;
   "tables/fdcFoods": typeof tables_fdcFoods;
   "tables/mealItems": typeof tables_mealItems;
