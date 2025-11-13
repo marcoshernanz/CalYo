@@ -59,6 +59,7 @@ export const profilesFields = {
         v.literal("cardio"),
         v.literal("both")
       ),
+      hasCreatedPlan: v.boolean(),
     })
   ),
 };

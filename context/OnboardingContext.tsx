@@ -28,7 +28,14 @@ export default function OnboardingContextProvider({ children }: Props) {
 
   return (
     <OnboardingContext.Provider
-      value={{ section, setSection, step, setStep, data, setData }}
+      value={{
+        section,
+        setSection,
+        step,
+        setStep,
+        data,
+        setData,
+      }}
     >
       {children}
     </OnboardingContext.Provider>

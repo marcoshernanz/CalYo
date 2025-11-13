@@ -25,5 +25,6 @@ export const profilesConfig: ProfilesConfig = {
     weight: 80,
     targetWeight: 80,
     weightChangeRate: 0.5,
+    hasCreatedPlan: false,
   },
 } as const;

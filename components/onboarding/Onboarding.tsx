@@ -1,8 +1,5 @@
 import { useCallback } from "react";
-import {
-  OnboardingData,
-  useOnboardingContext,
-} from "@/context/OnboardingContext";
+import { useOnboardingContext } from "@/context/OnboardingContext";
 import OnboardingBasicsSection from "./steps/basics/OnboardingBasicsSection";
 import OnboardingSex from "./steps/basics/OnboardingSex";
 import OnboardingBirthDate from "./steps/basics/OnboardingBirthDate";
@@ -33,13 +30,14 @@ import OnboardingCreatingPlan from "./steps/end/OnboardingCreatingPlan";
 import OnboardingCreateAccount from "./steps/end/OnboardingCreateAccount";
 import { usePreventRemove } from "@react-navigation/native";
 import { Platform } from "react-native";
+import { ProfileData } from "@/convex/tables/profiles";
 
 type SectionType = {
   name: string;
   steps: {
     screen: React.ReactElement;
-    completed: (data: OnboardingData) => boolean;
-    skip: (data: OnboardingData) => boolean;
+    completed: (data: ProfileData) => boolean;
+    skip: (data: ProfileData) => boolean;
     showHeader: boolean;
     scrollView: boolean;
   }[];
@@ -58,7 +56,7 @@ const sections: SectionType[] = [
       },
       {
         screen: <OnboardingSex key="sex" />,
-        completed: (data) => data.sex !== null,
+        completed: (data) => data.sex !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
@@ -86,35 +84,35 @@ const sections: SectionType[] = [
       },
       {
         screen: <OnboardingWeightTrend key="weight-trend" />,
-        completed: (data) => data.weightTrend !== null,
+        completed: (data) => data.weightTrend !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
       },
       {
         screen: <OnboardingWeeklyWorkouts key="weekly-workouts" />,
-        completed: (data) => data.weeklyWorkouts !== null,
+        completed: (data) => data.weeklyWorkouts !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
       },
       {
         screen: <OnboardingActivityLevel key="activity-level" />,
-        completed: (data) => data.activityLevel !== null,
+        completed: (data) => data.activityLevel !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
       },
       {
         screen: <OnboardingLiftingExperience key="lifting-experience" />,
-        completed: (data) => data.liftingExperience !== null,
+        completed: (data) => data.liftingExperience !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
       },
       {
         screen: <OnboardingCardioExperience key="cardio-experience" />,
-        completed: (data) => data.cardioExperience !== null,
+        completed: (data) => data.cardioExperience !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
@@ -133,7 +131,7 @@ const sections: SectionType[] = [
       },
       {
         screen: <OnboardingGoal key="goal" />,
-        completed: (data) => data.goal !== null,
+        completed: (data) => data.goal !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
@@ -166,7 +164,7 @@ const sections: SectionType[] = [
       },
       {
         screen: <OnboardingTraining key="training" />,
-        completed: (data) => data.training !== null,
+        completed: (data) => data.training !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
@@ -178,7 +176,7 @@ const sections: SectionType[] = [
     steps: [
       {
         screen: <OnboardingCreatingPlan key="creating-plan" />,
-        completed: (data) => data.hasCreatedPlan,
+        completed: (data) => data.hasCreatedPlan === true,
         skip: () => false,
         showHeader: false,
         scrollView: true,
