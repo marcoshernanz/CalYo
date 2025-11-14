@@ -20,9 +20,15 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
-import { useOnboardingContext } from "@/context/OnboardingContext";
+import {
+  useOnboardingContext,
+  type OnboardingData,
+} from "@/context/OnboardingContext";
 import OnboardingPlan from "./OnboardingPlan";
 import resolveFontFamily from "@/lib/ui/resolveFontFamily";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { ProfileData } from "@/convex/tables/profiles";
 
 const dailyRecommendations = [
   "Calorías",
@@ -89,7 +95,20 @@ function LucideSpinner({ color, size = 18 }: LucideSpinnerProps) {
 }
 
 export default function OnboardingCreatingPlan() {
-  const { data, setData } = useOnboardingContext();
+  const { data, setData, setTargets } = useOnboardingContext();
+  const nutritionArgs = hasNutritionInputs(data)
+    ? buildNutritionArgs(data)
+    : "skip";
+  const computedTargets = useQuery(
+    api.nutrition.computeNutritionTargets.default,
+    nutritionArgs
+  );
+
+  useEffect(() => {
+    if (computedTargets) {
+      setTargets(computedTargets);
+    }
+  }, [computedTargets, setTargets]);
 
   const progress = useSharedValue(data.hasCreatedPlan ? 100 : 0);
   const progressWidth = useSharedValue(0);
@@ -258,6 +277,53 @@ export default function OnboardingCreatingPlan() {
       </View>
     </View>
   );
+}
+
+type NutritionQueryArgs = Pick<
+  ProfileData,
+  | "sex"
+  | "birthDate"
+  | "height"
+  | "weight"
+  | "weeklyWorkouts"
+  | "activityLevel"
+  | "liftingExperience"
+  | "cardioExperience"
+  | "goal"
+  | "training"
+  | "weightChangeRate"
+>;
+
+function hasNutritionInputs(
+  data: OnboardingData
+): data is OnboardingData & NutritionQueryArgs {
+  return (
+    data.sex !== undefined &&
+    data.weeklyWorkouts !== undefined &&
+    data.activityLevel !== undefined &&
+    data.liftingExperience !== undefined &&
+    data.cardioExperience !== undefined &&
+    data.goal !== undefined &&
+    data.training !== undefined
+  );
+}
+
+function buildNutritionArgs(
+  data: OnboardingData & NutritionQueryArgs
+): NutritionQueryArgs {
+  return {
+    sex: data.sex,
+    birthDate: data.birthDate,
+    height: data.height,
+    weight: data.weight,
+    weeklyWorkouts: data.weeklyWorkouts,
+    activityLevel: data.activityLevel,
+    liftingExperience: data.liftingExperience,
+    cardioExperience: data.cardioExperience,
+    goal: data.goal,
+    training: data.training,
+    weightChangeRate: data.weightChangeRate,
+  };
 }
 
 const styles = StyleSheet.create({

@@ -1,4 +1,5 @@
 import { profilesConfig } from "@/config/profilesConfig";
+import { Doc } from "@/convex/_generated/dataModel";
 import { ProfileData } from "@/convex/tables/profiles";
 import Optional from "@/lib/typescript/optional";
 import React, { createContext, useContext, useState } from "react";
@@ -15,6 +16,8 @@ export type OnboardingData = Optional<
   | "training"
 >;
 
+type Targets = Doc<"profiles">["targets"] | undefined;
+
 type OnboardingContextValue = {
   section: number;
   setSection: React.Dispatch<React.SetStateAction<number>>;
@@ -22,6 +25,8 @@ type OnboardingContextValue = {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   data: OnboardingData;
   setData: React.Dispatch<React.SetStateAction<OnboardingData>>;
+  targets: Targets;
+  setTargets: React.Dispatch<React.SetStateAction<Targets>>;
 };
 
 const OnboardingContext = createContext<OnboardingContextValue | undefined>(
@@ -38,6 +43,7 @@ export default function OnboardingContextProvider({ children }: Props) {
   const [data, setData] = useState<OnboardingData>(
     profilesConfig.defaultDataValues
   );
+  const [targets, setTargets] = useState<Targets>();
 
   return (
     <OnboardingContext.Provider
@@ -48,6 +54,8 @@ export default function OnboardingContextProvider({ children }: Props) {
         setStep,
         data,
         setData,
+        targets,
+        setTargets,
       }}
     >
       {children}
