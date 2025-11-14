@@ -7,7 +7,6 @@ import { openAuthSessionAsync } from "expo-web-browser";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Text from "@/components/ui/Text";
 import GoogleLogo from "@/assets/svg/google-logo.svg";
-import { MailIcon } from "lucide-react-native";
 import getColor from "@/lib/ui/getColor";
 
 type Props = {
@@ -42,10 +41,10 @@ export default function SignInButtons({ onEmailLogin }: Props) {
     }
   };
 
-  const handleEmailLogin = () => {
-    onEmailLogin?.();
-    router.navigate("/auth/sign-in");
-  };
+  // const handleEmailLogin = () => {
+  //   onEmailLogin?.();
+  //   router.navigate("/auth/sign-in");
+  // };
 
   return (
     <View style={styles.container}>
@@ -82,7 +81,7 @@ export default function SignInButtons({ onEmailLogin }: Props) {
           Continuar con Google
         </Text>
       </Button>
-      <Button
+      {/* <Button
         size="lg"
         variant="outline"
         style={styles.button}
@@ -92,7 +91,7 @@ export default function SignInButtons({ onEmailLogin }: Props) {
         <Text size="16" weight="500">
           Continuar con Email
         </Text>
-      </Button>
+      </Button> */}
     </View>
   );
 }
