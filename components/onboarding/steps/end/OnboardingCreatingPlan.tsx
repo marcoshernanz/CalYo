@@ -96,9 +96,10 @@ function LucideSpinner({ color, size = 18 }: LucideSpinnerProps) {
 
 export default function OnboardingCreatingPlan() {
   const { data, setData, setTargets } = useOnboardingContext();
-  const nutritionArgs = hasNutritionInputs(data)
-    ? buildNutritionArgs(data)
-    : "skip";
+  const nutritionArgs =
+    hasNutritionInputs(data) && !data.hasCreatedPlan
+      ? buildNutritionArgs(data)
+      : "skip";
   const computedTargets = useQuery(
     api.nutrition.computeNutritionTargets.default,
     nutritionArgs
@@ -107,8 +108,9 @@ export default function OnboardingCreatingPlan() {
   useEffect(() => {
     if (computedTargets) {
       setTargets(computedTargets);
+      setData((prev) => ({ ...prev, hasCreatedPlan: true }));
     }
-  }, [computedTargets, setTargets]);
+  }, [computedTargets, setData, setTargets]);
 
   const progress = useSharedValue(data.hasCreatedPlan ? 100 : 0);
   const progressWidth = useSharedValue(0);
