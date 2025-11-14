@@ -1,4 +1,3 @@
-- [ ] updateProfile and updateMeal partial objects
 - [ ] Onboarding create plan
 - [ ] Store onboarding data
 - [ ] Onboarding enforce onboarding after creating account
