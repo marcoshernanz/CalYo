@@ -2,7 +2,7 @@ import CircularProgress from "@/components/ui/CircularProgress";
 import Description from "@/components/ui/Description";
 import Title from "@/components/ui/Title";
 import getColor from "@/lib/ui/getColor";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import AnimateableText from "react-native-animateable-text";
 import {
@@ -16,54 +16,7 @@ import OnboardingStep from "../../OnboardingStep";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import calcRatio from "@/lib/utils/calcRatio";
 import resolveFontFamily from "@/lib/ui/resolveFontFamily";
-
-const carbs = 400;
-const protein = 200;
-const fat = 70;
-const calories = macrosToKcal({ carbs, protein, fat });
-
-const macros = [
-  {
-    name: "Calorías",
-    amount: calories,
-    ratio: 1,
-    color: getColor("foreground"),
-    formatAmount: (amount: number) => {
-      "worklet";
-      return `${Math.round(amount)}`;
-    },
-  },
-  {
-    name: "Hidratos",
-    amount: carbs,
-    ratio: calcRatio(macrosToKcal({ carbs }), calories),
-    color: getColor("carb"),
-    formatAmount: (amount: number) => {
-      "worklet";
-      return `${Math.round(amount)}g`;
-    },
-  },
-  {
-    name: "Proteína",
-    amount: protein,
-    ratio: calcRatio(macrosToKcal({ protein }), calories),
-    color: getColor("protein"),
-    formatAmount: (amount: number) => {
-      "worklet";
-      return `${Math.round(amount)}g`;
-    },
-  },
-  {
-    name: "Grasas",
-    amount: fat,
-    ratio: calcRatio(macrosToKcal({ fat }), calories),
-    color: getColor("fat"),
-    formatAmount: (amount: number) => {
-      "worklet";
-      return `${Math.round(amount)}g`;
-    },
-  },
-];
+import { useOnboardingContext } from "@/context/OnboardingContext";
 
 type MacroCardProps = {
   name: string;
@@ -115,6 +68,55 @@ function MacroCard({
 }
 
 export default function OnboardingPlan() {
+  const { targets } = useOnboardingContext();
+  const { calories, carbs, protein, fat } = targets;
+
+  const macros = useMemo(
+    () => [
+      {
+        name: "Calorías",
+        amount: calories,
+        ratio: 1,
+        color: getColor("foreground"),
+        formatAmount: (amount: number) => {
+          "worklet";
+          return `${Math.round(amount)}`;
+        },
+      },
+      {
+        name: "Hidratos",
+        amount: carbs,
+        ratio: calcRatio(macrosToKcal({ carbs }), calories),
+        color: getColor("carb"),
+        formatAmount: (amount: number) => {
+          "worklet";
+          return `${Math.round(amount)}g`;
+        },
+      },
+      {
+        name: "Proteína",
+        amount: protein,
+        ratio: calcRatio(macrosToKcal({ protein }), calories),
+        color: getColor("protein"),
+        formatAmount: (amount: number) => {
+          "worklet";
+          return `${Math.round(amount)}g`;
+        },
+      },
+      {
+        name: "Grasas",
+        amount: fat,
+        ratio: calcRatio(macrosToKcal({ fat }), calories),
+        color: getColor("fat"),
+        formatAmount: (amount: number) => {
+          "worklet";
+          return `${Math.round(amount)}g`;
+        },
+      },
+    ],
+    [calories, carbs, protein, fat]
+  );
+
   return (
     <OnboardingStep title="¡Enhorabuena! Tu plan personalizado está listo">
       <View style={styles.container}>

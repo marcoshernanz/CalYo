@@ -1,6 +1,5 @@
 - [ ] Onboarding create plan finishing early
 - [ ] Improve nutrition plan (more protein)
-- [ ] Onboarding create plan
 - [ ] Store onboarding data
 - [ ] Onboarding enforce onboarding after creating account
 - [ ] Adjust macros done button

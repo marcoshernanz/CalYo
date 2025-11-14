@@ -16,7 +16,7 @@ export type OnboardingData = Optional<
   | "training"
 >;
 
-type Targets = Doc<"profiles">["targets"] | undefined;
+type Targets = Doc<"profiles">["targets"];
 
 type OnboardingContextValue = {
   section: number;
@@ -43,7 +43,9 @@ export default function OnboardingContextProvider({ children }: Props) {
   const [data, setData] = useState<OnboardingData>(
     profilesConfig.defaultDataValues
   );
-  const [targets, setTargets] = useState<Targets>();
+  const [targets, setTargets] = useState<Targets>(
+    profilesConfig.defaultValues.targets
+  );
 
   return (
     <OnboardingContext.Provider
