@@ -74,3 +74,31 @@ export function useOnboardingContext() {
   }
   return context;
 }
+
+const onboardingFields: (keyof ProfileData)[] = [
+  "measurementSystem",
+  "sex",
+  "birthDate",
+  "height",
+  "weight",
+  "weightTrend",
+  "weeklyWorkouts",
+  "activityLevel",
+  "liftingExperience",
+  "cardioExperience",
+  "goal",
+  "targetWeight",
+  "weightChangeRate",
+  "training",
+  "hasCreatedPlan",
+];
+
+const hasValue = <T,>(value: T | undefined | null): value is T => {
+  return value !== undefined && value !== null;
+};
+
+export function isOnboardingDataComplete(
+  data: OnboardingData
+): data is ProfileData {
+  return onboardingFields.every((field) => hasValue(data[field]));
+}
