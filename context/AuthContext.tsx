@@ -11,13 +11,13 @@ type AuthContextValue = {
   isLoading: boolean;
   signIn: ConvexAuthActionsContext["signIn"];
   signOut: ConvexAuthActionsContext["signOut"];
-}
+};
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 type Props = {
   children: ReactNode;
-}
+};
 
 export function AuthContextProvider({ children }: Props) {
   const { isLoading, isAuthenticated } = useConvexAuth();
