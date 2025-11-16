@@ -8,36 +8,56 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Text from "@/components/ui/Text";
 import GoogleLogo from "@/assets/svg/google-logo.svg";
 import getColor from "@/lib/ui/getColor";
+import { useState } from "react";
 
 type Props = {
   onEmailLogin?: () => void;
+  onSuccess?: () => Promise<void>;
+  disabled?: boolean;
 };
 
 const redirectTo = makeRedirectUri();
 
-export default function SignInButtons({ onEmailLogin }: Props) {
+export default function SignInButtons({
+  onEmailLogin,
+  onSuccess,
+  disabled = false,
+}: Props) {
   const { signIn } = useAuthContext();
   const router = useRouter();
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   const handleLogin = async (provider: "google" | "apple") => {
-    const { redirect } = await signIn(provider, { redirectTo });
-    if (Platform.OS === "web") {
-      return;
-    }
-    if (!redirect) {
-      console.warn("Missing redirect URL from signIn response");
-      return;
-    }
-    const result = await openAuthSessionAsync(redirect.toString(), redirectTo);
-    if (result.type === "success") {
-      const { url } = result;
-      const code = new URL(url).searchParams.get("code");
-      if (!code) {
-        console.warn("Authorization code not found in redirect callback");
+    if (disabled || isAuthenticating) return;
+    setIsAuthenticating(true);
+    try {
+      const { redirect } = await signIn(provider, { redirectTo });
+      if (Platform.OS === "web") {
         return;
       }
-      await signIn(provider, { code });
-      router.replace("/app");
+      if (!redirect) {
+        console.warn("Missing redirect URL from signIn response");
+        return;
+      }
+      const result = await openAuthSessionAsync(
+        redirect.toString(),
+        redirectTo
+      );
+      if (result.type === "success") {
+        const { url } = result;
+        const code = new URL(url).searchParams.get("code");
+        if (!code) {
+          console.warn("Authorization code not found in redirect callback");
+          return;
+        }
+        await signIn(provider, { code });
+        await onSuccess?.();
+        router.replace("/app");
+      }
+    } catch (error) {
+      console.error("Authentication error", error);
+    } finally {
+      setIsAuthenticating(false);
     }
   };
 
@@ -54,6 +74,7 @@ export default function SignInButtons({ onEmailLogin }: Props) {
           variant="primary"
           style={styles.button}
           onPress={() => void handleLogin("apple")}
+          disabled={disabled || isAuthenticating}
         >
           <FontAwesome5 name="apple" size={28} color={getColor("background")} />
           <Text
@@ -71,6 +92,7 @@ export default function SignInButtons({ onEmailLogin }: Props) {
         variant={Platform.OS === "android" ? "primary" : "outline"}
         style={styles.button}
         onPress={() => void handleLogin("google")}
+        disabled={disabled || isAuthenticating}
       >
         <GoogleLogo height={24} width={24} />
         <Text
