@@ -108,21 +108,20 @@ export default function OnboardingCreatingPlan() {
   useEffect(() => {
     if (computedTargets) {
       setTargets(computedTargets);
-      setData((prev) => ({ ...prev, hasCreatedPlan: true }));
     }
-  }, [computedTargets, setData, setTargets]);
+  }, [computedTargets, setTargets]);
 
-  const progress = useSharedValue(data.hasCreatedPlan ? 100 : 0);
+  const progress = useSharedValue(0);
   const progressWidth = useSharedValue(0);
-  const [currentDescriptionIndex, setCurrentDescriptionIndex] = useState(() =>
-    data.hasCreatedPlan ? descriptions.length - 1 : 0
+  const [currentDescriptionIndex, setCurrentDescriptionIndex] = useState(
+    () => 0
   );
   const [completedRecommendations, setCompletedRecommendations] = useState(
-    () => (data.hasCreatedPlan ? dailyRecommendations.length : 0)
+    () => 0
   );
   const [activeRecommendationIndex, setActiveRecommendationIndex] = useState<
     number | null
-  >(() => (data.hasCreatedPlan ? null : 0));
+  >(0);
 
   const animatedProps = {
     progress: useAnimatedProps(() => ({
@@ -142,11 +141,6 @@ export default function OnboardingCreatingPlan() {
     let isCancelled = false;
 
     if (data.hasCreatedPlan) {
-      progress.value = 100;
-      setCurrentDescriptionIndex(descriptions.length - 1);
-      setCompletedRecommendations(dailyRecommendations.length);
-      setActiveRecommendationIndex(null);
-
       return () => {
         cancelAnimation(progress);
       };
