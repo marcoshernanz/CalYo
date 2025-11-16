@@ -1,3 +1,4 @@
+- [ ] Re-create plan when onboarding data changes
 - [ ] Onboarding create plan finishing early
 - [ ] Improve nutrition plan (more protein)
 - [ ] Store onboarding data
