@@ -9,23 +9,28 @@ const completeOnboarding = mutation({
     targets: profilesFields.targets,
   },
   handler: async (ctx, args): Promise<null> => {
-    const userId = await getAuthUserId(ctx);
-    if (userId === null) throw new Error("Unauthorized");
+    try {
+      const userId = await getAuthUserId(ctx);
+      if (userId === null) throw new Error("Unauthorized");
 
-    const profile = await ctx.db
-      .query("profiles")
-      .withIndex("byUserId", (q) => q.eq("userId", userId))
-      .first();
-    if (!profile) throw new Error("Profile not found");
+      const profile = await ctx.db
+        .query("profiles")
+        .withIndex("byUserId", (q) => q.eq("userId", userId))
+        .first();
+      if (!profile) throw new Error("Profile not found");
 
-    const patch: Partial<Doc<"profiles">> = {
-      hasCompletedOnboarding: true,
-      ...args,
-    };
+      const patch: Partial<Doc<"profiles">> = {
+        hasCompletedOnboarding: true,
+        ...args,
+      };
 
-    await ctx.db.patch(profile._id, patch);
+      await ctx.db.patch(profile._id, patch);
 
-    return null;
+      return null;
+    } catch (error) {
+      console.error("completeOnboarding error", error);
+      throw error;
+    }
   },
 });
 
