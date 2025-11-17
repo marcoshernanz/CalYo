@@ -8,6 +8,7 @@ import {
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState, useCallback } from "react";
+import sleep from "@/lib/utils/sleep";
 
 export default function OnboardingCreateAccount() {
   const { data, targets } = useOnboardingContext();
@@ -21,6 +22,7 @@ export default function OnboardingCreateAccount() {
     if (isSubmitting || !isOnboardingDataComplete(data)) return;
     setIsSubmitting(true);
     try {
+      await sleep(1000);
       await completeOnboarding({ data, targets });
     } finally {
       setIsSubmitting(false);
