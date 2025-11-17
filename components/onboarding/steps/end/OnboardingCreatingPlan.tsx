@@ -95,7 +95,8 @@ function LucideSpinner({ color, size = 18 }: LucideSpinnerProps) {
 }
 
 export default function OnboardingCreatingPlan() {
-  const { data, setData, setTargets, hasCreatedPlan } = useOnboardingContext();
+  const { data, setData, setTargets, hasCreatedPlan, setHasCreatedPlan } =
+    useOnboardingContext();
   const nutritionArgs =
     hasNutritionInputs(data) && !hasCreatedPlan
       ? buildNutritionArgs(data)
@@ -184,7 +185,7 @@ export default function OnboardingCreatingPlan() {
         }
       }
 
-      setData((prev) => ({ ...prev, hasCreatedPlan: true }));
+      setHasCreatedPlan(true);
     };
 
     void runStages();
@@ -193,7 +194,7 @@ export default function OnboardingCreatingPlan() {
       isCancelled = true;
       cancelAnimation(progress);
     };
-  }, [hasCreatedPlan, progress, setData]);
+  }, [hasCreatedPlan, progress, setData, setHasCreatedPlan]);
 
   if (hasCreatedPlan) {
     return <OnboardingPlan />;
