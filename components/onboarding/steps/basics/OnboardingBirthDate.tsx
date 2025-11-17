@@ -36,7 +36,7 @@ export default function OnboardingBirthDate() {
     const day = parseInt(value);
     setData((prev) => ({
       ...prev,
-      bornDate: new Date(date.getFullYear(), date.getMonth(), day),
+      bornDate: new Date(date.getFullYear(), date.getMonth(), day).getTime(),
     }));
   };
 
@@ -46,7 +46,7 @@ export default function OnboardingBirthDate() {
     const safeDay = Math.min(date.getDate(), maxDay);
     setData((prev) => ({
       ...prev,
-      bornDate: new Date(date.getFullYear(), monthIndex, safeDay),
+      bornDate: new Date(date.getFullYear(), monthIndex, safeDay).getTime(),
     }));
   };
 
@@ -56,7 +56,7 @@ export default function OnboardingBirthDate() {
     const safeDay = Math.min(date.getDate(), maxDay);
     setData((prev) => ({
       ...prev,
-      bornDate: new Date(year, date.getMonth(), safeDay),
+      bornDate: new Date(year, date.getMonth(), safeDay).getTime(),
     }));
   };
 
