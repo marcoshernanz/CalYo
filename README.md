@@ -1,3 +1,4 @@
+- [ ] Fix handle sign out
 - [ ] completeOnboarding Unauthorized
 - [ ] Re-create plan when onboarding data changes
 - [ ] Onboarding create plan finishing early
