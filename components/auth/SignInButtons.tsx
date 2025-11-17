@@ -52,6 +52,7 @@ export default function SignInButtons({
         }
         await signIn(provider, { code });
         await onSuccess?.();
+        if (router.canDismiss()) router.dismissAll();
         router.replace("/app");
       }
     } catch (error) {

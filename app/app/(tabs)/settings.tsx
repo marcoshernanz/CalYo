@@ -3,12 +3,13 @@ import SettingsItem from "@/components/settings/SettingsItem";
 import SafeArea from "@/components/ui/SafeArea";
 import Title from "@/components/ui/Title";
 import { useAuthContext } from "@/context/AuthContext";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { LogOutIcon, PieChartIcon } from "lucide-react-native";
 import { ScrollView, StyleSheet } from "react-native";
 
 export default function SettingsScreen() {
   const { signOut } = useAuthContext();
+  const router = useRouter();
 
   return (
     <SafeArea edges={["top", "left", "right"]}>
@@ -27,7 +28,10 @@ export default function SettingsScreen() {
             text="Cerrar Sesión"
             Icon={LogOutIcon}
             onPress={() => {
-              void signOut();
+              void signOut().then(() => {
+                if (router.canDismiss()) router.dismissAll();
+                router.replace("/auth");
+              });
             }}
           />
         </SettingsGroup>
