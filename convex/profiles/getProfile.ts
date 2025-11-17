@@ -12,6 +12,10 @@ const getProfile = query({
         .filter((q) => q.eq(q.field("userId"), userId))
         .first();
 
+      if (!profile) {
+        throw new Error("Profile not found");
+      }
+
       return profile;
     } catch (error) {
       console.error("getProfile error", error);

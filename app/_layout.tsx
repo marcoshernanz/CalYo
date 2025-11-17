@@ -21,6 +21,8 @@ function RootNavigator() {
         <Stack.Screen name="app" />
       </Stack.Protected>
 
+      <Stack.Screen name="onboarding" />
+
       <Stack.Protected guard={!isAuthenticated}>
         <Stack.Screen name="auth" />
       </Stack.Protected>
