@@ -49,7 +49,7 @@ export default function AuthScreen() {
         <Button
           size="lg"
           onPress={() => {
-            router.navigate("/auth/onboarding");
+            router.navigate("/onboarding");
           }}
         >
           Comenzar
