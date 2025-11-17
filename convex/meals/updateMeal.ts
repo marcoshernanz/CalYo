@@ -4,6 +4,7 @@ import type { Doc } from "../_generated/dataModel";
 import { v } from "convex/values";
 import { mealsFields } from "../tables/meals";
 import { partial } from "convex-helpers/validators";
+import { z } from "zod/v4";
 
 const updateMeal = mutation({
   args: {
@@ -29,6 +30,17 @@ const updateMeal = mutation({
           ...meal.totals,
           ...totals,
         };
+      } else if (totals) {
+        const schema = z.object({
+          calories: z.number(),
+          protein: z.number(),
+          fat: z.number(),
+          carbs: z.number(),
+        });
+        const { data, success } = schema.safeParse(totals);
+        if (success) {
+          patch.totals = data;
+        }
       }
 
       await ctx.db.patch(args.id, patch);

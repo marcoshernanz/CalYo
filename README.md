@@ -15,6 +15,7 @@
 
 ---
 
+- [ ] Parsing convex schemas
 - [ ] Re-create plan when onboarding data changes
 - [ ] Onboarding creating plan
 - [ ] Onboarding create account
