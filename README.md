@@ -1,11 +1,8 @@
-- [ ] Improve nutrition plan (more protein)
-- [ ] Store onboarding data
-- [ ] Onboarding enforce onboarding after creating account
 - [ ] Adjust macros done button
 - [ ] Save adjust macros
-- [ ] Settings
-- [ ] Adjust macros screen
 - [ ] Adjust macros auto generate goal
+- [ ] Settings
+- [ ] Improve nutrition plan (more protein)
 - [ ] Rate limits
 - [ ] Animate home macro summary
 - [ ] react-native-animateable-text Expo SDK 54

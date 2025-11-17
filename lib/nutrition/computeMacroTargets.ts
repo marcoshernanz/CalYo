@@ -30,15 +30,15 @@ export default function computeMacroTargets({
     trainingBias = 0.0;
   }
 
-  let basePerKgLbm = 2.0;
+  let basePerKgLbm = 2.4;
   if (goal === "lose") {
-    basePerKgLbm = 2.2;
+    basePerKgLbm = 2.6;
   } else if (goal === "gain") {
-    basePerKgLbm = 1.8;
+    basePerKgLbm = 2.2;
   }
 
-  const maxProteinPerKgLbm = 2.4;
-  const minProteinPerKgLbm = 1.6;
+  const maxProteinPerKgLbm = 2.6;
+  const minProteinPerKgLbm = 2.0;
   const proteinPerKgLbm = Math.max(
     minProteinPerKgLbm,
     Math.min(maxProteinPerKgLbm, basePerKgLbm + trainingBias)
