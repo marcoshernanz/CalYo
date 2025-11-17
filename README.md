@@ -1,7 +1,3 @@
-- [ ] Fix handle sign out
-- [ ] completeOnboarding Unauthorized
-- [ ] Re-create plan when onboarding data changes
-- [ ] Onboarding create plan finishing early
 - [ ] Improve nutrition plan (more protein)
 - [ ] Store onboarding data
 - [ ] Onboarding enforce onboarding after creating account
@@ -22,6 +18,7 @@
 
 ---
 
+- [ ] Re-create plan when onboarding data changes
 - [ ] Onboarding creating plan
 - [ ] Onboarding create account
 - [ ] Onboarding pickers
