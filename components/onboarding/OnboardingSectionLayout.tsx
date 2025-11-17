@@ -6,15 +6,15 @@ import SafeArea from "../ui/SafeArea";
 
 type Props = {
   children: React.ReactNode;
+  onNext: () => Promise<void>;
   onBack: () => void;
-  onNext: () => void;
   isNextDisabled?: boolean;
 };
 
 export default function OnboardingSectionLayout({
   children,
-  onBack,
   onNext,
+  onBack,
   isNextDisabled = false,
 }: Props) {
   return (
@@ -33,7 +33,7 @@ export default function OnboardingSectionLayout({
           variant="primary"
           size="md"
           style={styles.nextButton}
-          onPress={onNext}
+          onPress={() => void onNext()}
           disabled={isNextDisabled}
         >
           Siguiente

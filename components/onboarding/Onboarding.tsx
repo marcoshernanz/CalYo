@@ -1,5 +1,6 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import {
+  isOnboardingDataComplete,
   OnboardingContextValue,
   useOnboardingContext,
 } from "@/context/OnboardingContext";
@@ -33,6 +34,8 @@ import OnboardingCreatingPlan from "./steps/end/OnboardingCreatingPlan";
 import OnboardingCreateAccount from "./steps/end/OnboardingCreateAccount";
 import { usePreventRemove } from "@react-navigation/native";
 import { Platform } from "react-native";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 type SectionType = {
   name: string;
@@ -196,18 +199,34 @@ const sections: SectionType[] = [
 
 export default function Onboarding() {
   const context = useOnboardingContext();
-  const { section, setSection, step, setStep } = context;
+  const { data, targets, section, setSection, step, setStep } = context;
   const router = useRouter();
   const transitionDirection = useSharedValue<-1 | 0 | 1>(0);
+
+  const [isCompletingOnboarding, setIsCompletingOnboarding] = useState(false);
+  const completeOnboarding = useMutation(
+    api.profiles.completeOnboarding.default
+  );
 
   const currentSection = sections.at(section);
   const sectionName = currentSection?.name ?? "";
   const sectionSteps = currentSection?.steps ?? [];
   const currentStep = sectionSteps.at(step);
   const isCurrentStepComplete = currentStep?.completed(context) ?? true;
-  const isNextDisabled = !isCurrentStepComplete;
+  const isNextDisabled = !isCurrentStepComplete || isCompletingOnboarding;
 
-  const handleNext = () => {
+  const handleCompleteOnboarding = async () => {
+    if (isCompletingOnboarding) return;
+
+    setIsCompletingOnboarding(true);
+    if (!isOnboardingDataComplete(data)) return;
+    await completeOnboarding({ data, targets });
+
+    if (router.canDismiss()) router.dismissAll();
+    router.replace("/app");
+  };
+
+  const handleNext = async () => {
     if (isNextDisabled) return;
 
     transitionDirection.value = 1;
@@ -219,7 +238,7 @@ export default function Onboarding() {
       if (nextStep >= sectionSteps.length) {
         nextSection += 1;
         if (nextSection >= sections.length) {
-          console.log("Onboarding completed");
+          await handleCompleteOnboarding();
           return;
         }
 
