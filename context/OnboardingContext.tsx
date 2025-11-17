@@ -3,6 +3,7 @@ import { Doc } from "@/convex/_generated/dataModel";
 import { ProfileData } from "@/convex/tables/profiles";
 import Optional from "@/lib/typescript/optional";
 import React, { createContext, useContext, useState } from "react";
+import { useAuthContext } from "./AuthContext";
 
 export type OnboardingData = Optional<
   ProfileData,
@@ -18,15 +19,18 @@ export type OnboardingData = Optional<
 
 type Targets = Doc<"profiles">["targets"];
 
-type OnboardingContextValue = {
+export type OnboardingContextValue = {
   section: number;
   setSection: React.Dispatch<React.SetStateAction<number>>;
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
   data: OnboardingData;
   setData: React.Dispatch<React.SetStateAction<OnboardingData>>;
+  hasCreatedPlan: boolean;
+  setHasCreatedPlan: React.Dispatch<React.SetStateAction<boolean>>;
   targets: Targets;
   setTargets: React.Dispatch<React.SetStateAction<Targets>>;
+  isAuthenticated: boolean;
 };
 
 const OnboardingContext = createContext<OnboardingContextValue | undefined>(
@@ -43,9 +47,11 @@ export default function OnboardingContextProvider({ children }: Props) {
   const [data, setData] = useState<OnboardingData>(
     profilesConfig.defaultDataValues
   );
+  const [hasCreatedPlan, setHasCreatedPlan] = useState(false);
   const [targets, setTargets] = useState<Targets>(
     profilesConfig.defaultValues.targets
   );
+  const { isAuthenticated } = useAuthContext();
 
   return (
     <OnboardingContext.Provider
@@ -56,8 +62,11 @@ export default function OnboardingContextProvider({ children }: Props) {
         setStep,
         data,
         setData,
+        hasCreatedPlan,
+        setHasCreatedPlan,
         targets,
         setTargets,
+        isAuthenticated,
       }}
     >
       {children}
@@ -90,7 +99,6 @@ const onboardingFields: (keyof ProfileData)[] = [
   "targetWeight",
   "weightChangeRate",
   "training",
-  "hasCreatedPlan",
 ];
 
 const hasValue = <T,>(value: T | undefined | null): value is T => {

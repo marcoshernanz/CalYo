@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import {
-  OnboardingData,
+  OnboardingContextValue,
   useOnboardingContext,
 } from "@/context/OnboardingContext";
 import OnboardingBasicsSection from "./steps/basics/OnboardingBasicsSection";
@@ -38,8 +38,8 @@ type SectionType = {
   name: string;
   steps: {
     screen: React.ReactElement;
-    completed: (data: OnboardingData) => boolean;
-    skip: (data: OnboardingData) => boolean;
+    completed: (context: OnboardingContextValue) => boolean;
+    skip: (context: OnboardingContextValue) => boolean;
     showHeader: boolean;
     scrollView: boolean;
   }[];
@@ -58,7 +58,7 @@ const sections: SectionType[] = [
       },
       {
         screen: <OnboardingSex key="sex" />,
-        completed: (data) => data.sex !== undefined,
+        completed: ({ data }) => data.sex !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
@@ -86,35 +86,35 @@ const sections: SectionType[] = [
       },
       {
         screen: <OnboardingWeightTrend key="weight-trend" />,
-        completed: (data) => data.weightTrend !== undefined,
+        completed: ({ data }) => data.weightTrend !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
       },
       {
         screen: <OnboardingWeeklyWorkouts key="weekly-workouts" />,
-        completed: (data) => data.weeklyWorkouts !== undefined,
+        completed: ({ data }) => data.weeklyWorkouts !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
       },
       {
         screen: <OnboardingActivityLevel key="activity-level" />,
-        completed: (data) => data.activityLevel !== undefined,
+        completed: ({ data }) => data.activityLevel !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
       },
       {
         screen: <OnboardingLiftingExperience key="lifting-experience" />,
-        completed: (data) => data.liftingExperience !== undefined,
+        completed: ({ data }) => data.liftingExperience !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
       },
       {
         screen: <OnboardingCardioExperience key="cardio-experience" />,
-        completed: (data) => data.cardioExperience !== undefined,
+        completed: ({ data }) => data.cardioExperience !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
@@ -133,7 +133,7 @@ const sections: SectionType[] = [
       },
       {
         screen: <OnboardingGoal key="goal" />,
-        completed: (data) => data.goal !== undefined,
+        completed: ({ data }) => data.goal !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
@@ -141,14 +141,14 @@ const sections: SectionType[] = [
       {
         screen: <OnboardingTargetWeight key="target-weight" />,
         completed: () => true,
-        skip: (data) => data.goal === "maintain",
+        skip: ({ data }) => data.goal === "maintain",
         showHeader: true,
         scrollView: false,
       },
       {
         screen: <OnboardingWeightChangeRate key="weight-change-rate" />,
         completed: () => true,
-        skip: (data) => data.goal === "maintain",
+        skip: ({ data }) => data.goal === "maintain",
         showHeader: true,
         scrollView: false,
       },
@@ -166,7 +166,7 @@ const sections: SectionType[] = [
       },
       {
         screen: <OnboardingTraining key="training" />,
-        completed: (data) => data.training !== undefined,
+        completed: ({ data }) => data.training !== undefined,
         skip: () => false,
         showHeader: true,
         scrollView: true,
@@ -178,7 +178,7 @@ const sections: SectionType[] = [
     steps: [
       {
         screen: <OnboardingCreatingPlan key="creating-plan" />,
-        completed: (data) => data.hasCreatedPlan,
+        completed: ({ hasCreatedPlan }) => hasCreatedPlan,
         skip: () => false,
         showHeader: false,
         scrollView: true,
@@ -186,7 +186,7 @@ const sections: SectionType[] = [
       {
         screen: <OnboardingCreateAccount key="creating-account" />,
         completed: () => false,
-        skip: () => false,
+        skip: ({ isAuthenticated }) => isAuthenticated,
         showHeader: false,
         scrollView: true,
       },
@@ -195,7 +195,8 @@ const sections: SectionType[] = [
 ];
 
 export default function Onboarding() {
-  const { section, setSection, step, setStep, data } = useOnboardingContext();
+  const context = useOnboardingContext();
+  const { section, setSection, step, setStep } = context;
   const router = useRouter();
   const transitionDirection = useSharedValue<-1 | 0 | 1>(0);
 
@@ -203,7 +204,7 @@ export default function Onboarding() {
   const sectionName = currentSection?.name ?? "";
   const sectionSteps = currentSection?.steps ?? [];
   const currentStep = sectionSteps.at(step);
-  const isCurrentStepComplete = currentStep?.completed(data) ?? true;
+  const isCurrentStepComplete = currentStep?.completed(context) ?? true;
   const isNextDisabled = !isCurrentStepComplete;
 
   const handleNext = () => {
@@ -224,7 +225,7 @@ export default function Onboarding() {
 
         nextStep = 0;
       }
-    } while (sections.at(nextSection)?.steps.at(nextStep)?.skip(data));
+    } while (sections.at(nextSection)?.steps.at(nextStep)?.skip(context));
 
     setSection(nextSection);
     setStep(nextStep);
@@ -246,11 +247,19 @@ export default function Onboarding() {
 
         nextStep = sections[nextSection].steps.length - 1;
       }
-    } while (sections.at(nextSection)?.steps.at(nextStep)?.skip(data));
+    } while (sections.at(nextSection)?.steps.at(nextStep)?.skip(context));
 
     setSection(nextSection);
     setStep(nextStep);
-  }, [data, router, section, setSection, setStep, step, transitionDirection]);
+  }, [
+    context,
+    router,
+    section,
+    setSection,
+    setStep,
+    step,
+    transitionDirection,
+  ]);
 
   const enteringAnimation = (
     values: EntryAnimationsValues

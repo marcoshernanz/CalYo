@@ -12,7 +12,7 @@ type Props = {
   ref: React.Ref<BottomSheetModal>;
   onAnimate?: (fromIndex: number, toIndex: number) => void;
   onClose?: () => void;
-}
+};
 
 export default function LoginSheet({ ref, onAnimate, onClose }: Props) {
   const insets = useSafeAreaInsets();
