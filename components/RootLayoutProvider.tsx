@@ -1,3 +1,4 @@
+import { StatusBar } from "expo-status-bar";
 import AppContextProvider from "@/context/AppContext";
 import { AuthContextProvider } from "@/context/AuthContext";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
@@ -58,6 +59,7 @@ export default function RootLayoutProvider({ children }: Props) {
                 <AppContextProvider>
                   <OnboardingContextProvider>
                     <SplashScreenController />
+                    <StatusBar style="dark" />
                     {children}
                     <ToastProvider />
                     <PortalHost />
