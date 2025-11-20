@@ -1,6 +1,6 @@
 import { authTables } from "@convex-dev/auth/server";
 import { defineSchema } from "convex/server";
-import { fdcFoods } from "./tables/foods";
+import { fdcFoods, foods } from "./tables/foods";
 import { meals } from "./tables/meals";
 import { mealItems } from "./tables/mealItems";
 import { profiles } from "./tables/profiles";
@@ -8,6 +8,7 @@ import { profiles } from "./tables/profiles";
 export default defineSchema({
   ...authTables,
   fdcFoods,
+  foods,
   meals,
   mealItems,
   profiles,

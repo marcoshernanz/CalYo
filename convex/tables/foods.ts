@@ -13,10 +13,6 @@ export const foodsFields = {
         v.literal("Legacy"),
         v.literal("Survey")
       ),
-    }),
-    v.object({
-      source: v.literal("off"),
-      id: v.string(),
     })
   ),
 
