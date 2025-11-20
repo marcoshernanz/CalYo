@@ -24,7 +24,8 @@ export const fdcFoodsFields = {
 };
 
 export const fdcFoods = defineTable(fdcFoodsFields)
-  .index("byFdcId", ["fdcId"])
+  .index("byFdcId", ["fdcId"]) // TODO: Remove
+  .index("by_externalId", ["externalId"])
   .index("byHasEmbedding", ["hasEmbedding"])
   .vectorIndex("byEmbedding", {
     vectorField: "embedding",

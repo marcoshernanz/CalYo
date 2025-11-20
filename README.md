@@ -1,3 +1,6 @@
+- [ ] Remove fdcFoods byFdcId index
+- [ ] fdcFoods -> foods
+- [ ] organize foods table
 - [ ] Search fdc candidates
 - [ ] Analyze meal foods
 - [ ] Adjust macros done button
