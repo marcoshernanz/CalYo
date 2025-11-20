@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { action, internalMutation } from "../_generated/server";
-import { fdcFoodsFields } from "../tables/fdcFoods";
+import { fdcFoodsFields } from "../tables/foods";
 import { internal } from "../_generated/api";
 
 export const upsertFdcFoods = internalMutation({
