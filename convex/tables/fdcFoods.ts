@@ -2,7 +2,8 @@ import { defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export const fdcFoodsFields = {
-  fdcId: v.number(),
+  externalId: v.optional(v.string()), // fdc:12345
+  fdcId: v.optional(v.number()),
   dataType: v.union(
     v.literal("Foundation"),
     v.literal("Legacy"),

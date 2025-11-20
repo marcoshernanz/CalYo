@@ -25,8 +25,10 @@ export const mapResult = internalQuery({
     const doc = await ctx.db.get(_id);
     if (!doc) throw new Error("Document not found");
 
+    if (!doc.fdcId) throw new Error("Document missing fdcId"); // TODO
+
     return {
-      fdcId: doc.fdcId,
+      fdcId: doc.fdcId, // TODO
       name: doc.description.en,
       category: doc.category?.en ?? null,
       nutrientsPer100g: {
