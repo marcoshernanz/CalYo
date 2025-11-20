@@ -64,7 +64,7 @@ const analyzeMealPhoto = action({
         if (!fdcFood) continue;
 
         const nutrients = scaleNutrients({
-          nutrients: fdcFood.nutrients,
+          nutrients: fdcFood.macroNutrients,
           grams: selectedItem.grams,
         });
         const calories = macrosToKcal(nutrients);

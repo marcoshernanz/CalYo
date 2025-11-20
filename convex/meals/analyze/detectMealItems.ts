@@ -11,7 +11,7 @@ export type DetectedItem = z.infer<typeof detectionSchema>;
 
 type Params = {
   imageUrl: string;
-}
+};
 
 export default async function detectMealItems({
   imageUrl,

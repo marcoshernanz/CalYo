@@ -9,8 +9,8 @@ const getFdcFood = query({
     if (userId === null) throw new Error("Unauthorized");
 
     const foodItem = await ctx.db
-      .query("fdcFoods")
-      .withIndex("byFdcId", (q) => q.eq("fdcId", fdcId))
+      .query("foods")
+      .withIndex("byExternalId", (q) => q.eq("externalId", `fdc:${fdcId}`))
       .first();
 
     return foodItem;

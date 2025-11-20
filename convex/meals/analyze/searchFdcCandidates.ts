@@ -11,32 +11,30 @@ export type Candidate = {
   fdcId: number;
   name: string;
   category: string | null;
-  nutrientsPer100g: { protein: number; fat: number; carbs: number };
-  caloriesPer100g: number;
+  nutrientsPer: { protein: number; fat: number; carbs: number };
+  caloriesPer: number;
   score: number;
 };
 
 export const mapResult = internalQuery({
   args: {
-    _id: v.id("fdcFoods"),
+    _id: v.id("foods"),
     _score: v.number(),
   },
   handler: async (ctx, { _id, _score }): Promise<Candidate> => {
     const doc = await ctx.db.get(_id);
     if (!doc) throw new Error("Document not found");
 
-    if (!doc.fdcId) throw new Error("Document missing fdcId"); // TODO
-
     return {
-      fdcId: doc.fdcId, // TODO
-      name: doc.description.en,
+      fdcId: doc.identity.id,
+      name: doc.name.en,
       category: doc.category?.en ?? null,
-      nutrientsPer100g: {
-        protein: doc.nutrients.protein,
-        fat: doc.nutrients.fat,
-        carbs: doc.nutrients.carbs,
+      nutrientsPer: {
+        protein: doc.macroNutrients.protein,
+        fat: doc.macroNutrients.fat,
+        carbs: doc.macroNutrients.carbs,
       },
-      caloriesPer100g: macrosToKcal(doc.nutrients),
+      caloriesPer: macrosToKcal(doc.macroNutrients),
       score: _score,
     };
   },
@@ -64,7 +62,11 @@ export default async function searchFdcCandidates({
 
   const limit = analyzeMealConfig.candidatesPerItem * 2;
   const searches = vectors.map((vector) =>
-    ctx.vectorSearch("fdcFoods", "byEmbedding", { vector, limit })
+    ctx.vectorSearch("foods", "byEmbedding", {
+      vector,
+      limit,
+      filter: (q) => q.eq("identity.source", "fdc"),
+    })
   );
   const resultsList = await Promise.all(searches);
 

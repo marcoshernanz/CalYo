@@ -1,11 +1,11 @@
 import { v } from "convex/values";
 import { action, internalMutation } from "../_generated/server";
-import { fdcFoodsFields } from "../tables/foods";
+import { foodsFields } from "../tables/foods";
 import { internal } from "../_generated/api";
 
-export const upsertFdcFoods = internalMutation({
+export const upsertFoods = internalMutation({
   args: {
-    docs: v.array(v.object(fdcFoodsFields)),
+    docs: v.array(v.object(foodsFields)),
   },
   handler: async (
     ctx,
@@ -16,21 +16,16 @@ export const upsertFdcFoods = internalMutation({
 
     for (const doc of docs) {
       const existing = await ctx.db
-        .query("fdcFoods")
-        .withIndex("byFdcId", (q) => q.eq("fdcId", doc.fdcId))
+        .query("foods")
+        .withIndex("byExternalId", (q) => q.eq("externalId", doc.externalId))
         .unique();
 
       if (existing) {
-        await ctx.db.patch(existing._id, {
-          dataType: doc.dataType,
-          description: doc.description,
-          category: doc.category,
-          nutrients: doc.nutrients,
-        });
+        await ctx.db.patch(existing._id, doc);
 
         updated++;
       } else {
-        await ctx.db.insert("fdcFoods", {
+        await ctx.db.insert("foods", {
           ...doc,
           hasEmbedding: false,
         });
@@ -45,7 +40,7 @@ export const upsertFdcFoods = internalMutation({
 export const ingestFdcFoods = action({
   args: {
     token: v.string(),
-    docs: v.array(v.object(fdcFoodsFields)),
+    docs: v.array(v.object(foodsFields)),
   },
   handler: async (
     ctx,
@@ -55,7 +50,7 @@ export const ingestFdcFoods = action({
       throw new Error("Unauthorized");
     }
 
-    return await ctx.runMutation(internal.fdc.ingestFdcFoods.upsertFdcFoods, {
+    return await ctx.runMutation(internal.fdc.ingestFoods.upsertFoods, {
       docs,
     });
   },
