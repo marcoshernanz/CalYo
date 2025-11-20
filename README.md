@@ -1,3 +1,5 @@
+- [ ] Search fdc candidates
+- [ ] Analyze meal foods
 - [ ] Adjust macros done button
 - [ ] Save adjust macros
 - [ ] Fix weekday button not working
