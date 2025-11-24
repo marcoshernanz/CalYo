@@ -10,8 +10,8 @@
 
 import type * as ResendOTP from "../ResendOTP.js";
 import type * as auth from "../auth.js";
-import type * as fdc_getFdcFood from "../fdc/getFdcFood.js";
-import type * as fdc_ingestFoods from "../fdc/ingestFoods.js";
+import type * as foods_getFdcFood from "../foods/getFdcFood.js";
+import type * as foods_ingestFoods from "../foods/ingestFoods.js";
 import type * as http from "../http.js";
 import type * as mealItems_getMealItem from "../mealItems/getMealItem.js";
 import type * as meals_analyze_analyzeMealConfig from "../meals/analyze/analyzeMealConfig.js";
@@ -35,7 +35,7 @@ import type * as tables_mealItems from "../tables/mealItems.js";
 import type * as tables_meals from "../tables/meals.js";
 import type * as tables_profiles from "../tables/profiles.js";
 import type * as utils_backfillFoodEmbeddings from "../utils/backfillFoodEmbeddings.js";
-import type * as utils_countFdcEmbeddings from "../utils/countFdcEmbeddings.js";
+import type * as utils_countFoodEmbeddings from "../utils/countFoodEmbeddings.js";
 
 import type {
   ApiFromModules,
@@ -54,8 +54,8 @@ import type {
 declare const fullApi: ApiFromModules<{
   ResendOTP: typeof ResendOTP;
   auth: typeof auth;
-  "fdc/getFdcFood": typeof fdc_getFdcFood;
-  "fdc/ingestFoods": typeof fdc_ingestFoods;
+  "foods/getFdcFood": typeof foods_getFdcFood;
+  "foods/ingestFoods": typeof foods_ingestFoods;
   http: typeof http;
   "mealItems/getMealItem": typeof mealItems_getMealItem;
   "meals/analyze/analyzeMealConfig": typeof meals_analyze_analyzeMealConfig;
@@ -79,7 +79,7 @@ declare const fullApi: ApiFromModules<{
   "tables/meals": typeof tables_meals;
   "tables/profiles": typeof tables_profiles;
   "utils/backfillFoodEmbeddings": typeof utils_backfillFoodEmbeddings;
-  "utils/countFdcEmbeddings": typeof utils_countFdcEmbeddings;
+  "utils/countFoodEmbeddings": typeof utils_countFoodEmbeddings;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

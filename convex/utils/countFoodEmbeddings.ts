@@ -5,7 +5,7 @@ import { Id } from "../_generated/dataModel";
 
 type PageFoodsForCountResult = {
   page: {
-    _id: Id<"fdcFoods">;
+    _id: Id<"foods">;
     hasEmbedding: boolean | undefined;
     embeddingLen: number;
   }[];
@@ -20,7 +20,7 @@ export const pageFoodsForCount = internalQuery({
     { cursor, pageSize }
   ): Promise<PageFoodsForCountResult> => {
     const { page, isDone, continueCursor } = await ctx.db
-      .query("fdcFoods")
+      .query("foods")
       .paginate({ cursor: cursor ?? null, numItems: pageSize });
 
     const slim = page.map((doc) => ({
@@ -33,7 +33,7 @@ export const pageFoodsForCount = internalQuery({
   },
 });
 
-const countFdcEmbeddings = internalAction({
+const countFoodEmbeddings = internalAction({
   handler: async (ctx) => {
     const pageSize = 200;
     let cursor: string | undefined = undefined;
@@ -46,7 +46,7 @@ const countFdcEmbeddings = internalAction({
         isDone,
         cursor: nextCursor,
       }: PageFoodsForCountResult = await ctx.runQuery(
-        internal.utils.countFdcEmbeddings.pageFoodsForCount,
+        internal.utils.countFoodEmbeddings.pageFoodsForCount,
         { cursor, pageSize }
       );
 
@@ -69,4 +69,4 @@ const countFdcEmbeddings = internalAction({
   },
 });
 
-export default countFdcEmbeddings;
+export default countFoodEmbeddings;

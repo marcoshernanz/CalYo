@@ -53,7 +53,7 @@ const backfillFoodEmbeddings = internalAction({
 
     for (;;) {
       const batch = await ctx.runQuery(
-        internal.utils.backfillFdcEmbeddings.nextFoodsToEmbed,
+        internal.utils.backfillFoodEmbeddings.nextFoodsToEmbed,
         { limit: batchSize }
       );
       if (batch.length === 0) break;
@@ -78,7 +78,7 @@ const backfillFoodEmbeddings = internalAction({
         const normed = l2Normalize(raw);
 
         await ctx.runMutation(
-          internal.utils.backfillFdcEmbeddings.saveEmbedding,
+          internal.utils.backfillFoodEmbeddings.saveEmbedding,
           { id: batch[i]._id, embedding: normed }
         );
 
