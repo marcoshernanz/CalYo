@@ -2,6 +2,8 @@ import { defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export const foodsFields = {
+  externalId: v.optional(v.string()),
+
   identity: v.union(
     v.object({
       source: v.literal("fdc"),

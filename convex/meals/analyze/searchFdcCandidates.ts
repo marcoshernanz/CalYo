@@ -11,8 +11,8 @@ export type Candidate = {
   fdcId: number;
   name: string;
   category: string | null;
-  nutrientsPer: { protein: number; fat: number; carbs: number };
-  caloriesPer: number;
+  nutrients: { protein: number; fat: number; carbs: number };
+  calories: number;
   score: number;
 };
 
@@ -29,12 +29,12 @@ export const mapResult = internalQuery({
       fdcId: doc.identity.id,
       name: doc.name.en,
       category: doc.category?.en ?? null,
-      nutrientsPer: {
+      nutrients: {
         protein: doc.macroNutrients.protein,
         fat: doc.macroNutrients.fat,
         carbs: doc.macroNutrients.carbs,
       },
-      caloriesPer: macrosToKcal(doc.macroNutrients),
+      calories: macrosToKcal(doc.macroNutrients),
       score: _score,
     };
   },

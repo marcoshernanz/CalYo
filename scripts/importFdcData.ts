@@ -150,7 +150,7 @@ async function importFdcData(jsonPath: string) {
     batch = [];
 
     const { inserted, updated } = await client.action(
-      api.fdc.ingestFoods.default,
+      api.foods.ingestFoods.default,
       { token: ingestToken, docs }
     );
 

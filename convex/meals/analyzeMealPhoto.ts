@@ -58,8 +58,8 @@ const analyzeMealPhoto = action({
       let totals = { calories: 0, protein: 0, fat: 0, carbs: 0 };
 
       for (const selectedItem of selectedItems) {
-        const fdcFood = await ctx.runQuery(api.fdc.getFdcFood.default, {
-          fdcId: selectedItem.fdcId,
+        const fdcFood = await ctx.runQuery(api.foods.getFoodById.default, {
+          identity: { source: "fdc", id: selectedItem.fdcId },
         });
         if (!fdcFood) continue;
 

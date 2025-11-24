@@ -53,7 +53,7 @@ export const ingestFdcFoods = action({
       throw new Error("Unauthorized");
     }
 
-    return await ctx.runMutation(internal.fdc.ingestFoods.upsertFoods, {
+    return await ctx.runMutation(internal.foods.ingestFoods.upsertFoods, {
       docs,
     });
   },
