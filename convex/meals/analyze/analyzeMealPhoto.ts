@@ -1,14 +1,14 @@
 import { v } from "convex/values";
-import { action } from "../_generated/server";
-import { api } from "../_generated/api";
-import macrosToKcal from "../../lib/utils/macrosToKcal";
-import detectMealItems from "./analyze/detectMealItems";
-import searchFdcCandidates from "./analyze/searchFdcCandidates";
-import selectCandidates from "./analyze/selectCandidates";
-import scaleNutrients from "../../lib/utils/scaleNutrients";
-import nameMeal from "./analyze/nameMeal";
+import { action } from "../../_generated/server";
+import { api } from "../../_generated/api";
+import macrosToKcal from "../../../lib/utils/macrosToKcal";
+import detectMealItems from "./detectMealItems";
+import searchFdcCandidates from "./searchFdcCandidates";
+import selectCandidates from "./selectCandidates";
+import scaleNutrients from "../../../lib/utils/scaleNutrients";
+import nameMeal from "./nameMeal";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { Id } from "../_generated/dataModel";
+import { Id } from "../../_generated/dataModel";
 
 const analyzeMealPhoto = action({
   args: { storageId: v.id("_storage") },
