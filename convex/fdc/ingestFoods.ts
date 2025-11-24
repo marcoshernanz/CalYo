@@ -17,12 +17,15 @@ export const upsertFoods = internalMutation({
     for (const doc of docs) {
       const existing = await ctx.db
         .query("foods")
-        .withIndex("byExternalId", (q) => q.eq("externalId", doc.externalId))
+        .withIndex("byIdentitySourceId", (q) =>
+          q
+            .eq("identity.source", doc.identity.source)
+            .eq("identity.id", doc.identity.id)
+        )
         .unique();
 
       if (existing) {
         await ctx.db.patch(existing._id, doc);
-
         updated++;
       } else {
         await ctx.db.insert("foods", {

@@ -34,7 +34,7 @@ import type * as tables_foods from "../tables/foods.js";
 import type * as tables_mealItems from "../tables/mealItems.js";
 import type * as tables_meals from "../tables/meals.js";
 import type * as tables_profiles from "../tables/profiles.js";
-import type * as utils_backfillFdcEmbeddings from "../utils/backfillFdcEmbeddings.js";
+import type * as utils_backfillFoodEmbeddings from "../utils/backfillFoodEmbeddings.js";
 import type * as utils_countFdcEmbeddings from "../utils/countFdcEmbeddings.js";
 
 import type {
@@ -78,7 +78,7 @@ declare const fullApi: ApiFromModules<{
   "tables/mealItems": typeof tables_mealItems;
   "tables/meals": typeof tables_meals;
   "tables/profiles": typeof tables_profiles;
-  "utils/backfillFdcEmbeddings": typeof utils_backfillFdcEmbeddings;
+  "utils/backfillFoodEmbeddings": typeof utils_backfillFoodEmbeddings;
   "utils/countFdcEmbeddings": typeof utils_countFdcEmbeddings;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
