@@ -17,7 +17,7 @@ export default function MealItemScreen() {
 
   return (
     <MealItem
-      name={mealItem?.food.description.en}
+      name={mealItem?.food.name.en}
       mealItem={mealItem ?? undefined}
       loading={isLoading}
     />
