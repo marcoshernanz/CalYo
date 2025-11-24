@@ -2,13 +2,13 @@ import { v } from "convex/values";
 import { action } from "../../_generated/server";
 import { api } from "../../_generated/api";
 import macrosToKcal from "../../../lib/utils/macrosToKcal";
-import detectMealItems from "./detectMealItems";
+import detectMealIngredients from "./detectMealIngredients";
 import searchFdcCandidates from "./searchFdcCandidates";
 import selectCandidates from "./selectCandidates";
 import scaleNutrients from "../../../lib/utils/scaleNutrients";
 import nameMeal from "./nameMeal";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { Id } from "../../_generated/dataModel";
+import { Doc, Id } from "../../_generated/dataModel";
 
 const analyzeMealPhoto = action({
   args: { storageId: v.id("_storage") },
@@ -31,66 +31,70 @@ const analyzeMealPhoto = action({
         },
       });
 
-      const detectedItems = await detectMealItems({ imageUrl });
-      if (detectedItems.length === 0) {
-        throw new Error("No meal items detected");
+      const detectedIngredients = await detectMealIngredients({ imageUrl });
+      if (detectedIngredients.length === 0) {
+        throw new Error("No meal ingredients detected");
       }
 
-      const mealNamePromise = nameMeal({ items: detectedItems });
-      const selectedItemsPromise = (async () => {
-        const candidatesByItem = await searchFdcCandidates({
+      const mealNamePromise = nameMeal(detectedIngredients);
+      const selectedIngredientsPromise = (async () => {
+        const candidatesByIngredient = await searchFdcCandidates({
           ctx,
-          detectedItems,
+          detectedItems: detectedIngredients,
         });
 
         return selectCandidates({
-          detectedItems,
-          candidatesByItem,
+          detectedIngredients: detectedIngredients,
+          candidatesByIngredient: candidatesByIngredient,
           imageUrl,
         });
       })();
 
       const [mealName, selectedItems] = await Promise.all([
         mealNamePromise,
-        selectedItemsPromise,
+        selectedIngredientsPromise,
       ]);
 
-      let totals = { calories: 0, protein: 0, fat: 0, carbs: 0 };
+      const totals: Doc<"meals">["totals"] = {
+        calories: 0,
+        protein: 0,
+        fat: 0,
+        carbs: 0,
+      };
+      const ingredients: Doc<"meals">["ingredients"] = [];
 
-      for (const selectedItem of selectedItems) {
-        const fdcFood = await ctx.runQuery(api.foods.getFoodById.default, {
-          identity: { source: "fdc", id: selectedItem.fdcId },
+      for (const selectedIngredient of selectedItems) {
+        const food = await ctx.runQuery(api.foods.getFoodByIdentity.default, {
+          identity: { source: "fdc", id: selectedIngredient.fdcId },
         });
-        if (!fdcFood) continue;
+        if (!food) continue;
 
         const nutrients = scaleNutrients({
-          nutrients: fdcFood.macroNutrients,
-          grams: selectedItem.grams,
+          nutrients: food.macroNutrients,
+          grams: selectedIngredient.grams,
         });
         const calories = macrosToKcal(nutrients);
 
-        await ctx.runMutation(api.meals.insertMealItem.default, {
-          mealId,
-          foodId: fdcFood._id,
-          grams: selectedItem.grams,
+        ingredients.push({
+          foodId: food._id,
+          grams: selectedIngredient.grams,
           nutrients,
         });
 
-        totals = {
-          calories: totals.calories + calories,
-          protein: +(totals.protein + nutrients.protein).toFixed(1),
-          fat: +(totals.fat + nutrients.fat).toFixed(1),
-          carbs: +(totals.carbs + nutrients.carbs).toFixed(1),
-        };
+        totals.calories += calories;
+        totals.protein += nutrients.protein;
+        totals.fat += nutrients.fat;
+        totals.carbs += nutrients.carbs;
       }
+
+      totals.calories = +totals.calories.toFixed(0);
+      totals.protein = +totals.protein.toFixed(1);
+      totals.fat = +totals.fat.toFixed(1);
+      totals.carbs = +totals.carbs.toFixed(1);
 
       await ctx.runMutation(api.meals.updateMeal.default, {
         id: mealId,
-        meal: {
-          status: "done",
-          name: mealName,
-          totals,
-        },
+        meal: { status: "done", name: mealName, totals, ingredients },
       });
 
       return mealId;

@@ -1,22 +1,20 @@
 import { generateObject } from "ai";
 import { z } from "zod/v4";
 import { analyzeMealConfig, analyzeMealPrompts } from "./analyzeMealConfig";
-import { DetectedItem } from "./detectMealItems";
+import { DetectedIngredient } from "./detectMealIngredients";
 
 const nameSchema = z.object({
   mealName: z.string().min(3).max(60),
 });
 
-function formatIngredients(items: DetectedItem[]) {
-  return items.map((i) => `- ${i.name} (~${i.grams} g)`).join("\n");
+function formatIngredients(ingredients: DetectedIngredient[]) {
+  return ingredients.map((i) => `- ${i.name} (~${i.grams} g)`).join("\n");
 }
 
-export default async function nameMeal({
-  items,
-}: {
-  items: DetectedItem[];
-}): Promise<string> {
-  const ingredientsText = formatIngredients(items);
+export default async function nameMeal(
+  ingredients: DetectedIngredient[]
+): Promise<string> {
+  const ingredientsText = formatIngredients(ingredients);
 
   const { object } = await generateObject({
     model: analyzeMealConfig.namingModel,

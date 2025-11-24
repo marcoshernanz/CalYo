@@ -11,6 +11,7 @@ const createMeal = mutation({
       const mealId = await ctx.db.insert("meals", {
         userId,
         status: "pending",
+        ingredients: [],
       });
 
       return mealId;

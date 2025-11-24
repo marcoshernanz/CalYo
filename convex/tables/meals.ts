@@ -19,6 +19,17 @@ export const mealsFields = {
       carbs: v.number(),
     })
   ),
+  ingredients: v.array(
+    v.object({
+      foodId: v.id("foods"),
+      grams: v.number(),
+      nutrients: v.object({
+        protein: v.number(),
+        fat: v.number(),
+        carbs: v.number(),
+      }),
+    })
+  ),
 };
 
 export const meals = defineTable(mealsFields).index("byUserId", ["userId"]);

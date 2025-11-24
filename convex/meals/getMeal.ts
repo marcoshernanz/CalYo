@@ -13,13 +13,8 @@ const getMeal = query({
       if (!meal) return null;
       if (meal.userId !== userId) throw new Error("Forbidden");
 
-      const mealItems = await ctx.db
-        .query("mealItems")
-        .withIndex("byMealId", (q) => q.eq("mealId", mealId))
-        .collect();
-
-      const mealItemsWithFood = await Promise.all(
-        mealItems.map(async (mealItem) => {
+      const extendedMeal = await Promise.all(
+        meal.ingredients.map(async (mealItem) => {
           const food = await ctx.db.get(mealItem.foodId);
           if (!food) throw new Error("Food not found");
 
@@ -27,7 +22,7 @@ const getMeal = query({
         })
       );
 
-      return { meal, mealItems: mealItemsWithFood };
+      return { meal: extendedMeal };
     } catch (error) {
       console.error("getMeal error", error);
       throw error;

@@ -15,12 +15,6 @@ const deleteMeal = mutation({
       if (!meal) throw new Error("Not found");
       if (meal.userId !== userId) throw new Error("Forbidden");
 
-      const items = await ctx.db
-        .query("mealItems")
-        .withIndex("byMealId", (q) => q.eq("mealId", id))
-        .collect();
-
-      await Promise.all(items.map((item) => ctx.db.delete(item._id)));
       await ctx.db.delete(id);
 
       return null;

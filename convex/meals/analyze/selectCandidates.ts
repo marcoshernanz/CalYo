@@ -1,6 +1,6 @@
 import { generateObject } from "ai";
 import { analyzeMealConfig, analyzeMealPrompts } from "./analyzeMealConfig";
-import { DetectedItem } from "./detectMealItems";
+import { DetectedIngredient } from "./detectMealIngredients";
 import { Candidate } from "./searchFdcCandidates";
 import { z } from "zod/v4";
 
@@ -12,22 +12,22 @@ const selectionSchema = z.object({
 
 type SelectedType = z.infer<typeof selectionSchema>;
 
-type CandidatesByItem = Partial<Record<string, Candidate[]>>;
+type CandidatesByIngredient = Partial<Record<string, Candidate[]>>;
 
 function buildCandidatesText(
-  detectedItems: DetectedItem[],
-  candidatesByItem: CandidatesByItem
+  detectedIngredients: DetectedIngredient[],
+  candidatesByIngredient: CandidatesByIngredient
 ) {
   const lines: string[] = [];
 
-  lines.push("\nCandidates per item (per 100g):");
-  for (const item of detectedItems) {
-    const candidates = candidatesByItem[item.name] ?? [];
+  lines.push("\nCandidates per ingredient (per 100g):");
+  for (const ingredient of detectedIngredients) {
+    const candidates = candidatesByIngredient[ingredient.name] ?? [];
     if (!candidates.length) {
-      lines.push(`- ${item.name}: (no candidates)`);
+      lines.push(`- ${ingredient.name}: (no candidates)`);
       continue;
     }
-    lines.push(`- ${item.name}:`);
+    lines.push(`- ${ingredient.name}:`);
     candidates.forEach((c, idx) => {
       lines.push(
         `  ${idx + 1}) fdcId=${c.fdcId} | name=${c.name} | category=${c.category ?? "-"} | protein=${c.nutrients.protein}g, fat=${c.nutrients.fat}g, carbs=${c.nutrients.carbs}g, kcal=${c.calories}`
@@ -39,55 +39,70 @@ function buildCandidatesText(
 }
 
 function ensureSelections({
-  detectedItems,
-  candidatesByItem,
-  selectedItems,
+  detectedIngredients,
+  candidatesByIngredient,
+  selectedIngredients,
 }: {
-  detectedItems: DetectedItem[];
-  candidatesByItem: CandidatesByItem;
-  selectedItems: SelectedType[];
+  detectedIngredients: DetectedIngredient[];
+  candidatesByIngredient: CandidatesByIngredient;
+  selectedIngredients: SelectedType[];
 }) {
   const byName = new Map(
-    selectedItems.map((item) => [item.inputName.toLowerCase(), item])
+    selectedIngredients.map((ingredient) => [
+      ingredient.inputName.toLowerCase(),
+      ingredient,
+    ])
   );
-  const finalItems: { fdcId: number; grams: number }[] = [];
+  const finalIngredients: { fdcId: number; grams: number }[] = [];
 
-  for (const detectedItem of detectedItems) {
-    const selectedItem = byName.get(detectedItem.name.toLowerCase());
-    if (selectedItem) {
-      finalItems.push({
-        fdcId: selectedItem.chosenFdcId,
-        grams: Math.max(1, Math.min(1500, Math.round(selectedItem.grams))),
+  for (const detectedIngredient of detectedIngredients) {
+    const selectedIngredient = byName.get(
+      detectedIngredient.name.toLowerCase()
+    );
+    if (selectedIngredient) {
+      finalIngredients.push({
+        fdcId: selectedIngredient.chosenFdcId,
+        grams: Math.max(
+          1,
+          Math.min(1500, Math.round(selectedIngredient.grams))
+        ),
       });
       continue;
     }
 
-    const fallbackCandidate = candidatesByItem[detectedItem.name]?.[0];
+    const fallbackCandidate =
+      candidatesByIngredient[detectedIngredient.name]?.[0];
     if (fallbackCandidate !== undefined) {
-      finalItems.push({
+      finalIngredients.push({
         fdcId: fallbackCandidate.fdcId,
-        grams: Math.max(1, Math.min(1500, Math.round(detectedItem.grams))),
+        grams: Math.max(
+          1,
+          Math.min(1500, Math.round(detectedIngredient.grams))
+        ),
       });
     }
   }
 
-  return finalItems;
+  return finalIngredients;
 }
 
 type Params = {
-  detectedItems: DetectedItem[];
-  candidatesByItem: CandidatesByItem;
+  detectedIngredients: DetectedIngredient[];
+  candidatesByIngredient: CandidatesByIngredient;
   imageUrl: string;
 };
 
 export default async function selectCandidates({
-  detectedItems,
-  candidatesByItem,
+  detectedIngredients,
+  candidatesByIngredient,
   imageUrl,
 }: Params): Promise<{ fdcId: number; grams: number }[]> {
-  const candidatesText = buildCandidatesText(detectedItems, candidatesByItem);
+  const candidatesText = buildCandidatesText(
+    detectedIngredients,
+    candidatesByIngredient
+  );
 
-  const { object: selectedItems } = await generateObject({
+  const { object: selectedIngredients } = await generateObject({
     model: analyzeMealConfig.candidateSelectionModel,
     temperature: analyzeMealConfig.temperature,
     schema: selectionSchema,
@@ -106,7 +121,9 @@ export default async function selectCandidates({
         content: [
           {
             type: "text",
-            text: "Detected items (JSON):\n" + JSON.stringify(detectedItems),
+            text:
+              "Detected ingredients (JSON):\n" +
+              JSON.stringify(detectedIngredients),
           },
         ],
       },
@@ -117,5 +134,9 @@ export default async function selectCandidates({
     ],
   });
 
-  return ensureSelections({ detectedItems, candidatesByItem, selectedItems });
+  return ensureSelections({
+    detectedIngredients,
+    candidatesByIngredient,
+    selectedIngredients,
+  });
 }

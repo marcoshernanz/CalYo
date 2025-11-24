@@ -1,5 +1,5 @@
 import { embedMany } from "ai";
-import { DetectedItem } from "./detectMealItems";
+import { DetectedIngredient } from "./detectMealIngredients";
 import l2Normalize from "../../../lib/utils/l2Normalize";
 import { ActionCtx, internalQuery } from "../../_generated/server";
 import { internal } from "../../_generated/api";
@@ -42,7 +42,7 @@ export const mapResult = internalQuery({
 
 type Params = {
   ctx: ActionCtx;
-  detectedItems: DetectedItem[];
+  detectedItems: DetectedIngredient[];
 };
 
 export default async function searchFdcCandidates({

@@ -7,15 +7,15 @@ const detectionSchema = z.object({
   grams: z.number().int().min(1).max(1500),
 });
 
-export type DetectedItem = z.infer<typeof detectionSchema>;
+export type DetectedIngredient = z.infer<typeof detectionSchema>;
 
 type Params = {
   imageUrl: string;
 };
 
-export default async function detectMealItems({
+export default async function detectMealIngredients({
   imageUrl,
-}: Params): Promise<DetectedItem[]> {
+}: Params): Promise<DetectedIngredient[]> {
   const { object: detected } = await generateObject({
     model: analyzeMealConfig.imageProcessingModel,
     temperature: analyzeMealConfig.temperature,
