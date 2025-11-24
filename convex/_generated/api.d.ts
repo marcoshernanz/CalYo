@@ -11,6 +11,7 @@
 import type * as ResendOTP from "../ResendOTP.js";
 import type * as auth from "../auth.js";
 import type * as foods_getFdcFood from "../foods/getFdcFood.js";
+import type * as foods_getFoodById from "../foods/getFoodById.js";
 import type * as foods_ingestFoods from "../foods/ingestFoods.js";
 import type * as http from "../http.js";
 import type * as mealItems_getMealItem from "../mealItems/getMealItem.js";
@@ -55,6 +56,7 @@ declare const fullApi: ApiFromModules<{
   ResendOTP: typeof ResendOTP;
   auth: typeof auth;
   "foods/getFdcFood": typeof foods_getFdcFood;
+  "foods/getFoodById": typeof foods_getFoodById;
   "foods/ingestFoods": typeof foods_ingestFoods;
   http: typeof http;
   "mealItems/getMealItem": typeof mealItems_getMealItem;
