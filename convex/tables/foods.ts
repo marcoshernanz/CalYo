@@ -2,8 +2,6 @@ import { defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export const foodsFields = {
-  externalId: v.optional(v.string()), // fdc:12345
-
   identity: v.union(
     v.object({
       source: v.literal("fdc"),
@@ -33,7 +31,7 @@ export const foodsFields = {
 };
 
 export const foods = defineTable(foodsFields)
-  .index("byExternalId", ["externalId"])
+  .index("byIdentitySourceId", ["identity.source", "identity.id"])
   .index("byHasEmbedding", ["hasEmbedding"])
   .vectorIndex("byEmbedding", {
     vectorField: "embedding",
