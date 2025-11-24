@@ -1,3 +1,5 @@
+- [ ] Meal ingredients inside meal
+- [ ] getFoodByIdentity argument validator
 - [ ] Remove fdcFoods byFdcId index
 - [ ] fdcFoods -> foods
 - [ ] organize foods table
