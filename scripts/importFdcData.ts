@@ -80,23 +80,23 @@ function computeCarbs(nutrients: FoodItem["foodNutrients"]): number {
   return Math.max(0, total);
 }
 
-function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"fdcFoods">> {
+function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"foods">> {
   const protein = getAmount(item.foodNutrients, nutrientTargets.protein) ?? 0;
   const fat = getAmount(item.foodNutrients, nutrientTargets.fat) ?? 0;
   const carbs = computeCarbs(item.foodNutrients);
 
   return {
-    fdcId: item.fdcId,
-    dataType: dataTypeMap[item.dataType],
-    description: { en: item.description },
+    identity: {
+      source: "fdc",
+      id: item.fdcId,
+      dataType: dataTypeMap[item.dataType],
+    },
+    name: { en: item.description },
     category: item.foodCategory
       ? { en: item.foodCategory.description }
       : undefined,
-    nutrients: {
-      protein,
-      fat,
-      carbs,
-    },
+    macroNutrients: { protein, fat, carbs },
+    microNutrients: {},
     hasEmbedding: false,
   };
 }
@@ -134,7 +134,7 @@ async function importFdcData(jsonPath: string) {
   const label = `import:${rootKey}`;
 
   const batchSize = 500;
-  let batch: WithoutSystemFields<Doc<"fdcFoods">>[] = [];
+  let batch: WithoutSystemFields<Doc<"foods">>[] = [];
   let totalInserted = 0;
   let totalUpdated = 0;
 
@@ -150,7 +150,7 @@ async function importFdcData(jsonPath: string) {
     batch = [];
 
     const { inserted, updated } = await client.action(
-      api.fdc.ingestFdcFoods.default,
+      api.fdc.ingestFoods.default,
       { token: ingestToken, docs }
     );
 
