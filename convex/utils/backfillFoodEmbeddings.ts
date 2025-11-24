@@ -10,9 +10,9 @@ import { embedMany } from "ai";
 import { google } from "@ai-sdk/google";
 import l2Normalize from "../../lib/utils/l2Normalize";
 
-function buildEmbeddingText(food: Doc<"fdcFoods">): string {
+function buildEmbeddingText(food: Doc<"foods">): string {
   const parts = [];
-  parts.push(food.description.en);
+  parts.push(food.name.en);
   if (food.category?.en) {
     parts.push(`Category: ${food.category.en}`);
   }
@@ -23,7 +23,7 @@ export const nextFoodsToEmbed = internalQuery({
   args: { limit: v.number() },
   handler: async (ctx, { limit }) => {
     const foods = await ctx.db
-      .query("fdcFoods")
+      .query("foods")
       .withIndex("byHasEmbedding", (q) => q.eq("hasEmbedding", false))
       .take(limit);
 
@@ -36,7 +36,7 @@ export const nextFoodsToEmbed = internalQuery({
 
 export const saveEmbedding = internalMutation({
   args: {
-    id: v.id("fdcFoods"),
+    id: v.id("foods"),
     embedding: v.array(v.float64()),
   },
   handler: async (ctx, { id, embedding }) => {
@@ -44,7 +44,7 @@ export const saveEmbedding = internalMutation({
   },
 });
 
-const backfillFdcEmbeddings = internalAction({
+const backfillFoodEmbeddings = internalAction({
   handler: async (ctx) => {
     const batchSize = 100;
     let processed = 0;
@@ -97,4 +97,4 @@ const backfillFdcEmbeddings = internalAction({
   },
 });
 
-export default backfillFdcEmbeddings;
+export default backfillFoodEmbeddings;
