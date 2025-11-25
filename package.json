@@ -12,8 +12,8 @@
     "eas:prod": "eas build --profile production",
     "lint": "npx eslint .",
     "tsc": "tsc",
-    "import:fdc": "npx ts-node scripts/importFdcData.ts",
-    "sync:foods": "npx ts-node scripts/syncFoodsData.ts"
+    "script:importFdc": "npx ts-node scripts/importFdcData.ts",
+    "script:syncFoods": "npx ts-node scripts/syncFoodsData.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.23",
