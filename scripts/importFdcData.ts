@@ -167,7 +167,7 @@ async function importFdcData(jsonPath: string) {
       streamArray(),
     ]);
 
-    pipeline.on("data", (data: { value: unknown; key: number }) => {
+    pipeline.on("data", (data: { value: unknown }) => {
       const value = data.value;
       const parsed = FdcFood.safeParse(value);
       if (!parsed.success) {
