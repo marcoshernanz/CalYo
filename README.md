@@ -1,4 +1,3 @@
-- [ ] Adjust macros done button
 - [ ] Save adjust macros
 - [ ] Adjust macros cropped circular progress
 - [ ] Fix weekday button not working

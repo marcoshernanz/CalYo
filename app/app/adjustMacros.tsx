@@ -174,8 +174,11 @@ export default function AdjustMacrosScreen() {
         </View>
       </ScreenMainScrollView>
 
-      <ScreenFooter>
-        <ScreenFooterButton>Generar Automáticamente</ScreenFooterButton>
+      <ScreenFooter style={styles.footer}>
+        <ScreenFooterButton variant="outline" style={{ flex: 0 }}>
+          Generar Automáticamente
+        </ScreenFooterButton>
+        <ScreenFooterButton style={{ flex: 0 }}>Hecho</ScreenFooterButton>
       </ScreenFooter>
     </ScreenMain>
   );
@@ -203,5 +206,8 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 999,
     backgroundColor: getColor("muted"),
+  },
+  footer: {
+    flexDirection: "column",
   },
 });

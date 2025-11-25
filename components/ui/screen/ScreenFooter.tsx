@@ -1,4 +1,4 @@
-import { StyleSheet, ViewStyle } from "react-native";
+import { PressableProps, StyleSheet, ViewStyle } from "react-native";
 import Button from "../Button";
 import SafeArea from "../SafeArea";
 import getColor from "@/lib/ui/getColor";
@@ -25,7 +25,14 @@ export function ScreenFooter({
 }
 
 export function ScreenFooterButton(props: ComponentProps<typeof Button>) {
-  return <Button style={styles.button} {...props} />;
+  const { style, ...rest } = props;
+
+  const computedStyle: PressableProps["style"] =
+    typeof style === "function"
+      ? (state) => [styles.button, style(state)]
+      : [styles.button, style];
+
+  return <Button style={computedStyle} {...rest} />;
 }
 
 export function ScreenFooterButtonText({ text }: { text: string }) {
