@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import {
   isOnboardingDataComplete,
   OnboardingContextValue,
@@ -37,7 +37,7 @@ import { Platform } from "react-native";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
-type SectionType = {
+export type OnboardingSectionType = {
   name: string;
   steps: {
     screen: React.ReactElement;
@@ -48,7 +48,7 @@ type SectionType = {
   }[];
 };
 
-const sections: SectionType[] = [
+const sections: OnboardingSectionType[] = [
   {
     name: "Fundamentos",
     steps: [
@@ -253,7 +253,7 @@ export default function Onboarding() {
     setStep(nextStep);
   };
 
-  const handleBack = useCallback(() => {
+  const handleBack = () => {
     transitionDirection.value = -1;
 
     let nextStep = step;
@@ -273,15 +273,7 @@ export default function Onboarding() {
 
     setSection(nextSection);
     setStep(nextStep);
-  }, [
-    context,
-    router,
-    section,
-    setSection,
-    setStep,
-    step,
-    transitionDirection,
-  ]);
+  };
 
   const enteringAnimation = (
     values: EntryAnimationsValues

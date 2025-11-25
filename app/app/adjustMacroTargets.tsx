@@ -192,7 +192,13 @@ export default function AdjustMacroTargetsScreen() {
       </ScreenMainScrollView>
 
       <ScreenFooter style={styles.footer}>
-        <ScreenFooterButton variant="outline" style={{ flex: 0 }}>
+        <ScreenFooterButton
+          variant="outline"
+          style={{ flex: 0 }}
+          onPress={() => {
+            router.navigate("/app/generateMacroTargets");
+          }}
+        >
           Generar Automáticamente
         </ScreenFooterButton>
         <ScreenFooterButton
