@@ -1,7 +1,8 @@
 - [ ] Adjust macros auto generate goal
-- [ ] Adjust macros auto generate goal close button
 - [ ] Adjust macros auto generate goal done button text
 - [ ] Adjust macros cropped circular progress
+- [ ] Use profile data in onboarding context
+- [ ] Streak size
 - [ ] Settings
 - [ ] Improve nutrition plan (more protein)
 - [ ] Rate limits

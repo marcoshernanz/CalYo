@@ -107,7 +107,7 @@ export default function AdjustMacroTargetsScreen() {
         },
       },
     });
-    router.back();
+    router.dismissTo("/app");
   };
 
   useEffect(() => {

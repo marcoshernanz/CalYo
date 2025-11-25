@@ -19,7 +19,7 @@ import { api } from "@/convex/_generated/api";
 import { usePreventRemove } from "@react-navigation/native";
 import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
 import Animated, {
   EntryAnimationsValues,
@@ -129,6 +129,7 @@ export default function GenerateMacroTargetsScreen() {
   const { setData, targets } = context;
   const router = useRouter();
   const transitionDirection = useSharedValue<-1 | 0 | 1>(0);
+  const isDone = useRef(false);
 
   const [step, setStep] = useState(0);
 
@@ -146,7 +147,8 @@ export default function GenerateMacroTargetsScreen() {
     await updateProfile({ profile: { targets } });
     setIsUpdatingTargets(false);
 
-    router.back();
+    isDone.current = true;
+    router.dismissTo("/app");
   };
 
   const handleNext = async () => {
@@ -209,7 +211,7 @@ export default function GenerateMacroTargetsScreen() {
 
   const isFirstStep = step === 0;
   const isAndroid = Platform.OS === "android";
-  usePreventRemove(!isFirstStep && isAndroid, () => {
+  usePreventRemove(!isFirstStep && isAndroid && !isDone.current, () => {
     handleBack();
   });
 
@@ -224,6 +226,7 @@ export default function GenerateMacroTargetsScreen() {
       onNext={handleNext}
       onBack={handleBack}
       isNextDisabled={isNextDisabled}
+      nextButtonText={step === steps.length - 1 ? "Guardar" : undefined}
     >
       <Animated.View
         key={`step-${step}`}
@@ -233,7 +236,7 @@ export default function GenerateMacroTargetsScreen() {
       >
         <OnboardingStepLayout
           sectionName={"Ajustar Objetivos"}
-          numSteps={steps.length}
+          numSteps={steps.length - 2}
           currentStep={step - 1}
           showHeader={currentStep?.showHeader ?? true}
           scrollView={currentStep?.scrollView ?? true}

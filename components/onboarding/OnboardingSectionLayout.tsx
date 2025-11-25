@@ -9,6 +9,7 @@ type Props = {
   onNext: () => Promise<void>;
   onBack: () => void;
   isNextDisabled?: boolean;
+  nextButtonText?: string;
 };
 
 export default function OnboardingSectionLayout({
@@ -16,6 +17,7 @@ export default function OnboardingSectionLayout({
   onNext,
   onBack,
   isNextDisabled = false,
+  nextButtonText = "Siguiente",
 }: Props) {
   return (
     <View style={styles.container}>
@@ -36,7 +38,7 @@ export default function OnboardingSectionLayout({
           onPress={() => void onNext()}
           disabled={isNextDisabled}
         >
-          Siguiente
+          {nextButtonText}
         </Button>
       </ScreenFooter>
     </View>
