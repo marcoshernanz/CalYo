@@ -25,7 +25,9 @@ export default function MealScreen() {
   }>();
 
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl.default);
-  const analyzeMealPhoto = useAction(api.meals.analyzeMealPhoto.default);
+  const analyzeMealPhoto = useAction(
+    api.meals.analyze.analyzeMealPhoto.default
+  );
   const createMeal = useMutation(api.meals.createMeal.default);
   const deleteMeal = useDeleteMeal();
 
