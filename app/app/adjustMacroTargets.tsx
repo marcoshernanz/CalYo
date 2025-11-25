@@ -42,7 +42,7 @@ type Macro = {
   ratio: SharedValue<number>;
 };
 
-export default function AdjustMacrosScreen() {
+export default function AdjustMacroTargetsScreen() {
   const targets = useQuery(api.profiles.getProfile.default)?.targets;
   const updateProfile = useMutation(api.profiles.updateProfile.default);
 
