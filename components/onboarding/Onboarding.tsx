@@ -199,9 +199,12 @@ const sections: SectionType[] = [
 
 export default function Onboarding() {
   const context = useOnboardingContext();
-  const { data, targets, section, setSection, step, setStep } = context;
+  const { data, targets } = context;
   const router = useRouter();
   const transitionDirection = useSharedValue<-1 | 0 | 1>(0);
+
+  const [section, setSection] = useState(0);
+  const [step, setStep] = useState(0);
 
   const [isCompletingOnboarding, setIsCompletingOnboarding] = useState(false);
   const completeOnboarding = useMutation(

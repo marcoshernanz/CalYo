@@ -20,10 +20,6 @@ export type OnboardingData = Optional<
 type Targets = Doc<"profiles">["targets"];
 
 export type OnboardingContextValue = {
-  section: number;
-  setSection: React.Dispatch<React.SetStateAction<number>>;
-  step: number;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
   data: OnboardingData;
   setData: React.Dispatch<React.SetStateAction<OnboardingData>>;
   hasCreatedPlan: boolean;
@@ -42,8 +38,6 @@ type Props = {
 };
 
 export default function OnboardingContextProvider({ children }: Props) {
-  const [section, setSection] = useState(0);
-  const [step, setStep] = useState(0);
   const [data, setData] = useState<OnboardingData>(
     profilesConfig.defaultDataValues
   );
@@ -56,10 +50,6 @@ export default function OnboardingContextProvider({ children }: Props) {
   return (
     <OnboardingContext.Provider
       value={{
-        section,
-        setSection,
-        step,
-        setStep,
         data,
         setData,
         hasCreatedPlan,
