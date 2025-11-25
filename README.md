@@ -7,7 +7,6 @@
 - [ ] react-native-animateable-text Expo SDK 54
 - [ ] Spanish
 - [ ] react-native-reanimated performance
-- [ ] Streak
 - [ ] Sign in screen
 - [ ] Initial screen
 - [ ] Fix convex functions https://stack.convex.dev/argument-validation-without-repetition#handling-partial-updates
