@@ -1,4 +1,3 @@
-- [ ] Save adjust macros
 - [ ] Adjust macros cropped circular progress
 - [ ] Fix weekday button not working
 - [ ] Adjust macros auto generate goal
@@ -16,6 +15,7 @@
 
 ---
 
+- [ ] Navigate to home after adjusting macros?
 - [ ] Meal ingredients inside meal?
 - [ ] getFoodByIdentity argument validator
 - [ ] Parsing convex schemas

@@ -21,7 +21,8 @@ import { api } from "@/convex/_generated/api";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 import getColor from "@/lib/ui/getColor";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
+import { useRouter } from "expo-router";
 import { LucideProps } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
@@ -43,7 +44,9 @@ type Macro = {
 
 export default function AdjustMacrosScreen() {
   const targets = useQuery(api.profiles.getProfile.default)?.targets;
+  const updateProfile = useMutation(api.profiles.updateProfile.default);
 
+  const router = useRouter();
   const { scrollY, onScroll } = useScrollY();
 
   const [calories, setCalories] = useState(targets?.calories);
@@ -92,6 +95,20 @@ export default function AdjustMacrosScreen() {
       ratio: fatRatio,
     },
   ];
+
+  const handleDone = async () => {
+    await updateProfile({
+      profile: {
+        targets: {
+          calories: calories ?? 0,
+          carbs: carbs ?? 0,
+          protein: protein ?? 0,
+          fat: fat ?? 0,
+        },
+      },
+    });
+    router.back();
+  };
 
   useEffect(() => {
     const calcRatio = (macros: Parameters<typeof macrosToKcal>[number]) => {
@@ -178,7 +195,12 @@ export default function AdjustMacrosScreen() {
         <ScreenFooterButton variant="outline" style={{ flex: 0 }}>
           Generar Automáticamente
         </ScreenFooterButton>
-        <ScreenFooterButton style={{ flex: 0 }}>Hecho</ScreenFooterButton>
+        <ScreenFooterButton
+          style={{ flex: 0 }}
+          onPress={() => void handleDone()}
+        >
+          Hecho
+        </ScreenFooterButton>
       </ScreenFooter>
     </ScreenMain>
   );
