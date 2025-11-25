@@ -1,10 +1,3 @@
-- [ ] Meal ingredients inside meal
-- [ ] getFoodByIdentity argument validator
-- [ ] Remove fdcFoods byFdcId index
-- [ ] fdcFoods -> foods
-- [ ] organize foods table
-- [ ] Search fdc candidates
-- [ ] Analyze meal foods
 - [ ] Adjust macros done button
 - [ ] Save adjust macros
 - [ ] Fix weekday button not working
@@ -23,8 +16,10 @@
 
 ---
 
-- [ ] Parsing convex schemas
-- [ ] Re-create plan when onboarding data changes
+- [ ] Meal ingredients inside meal?
+- [ ] getFoodByIdentity argument validator
+- [ ] Parsing convex schemas
+- [ ] Recreate plan when onboarding data changes
 - [ ] Onboarding creating plan
 - [ ] Onboarding create account
 - [ ] Onboarding pickers
