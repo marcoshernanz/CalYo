@@ -93,6 +93,7 @@ export default function CircularProgress({
     <View
       style={[styles.container, { height: resolvedSize, width: resolvedSize }]}
       onLayout={onLayout}
+      pointerEvents="none"
     >
       <Canvas style={{ height: resolvedSize, width: resolvedSize }}>
         <Group

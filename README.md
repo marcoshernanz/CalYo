@@ -1,5 +1,4 @@
 - [ ] Adjust macros cropped circular progress
-- [ ] Fix weekday button not working
 - [ ] Adjust macros auto generate goal
 - [ ] Settings
 - [ ] Improve nutrition plan (more protein)
