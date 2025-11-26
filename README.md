@@ -20,7 +20,6 @@
 - [ ] Meal ingredients inside meal?
 - [ ] getFoodByIdentity argument validator
 - [ ] Parsing convex schemas
-- [ ] Recreate plan when onboarding data changes
 - [ ] Onboarding creating plan
 - [ ] Onboarding create account
 - [ ] Onboarding pickers

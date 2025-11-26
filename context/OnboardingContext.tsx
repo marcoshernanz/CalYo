@@ -2,7 +2,7 @@ import { profilesConfig } from "@/config/profilesConfig";
 import { Doc } from "@/convex/_generated/dataModel";
 import { ProfileData } from "@/convex/tables/profiles";
 import Optional from "@/lib/typescript/optional";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuthContext } from "./AuthContext";
 
 export type OnboardingData = Optional<
@@ -46,6 +46,10 @@ export default function OnboardingContextProvider({ children }: Props) {
     profilesConfig.defaultValues.targets
   );
   const { isAuthenticated } = useAuthContext();
+
+  useEffect(() => {
+    setHasCreatedPlan(false);
+  }, [data]);
 
   return (
     <OnboardingContext.Provider
