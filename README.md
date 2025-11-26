@@ -1,7 +1,6 @@
 - [ ] Settings
 - [ ] Rate limits
 - [ ] Animate home macro summary
-- [ ] react-native-animateable-text Expo SDK 54
 - [ ] Spanish
 - [ ] react-native-reanimated performance
 - [ ] Sign in screen
