@@ -14,7 +14,10 @@ import OnboardingGoal from "@/components/onboarding/steps/goal/OnboardingGoal";
 import OnboardingTargetWeight from "@/components/onboarding/steps/goal/OnboardingTargetWeight";
 import OnboardingWeightChangeRate from "@/components/onboarding/steps/goal/OnboardingWeightChangeRate";
 import OnboardingTraining from "@/components/onboarding/steps/program/OnboardingTraining";
-import { useOnboardingContext } from "@/context/OnboardingContext";
+import {
+  useOnboardingContext,
+  isOnboardingDataComplete,
+} from "@/context/OnboardingContext";
 import { api } from "@/convex/_generated/api";
 import { usePreventRemove } from "@react-navigation/native";
 import { useMutation, useQuery } from "convex/react";
@@ -126,7 +129,7 @@ const steps: OnboardingSectionType["steps"] = [
 export default function GenerateMacroTargetsScreen() {
   const profile = useQuery(api.profiles.getProfile.default);
   const context = useOnboardingContext();
-  const { setData, targets } = context;
+  const { data, setData, targets } = context;
   const router = useRouter();
   const transitionDirection = useSharedValue<-1 | 0 | 1>(0);
   const isDone = useRef(false);
@@ -134,7 +137,9 @@ export default function GenerateMacroTargetsScreen() {
   const [step, setStep] = useState(0);
 
   const [isUpdatingTargets, setIsUpdatingTargets] = useState(false);
-  const updateProfile = useMutation(api.profiles.updateProfile.default);
+  const completeOnboarding = useMutation(
+    api.profiles.completeOnboarding.default
+  );
 
   const currentStep = steps.at(step);
   const isCurrentStepComplete = currentStep?.completed(context) ?? true;
@@ -143,11 +148,11 @@ export default function GenerateMacroTargetsScreen() {
   const handleUpdateTargets = async () => {
     if (isUpdatingTargets) return;
 
-    setIsUpdatingTargets(true);
-    await updateProfile({ profile: { targets } });
-    setIsUpdatingTargets(false);
-
     isDone.current = true;
+    setIsUpdatingTargets(true);
+    if (!isOnboardingDataComplete(data)) return;
+    await completeOnboarding({ data, targets });
+
     router.dismissTo("/app");
   };
 

@@ -1,10 +1,6 @@
-- [ ] Adjust macros auto generate goal
-- [ ] Adjust macros auto generate goal done button text
 - [ ] Adjust macros cropped circular progress
-- [ ] Use profile data in onboarding context
 - [ ] Streak size
 - [ ] Settings
-- [ ] Improve nutrition plan (more protein)
 - [ ] Rate limits
 - [ ] Animate home macro summary
 - [ ] react-native-animateable-text Expo SDK 54
@@ -16,7 +12,6 @@
 
 ---
 
-- [ ] Navigate to home after adjusting macros?
 - [ ] Meal ingredients inside meal?
 - [ ] getFoodByIdentity argument validator
 - [ ] Parsing convex schemas
@@ -54,3 +49,6 @@
 - [ ] Onboarding scroll
 - [ ] Onboarding height smooth measurement system change
 - [ ] Onboarding weight smooth measurement system change
+
+- [ ] Eager loading all data?
+- [ ] Local first?
