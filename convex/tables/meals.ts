@@ -7,7 +7,8 @@ export const mealsFields = {
     v.literal("pending"),
     v.literal("processing"),
     v.literal("done"),
-    v.literal("error")
+    v.literal("error"),
+    v.literal("deleted")
   ),
   name: v.optional(v.string()),
   photoStorageId: v.optional(v.id("_storage")),

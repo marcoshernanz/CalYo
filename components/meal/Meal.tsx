@@ -8,7 +8,6 @@ import {
 } from "../ui/screen/ScreenHeader";
 import { SparklesIcon, TrashIcon } from "lucide-react-native";
 import { useRouter } from "expo-router";
-import useDeleteMeal from "@/lib/hooks/useDeleteMeal";
 import { useRef } from "react";
 import {
   ScreenFooter,
@@ -24,6 +23,8 @@ import {
 } from "../ui/screen/ScreenMain";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 import { Id } from "@/convex/_generated/dataModel";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 type Props = {
   loading: boolean;
@@ -35,7 +36,7 @@ type Props = {
 
 export default function Meal({ loading, name, mealId, totals, items }: Props) {
   const router = useRouter();
-  const deleteMeal = useDeleteMeal();
+  const updateMeal = useMutation(api.meals.updateMeal.default);
   const isDeletingRef = useRef(false);
 
   const { scrollY, onScroll } = useScrollY();
@@ -44,7 +45,7 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
     if (!mealId || isDeletingRef.current) return;
     isDeletingRef.current = true;
     router.dismissTo("/app");
-    void deleteMeal({ id: mealId });
+    void updateMeal({ id: mealId, meal: { status: "deleted" } });
   };
 
   return (

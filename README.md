@@ -1,4 +1,5 @@
-- [ ] Settings
+- [ ] Crash when deleting meal on android
+- [ ] logError util
 - [ ] Rate limits
 - [ ] Animate home macro summary
 - [ ] Spanish
@@ -9,6 +10,9 @@
 
 ---
 
+- [ ] Prefetch
+- [ ] Optimistic updates
+- [ ] Cropped circular progress
 - [ ] Streak 0 when first loading
 - [ ] Meal ingredients inside meal?
 - [ ] getFoodByIdentity argument validator

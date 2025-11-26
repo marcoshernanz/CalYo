@@ -33,7 +33,12 @@ const analyzeMealPhoto = action({
 
       const detectedItems = await detectMealItems({ imageUrl });
       if (detectedItems.length === 0) {
-        throw new Error("No meal items detected");
+        console.log("No meal items detected");
+        await ctx.runMutation(api.meals.updateMeal.default, {
+          id: mealId,
+          meal: { status: "error" },
+        });
+        return mealId;
       }
 
       const mealNamePromise = nameMeal({ items: detectedItems });
@@ -95,7 +100,10 @@ const analyzeMealPhoto = action({
 
       return mealId;
     } catch (error) {
-      console.error("analyzeMealPhoto error", error);
+      console.error(
+        "analyzeMealPhoto error",
+        error instanceof Error ? error.message : "Unknown error"
+      );
       try {
         if (mealId) {
           await ctx.runMutation(api.meals.updateMeal.default, {
@@ -104,7 +112,10 @@ const analyzeMealPhoto = action({
           });
         }
       } catch (updateError) {
-        console.error("Failed to mark meal as error", updateError);
+        console.error(
+          "Failed to mark meal as error",
+          updateError instanceof Error ? updateError.message : "Unknown error"
+        );
       }
       throw error;
     }

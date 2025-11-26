@@ -1,5 +1,4 @@
 import { DimensionValue, StyleSheet, View } from "react-native";
-import { useEffect, useState } from "react";
 import Text from "../ui/Text";
 import Card from "../ui/Card";
 import getColor from "@/lib/ui/getColor";
@@ -23,12 +22,6 @@ const placeholderRows = 4;
 const nameSkeletonWidths: DimensionValue[] = ["75%", "65%", "75%", "65%"];
 
 export default function MealIngredients({ items = [], loading }: Props) {
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    setIsReady(true);
-  }, []);
-
   const count = loading
     ? Math.max(items.length, placeholderRows)
     : items.length;
@@ -69,7 +62,6 @@ export default function MealIngredients({ items = [], loading }: Props) {
                 pathname: "/app/mealItem",
                 params: { mealItemId: item?.id },
               }}
-              prefetch={isReady}
               asChild
             >
               <Button variant="base" size="base">

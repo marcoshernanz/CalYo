@@ -16,21 +16,30 @@ type Params = {
 export default async function detectMealItems({
   imageUrl,
 }: Params): Promise<DetectedItem[]> {
-  const { object: detected } = await generateObject({
-    model: analyzeMealConfig.imageProcessingModel,
-    temperature: analyzeMealConfig.temperature,
-    output: "array",
-    schema: detectionSchema,
-    schemaName: "DetectedIngredients",
-    schemaDescription: "Single-ingredient items with grams from a meal photo.",
-    system: analyzeMealPrompts.detect,
-    messages: [
-      {
-        role: "user",
-        content: [{ type: "image", image: imageUrl }],
-      },
-    ],
-  });
+  try {
+    const { object: detected } = await generateObject({
+      model: analyzeMealConfig.imageProcessingModel,
+      temperature: analyzeMealConfig.temperature,
+      output: "array",
+      schema: detectionSchema,
+      schemaName: "DetectedIngredients",
+      schemaDescription:
+        "Single-ingredient items with grams from a meal photo.",
+      system: analyzeMealPrompts.detect,
+      messages: [
+        {
+          role: "user",
+          content: [{ type: "image", image: imageUrl }],
+        },
+      ],
+    });
 
-  return detected;
+    return detected;
+  } catch (error) {
+    console.error(
+      "detectMealItems error",
+      error instanceof Error ? error.message : "Unknown error"
+    );
+    throw error;
+  }
 }

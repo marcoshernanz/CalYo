@@ -1,7 +1,6 @@
 import Meal from "@/components/meal/Meal";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import useDeleteMeal from "@/lib/hooks/useDeleteMeal";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { Redirect, useLocalSearchParams, useRouter } from "expo-router";
@@ -29,14 +28,13 @@ export default function MealScreen() {
     api.meals.analyze.analyzeMealPhoto.default
   );
   const createMeal = useMutation(api.meals.createMeal.default);
-  const deleteMeal = useDeleteMeal();
 
   const [mealId, setMealId] = useState<Id<"meals"> | undefined>(initialMealId);
   const startedRef = useRef(false);
 
-  useEffect(() => {
-    setMealId(initialMealId);
-  }, [initialMealId]);
+  // useEffect(() => {
+  //   setMealId(initialMealId);
+  // }, [initialMealId]);
 
   const data = useQuery(
     api.meals.getMeal.default,
@@ -181,7 +179,6 @@ export default function MealScreen() {
     photoUri,
     initialMealId,
     mealId,
-    deleteMeal,
     router,
     fromCamera,
   ]);
