@@ -70,7 +70,9 @@ export default function CircularProgress({
 
   const onLayout = ({ nativeEvent }: LayoutChangeEvent) => {
     if (size) return;
-    const next = Math.min(nativeEvent.layout.width, nativeEvent.layout.height);
+    const next = Math.ceil(
+      Math.min(nativeEvent.layout.width, nativeEvent.layout.height)
+    );
     if (next && next !== measured) setMeasured(next);
   };
 

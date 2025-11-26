@@ -1,4 +1,3 @@
-- [ ] Adjust macros cropped circular progress
 - [ ] Streak size
 - [ ] Settings
 - [ ] Rate limits
@@ -12,6 +11,7 @@
 
 ---
 
+- [ ] Streak 0 when first loading
 - [ ] Meal ingredients inside meal?
 - [ ] getFoodByIdentity argument validator
 - [ ] Parsing convex schemas
