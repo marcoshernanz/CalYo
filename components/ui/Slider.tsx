@@ -2,6 +2,7 @@ import React from "react";
 import getColor from "@/lib/ui/getColor";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { scheduleOnRN } from "react-native-worklets";
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -15,6 +16,7 @@ type Props = {
   value: SharedValue<number>;
   initialValue?: number;
   highlightedRange?: [number, number];
+  onSlidingComplete?: (value: number) => void;
 };
 
 export default function Slider({
@@ -23,6 +25,7 @@ export default function Slider({
   value,
   initialValue = minValue,
   highlightedRange,
+  onSlidingComplete,
 }: Props) {
   const dimensions = useWindowDimensions();
 
@@ -66,6 +69,9 @@ export default function Slider({
     })
     .onFinalize(() => {
       isPressed.value = false;
+      if (onSlidingComplete) {
+        scheduleOnRN(onSlidingComplete, value.value);
+      }
     });
 
   const springConfig = { stiffness: 500, damping: 30, mass: 0.9 } as const;

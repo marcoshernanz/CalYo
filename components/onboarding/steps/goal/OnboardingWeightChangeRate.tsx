@@ -12,11 +12,9 @@ import AnimateableText from "react-native-animateable-text";
 import {
   SharedValue,
   useAnimatedProps,
-  useAnimatedReaction,
   useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated";
-import { scheduleOnRN } from "react-native-worklets";
 import OnboardingStep from "../../OnboardingStep";
 import resolveFontFamily from "@/lib/ui/resolveFontFamily";
 
@@ -84,14 +82,10 @@ export default function OnboardingWeightChangeRate() {
     })),
   };
 
-  useAnimatedReaction(
-    () => changeRate.value,
-    (value) => {
-      const roundedValue = Math.round(value * 10) / 10;
-      scheduleOnRN(syncWeightChangeRate, roundedValue, isMetric, setData);
-    },
-    [isMetric, setData]
-  );
+  const handleSlidingComplete = (value: number) => {
+    const roundedValue = Math.round(value * 10) / 10;
+    syncWeightChangeRate(roundedValue, isMetric, setData);
+  };
 
   return (
     <OnboardingStep title="¿Cómo de rápido quieres alcanzar tu objetivo?">
@@ -108,6 +102,7 @@ export default function OnboardingWeightChangeRate() {
           value={changeRate}
           initialValue={initialDisplayValue}
           highlightedRange={displayBounds.rec}
+          onSlidingComplete={handleSlidingComplete}
         />
         <View style={styles.weightChange}>
           {[
