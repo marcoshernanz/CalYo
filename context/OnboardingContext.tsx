@@ -4,6 +4,8 @@ import { ProfileData } from "@/convex/tables/profiles";
 import Optional from "@/lib/typescript/optional";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuthContext } from "./AuthContext";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export type OnboardingData = Optional<
   ProfileData,
@@ -38,8 +40,9 @@ type Props = {
 };
 
 export default function OnboardingContextProvider({ children }: Props) {
+  const profile = useQuery(api.profiles.getProfile.default);
   const [data, setData] = useState<OnboardingData>(
-    profilesConfig.defaultDataValues
+    profile?.data ?? profilesConfig.defaultDataValues
   );
   const [hasCreatedPlan, setHasCreatedPlan] = useState(false);
   const [targets, setTargets] = useState<Targets>(
@@ -50,6 +53,12 @@ export default function OnboardingContextProvider({ children }: Props) {
   useEffect(() => {
     setHasCreatedPlan(false);
   }, [data]);
+
+  useEffect(() => {
+    if (profile?.data) {
+      setData(profile.data);
+    }
+  }, [profile?.data]);
 
   return (
     <OnboardingContext.Provider
