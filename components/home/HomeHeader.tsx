@@ -24,7 +24,7 @@ export default function HomeHeader() {
       <Button variant="base" size="base">
         <Card style={styles.streakContainer}>
           <FlameIcon
-            size={22}
+            size={20}
             color={getColor("orange")}
             fill={getColor("orange")}
           />
@@ -53,8 +53,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: getColor("background"),
-    padding: 8,
-    gap: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    gap: 2,
     borderRadius: 999,
+    minWidth: 56,
   },
 });

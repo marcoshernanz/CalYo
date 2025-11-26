@@ -1,4 +1,3 @@
-- [ ] Streak size
 - [ ] Settings
 - [ ] Rate limits
 - [ ] Animate home macro summary
