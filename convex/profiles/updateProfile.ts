@@ -3,6 +3,7 @@ import { mutation } from "../_generated/server";
 import { profilesFields } from "../tables/profiles";
 import { v } from "convex/values";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import logError from "@/lib/utils/logError";
 
 const updateProfile = mutation({
   args: { profile: v.object(partial(profilesFields)) },
@@ -20,7 +21,7 @@ const updateProfile = mutation({
       await ctx.db.patch(profile._id, args.profile);
       return null;
     } catch (error) {
-      console.error("updateProfile error", error);
+      logError("updateProfile error", error);
       throw error;
     }
   },

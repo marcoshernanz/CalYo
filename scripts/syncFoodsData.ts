@@ -6,6 +6,7 @@ import { ConvexHttpClient } from "convex/browser";
 import { api } from "../convex/_generated/api";
 import type { WithoutSystemFields } from "convex/server";
 import type { Doc } from "../convex/_generated/dataModel";
+import logError from "@/lib/utils/logError";
 
 dotenv.config({ path: ".env.local" });
 
@@ -65,7 +66,7 @@ async function syncFoodsData(jsonPath: string) {
             pipeline.resume();
           })
           .catch((error: unknown) => {
-            console.error("Upsert error:", error);
+            logError("Upsert error", error);
             pipeline.destroy(toError(error));
           });
       }
@@ -104,6 +105,6 @@ async function main() {
 }
 
 main().catch((e: unknown) => {
-  console.error(e);
+  logError("syncFoodsData error", e);
   process.exit(1);
 });

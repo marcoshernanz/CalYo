@@ -9,6 +9,7 @@ import scaleNutrients from "../../../lib/utils/scaleNutrients";
 import nameMeal from "./nameMeal";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { Id } from "../../_generated/dataModel";
+import logError from "@/lib/utils/logError";
 
 const analyzeMealPhoto = action({
   args: { storageId: v.id("_storage") },
@@ -100,10 +101,7 @@ const analyzeMealPhoto = action({
 
       return mealId;
     } catch (error) {
-      console.error(
-        "analyzeMealPhoto error",
-        error instanceof Error ? error.message : "Unknown error"
-      );
+      logError("analyzeMealPhoto error", error);
       try {
         if (mealId) {
           await ctx.runMutation(api.meals.updateMeal.default, {
@@ -112,10 +110,7 @@ const analyzeMealPhoto = action({
           });
         }
       } catch (updateError) {
-        console.error(
-          "Failed to mark meal as error",
-          updateError instanceof Error ? updateError.message : "Unknown error"
-        );
+        logError("Failed to mark meal as error", updateError);
       }
       throw error;
     }

@@ -1,6 +1,7 @@
 import { generateObject } from "ai";
 import { z } from "zod/v4";
 import { analyzeMealConfig, analyzeMealPrompts } from "./analyzeMealConfig";
+import logError from "@/lib/utils/logError";
 
 const detectionSchema = z.object({
   name: z.string().min(1),
@@ -36,10 +37,7 @@ export default async function detectMealItems({
 
     return detected;
   } catch (error) {
-    console.error(
-      "detectMealItems error",
-      error instanceof Error ? error.message : "Unknown error"
-    );
+    logError("detectMealItems error", error);
     throw error;
   }
 }

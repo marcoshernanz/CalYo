@@ -1,6 +1,7 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { query } from "../_generated/server";
 import { v } from "convex/values";
+import logError from "@/lib/utils/logError";
 
 const dayMs = 24 * 60 * 60 * 1000;
 
@@ -57,7 +58,7 @@ const getWeekMeals = query({
 
       return week;
     } catch (error) {
-      console.error("getWeekMeals error", error);
+      logError("getWeekMeals error", error);
       throw error;
     }
   },

@@ -2,6 +2,7 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { mutation } from "../_generated/server";
 import { profilesFields } from "../tables/profiles";
 import { Doc } from "../_generated/dataModel";
+import logError from "@/lib/utils/logError";
 
 const completeOnboarding = mutation({
   args: {
@@ -28,7 +29,7 @@ const completeOnboarding = mutation({
 
       return null;
     } catch (error) {
-      console.error("completeOnboarding error", error);
+      logError("completeOnboarding error", error);
       throw error;
     }
   },

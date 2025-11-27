@@ -1,5 +1,6 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { mutation } from "../_generated/server";
+import logError from "@/lib/utils/logError";
 
 const generateUploadUrl = mutation({
   handler: async (ctx): Promise<string> => {
@@ -9,7 +10,7 @@ const generateUploadUrl = mutation({
 
       return await ctx.storage.generateUploadUrl();
     } catch (error) {
-      console.error("generateUploadUrl error", error);
+      logError("generateUploadUrl error", error);
       throw error;
     }
   },

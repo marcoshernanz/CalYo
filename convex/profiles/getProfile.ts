@@ -1,5 +1,6 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { query } from "../_generated/server";
+import logError from "@/lib/utils/logError";
 
 const getProfile = query({
   handler: async (ctx) => {
@@ -18,7 +19,7 @@ const getProfile = query({
 
       return profile;
     } catch (error) {
-      console.error("getProfile error", error);
+      logError("getProfile error", error);
       throw error;
     }
   },

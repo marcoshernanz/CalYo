@@ -1,6 +1,7 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { mutation } from "../_generated/server";
 import { Id } from "../_generated/dataModel";
+import logError from "@/lib/utils/logError";
 
 const createMeal = mutation({
   handler: async (ctx): Promise<Id<"meals">> => {
@@ -15,7 +16,7 @@ const createMeal = mutation({
 
       return mealId;
     } catch (error) {
-      console.error("createMeal error", error);
+      logError("createMeal error", error);
       throw error;
     }
   },

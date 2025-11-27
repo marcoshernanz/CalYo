@@ -9,6 +9,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import logError from "@/lib/utils/logError";
 
 export default function CameraScreen() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -39,7 +40,7 @@ export default function CameraScreen() {
 
       navigateToMeal({ uri: photo.uri, source: "camera" });
     } catch (error) {
-      console.error("Error taking photo:", error);
+      logError("Error taking photo", error);
     } finally {
       isBusyRef.current = false;
     }
@@ -62,7 +63,7 @@ export default function CameraScreen() {
       isBusyRef.current = true;
       navigateToMeal({ uri: asset.uri, source: "library" });
     } catch (error) {
-      console.error("Error picking photo:", error);
+      logError("Error picking photo", error);
     } finally {
       isBusyRef.current = false;
     }
@@ -71,7 +72,7 @@ export default function CameraScreen() {
   useEffect(() => {
     if (!permission?.granted) {
       requestPermission().catch((error: unknown) => {
-        console.error("Error requesting camera permission:", error);
+        logError("Error requesting camera permission", error);
       });
     }
   }, [permission?.granted, requestPermission]);

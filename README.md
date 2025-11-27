@@ -1,5 +1,4 @@
 - [ ] Crash when deleting meal on android
-- [ ] logError util
 - [ ] Rate limits
 - [ ] Animate home macro summary
 - [ ] Spanish

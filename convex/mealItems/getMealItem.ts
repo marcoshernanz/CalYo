@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { query } from "../_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import logError from "../../lib/utils/logError";
 
 const getMealItem = query({
   args: { mealItemId: v.id("mealItems") },
@@ -23,7 +24,7 @@ const getMealItem = query({
 
       return mealItemWithFood;
     } catch (error) {
-      console.error("getMeal error", error);
+      logError("getMeal error", error);
       throw error;
     }
   },

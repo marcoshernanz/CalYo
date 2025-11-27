@@ -9,6 +9,7 @@ import Text from "@/components/ui/Text";
 import GoogleLogo from "@/assets/svg/google-logo.svg";
 import getColor from "@/lib/ui/getColor";
 import { useState } from "react";
+import logError from "@/lib/utils/logError";
 
 type Props = {
   onEmailLogin?: () => void;
@@ -56,7 +57,7 @@ export default function SignInButtons({
         router.replace("/app");
       }
     } catch (error) {
-      console.error("Authentication error", error);
+      logError("Authentication error", error);
     } finally {
       setIsAuthenticating(false);
     }

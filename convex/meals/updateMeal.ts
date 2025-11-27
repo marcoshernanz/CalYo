@@ -5,6 +5,7 @@ import { v } from "convex/values";
 import { mealsFields } from "../tables/meals";
 import { partial } from "convex-helpers/validators";
 import { z } from "zod/v4";
+import logError from "@/lib/utils/logError";
 
 const updateMeal = mutation({
   args: {
@@ -46,7 +47,7 @@ const updateMeal = mutation({
       await ctx.db.patch(args.id, patch);
       return null;
     } catch (error) {
-      console.error("updateMeal error", error);
+      logError("updateMeal error", error);
       throw error;
     }
   },

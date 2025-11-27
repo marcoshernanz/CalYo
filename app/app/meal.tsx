@@ -9,6 +9,7 @@ import { useWindowDimensions } from "react-native";
 import { ImageManipulator, SaveFormat, ImageRef } from "expo-image-manipulator";
 import { Toast } from "@/components/ui/Toast";
 import { z } from "zod";
+import logError from "@/lib/utils/logError";
 
 export default function MealScreen() {
   const dimensions = useWindowDimensions();
@@ -51,7 +52,7 @@ export default function MealScreen() {
       try {
         baseImage = await loaderContext.renderAsync();
       } catch (error) {
-        console.error("Error loading image for crop:", error);
+        logError("Error loading image for crop", error);
         return uri;
       } finally {
         loaderContext.release();
@@ -116,7 +117,7 @@ export default function MealScreen() {
 
         return result.uri;
       } catch (error) {
-        console.error("Error cropping image:", error);
+        logError("Error cropping image", error);
         return uri;
       } finally {
         if (croppedImage) {
@@ -166,7 +167,7 @@ export default function MealScreen() {
         const mealId = await analyzeMealPhoto({ storageId });
         setMealId(mealId);
       } catch (e) {
-        console.error("Start meal error", e);
+        logError("Start meal error", e);
         Toast.show({ text: "Error al analizar la comida", variant: "error" });
         router.replace("/app");
       }
