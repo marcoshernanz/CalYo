@@ -26,6 +26,8 @@
 - [ ] Sign in with email
 - [ ] Fix text input filtering
 - [ ] Android 14 over scroll
+- [ ] Custom icon for Android and iOS https://docs.expo.dev/develop/user-interface/splash-screen-and-app-icon/#custom-configuration-tips-for-android-and-ios
+- [ ] Home screen scroll
 
 - [ ] Settings user card with name and profile picture
 - [ ] Fix results

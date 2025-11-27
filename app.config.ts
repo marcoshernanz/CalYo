@@ -24,7 +24,7 @@ export default (): ExpoConfig => ({
   slug: "Calyo",
   version: "1.0.0",
   orientation: "portrait",
-  // icon: "./assets/images/icon.png",
+  icon: "./assets/images/icon.png",
   scheme: "calyo",
   userInterfaceStyle: "automatic",
   newArchEnabled: true,
@@ -38,10 +38,10 @@ export default (): ExpoConfig => ({
   },
   android: {
     package: getUniqueIdentifier(),
-    // "adaptiveIcon": {
-    //   "foregroundImage": "./assets/images/adaptive-icon.png",
-    //   "backgroundColor": "#ffffff"
-    // },
+    adaptiveIcon: {
+      foregroundImage: "./assets/images/adaptive-icon.png",
+      backgroundColor: "#F9FAFB",
+    },
     edgeToEdgeEnabled: true,
   },
   plugins: [
@@ -53,7 +53,7 @@ export default (): ExpoConfig => ({
       {
         image: "./assets/images/splash-icon.png",
         imageWidth: 400,
-        backgroundColor: "#f9fafb",
+        backgroundColor: "#F9FAFB",
       },
     ],
     [
