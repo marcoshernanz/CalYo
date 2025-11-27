@@ -1,3 +1,4 @@
+- [ ] Email sign-in
 - [ ] Rate limits
 - [ ] Animate home macro summary
 - [ ] Spanish
