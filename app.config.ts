@@ -1,5 +1,4 @@
 import type { ExpoConfig } from "expo/config";
-import getColor from "./lib/ui/getColor";
 
 const appVariant = process.env.APP_VARIANT;
 const isDevelopment = appVariant === "development";
@@ -53,8 +52,8 @@ export default (): ExpoConfig => ({
       "expo-splash-screen",
       {
         image: "./assets/images/splash-icon.png",
-        imageWidth: 200,
-        backgroundColor: getColor("primary"),
+        imageWidth: 400,
+        backgroundColor: "#f9fafb",
       },
     ],
     [
