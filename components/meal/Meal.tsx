@@ -44,7 +44,6 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
   const handleDelete = () => {
     if (!mealId || isDeletingRef.current) return;
     isDeletingRef.current = true;
-    router.dismissTo("/app");
     void updateMeal({ id: mealId, meal: { status: "deleted" } });
   };
 

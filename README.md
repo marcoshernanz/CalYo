@@ -1,4 +1,3 @@
-- [ ] Crash when deleting meal on android
 - [ ] Rate limits
 - [ ] Animate home macro summary
 - [ ] Spanish
@@ -9,6 +8,7 @@
 
 ---
 
+- [ ] Delete meal smooth
 - [ ] Prefetch
 - [ ] Optimistic updates
 - [ ] Cropped circular progress
