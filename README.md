@@ -1,4 +1,7 @@
-- [ ] Reanimated error on onboarding screen
+- [ ] Prefetch
+- [ ] Splash screen cropped
+- [ ] Streak at 0
+
 - [ ] Rate limits
 - [ ] Animate home macro summary
 - [ ] Spanish
@@ -8,13 +11,9 @@
 - [ ] Fix convex functions https://stack.convex.dev/argument-validation-without-repetition#handling-partial-updates
 - [ ] Organize routes in folders
 
-- [ ] Prefetch
-- [ ] Adjust macros inputs width
-- [ ] Splash screen cropped
-- [ ] Streak at 0
-
 ---
 
+- [ ] Reanimated error on onboarding screen
 - [ ] Email sign-in
 - [ ] Onboarding data after email sign-in
 - [ ] Dismiss keyboard and blur input when tapping outside

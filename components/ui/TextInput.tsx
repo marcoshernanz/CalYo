@@ -9,6 +9,8 @@ import {
   View,
   TextInputProps,
   Keyboard,
+  StyleProp,
+  ViewStyle,
 } from "react-native";
 import Animated, {
   interpolateColor,
@@ -32,9 +34,15 @@ export type TextInputHandle = {
 type Props = {
   ref?: React.Ref<TextInputHandle>;
   label: string;
+  containerStyle?: StyleProp<ViewStyle>;
 } & TextInputProps;
 
-export default function TextInput({ ref, label, ...props }: Props) {
+export default function TextInput({
+  ref,
+  label,
+  containerStyle,
+  ...props
+}: Props) {
   const textInputRef = useRef<RNTextInput>(null);
   const focused = useSharedValue(0);
   const shake = useSharedValue(0);
@@ -118,6 +126,7 @@ export default function TextInput({ ref, label, ...props }: Props) {
       variant="base"
       size="base"
       onPress={() => textInputRef.current?.focus()}
+      style={containerStyle}
     >
       <AnimatedCard style={[styles.card, animatedStyles.card]}>
         <AnimatedText size="12" weight="500" style={animatedStyles.label}>

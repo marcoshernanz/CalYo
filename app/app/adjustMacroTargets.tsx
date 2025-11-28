@@ -185,6 +185,7 @@ export default function AdjustMacroTargetsScreen() {
                   );
                 }}
                 maxLength={5}
+                containerStyle={{ flex: 1, alignItems: "stretch" }}
               />
             </View>
           ))}
