@@ -112,7 +112,8 @@ export default function MealScreen() {
         }
 
         const result = await croppedImage.saveAsync({
-          format: SaveFormat.PNG,
+          format: SaveFormat.JPEG,
+          compress: 0.7,
         });
 
         return result.uri;
