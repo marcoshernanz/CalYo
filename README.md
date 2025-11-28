@@ -8,6 +8,7 @@
 - [ ] Sign in screen
 - [ ] Initial screen
 - [ ] Fix convex functions https://stack.convex.dev/argument-validation-without-repetition#handling-partial-updates
+- [ ] Organize routes in folders
 
 - [ ] Prefetch
 - [ ] Adjust macros inputs width
