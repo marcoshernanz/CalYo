@@ -1,5 +1,4 @@
 - [ ] Prefetch
-- [ ] Splash screen cropped
 - [ ] Streak at 0
 
 - [ ] Rate limits
