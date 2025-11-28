@@ -263,7 +263,9 @@ export default function Onboarding() {
       if (nextStep < 0) {
         nextSection -= 1;
         if (nextSection < 0) {
-          router.back();
+          if (router.canGoBack()) {
+            router.back();
+          }
           return;
         }
 

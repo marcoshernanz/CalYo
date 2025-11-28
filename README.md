@@ -1,4 +1,3 @@
-- [ ] Go back in onboarding after sign-in
 - [ ] Email sign-in
 - [ ] Onboarding data after email sign-in
 - [ ] Reanimated error on onboarding screen
@@ -9,6 +8,11 @@
 - [ ] Sign in screen
 - [ ] Initial screen
 - [ ] Fix convex functions https://stack.convex.dev/argument-validation-without-repetition#handling-partial-updates
+
+- [ ] Prefetch
+- [ ] Adjust macros inputs width
+- [ ] Splash screen cropped
+- [ ] Streak at 0
 
 ---
 

@@ -22,7 +22,7 @@ export function ScreenMainScrollView({
     <Animated.ScrollView
       contentContainerStyle={styles.scrollView}
       showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps={"handled"}
+      keyboardShouldPersistTaps="handled"
       {...scrollViewProps}
     >
       <SafeArea {...safeAreaProps}>{children}</SafeArea>
