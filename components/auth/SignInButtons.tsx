@@ -111,6 +111,7 @@ export default function SignInButtons({
         variant="outline"
         style={styles.button}
         onPress={handleEmailLogin}
+        disabled={disabled || isAuthenticating}
       >
         <MailIcon size={24} color={getColor("foreground")} />
         <Text size="16" weight="500">
