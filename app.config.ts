@@ -22,7 +22,7 @@ const getAppName = () => {
 export default (): ExpoConfig => ({
   name: getAppName(),
   slug: "Calyo",
-  version: "1.0.1",
+  version: "1.0.2",
   orientation: "portrait",
   icon: "./assets/images/icon.png",
   scheme: "calyo",
