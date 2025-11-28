@@ -6,7 +6,7 @@ const getProfile = query({
   handler: async (ctx) => {
     try {
       const userId = await getAuthUserId(ctx);
-      if (userId === null) throw new Error("Unauthorized");
+      if (userId === null) return null;
 
       const profile = await ctx.db
         .query("profiles")
