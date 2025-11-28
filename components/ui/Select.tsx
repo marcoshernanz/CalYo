@@ -17,7 +17,7 @@ const AnimatedText = Animated.createAnimatedComponent(Text);
 
 type IconComponentProps = {
   color?: string;
-}
+};
 
 type IconProp = React.ReactElement | ComponentType<IconComponentProps>;
 
@@ -30,7 +30,7 @@ type OptionItemProps = {
   animated?: boolean;
   animationDelay?: number;
   index: number;
-}
+};
 
 function OptionItem({
   label,
@@ -140,7 +140,7 @@ export type SelectOption = {
   label: string;
   description?: string;
   Icon: IconProp;
-}
+};
 
 type Props = {
   options: SelectOption[];
@@ -148,7 +148,7 @@ type Props = {
   onSelectOption?: (optionName: string) => void;
   animated?: boolean;
   animationDelay?: number;
-}
+};
 
 export default function Select({
   options,

@@ -1,7 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import Animated, {
   interpolateColor,
-  useDerivedValue,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -13,6 +12,7 @@ import { ScreenHeader } from "../ui/screen/ScreenHeader";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 import { ScreenMainScrollView } from "../ui/screen/ScreenMain";
 import SafeArea from "../ui/SafeArea";
+import { useEffect } from "react";
 
 type ProgressStepProps = {
   isActive: boolean;
@@ -21,9 +21,9 @@ type ProgressStepProps = {
 function ProgressStep({ isActive }: ProgressStepProps) {
   const progress = useSharedValue(isActive ? 1 : 0);
 
-  useDerivedValue(() => {
+  useEffect(() => {
     progress.value = withTiming(isActive ? 1 : 0);
-  }, [isActive]);
+  }, [isActive, progress]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {

@@ -14,6 +14,7 @@ import {
   useAnimatedProps,
   useDerivedValue,
   useSharedValue,
+  useAnimatedStyle,
 } from "react-native-reanimated";
 import OnboardingStep from "../../OnboardingStep";
 import resolveFontFamily from "@/lib/ui/resolveFontFamily";
@@ -73,7 +74,7 @@ export default function OnboardingWeightChangeRate() {
   };
 
   const animatedStyles = {
-    tooltip: useAnimatedProps(() => ({
+    tooltip: useAnimatedStyle(() => ({
       backgroundColor:
         changeRate.value >= displayBounds.rec[0] &&
         changeRate.value <= displayBounds.rec[1]
