@@ -36,6 +36,7 @@ import type * as tables_foods from "../tables/foods.js";
 import type * as tables_mealItems from "../tables/mealItems.js";
 import type * as tables_meals from "../tables/meals.js";
 import type * as tables_profiles from "../tables/profiles.js";
+import type * as testing_getOrCreateTestUser from "../testing/getOrCreateTestUser.js";
 import type * as utils_backfillFoodEmbeddings from "../utils/backfillFoodEmbeddings.js";
 import type * as utils_countFoodEmbeddings from "../utils/countFoodEmbeddings.js";
 
@@ -82,6 +83,7 @@ declare const fullApi: ApiFromModules<{
   "tables/mealItems": typeof tables_mealItems;
   "tables/meals": typeof tables_meals;
   "tables/profiles": typeof tables_profiles;
+  "testing/getOrCreateTestUser": typeof testing_getOrCreateTestUser;
   "utils/backfillFoodEmbeddings": typeof utils_backfillFoodEmbeddings;
   "utils/countFoodEmbeddings": typeof utils_countFoodEmbeddings;
 }>;

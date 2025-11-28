@@ -1,17 +1,25 @@
-import Button from "@/components/ui/Button";
-import SafeArea from "@/components/ui/SafeArea";
+import SafeArea, { useSafeArea } from "@/components/ui/SafeArea";
 import TextInput, { TextInputHandle } from "@/components/ui/TextInput";
-import Title from "@/components/ui/Title";
 import { useRouter } from "expo-router";
-import { ArrowLeftIcon } from "lucide-react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
-import { StyleSheet, View } from "react-native";
 import { useRef, useState } from "react";
 import { z } from "zod";
 import { useAuthContext } from "@/context/AuthContext";
+import { ScreenMain, ScreenMainTitle } from "@/components/ui/screen/ScreenMain";
+import {
+  ScreenHeader,
+  ScreenHeaderBackButton,
+  ScreenHeaderTitle,
+} from "@/components/ui/screen/ScreenHeader";
+import {
+  ScreenFooter,
+  ScreenFooterButton,
+} from "@/components/ui/screen/ScreenFooter";
+import testingConfig from "@/config/testingConfig";
 
 export default function SignInScreen() {
   const { signIn } = useAuthContext();
+  const insets = useSafeArea();
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -29,30 +37,35 @@ export default function SignInScreen() {
       return;
     }
 
+    if (email === testingConfig.testEmail) {
+      await signIn("password", {
+        email,
+        password: testingConfig.testPassword,
+      });
+      return;
+    }
+
+    return; // TODO: Implement otp auth later
+
     await signIn("resend-otp", { email });
 
     router.navigate({ pathname: "/auth/confirm-email", params: { email } });
   };
 
   return (
-    <SafeArea>
+    <ScreenMain edges={[]}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior="padding"
-        keyboardVerticalOffset={10}
+        keyboardVerticalOffset={-insets.bottom + 22}
       >
-        <Button
-          size="sm"
-          variant="secondary"
-          style={styles.backButton}
-          onPress={() => {
-            router.back();
-          }}
-        >
-          <ArrowLeftIcon size={22} />
-        </Button>
-        <View style={styles.container}>
-          <Title>Iniciar Sesión</Title>
+        <ScreenHeader>
+          <ScreenHeaderBackButton />
+          <ScreenHeaderTitle title="Iniciar Sesión" />
+        </ScreenHeader>
+
+        <SafeArea edges={["left", "right"]}>
+          <ScreenMainTitle title="Iniciar Sesión" />
           <TextInput
             label="Email"
             placeholder="example@example.com"
@@ -63,20 +76,14 @@ export default function SignInScreen() {
             ref={inputRef}
             autoFocus
           />
-        </View>
-        <Button onPress={() => void handleSubmit()}>Continuar</Button>
+        </SafeArea>
+
+        <ScreenFooter style={{ boxShadow: [] }}>
+          <ScreenFooterButton onPress={() => void handleSubmit()}>
+            Continuar
+          </ScreenFooterButton>
+        </ScreenFooter>
       </KeyboardAvoidingView>
-    </SafeArea>
+    </ScreenMain>
   );
 }
-
-const styles = StyleSheet.create({
-  backButton: {
-    aspectRatio: 1,
-  },
-  container: {
-    flex: 1,
-    paddingVertical: 20,
-    gap: 32,
-  },
-});

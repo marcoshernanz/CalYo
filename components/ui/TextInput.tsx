@@ -1,5 +1,5 @@
 import getColor from "@/lib/ui/getColor";
-import React, { useImperativeHandle, useRef } from "react";
+import React, { useEffect, useImperativeHandle, useRef } from "react";
 import {
   FocusEvent,
   BlurEvent,
@@ -8,6 +8,7 @@ import {
   Platform,
   View,
   TextInputProps,
+  Keyboard,
 } from "react-native";
 import Animated, {
   interpolateColor,
@@ -102,11 +103,20 @@ export default function TextInput({ ref, label, ...props }: Props) {
     }),
   };
 
+  useEffect(() => {
+    const subscription = Keyboard.addListener("keyboardDidHide", () => {
+      textInputRef.current?.blur();
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
   return (
     <Button
       variant="base"
       size="base"
-      style={styles.button}
       onPress={() => textInputRef.current?.focus()}
     >
       <AnimatedCard style={[styles.card, animatedStyles.card]}>
@@ -135,9 +145,6 @@ export default function TextInput({ ref, label, ...props }: Props) {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    flex: 1,
-  },
   card: {
     padding: 12,
     paddingHorizontal: 16,

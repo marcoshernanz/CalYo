@@ -1,4 +1,6 @@
+- [ ] Go back in onboarding after sign-in
 - [ ] Email sign-in
+- [ ] Onboarding data after email sign-in
 - [ ] Reanimated error on onboarding screen
 - [ ] Rate limits
 - [ ] Animate home macro summary
@@ -10,6 +12,7 @@
 
 ---
 
+- [ ] Dismiss keyboard and blur input when tapping outside
 - [ ] Delete meal smooth
 - [ ] Prefetch
 - [ ] Optimistic updates

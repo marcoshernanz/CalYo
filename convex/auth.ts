@@ -1,9 +1,12 @@
 import { convexAuth } from "@convex-dev/auth/server";
 import Google from "@auth/core/providers/google";
 import Apple, { AppleProfile } from "@auth/core/providers/apple";
+import { ConvexCredentials } from "@convex-dev/auth/providers/ConvexCredentials";
 import { ResendOTP } from "./ResendOTP";
 import { MutationCtx } from "./_generated/server";
+import { api } from "./_generated/api";
 import { profilesConfig } from "../config/profilesConfig";
+import testingConfig from "../config/testingConfig";
 
 type AppleProfileWithUser = AppleProfile & {
   user?: {
@@ -30,6 +33,25 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
       },
     }),
     ResendOTP,
+    ConvexCredentials({
+      id: "password",
+      authorize: async (credentials, ctx) => {
+        const email = credentials.email as string;
+        const password = credentials.password as string;
+
+        if (
+          email === testingConfig.testEmail &&
+          password === testingConfig.testPassword
+        ) {
+          const userId = await ctx.runMutation(
+            api.testing.getOrCreateTestUser.default,
+            { email, password }
+          );
+          return { userId };
+        }
+        return null;
+      },
+    }),
   ],
   callbacks: {
     async afterUserCreatedOrUpdated(ctx: MutationCtx, { userId }) {

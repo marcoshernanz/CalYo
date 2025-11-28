@@ -10,6 +10,7 @@ import GoogleLogo from "@/assets/svg/google-logo.svg";
 import getColor from "@/lib/ui/getColor";
 import { useState } from "react";
 import logError from "@/lib/utils/logError";
+import { MailIcon } from "lucide-react-native";
 
 type Props = {
   onEmailLogin?: () => void;
@@ -63,10 +64,10 @@ export default function SignInButtons({
     }
   };
 
-  // const handleEmailLogin = () => {
-  //   onEmailLogin?.();
-  //   router.navigate("/auth/sign-in");
-  // };
+  const handleEmailLogin = () => {
+    onEmailLogin?.();
+    router.navigate("/auth/sign-in");
+  };
 
   return (
     <View style={styles.container}>
@@ -105,7 +106,7 @@ export default function SignInButtons({
           Continuar con Google
         </Text>
       </Button>
-      {/* <Button
+      <Button
         size="lg"
         variant="outline"
         style={styles.button}
@@ -115,7 +116,7 @@ export default function SignInButtons({
         <Text size="16" weight="500">
           Continuar con Email
         </Text>
-      </Button> */}
+      </Button>
     </View>
   );
 }
