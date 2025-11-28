@@ -1,4 +1,5 @@
 - [ ] Email sign-in
+- [ ] Reanimated error on onboarding screen
 - [ ] Rate limits
 - [ ] Animate home macro summary
 - [ ] Spanish
