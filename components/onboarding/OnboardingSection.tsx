@@ -44,7 +44,7 @@ export default function OnboardingSection({ section: sectionNumber }: Props) {
   };
 
   return (
-    <SafeArea style={styles.safeArea} edges={["left", "right"]}>
+    <SafeArea style={styles.safeArea} edges={[]}>
       <Header style={styles.header}>
         <Title>¡Empecemos!</Title>
         <Description>Tu programa personalizado te espera</Description>
