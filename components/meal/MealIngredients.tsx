@@ -63,6 +63,7 @@ export default function MealIngredients({ items = [], loading }: Props) {
                 params: { mealItemId: item?.id },
               }}
               asChild
+              prefetch
             >
               <Button variant="base" size="base">
                 <Card style={styles.card}>

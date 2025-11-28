@@ -38,6 +38,7 @@ function LogItem({ meal }: LogItemProps) {
     <Link
       href={{ pathname: "/app/meal", params: { mealId: meal._id } }}
       asChild
+      prefetch
     >
       <Button variant="base" size="base">
         <Card style={styles.itemCard}>
