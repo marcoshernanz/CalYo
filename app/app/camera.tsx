@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import logError from "@/lib/utils/logError";
+import getColor from "@/lib/ui/getColor";
 
 export default function CameraScreen() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -132,6 +133,7 @@ export default function CameraScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: getColor("background"),
   },
   camera: {
     flex: 1,
