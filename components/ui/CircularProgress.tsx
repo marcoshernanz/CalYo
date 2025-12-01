@@ -97,7 +97,7 @@ export default function CircularProgress({
       onLayout={onLayout}
       pointerEvents="none"
     >
-      <Canvas style={{ height: resolvedSize, width: resolvedSize }}>
+      <Canvas style={{ height: resolvedSize + 1, width: resolvedSize + 1 }}>
         <Group
           origin={{ x: resolvedSize / 2, y: resolvedSize / 2 }}
           transform={[{ rotate: -Math.PI / 2 }]}
