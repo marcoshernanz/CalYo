@@ -1,10 +1,13 @@
 import Button from "@/components/ui/Button";
 import getColor from "@/lib/ui/getColor";
 import getShadow from "@/lib/ui/getShadow";
-import { Link, Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import { HomeIcon, PlusIcon, SettingsIcon } from "lucide-react-native";
 import { PressableProps, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Toast } from "@/components/ui/Toast";
 
 function TabBarButton(props: PressableProps) {
   return <Button {...props} />;
@@ -64,22 +67,36 @@ export default function TabLayout() {
 function CenterAddButton() {
   const { bottom } = useSafeAreaInsets();
   const size = 59 + Math.max(0, bottom / 2 - 10);
+  const router = useRouter();
+  const rateLimitStatus = useQuery(api.rateLimits.getRateLimitStatus.default, {
+    key: "analyzeMealPhoto",
+  });
+
+  const handlePress = () => {
+    if (rateLimitStatus && rateLimitStatus.remaining <= 0) {
+      Toast.show({
+        text: `You have reached your daily limit of ${rateLimitStatus.limit} photos.`,
+        variant: "error",
+      });
+      return;
+    }
+    router.push("/app/camera");
+  };
 
   return (
     <View
       pointerEvents="box-none"
       style={{ flex: 1, alignItems: "center", top: -16 }}
     >
-      <Link asChild href="/app/camera">
-        <Button
-          variant="primary"
-          style={{ height: size, width: size, ...getShadow("sm") }}
-          hitSlop={10}
-          accessibilityLabel="Add"
-        >
-          <PlusIcon color={getColor("background")} size={28} />
-        </Button>
-      </Link>
+      <Button
+        variant="primary"
+        style={{ height: size, width: size, ...getShadow("sm") }}
+        hitSlop={10}
+        accessibilityLabel="Add"
+        onPress={handlePress}
+      >
+        <PlusIcon color={getColor("background")} size={28} />
+      </Button>
     </View>
   );
 }
