@@ -88,7 +88,6 @@ export default function CameraScreen() {
   return (
     <View style={styles.container}>
       <Button
-        variant="base"
         size="sm"
         style={[styles.backButton, { top: insets.top, left: insets.left }]}
         onPress={() => {
