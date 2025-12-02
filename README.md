@@ -1,7 +1,5 @@
-- [ ] Camera back button
-- [ ] Streak at 0
-
 - [ ] Rate limits
+- [ ] Streak at 0
 - [ ] Animate home macro summary
 - [ ] Spanish
 - [ ] react-native-reanimated performance
