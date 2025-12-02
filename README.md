@@ -1,4 +1,3 @@
-- [ ] Rate limits
 - [ ] Streak at 0
 - [ ] Animate home macro summary
 - [ ] Spanish
