@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { mutation } from "@/convex/_generated/server";
-import { rateLimitsFields } from "../rateLimits";
+import { rateLimitsFields } from "../tables/rateLimits";
 
 const checkAndIncrement = mutation({
   args: {
