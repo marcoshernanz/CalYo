@@ -10,6 +10,7 @@ import nameMeal from "./nameMeal";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { Id } from "../../_generated/dataModel";
 import logError from "@/lib/utils/logError";
+import { analyzeMealConfig } from "./analyzeMealConfig";
 
 const analyzeMealPhoto = action({
   args: { storageId: v.id("_storage") },
@@ -18,6 +19,11 @@ const analyzeMealPhoto = action({
     try {
       const userId = await getAuthUserId(ctx);
       if (userId === null) throw new Error("Unauthorized");
+
+      await ctx.runMutation(api.rateLimits.checkAndIncrement.default, {
+        key: "analyzeMealPhoto",
+        limit: analyzeMealConfig.limitPerDay,
+      });
 
       const imageUrl = await ctx.storage.getUrl(storageId);
       if (!imageUrl) throw new Error("Image not found");

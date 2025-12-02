@@ -122,8 +122,8 @@ function ToastItem({
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View
-        entering={SlideInUp.springify().damping(22).stiffness(200)}
-        exiting={SlideOutUp.springify().damping(22).stiffness(200)}
+        entering={SlideInUp.springify()}
+        exiting={SlideOutUp.springify()}
         layout={LinearTransition.springify()}
         style={[
           styles.toast,
