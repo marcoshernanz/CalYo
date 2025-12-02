@@ -1,4 +1,4 @@
-- [ ] Prefetch
+- [ ] Fix prefetch (in new branch)
 - [ ] Streak at 0
 
 - [ ] Rate limits
