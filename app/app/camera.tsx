@@ -2,6 +2,7 @@ import Button from "@/components/ui/Button";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
 import {
+  ArrowLeftIcon,
   FlashlightIcon,
   FlashlightOffIcon,
   ImageIcon,
@@ -11,8 +12,10 @@ import { StyleSheet, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import logError from "@/lib/utils/logError";
 import getColor from "@/lib/ui/getColor";
+import { useSafeArea } from "@/components/ui/SafeArea";
 
 export default function CameraScreen() {
+  const insets = useSafeArea();
   const [permission, requestPermission] = useCameraPermissions();
   const router = useRouter();
   const cameraRef = useRef<CameraView>(null);
@@ -84,6 +87,17 @@ export default function CameraScreen() {
 
   return (
     <View style={styles.container}>
+      <Button
+        variant="base"
+        size="sm"
+        style={[styles.backButton, { top: insets.top, left: insets.left }]}
+        onPress={() => {
+          router.back();
+        }}
+      >
+        <ArrowLeftIcon color="white" size={22} />
+      </Button>
+
       <CameraView
         style={styles.camera}
         ref={cameraRef}
@@ -134,6 +148,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: getColor("background"),
+  },
+  backButton: {
+    aspectRatio: 1,
+    position: "absolute",
+    zIndex: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    borderRadius: 999,
   },
   camera: {
     flex: 1,
