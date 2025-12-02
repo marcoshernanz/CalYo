@@ -1,9 +1,15 @@
 import { defineTable } from "convex/server";
 import { v } from "convex/values";
 
-export const rateLimits = defineTable({
+export const rateLimitsFields = {
   userId: v.id("users"),
   key: v.union(v.literal("analyzeMealPhoto")),
   period: v.string(),
   count: v.number(),
-}).index("lookup", ["userId", "key", "period"]);
+};
+
+export const rateLimits = defineTable(rateLimitsFields).index("lookup", [
+  "userId",
+  "key",
+  "period",
+]);
