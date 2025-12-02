@@ -32,6 +32,7 @@ import type * as profiles_completeOnboarding from "../profiles/completeOnboardin
 import type * as profiles_getProfile from "../profiles/getProfile.js";
 import type * as profiles_updateProfile from "../profiles/updateProfile.js";
 import type * as rateLimits_checkAndIncrement from "../rateLimits/checkAndIncrement.js";
+import type * as rateLimits_getRateLimitStatus from "../rateLimits/getRateLimitStatus.js";
 import type * as storage_generateUploadUrl from "../storage/generateUploadUrl.js";
 import type * as tables_foods from "../tables/foods.js";
 import type * as tables_mealItems from "../tables/mealItems.js";
@@ -81,6 +82,7 @@ declare const fullApi: ApiFromModules<{
   "profiles/getProfile": typeof profiles_getProfile;
   "profiles/updateProfile": typeof profiles_updateProfile;
   "rateLimits/checkAndIncrement": typeof rateLimits_checkAndIncrement;
+  "rateLimits/getRateLimitStatus": typeof rateLimits_getRateLimitStatus;
   "storage/generateUploadUrl": typeof storage_generateUploadUrl;
   "tables/foods": typeof tables_foods;
   "tables/mealItems": typeof tables_mealItems;
