@@ -1,4 +1,3 @@
-- [ ] Macro targets sources and disclaimer
 - [ ] More colors instead of opacity
 - [ ] Use custom sheet component for login sheet
 - [ ] Sign in text and button cropped
