@@ -1,3 +1,4 @@
+- [ ] Sign in text and button cropped
 - [ ] Streak at 0
 - [ ] Animate home macro summary
 - [ ] Spanish
@@ -6,6 +7,7 @@
 - [ ] Initial screen
 - [ ] Fix convex functions https://stack.convex.dev/argument-validation-without-repetition#handling-partial-updates
 - [ ] Organize routes in folders
+- [ ] Email sign-in
 
 ---
 
