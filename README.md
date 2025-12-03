@@ -1,3 +1,4 @@
+- [ ] Macro targets sources and disclaimer
 - [ ] Sign in text and button cropped
 - [ ] Streak at 0
 - [ ] Animate home macro summary

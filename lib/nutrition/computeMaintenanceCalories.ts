@@ -2,7 +2,7 @@ type Params = {
   bmr: number;
   neatMultiplier: number;
   exerciseCalories: number;
-}
+};
 
 export default function computeMaintenanceCalories({
   bmr,
