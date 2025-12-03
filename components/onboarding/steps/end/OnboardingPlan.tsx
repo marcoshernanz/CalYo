@@ -17,6 +17,8 @@ import macrosToKcal from "@/lib/utils/macrosToKcal";
 import calcRatio from "@/lib/utils/calcRatio";
 import resolveFontFamily from "@/lib/ui/resolveFontFamily";
 import { useOnboardingContext } from "@/context/OnboardingContext";
+import Button from "@/components/ui/Button";
+import { CircleQuestionMarkIcon } from "lucide-react-native";
 
 type MacroCardProps = {
   name: string;
@@ -122,7 +124,20 @@ export default function OnboardingPlan() {
       <View style={styles.container}>
         <View style={styles.recommendationsContainer}>
           <View style={styles.header}>
-            <Title size="18">Recomendaciones Diarias</Title>
+            <Button
+              variant="base"
+              size="base"
+              style={{ position: "absolute", right: 0 }}
+              hitSlop={20}
+            >
+              <CircleQuestionMarkIcon
+                size={22}
+                color={getColor("foreground")}
+              />
+            </Button>
+            <Title size="18" style={{ marginRight: 22 }}>
+              Recomendaciones Diarias
+            </Title>
             <Description size="14">
               Puedes cambiarlas cuando quieras
             </Description>
