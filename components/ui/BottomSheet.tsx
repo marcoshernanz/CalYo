@@ -12,10 +12,10 @@ import getShadow from "@/lib/ui/getShadow";
 
 type Props = {
   Trigger: React.ReactElement<{ onPress?: () => void }>;
-  content: React.ReactNode;
+  children: React.ReactNode;
 };
 
-export default function BottomSheet({ Trigger, content }: Props) {
+export default function BottomSheet({ Trigger, children }: Props) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const renderBackdrop = useCallback(
@@ -43,7 +43,7 @@ export default function BottomSheet({ Trigger, content }: Props) {
       >
         <BottomSheetView>
           <SafeArea edges={["bottom", "left", "right"]} style={styles.safeArea}>
-            {content}
+            {children}
           </SafeArea>
         </BottomSheetView>
       </BottomSheetModal>
