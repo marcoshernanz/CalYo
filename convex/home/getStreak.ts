@@ -21,7 +21,7 @@ const getStreak = query({
       .query("meals")
       .withIndex("byUserId", (q) => q.eq("userId", userId))
       .order("desc")
-      .filter((q) => q.neq(q.field("status"), "error"))
+      .filter((q) => q.eq(q.field("status"), "done"))
       .collect();
 
     if (meals.length === 0) return 0;
@@ -38,10 +38,10 @@ const getStreak = query({
       }
 
       if (lastDateProcessed === null) {
-        if (mealDate === todayLocalMidnight) {
-          streak = 1;
-          lastDateProcessed = mealDate;
-        } else if (mealDate === todayLocalMidnight - dayMs) {
+        if (
+          mealDate === todayLocalMidnight ||
+          mealDate === todayLocalMidnight - dayMs
+        ) {
           streak = 1;
           lastDateProcessed = mealDate;
         } else {

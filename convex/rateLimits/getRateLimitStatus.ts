@@ -16,10 +16,7 @@ const getRateLimitStatus = query({
     const existing = await ctx.db
       .query("rateLimits")
       .withIndex("lookup", (q) =>
-        q
-          .eq("userId", userId)
-          .eq("key", key as "analyzeMealPhoto")
-          .eq("period", today)
+        q.eq("userId", userId).eq("key", key).eq("period", today)
       )
       .unique();
 

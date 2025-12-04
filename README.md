@@ -1,5 +1,5 @@
-- [ ] Use custom sheet component for login sheet
-- [ ] Meal animation
+- [ ] Fix streak calculation
+- [ ] Meal animation prefetch
 - [ ] More colors instead of opacity
 - [ ] Streak at 0
 - [ ] Animate home macro summary
