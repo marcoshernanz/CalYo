@@ -1,13 +1,13 @@
+- [ ] Email sign-in
 - [ ] Meal animation prefetch
 - [ ] More colors instead of opacity
-- [ ] Animate home macro summary
 - [ ] Spanish
 - [ ] react-native-reanimated performance
 - [ ] Sign in screen
 - [ ] Initial screen
 - [ ] Fix convex functions https://stack.convex.dev/argument-validation-without-repetition#handling-partial-updates
 - [ ] Organize routes in folders
-- [ ] Email sign-in
+- [ ] Animate home macro summary
 
 ---
 
