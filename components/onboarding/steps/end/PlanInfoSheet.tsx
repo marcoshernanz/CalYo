@@ -57,8 +57,8 @@ export default function PlanInfoSheet() {
               <Text size="14" weight="600">
                 Seguridad:
               </Text>{" "}
-              Los límites mínimos de calorías (1200/1600 kcal) se basan en las
-              Guías Alimentarias para los Estadounidenses (2020-2025).
+              Los límites mínimos de calorías se basan en las Guías Alimentarias
+              para los Estadounidenses (2020-2025).
             </Text>
           </View>
         </View>
