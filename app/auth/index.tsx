@@ -6,9 +6,12 @@ import { StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 import BottomSheet from "@/components/ui/BottomSheet";
 import SignInButtons from "@/components/auth/SignInButtons";
+import { useRef } from "react";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export default function AuthScreen() {
   const router = useRouter();
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   return (
     <SafeArea>
@@ -32,13 +35,16 @@ export default function AuthScreen() {
             ¿Ya tienes cuenta?
           </Text>
           <BottomSheet
+            ref={bottomSheetRef}
             Trigger={
               <Button size="md" variant="text">
                 Iniciar Sesión
               </Button>
             }
           >
-            <SignInButtons />
+            <SignInButtons
+              onEmailLogin={() => bottomSheetRef.current?.close()}
+            />
           </BottomSheet>
         </View>
       </View>
