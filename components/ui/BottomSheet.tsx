@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from "react";
+import React, { useCallback, RefObject } from "react";
 import { View, StyleSheet } from "react-native";
 import {
   BottomSheetModal,
@@ -13,11 +13,10 @@ import getShadow from "@/lib/ui/getShadow";
 type Props = {
   Trigger: React.ReactElement<{ onPress?: () => void }>;
   children: React.ReactNode;
+  ref: RefObject<BottomSheetModal | null>;
 };
 
-export default function BottomSheet({ Trigger, children }: Props) {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
+export default function BottomSheet({ Trigger, children, ref }: Props) {
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
       <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />
@@ -28,10 +27,10 @@ export default function BottomSheet({ Trigger, children }: Props) {
   return (
     <>
       {React.cloneElement(Trigger, {
-        onPress: () => bottomSheetModalRef.current?.present(),
+        onPress: () => ref.current?.present(),
       })}
       <BottomSheetModal
-        ref={bottomSheetModalRef}
+        ref={ref}
         backdropComponent={renderBackdrop}
         handleComponent={() => (
           <View style={styles.handleContainer}>
