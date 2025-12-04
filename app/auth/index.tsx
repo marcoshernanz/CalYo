@@ -2,40 +2,13 @@ import Button from "@/components/ui/Button";
 import SafeArea from "@/components/ui/SafeArea";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
-import { StyleSheet, View, TouchableWithoutFeedback } from "react-native";
-import { useRef, useState } from "react";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import LoginSheet from "@/components/auth/LoginSheet";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import { StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
+import BottomSheet from "@/components/ui/BottomSheet";
+import SignInButtons from "@/components/auth/SignInButtons";
 
 export default function AuthScreen() {
-  const [pointerEvents, setPointerEvents] = useState<"auto" | "none">("none");
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const overlayOpacity = useSharedValue(0);
   const router = useRouter();
-
-  const handleAnimate = (fromIndex: number, toIndex: number) => {
-    if (toIndex === -1) {
-      setPointerEvents("none");
-      overlayOpacity.value = withTiming(0);
-    } else {
-      setPointerEvents("auto");
-      overlayOpacity.value = withTiming(0.75);
-    }
-  };
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: overlayOpacity.value,
-  }));
-
-  const handlePresentModalPress = () => {
-    bottomSheetModalRef.current?.present();
-  };
 
   return (
     <SafeArea>
@@ -58,24 +31,17 @@ export default function AuthScreen() {
           <Text size="16" style={{ textAlign: "center" }}>
             ¿Ya tienes cuenta?
           </Text>
-          <Button size="md" variant="text" onPress={handlePresentModalPress}>
-            Iniciar Sesión
-          </Button>
+          <BottomSheet
+            Trigger={
+              <Button size="md" variant="text">
+                Iniciar Sesión
+              </Button>
+            }
+          >
+            <SignInButtons />
+          </BottomSheet>
         </View>
       </View>
-      <TouchableWithoutFeedback
-        onPress={() => bottomSheetModalRef.current?.close()}
-      >
-        <Animated.View
-          style={[styles.overlay, animatedStyle]}
-          pointerEvents={pointerEvents}
-        />
-      </TouchableWithoutFeedback>
-      <LoginSheet
-        ref={bottomSheetModalRef}
-        onAnimate={handleAnimate}
-        onClose={() => bottomSheetModalRef.current?.close()}
-      />
     </SafeArea>
   );
 }
@@ -100,9 +66,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 4,
-  },
-  overlay: {
-    backgroundColor: "black",
-    ...StyleSheet.absoluteFillObject,
   },
 });

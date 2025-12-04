@@ -1,4 +1,5 @@
 - [ ] Use custom sheet component for login sheet
+- [ ] Meal animation
 - [ ] More colors instead of opacity
 - [ ] Streak at 0
 - [ ] Animate home macro summary
