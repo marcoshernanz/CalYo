@@ -21,8 +21,13 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 import { SplashScreen } from "expo-router";
+import { useEffect } from "react";
 
-export function SplashScreenController() {
+type Props = {
+  children: React.ReactNode;
+};
+
+export function SplashScreenController({ children }: Props) {
   const { isLoading: isAuthLoading } = useAuthContext();
 
   const [fontsLoaded] = useFonts({
@@ -46,9 +51,17 @@ export function SplashScreenController() {
     Inter_900Black_Italic,
   });
 
-  if (!isAuthLoading && fontsLoaded) {
-    void SplashScreen.hideAsync();
+  const isReady = !isAuthLoading && fontsLoaded;
+
+  useEffect(() => {
+    if (isReady) {
+      void SplashScreen.hideAsync();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return null;
   }
 
-  return null;
+  return <>{children}</>;
 }
