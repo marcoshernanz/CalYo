@@ -1,4 +1,7 @@
 - [ ] Email sign-in
+- [ ] Update onboarding data on email sign-in
+- [ ] Sign in email content
+
 - [ ] Meal animation prefetch
 - [ ] More colors instead of opacity
 - [ ] Spanish
