@@ -1,7 +1,5 @@
-- [ ] Fix streak calculation
 - [ ] Meal animation prefetch
 - [ ] More colors instead of opacity
-- [ ] Streak at 0
 - [ ] Animate home macro summary
 - [ ] Spanish
 - [ ] react-native-reanimated performance
