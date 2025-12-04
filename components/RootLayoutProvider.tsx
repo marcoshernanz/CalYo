@@ -58,11 +58,12 @@ export default function RootLayoutProvider({ children }: Props) {
               <BottomSheetModalProvider>
                 <AppContextProvider>
                   <OnboardingContextProvider>
-                    <SplashScreenController />
-                    <StatusBar style="dark" />
-                    {children}
-                    <ToastProvider />
-                    <PortalHost />
+                    <SplashScreenController>
+                      <StatusBar style="dark" />
+                      {children}
+                      <ToastProvider />
+                      <PortalHost />
+                    </SplashScreenController>
                   </OnboardingContextProvider>
                 </AppContextProvider>
               </BottomSheetModalProvider>

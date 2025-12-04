@@ -1,6 +1,5 @@
-- [ ] More colors instead of opacity
 - [ ] Use custom sheet component for login sheet
-- [ ] Sign in text and button cropped
+- [ ] More colors instead of opacity
 - [ ] Streak at 0
 - [ ] Animate home macro summary
 - [ ] Spanish
