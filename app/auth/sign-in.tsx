@@ -45,8 +45,6 @@ export default function SignInScreen() {
       return;
     }
 
-    return; // TODO: Implement otp auth later
-
     await signIn("resend-otp", { email });
 
     router.navigate({ pathname: "/auth/confirm-email", params: { email } });
