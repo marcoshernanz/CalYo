@@ -3,6 +3,9 @@
 - [ ] Email sign in rate limits
 - [ ] Is test email in client safe?
 
+- [ ] Convex email rate-limits
+- [ ] Migrate to convex-better-auth for auth
+- [ ] Convex eslint (https://docs.convex.dev/eslint)
 - [ ] Day selector circle (it spans more than it should)
 - [ ] TextInput move cursor (email input)
 - [ ] Meal animation prefetch
