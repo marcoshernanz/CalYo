@@ -1,5 +1,4 @@
 - [ ] Email sign-in
-- [ ] Update onboarding data on email sign-in
 - [ ] Sign in email content
 - [ ] Email sign in rate limits
 
@@ -16,6 +15,10 @@
 - [ ] Animate home macro summary
 
 ---
+
+- [ ] calyoapp.com domain
+- [ ] Resend custom domain
+- [ ] Set-up OTP sign-in with custom email address
 
 - [ ] Reanimated error on onboarding screen
 - [ ] Email sign-in
