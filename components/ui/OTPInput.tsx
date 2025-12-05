@@ -26,7 +26,7 @@ const AnimatedCard = Animated.createAnimatedComponent(Card);
 type OTPInputBoxProps = {
   char: string;
   showCaret: boolean;
-  focused: SharedValue<number>;
+  isFocused: boolean;
   error: SharedValue<number>;
   shake: SharedValue<number>;
   caretOpacity: SharedValue<number>;
@@ -36,7 +36,7 @@ type OTPInputBoxProps = {
 function OTPInputBox({
   char,
   showCaret,
-  focused,
+  isFocused,
   error,
   shake,
   caretOpacity,
@@ -44,11 +44,9 @@ function OTPInputBox({
 }: OTPInputBoxProps) {
   const animatedStyles = {
     card: useAnimatedStyle(() => {
-      const initialBorderColor = interpolateColor(
-        focused.value,
-        [0, 1],
-        [getColor("secondary"), getColor("foreground")]
-      );
+      const initialBorderColor = isFocused
+        ? getColor("foreground")
+        : getColor("secondary");
       const borderColor = interpolateColor(
         error.value,
         [0, 1],
@@ -99,7 +97,6 @@ export default function OTPInput({
 
   const textInputRef = useRef<TextInput>(null);
 
-  const isFocusedShared = useSharedValue(0);
   const errorShared = useSharedValue(0);
   const shakeShared = useSharedValue(0);
   const caretOpacityShared = useSharedValue(0);
@@ -121,7 +118,6 @@ export default function OTPInput({
     e: Parameters<NonNullable<TextInputProps["onFocus"]>>[0]
   ) => {
     setIsFocused(true);
-    isFocusedShared.value = withTiming(1, { duration: 200 });
     props.onFocus?.(e);
   };
 
@@ -129,7 +125,6 @@ export default function OTPInput({
     e: Parameters<NonNullable<TextInputProps["onBlur"]>>[0]
   ) => {
     setIsFocused(false);
-    isFocusedShared.value = withTiming(0, { duration: 200 });
     props.onBlur?.(e);
   };
 
@@ -191,7 +186,11 @@ export default function OTPInput({
             key={`otp-input-box-${index}`}
             char={text.at(index) ?? ""}
             showCaret={showCaret && index === focusedIndex}
-            focused={isFocusedShared}
+            isFocused={
+              isFocused &&
+              (index === focusedIndex ||
+                (focusedIndex === length && index === length - 1))
+            }
             error={errorShared}
             shake={shakeShared}
             caretOpacity={caretOpacityShared}
