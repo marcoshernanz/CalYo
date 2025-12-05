@@ -4,6 +4,7 @@ import Animated from "react-native-reanimated";
 import { ScrollViewProps, StyleSheet, View } from "react-native";
 import WithSkeleton from "../WithSkeleton";
 import Text from "../Text";
+import getColor from "@/lib/ui/getColor";
 
 export function ScreenMain(props: ComponentProps<typeof SafeArea>) {
   return <SafeArea {...props} />;
@@ -32,9 +33,11 @@ export function ScreenMainScrollView({
 
 export function ScreenMainTitle({
   title,
+  description,
   loading = false,
 }: {
   title?: string;
+  description?: string;
   loading?: boolean;
 }) {
   return (
@@ -51,6 +54,11 @@ export function ScreenMainTitle({
           {title}
         </Text>
       </WithSkeleton>
+      {description && (
+        <Text size="14" color={getColor("mutedForeground")}>
+          {description}
+        </Text>
+      )}
     </View>
   );
 }
@@ -62,6 +70,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     paddingBottom: 16,
+    gap: 4,
   },
   title: {
     fontSize: 22,
