@@ -4,7 +4,6 @@ import { foods } from "./tables/foods";
 import { meals } from "./tables/meals";
 import { mealItems } from "./tables/mealItems";
 import { profiles } from "./tables/profiles";
-import { rateLimits } from "./tables/rateLimits";
 
 export default defineSchema({
   ...authTables,
@@ -12,5 +11,4 @@ export default defineSchema({
   meals,
   mealItems,
   profiles,
-  rateLimits,
 });

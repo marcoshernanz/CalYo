@@ -8,7 +8,6 @@ type AnalyzeMealConfig = {
   embeddingsModel: EmbeddingModel;
   candidateSelectionModel: LanguageModel;
   namingModel: LanguageModel;
-  limitPerDay: number;
 };
 
 export const analyzeMealConfig: AnalyzeMealConfig = {
@@ -18,7 +17,6 @@ export const analyzeMealConfig: AnalyzeMealConfig = {
   embeddingsModel: google.textEmbeddingModel("gemini-embedding-001"),
   candidateSelectionModel: google("gemini-2.5-flash"),
   namingModel: google("gemini-2.5-flash"),
-  limitPerDay: 20,
 };
 
 export const analyzeMealPrompts = {

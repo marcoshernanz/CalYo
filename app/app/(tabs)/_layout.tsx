@@ -5,9 +5,9 @@ import { Tabs, useRouter } from "expo-router";
 import { HomeIcon, PlusIcon, SettingsIcon } from "lucide-react-native";
 import { PressableProps, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Toast } from "@/components/ui/Toast";
+import { useRateLimit } from "@convex-dev/rate-limiter/react";
 
 function TabBarButton(props: PressableProps) {
   return <Button {...props} />;
@@ -68,14 +68,16 @@ function CenterAddButton() {
   const { bottom } = useSafeAreaInsets();
   const size = 59 + Math.max(0, bottom / 2 - 10);
   const router = useRouter();
-  const rateLimitStatus = useQuery(api.rateLimits.getRateLimitStatus.default, {
-    key: "analyzeMealPhoto",
+  const { status, check } = useRateLimit(api.rateLimit.getRateLimit, {
+    getServerTimeMutation: api.rateLimit.getServerTime,
   });
 
   const handlePress = () => {
-    if (rateLimitStatus && rateLimitStatus.remaining <= 0) {
+    if (status && !status.ok) {
+      const result = check(Date.now());
+      const limit = result?.config.rate;
       Toast.show({
-        text: `You have reached your daily limit of ${rateLimitStatus.limit} photos.`,
+        text: `You have reached your daily limit of ${limit ?? 20} photos.`,
         variant: "error",
       });
       return;

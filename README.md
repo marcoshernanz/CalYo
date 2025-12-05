@@ -1,6 +1,7 @@
 - [ ] Email sign-in
-- [ ] Sign in email content
+- [ ] Update onboarding data on email sign-in
 - [ ] Email sign in rate limits
+- [ ] Is test email in client safe?
 
 - [ ] Day selector circle (it spans more than it should)
 - [ ] TextInput move cursor (email input)
