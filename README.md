@@ -1,7 +1,10 @@
 - [ ] Email sign-in
 - [ ] Update onboarding data on email sign-in
 - [ ] Sign in email content
+- [ ] Email sign in rate limits
 
+- [ ] Day selector circle (it spans more than it should)
+- [ ] TextInput move cursor (email input)
 - [ ] Meal animation prefetch
 - [ ] More colors instead of opacity
 - [ ] Spanish
