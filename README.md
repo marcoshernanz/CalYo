@@ -1,9 +1,11 @@
+- [ ] CalYo camera request message
+- [ ] TextInput move cursor (email input)
+- [ ] Spanish
+
 - [ ] Migrate to convex-better-auth for auth
 - [ ] Day selector circle (it spans more than it should)
-- [ ] TextInput move cursor (email input)
 - [ ] Meal animation prefetch
 - [ ] More colors instead of opacity
-- [ ] Spanish
 - [ ] react-native-reanimated performance
 - [ ] Sign in screen
 - [ ] Initial screen
