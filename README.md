@@ -1,4 +1,3 @@
-- [ ] Convex eslint (https://docs.convex.dev/eslint)
 - [ ] Migrate to convex-better-auth for auth
 - [ ] Day selector circle (it spans more than it should)
 - [ ] TextInput move cursor (email input)
