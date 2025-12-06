@@ -1,4 +1,10 @@
 import Button from "@/components/ui/Button";
+import {
+  isOnboardingDataComplete,
+  useOnboardingContext,
+} from "@/context/OnboardingContext";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import OTPInput, { OTPInputHandle } from "@/components/ui/OTPInput";
 import SafeArea, { useSafeArea } from "@/components/ui/SafeArea";
 import Text from "@/components/ui/Text";
@@ -26,6 +32,10 @@ export default function ConfirmEmailScreen() {
   const { signIn } = useAuthContext();
   const { email } = useLocalSearchParams<{ email: string }>();
   const insets = useSafeArea();
+  const { data, targets } = useOnboardingContext();
+  const completeOnboarding = useMutation(
+    api.profiles.completeOnboarding.default
+  );
 
   const inputRef = useRef<OTPInputHandle>(null);
   const [resendIn, setResendIn] = useState(0);
@@ -48,9 +58,11 @@ export default function ConfirmEmailScreen() {
     if (error) {
       inputRef.current?.flashError();
     } else {
-      // TODO: Insert onboarding data
+      if (isOnboardingDataComplete(data)) {
+        await completeOnboarding({ data, targets });
+      }
       if (router.canDismiss()) router.dismissAll();
-      router.replace("/auth");
+      router.replace("/app");
     }
   };
 

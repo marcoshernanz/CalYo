@@ -1,7 +1,6 @@
 - [ ] Email sign-in
-- [ ] Update onboarding data on email sign-in
-- [ ] Email sign in rate limits
 - [ ] Is test email in client safe?
+- [ ] Sign-in vs Sign-up buttons text
 
 - [ ] Convex email rate-limits
 - [ ] Migrate to convex-better-auth for auth
@@ -20,6 +19,7 @@
 
 ---
 
+- [ ] Email sign in rate limits
 - [ ] calyoapp.com domain
 - [ ] Resend custom domain
 - [ ] Set-up OTP sign-in with custom email address
