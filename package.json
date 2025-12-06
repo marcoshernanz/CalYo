@@ -1,7 +1,7 @@
 {
   "name": "calyo",
   "main": "index.ts",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "scripts": {
     "dev:client": "APP_VARIANT=development npx expo start",
     "dev:server": "npx convex dev",
