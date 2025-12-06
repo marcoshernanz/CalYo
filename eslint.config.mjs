@@ -5,6 +5,7 @@ import { defineConfig } from "eslint/config";
 import { configs as tseslintConfigs } from "typescript-eslint";
 import expoConfig from "eslint-config-expo/flat.js";
 import reactCompiler from "eslint-plugin-react-compiler";
+import convexPlugin from "@convex-dev/eslint-plugin";
 
 export default defineConfig(
   eslint.configs.recommended,
@@ -12,6 +13,14 @@ export default defineConfig(
   reactCompiler.configs.recommended,
   tseslintConfigs.strictTypeChecked,
   tseslintConfigs.stylisticTypeChecked,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  ...convexPlugin.configs.recommended,
+  {
+    files: ["convex/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "@convex-dev/import-wrong-runtime": "error",
+    },
+  },
   {
     languageOptions: {
       parserOptions: {
