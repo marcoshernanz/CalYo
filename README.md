@@ -1,10 +1,5 @@
-- [ ] Email sign-in
-- [ ] Is test email in client safe?
-- [ ] Sign-in vs Sign-up buttons text
-
-- [ ] Convex email rate-limits
-- [ ] Migrate to convex-better-auth for auth
 - [ ] Convex eslint (https://docs.convex.dev/eslint)
+- [ ] Migrate to convex-better-auth for auth
 - [ ] Day selector circle (it spans more than it should)
 - [ ] TextInput move cursor (email input)
 - [ ] Meal animation prefetch
@@ -19,6 +14,8 @@
 
 ---
 
+- [ ] Test email sign-in safe
+- [ ] Environment variables for different environments
 - [ ] Email sign in rate limits
 - [ ] calyoapp.com domain
 - [ ] Resend custom domain
