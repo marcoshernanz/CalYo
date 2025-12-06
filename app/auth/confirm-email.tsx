@@ -1,12 +1,14 @@
 import Button from "@/components/ui/Button";
-import Description from "@/components/ui/Description";
-import Header from "@/components/ui/Header";
+import {
+  isOnboardingDataComplete,
+  useOnboardingContext,
+} from "@/context/OnboardingContext";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import OTPInput, { OTPInputHandle } from "@/components/ui/OTPInput";
-import SafeArea from "@/components/ui/SafeArea";
+import SafeArea, { useSafeArea } from "@/components/ui/SafeArea";
 import Text from "@/components/ui/Text";
-import Title from "@/components/ui/Title";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { ArrowLeftIcon } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
@@ -14,11 +16,26 @@ import createAccurateInterval from "@/lib/utils/createAccurateInterval";
 import getColor from "@/lib/ui/getColor";
 import tryCatch from "@/lib/utils/tryCatch";
 import { useAuthContext } from "@/context/AuthContext";
+import { ScreenMain, ScreenMainTitle } from "@/components/ui/screen/ScreenMain";
+import {
+  ScreenHeader,
+  ScreenHeaderBackButton,
+  ScreenHeaderTitle,
+} from "@/components/ui/screen/ScreenHeader";
+import {
+  ScreenFooter,
+  ScreenFooterButton,
+} from "@/components/ui/screen/ScreenFooter";
 
 export default function ConfirmEmailScreen() {
-  const { signIn } = useAuthContext();
   const router = useRouter();
+  const { signIn } = useAuthContext();
   const { email } = useLocalSearchParams<{ email: string }>();
+  const insets = useSafeArea();
+  const { data, targets } = useOnboardingContext();
+  const completeOnboarding = useMutation(
+    api.profiles.completeOnboarding.default
+  );
 
   const inputRef = useRef<OTPInputHandle>(null);
   const [resendIn, setResendIn] = useState(0);
@@ -41,6 +58,10 @@ export default function ConfirmEmailScreen() {
     if (error) {
       inputRef.current?.flashError();
     } else {
+      if (isOnboardingDataComplete(data)) {
+        await completeOnboarding({ data, targets });
+      }
+      if (router.canDismiss()) router.dismissAll();
       router.replace("/app");
     }
   };
@@ -81,32 +102,22 @@ export default function ConfirmEmailScreen() {
   }, []);
 
   return (
-    <SafeArea>
+    <ScreenMain edges={[]}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior="padding"
-        keyboardVerticalOffset={10}
+        keyboardVerticalOffset={-insets.bottom + 22}
       >
-        <Button
-          size="sm"
-          variant="secondary"
-          style={styles.backButton}
-          onPress={() => {
-            router.back();
-          }}
-        >
-          <ArrowLeftIcon size={22} />
-        </Button>
-        <View style={styles.container}>
-          <Header>
-            <Title>Confirma tu Email</Title>
-            <Description>
-              Introduce el código que te acabamos de enviar a{" "}
-              <Text size="16" weight="600">
-                {email || "tu email"}
-              </Text>
-            </Description>
-          </Header>
+        <ScreenHeader>
+          <ScreenHeaderBackButton />
+          <ScreenHeaderTitle title="Iniciar Sesión" />
+        </ScreenHeader>
+
+        <SafeArea edges={["left", "right"]}>
+          <ScreenMainTitle
+            title="Confirma tu Email"
+            description={`Introduce el código que te acabamos de enviar a ${email}`}
+          />
 
           <OTPInput
             ref={inputRef}
@@ -115,12 +126,15 @@ export default function ConfirmEmailScreen() {
           />
 
           <View style={styles.footerText}>
-            <Description>¿No has recibido el código?</Description>
+            <Text size="14" color={getColor("mutedForeground")}>
+              ¿No has recibido el código?
+            </Text>
             <Button
-              size="md"
+              size="sm"
               variant="text"
               disabled={resendIn > 0}
               onPress={() => void handleResend()}
+              hitSlop={16}
               textProps={{
                 style: {
                   color: resendIn > 0 ? getColor("mutedForeground") : undefined,
@@ -132,26 +146,26 @@ export default function ConfirmEmailScreen() {
               {resendIn > 0 ? `Reenviar (${resendIn})` : "Reenviar"}
             </Button>
           </View>
-        </View>
+        </SafeArea>
 
-        <Button onPress={() => inputRef.current?.flashError()}>
-          Continuar
-        </Button>
+        <ScreenFooter style={{ boxShadow: [] }}>
+          <ScreenFooterButton onPress={() => inputRef.current?.flashError()}>
+            Continuar
+          </ScreenFooterButton>
+        </ScreenFooter>
       </KeyboardAvoidingView>
-    </SafeArea>
+    </ScreenMain>
   );
 }
 
 const styles = StyleSheet.create({
-  backButton: {
-    aspectRatio: 1,
-  },
   container: {
     flex: 1,
     paddingVertical: 20,
     gap: 32,
   },
   footerText: {
+    paddingTop: 16,
     flexDirection: "row",
     alignItems: "center",
     gap: 4,

@@ -31,14 +31,12 @@ import type * as nutrition_computeNutritionTargets from "../nutrition/computeNut
 import type * as profiles_completeOnboarding from "../profiles/completeOnboarding.js";
 import type * as profiles_getProfile from "../profiles/getProfile.js";
 import type * as profiles_updateProfile from "../profiles/updateProfile.js";
-import type * as rateLimits_checkAndIncrement from "../rateLimits/checkAndIncrement.js";
-import type * as rateLimits_getRateLimitStatus from "../rateLimits/getRateLimitStatus.js";
+import type * as rateLimit from "../rateLimit.js";
 import type * as storage_generateUploadUrl from "../storage/generateUploadUrl.js";
 import type * as tables_foods from "../tables/foods.js";
 import type * as tables_mealItems from "../tables/mealItems.js";
 import type * as tables_meals from "../tables/meals.js";
 import type * as tables_profiles from "../tables/profiles.js";
-import type * as tables_rateLimits from "../tables/rateLimits.js";
 import type * as testing_getOrCreateTestUser from "../testing/getOrCreateTestUser.js";
 import type * as utils_backfillFoodEmbeddings from "../utils/backfillFoodEmbeddings.js";
 import type * as utils_countFoodEmbeddings from "../utils/countFoodEmbeddings.js";
@@ -81,14 +79,12 @@ declare const fullApi: ApiFromModules<{
   "profiles/completeOnboarding": typeof profiles_completeOnboarding;
   "profiles/getProfile": typeof profiles_getProfile;
   "profiles/updateProfile": typeof profiles_updateProfile;
-  "rateLimits/checkAndIncrement": typeof rateLimits_checkAndIncrement;
-  "rateLimits/getRateLimitStatus": typeof rateLimits_getRateLimitStatus;
+  rateLimit: typeof rateLimit;
   "storage/generateUploadUrl": typeof storage_generateUploadUrl;
   "tables/foods": typeof tables_foods;
   "tables/mealItems": typeof tables_mealItems;
   "tables/meals": typeof tables_meals;
   "tables/profiles": typeof tables_profiles;
-  "tables/rateLimits": typeof tables_rateLimits;
   "testing/getOrCreateTestUser": typeof testing_getOrCreateTestUser;
   "utils/backfillFoodEmbeddings": typeof utils_backfillFoodEmbeddings;
   "utils/countFoodEmbeddings": typeof utils_countFoodEmbeddings;
@@ -188,6 +184,140 @@ export declare const components: {
           state: "inProgress" | "success" | "failed" | "canceled" | "unknown";
         }
       >;
+    };
+  };
+  rateLimiter: {
+    lib: {
+      checkRateLimit: FunctionReference<
+        "query",
+        "internal",
+        {
+          config:
+            | {
+                capacity?: number;
+                kind: "token bucket";
+                maxReserved?: number;
+                period: number;
+                rate: number;
+                shards?: number;
+                start?: null;
+              }
+            | {
+                capacity?: number;
+                kind: "fixed window";
+                maxReserved?: number;
+                period: number;
+                rate: number;
+                shards?: number;
+                start?: number;
+              };
+          count?: number;
+          key?: string;
+          name: string;
+          reserve?: boolean;
+          throws?: boolean;
+        },
+        { ok: true; retryAfter?: number } | { ok: false; retryAfter: number }
+      >;
+      clearAll: FunctionReference<
+        "mutation",
+        "internal",
+        { before?: number },
+        null
+      >;
+      getServerTime: FunctionReference<"mutation", "internal", {}, number>;
+      getValue: FunctionReference<
+        "query",
+        "internal",
+        {
+          config:
+            | {
+                capacity?: number;
+                kind: "token bucket";
+                maxReserved?: number;
+                period: number;
+                rate: number;
+                shards?: number;
+                start?: null;
+              }
+            | {
+                capacity?: number;
+                kind: "fixed window";
+                maxReserved?: number;
+                period: number;
+                rate: number;
+                shards?: number;
+                start?: number;
+              };
+          key?: string;
+          name: string;
+          sampleShards?: number;
+        },
+        {
+          config:
+            | {
+                capacity?: number;
+                kind: "token bucket";
+                maxReserved?: number;
+                period: number;
+                rate: number;
+                shards?: number;
+                start?: null;
+              }
+            | {
+                capacity?: number;
+                kind: "fixed window";
+                maxReserved?: number;
+                period: number;
+                rate: number;
+                shards?: number;
+                start?: number;
+              };
+          shard: number;
+          ts: number;
+          value: number;
+        }
+      >;
+      rateLimit: FunctionReference<
+        "mutation",
+        "internal",
+        {
+          config:
+            | {
+                capacity?: number;
+                kind: "token bucket";
+                maxReserved?: number;
+                period: number;
+                rate: number;
+                shards?: number;
+                start?: null;
+              }
+            | {
+                capacity?: number;
+                kind: "fixed window";
+                maxReserved?: number;
+                period: number;
+                rate: number;
+                shards?: number;
+                start?: number;
+              };
+          count?: number;
+          key?: string;
+          name: string;
+          reserve?: boolean;
+          throws?: boolean;
+        },
+        { ok: true; retryAfter?: number } | { ok: false; retryAfter: number }
+      >;
+      resetRateLimit: FunctionReference<
+        "mutation",
+        "internal",
+        { key?: string; name: string },
+        null
+      >;
+    };
+    time: {
+      getServerTime: FunctionReference<"mutation", "internal", {}, number>;
     };
   };
 };

@@ -1,4 +1,7 @@
-- [ ] Email sign-in
+- [ ] Convex eslint (https://docs.convex.dev/eslint)
+- [ ] Migrate to convex-better-auth for auth
+- [ ] Day selector circle (it spans more than it should)
+- [ ] TextInput move cursor (email input)
 - [ ] Meal animation prefetch
 - [ ] More colors instead of opacity
 - [ ] Spanish
@@ -10,6 +13,13 @@
 - [ ] Animate home macro summary
 
 ---
+
+- [ ] Test email sign-in safe
+- [ ] Environment variables for different environments
+- [ ] Email sign in rate limits
+- [ ] calyoapp.com domain
+- [ ] Resend custom domain
+- [ ] Set-up OTP sign-in with custom email address
 
 - [ ] Reanimated error on onboarding screen
 - [ ] Email sign-in

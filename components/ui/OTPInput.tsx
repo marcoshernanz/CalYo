@@ -1,11 +1,11 @@
 import {
-  Pressable,
+  Keyboard,
   StyleSheet,
   TextInput,
   TextInputProps,
   View,
 } from "react-native";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useImperativeHandle } from "react";
 import Text from "./Text";
 import Animated, {
   useSharedValue,
@@ -15,13 +15,68 @@ import Animated, {
   withSequence,
   withDelay,
   interpolateColor,
+  SharedValue,
 } from "react-native-reanimated";
 import getColor from "@/lib/ui/getColor";
+import Button from "./Button";
+import Card from "./Card";
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+const AnimatedCard = Animated.createAnimatedComponent(Card);
+
+type OTPInputBoxProps = {
+  char: string;
+  showCaret: boolean;
+  isFocused: boolean;
+  error: SharedValue<number>;
+  shake: SharedValue<number>;
+  caretOpacity: SharedValue<number>;
+  onPress: () => void;
+};
+
+function OTPInputBox({
+  char,
+  showCaret,
+  isFocused,
+  error,
+  shake,
+  caretOpacity,
+  onPress,
+}: OTPInputBoxProps) {
+  const animatedStyles = {
+    card: useAnimatedStyle(() => {
+      const initialBorderColor = isFocused
+        ? getColor("foreground")
+        : getColor("secondary");
+      const borderColor = interpolateColor(
+        error.value,
+        [0, 1],
+        [initialBorderColor, getColor("red")]
+      );
+
+      return { borderColor, transform: [{ translateX: shake.value }] };
+    }),
+    caret: useAnimatedStyle(() => {
+      return { opacity: caretOpacity.value };
+    }),
+  };
+
+  return (
+    <Button variant="base" size="base" onPress={onPress} style={{ flex: 1 }}>
+      <AnimatedCard style={[styles.card, animatedStyles.card]}>
+        <Text size="32" weight="600">
+          {char}
+        </Text>
+        {showCaret && (
+          <View style={styles.caretContainer}>
+            <Animated.View style={[styles.caret, animatedStyles.caret]} />
+          </View>
+        )}
+      </AnimatedCard>
+    </Button>
+  );
+}
 
 export type OTPInputHandle = {
-  focus: () => void;
   flashError: () => void;
 };
 
@@ -38,46 +93,66 @@ export default function OTPInput({
   ...props
 }: Props) {
   const [text, setText] = useState("");
-  const [isFocused, setIsFocused] = useState(props.autoFocus);
+  const [isFocused, setIsFocused] = useState(props.autoFocus ?? false);
 
-  const inputRef = useRef<TextInput>(null);
+  const textInputRef = useRef<TextInput>(null);
 
-  const isFocusedShared = useSharedValue(0);
+  const errorShared = useSharedValue(0);
+  const shakeShared = useSharedValue(0);
+  const caretOpacityShared = useSharedValue(0);
 
-  const focusedInputIndex = text.length;
+  const focusedIndex = text.length;
+  const showCaret = isFocused && text.length !== length;
 
-  const showCaret = Boolean(isFocused) && text.length !== length;
+  const handleTextChange = (value: string) => {
+    if (/[^\d]/.test(value)) return;
+    setText(value);
+    props.onChangeText?.(value);
+    if (value.length === length) {
+      onFilled?.(value);
+      textInputRef.current?.blur();
+    }
+  };
 
-  const caretOpacity = useSharedValue(0);
+  const handleFocus = (
+    e: Parameters<NonNullable<TextInputProps["onFocus"]>>[0]
+  ) => {
+    setIsFocused(true);
+    props.onFocus?.(e);
+  };
 
-  const error = useSharedValue(0);
-  const shake = useSharedValue(0);
+  const handleBlur = (
+    e: Parameters<NonNullable<TextInputProps["onBlur"]>>[0]
+  ) => {
+    setIsFocused(false);
+    props.onBlur?.(e);
+  };
 
-  const baseColor = getColor("mutedForeground");
-  const errorColor = getColor("destructive");
+  useImperativeHandle(
+    ref,
+    () => ({
+      flashError: () => {
+        errorShared.value = withSequence(
+          withTiming(1, { duration: 200 }),
+          withDelay(100, withTiming(0, { duration: 200 }))
+        );
 
-  const animatedContainerStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: shake.value }],
-  }));
-
-  const animatedBoxStyle = useAnimatedStyle(() => {
-    "worklet";
-    const color = interpolateColor(
-      error.value,
-      [0, 1],
-      [baseColor, errorColor]
-    );
-    return { borderColor: color };
-  });
-
-  const animatedCaretStyle = useAnimatedStyle(() => {
-    "worklet";
-    return { opacity: caretOpacity.value };
-  });
+        shakeShared.value = withSequence(
+          withTiming(8, { duration: 50 }),
+          withTiming(-8, { duration: 50 }),
+          withTiming(8, { duration: 50 }),
+          withTiming(-8, { duration: 50 }),
+          withTiming(8, { duration: 50 }),
+          withTiming(0, { duration: 50 })
+        );
+      },
+    }),
+    [errorShared, shakeShared]
+  );
 
   useEffect(() => {
     if (showCaret) {
-      caretOpacity.value = withRepeat(
+      caretOpacityShared.value = withRepeat(
         withSequence(
           withTiming(1, { duration: 100 }),
           withDelay(400, withTiming(1, { duration: 0 })),
@@ -88,113 +163,55 @@ export default function OTPInput({
         true
       );
     } else {
-      caretOpacity.value = 0;
+      caretOpacityShared.value = 0;
     }
-  }, [caretOpacity, showCaret]);
+  }, [caretOpacityShared, showCaret]);
 
   useEffect(() => {
-    if (ref) {
-      const handle: OTPInputHandle = {
-        focus: () => {
-          inputRef.current?.focus();
-        },
-        flashError: () => {
-          error.value = withSequence(
-            withTiming(1, { duration: 200 }),
-            withDelay(100, withTiming(0, { duration: 200 }))
-          );
+    const subscription = Keyboard.addListener("keyboardDidHide", () => {
+      textInputRef.current?.blur();
+    });
 
-          shake.value = withSequence(
-            withTiming(8, { duration: 50 }),
-            withTiming(-8, { duration: 50 }),
-            withTiming(8, { duration: 50 }),
-            withTiming(-8, { duration: 50 }),
-            withTiming(8, { duration: 50 }),
-            withTiming(0, { duration: 50 })
-          );
-        },
-      };
-
-      if (typeof ref === "function") {
-        ref(handle);
-      } else {
-        (ref as React.RefObject<OTPInputHandle>).current = handle;
-      }
-    }
-  }, [ref, error, shake]);
-
-  const handleTextChange = (value: string) => {
-    if (/[^\d]/.test(value)) return;
-    setText(value);
-    props.onChangeText?.(value);
-    if (value.length === length) {
-      onFilled?.(value);
-      inputRef.current?.blur();
-    }
-  };
-
-  type FocusEventArg = Parameters<NonNullable<TextInputProps["onFocus"]>>[0];
-  type BlurEventArg = Parameters<NonNullable<TextInputProps["onBlur"]>>[0];
-
-  const handleFocus = (e: FocusEventArg) => {
-    setIsFocused(true);
-    isFocusedShared.value = withTiming(1, { duration: 200 });
-    props.onFocus?.(e);
-  };
-
-  const handleBlur = (e: BlurEventArg) => {
-    setIsFocused(false);
-    isFocusedShared.value = withTiming(0, { duration: 200 });
-    props.onBlur?.(e);
-  };
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   return (
-    <Animated.View style={[styles.container, animatedContainerStyle]}>
+    <View style={styles.container}>
       {Array(length)
         .fill(0)
-        .map((_, index) => {
-          const char = text.at(index) ?? "";
-          const isFocusedInput =
-            Boolean(isFocused) &&
-            (index === focusedInputIndex ||
-              (index === length - 1 && text.length === length));
-
-          return (
-            <AnimatedPressable
-              key={index}
-              onPress={() => inputRef.current?.focus()}
-              style={[
-                styles.box,
-                isFocusedInput && styles.focusedBox,
-                animatedBoxStyle,
-              ]}
-            >
-              <Text size="28" weight="700">
-                {char}
-              </Text>
-              {showCaret && index === focusedInputIndex && (
-                <View style={styles.caretContainer}>
-                  <Animated.View style={[styles.caret, animatedCaretStyle]} />
-                </View>
-              )}
-            </AnimatedPressable>
-          );
-        })}
+        .map((_, index) => (
+          <OTPInputBox
+            key={`otp-input-box-${index}`}
+            char={text.at(index) ?? ""}
+            showCaret={showCaret && index === focusedIndex}
+            isFocused={
+              isFocused &&
+              (index === focusedIndex ||
+                (focusedIndex === length && index === length - 1))
+            }
+            error={errorShared}
+            shake={shakeShared}
+            caretOpacity={caretOpacityShared}
+            onPress={() => textInputRef.current?.focus()}
+          />
+        ))}
       <TextInput
         value={text}
         onChangeText={handleTextChange}
         maxLength={length}
         inputMode="numeric"
         textContentType="oneTimeCode"
-        ref={inputRef}
+        ref={textInputRef}
         autoComplete={"one-time-code"}
         onFocus={handleFocus}
         onBlur={handleBlur}
         caretHidden
+        style={styles.input}
         {...props}
-        style={[styles.input, props.style]}
       />
-    </Animated.View>
+    </View>
   );
 }
 
@@ -202,18 +219,14 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     gap: 16,
-    height: 100,
   },
-  box: {
-    flex: 1,
-    borderWidth: 1,
-    borderRadius: 12,
+  card: {
+    height: 100,
+    padding: 12,
+    paddingHorizontal: 16,
+    gap: 4,
     alignItems: "center",
     justifyContent: "center",
-  },
-  focusedBox: {
-    borderColor: getColor("foreground"),
-    borderWidth: 2,
   },
   caretContainer: {
     ...StyleSheet.absoluteFillObject,
