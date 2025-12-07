@@ -1,6 +1,6 @@
 import { EmbeddingModel, LanguageModel } from "ai";
-import { openrouter } from "../../ai";
 import { google } from "@ai-sdk/google";
+import { openrouter } from "@/convex/ai";
 
 type AnalyzeMealConfig = {
   temperature: number;
