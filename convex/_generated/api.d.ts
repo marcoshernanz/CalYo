@@ -9,9 +9,11 @@
  */
 
 import type * as ResendOTP from "../ResendOTP.js";
+import type * as ai from "../ai.js";
 import type * as auth from "../auth.js";
 import type * as foods_getFoodById from "../foods/getFoodById.js";
 import type * as foods_ingestFoods from "../foods/ingestFoods.js";
+import type * as foods_updateFoodTranslation from "../foods/updateFoodTranslation.js";
 import type * as foods_upsertFoods from "../foods/upsertFoods.js";
 import type * as home_getStreak from "../home/getStreak.js";
 import type * as http from "../http.js";
@@ -22,6 +24,7 @@ import type * as meals_analyze_detectMealItems from "../meals/analyze/detectMeal
 import type * as meals_analyze_nameMeal from "../meals/analyze/nameMeal.js";
 import type * as meals_analyze_searchFdcCandidates from "../meals/analyze/searchFdcCandidates.js";
 import type * as meals_analyze_selectCandidates from "../meals/analyze/selectCandidates.js";
+import type * as meals_analyze_translateFood from "../meals/analyze/translateFood.js";
 import type * as meals_createMeal from "../meals/createMeal.js";
 import type * as meals_getMeal from "../meals/getMeal.js";
 import type * as meals_getWeekMeals from "../meals/getWeekMeals.js";
@@ -57,9 +60,11 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   ResendOTP: typeof ResendOTP;
+  ai: typeof ai;
   auth: typeof auth;
   "foods/getFoodById": typeof foods_getFoodById;
   "foods/ingestFoods": typeof foods_ingestFoods;
+  "foods/updateFoodTranslation": typeof foods_updateFoodTranslation;
   "foods/upsertFoods": typeof foods_upsertFoods;
   "home/getStreak": typeof home_getStreak;
   http: typeof http;
@@ -70,6 +75,7 @@ declare const fullApi: ApiFromModules<{
   "meals/analyze/nameMeal": typeof meals_analyze_nameMeal;
   "meals/analyze/searchFdcCandidates": typeof meals_analyze_searchFdcCandidates;
   "meals/analyze/selectCandidates": typeof meals_analyze_selectCandidates;
+  "meals/analyze/translateFood": typeof meals_analyze_translateFood;
   "meals/createMeal": typeof meals_createMeal;
   "meals/getMeal": typeof meals_getMeal;
   "meals/getWeekMeals": typeof meals_getWeekMeals;
