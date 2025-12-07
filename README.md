@@ -1,6 +1,4 @@
-- [ ] CalYo camera request message
 - [ ] TextInput move cursor (email input)
-- [ ] Spanish
 
 - [ ] Migrate to convex-better-auth for auth
 - [ ] Day selector circle (it spans more than it should)
