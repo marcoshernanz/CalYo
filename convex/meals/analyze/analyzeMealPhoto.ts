@@ -68,13 +68,11 @@ const analyzeMealPhoto = action({
         selectedItemsPromise,
       ]);
 
-      let totals = { calories: 0, protein: 0, fat: 0, carbs: 0 };
-
-      for (const selectedItem of selectedItems) {
+      const itemPromises = selectedItems.map(async (selectedItem) => {
         const fdcFood = await ctx.runQuery(api.foods.getFoodById.default, {
           identity: { source: "fdc", id: selectedItem.fdcId },
         });
-        if (!fdcFood) continue;
+        if (!fdcFood) return null;
 
         if (!fdcFood.name.es) {
           const { nameEs, categoryEs } = await translateFood({
@@ -94,6 +92,8 @@ const analyzeMealPhoto = action({
         });
         const calories = macrosToKcal(nutrients);
 
+        if (!mealId) throw new Error("Meal ID not found");
+
         await ctx.runMutation(api.meals.insertMealItem.default, {
           mealId,
           foodId: fdcFood._id,
@@ -101,12 +101,23 @@ const analyzeMealPhoto = action({
           nutrients,
         });
 
-        totals = {
-          calories: totals.calories + calories,
-          protein: +(totals.protein + nutrients.protein).toFixed(1),
-          fat: +(totals.fat + nutrients.fat).toFixed(1),
-          carbs: +(totals.carbs + nutrients.carbs).toFixed(1),
+        return {
+          calories,
+          protein: nutrients.protein,
+          fat: nutrients.fat,
+          carbs: nutrients.carbs,
         };
+      });
+
+      const results = await Promise.all(itemPromises);
+
+      const totals = { calories: 0, protein: 0, fat: 0, carbs: 0 };
+      for (const result of results) {
+        if (!result) continue;
+        totals.calories += result.calories;
+        totals.protein = +(totals.protein + result.protein).toFixed(1);
+        totals.fat = +(totals.fat + result.fat).toFixed(1);
+        totals.carbs = +(totals.carbs + result.carbs).toFixed(1);
       }
 
       await ctx.runMutation(api.meals.updateMeal.default, {
