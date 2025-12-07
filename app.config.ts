@@ -59,15 +59,16 @@ export default (): ExpoConfig => ({
     [
       "expo-camera",
       {
-        cameraPermission: "Allow CalYo to access your camera",
-        microphonePermission: "Allow CalYo to access your microphone",
+        cameraPermission:
+          "CalYo uses the camera to let you take photos of your meals so the AI can calculate calories and macros.",
         recordAudioAndroid: false,
       },
     ],
     [
       "expo-image-picker",
       {
-        photosPermission: "Allow CalYo to access your photos",
+        photosPermission:
+          "CalYo needs access to your photos to let you import food images for calorie analysis.",
       },
     ],
   ],
