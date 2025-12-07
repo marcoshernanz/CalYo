@@ -7,8 +7,8 @@ import {
 } from "../_generated/server";
 import { internal } from "../_generated/api";
 import { embedMany } from "ai";
-import { google } from "@ai-sdk/google";
 import l2Normalize from "../../lib/utils/l2Normalize";
+import { google } from "@ai-sdk/google";
 
 function buildEmbeddingText(food: Doc<"foods">): string {
   const parts = [];

@@ -25,6 +25,7 @@
     "@expo/vector-icons": "^15.0.3",
     "@google/generative-ai": "^0.24.1",
     "@gorhom/bottom-sheet": "^5.2.6",
+    "@openrouter/ai-sdk-provider": "^1.4.1",
     "@oslojs/crypto": "^1.0.1",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",

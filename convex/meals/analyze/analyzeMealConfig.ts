@@ -1,4 +1,5 @@
 import { EmbeddingModel, LanguageModel } from "ai";
+import { openrouter } from "../../ai";
 import { google } from "@ai-sdk/google";
 
 type AnalyzeMealConfig = {
@@ -13,10 +14,10 @@ type AnalyzeMealConfig = {
 export const analyzeMealConfig: AnalyzeMealConfig = {
   temperature: 0.2,
   candidatesPerItem: 3,
-  imageProcessingModel: google("gemini-2.5-flash"),
+  imageProcessingModel: openrouter.chat("x-ai/grok-4.1-fast"), // google("gemini-2.5-flash"),
   embeddingsModel: google.textEmbeddingModel("gemini-embedding-001"),
-  candidateSelectionModel: google("gemini-2.5-flash"),
-  namingModel: google("gemini-2.5-flash"),
+  candidateSelectionModel: openrouter.chat("x-ai/grok-4.1-fast"),
+  namingModel: openrouter.chat("x-ai/grok-4.1-fast"),
 };
 
 export const analyzeMealPrompts = {

@@ -9,6 +9,7 @@
  */
 
 import type * as ResendOTP from "../ResendOTP.js";
+import type * as ai from "../ai.js";
 import type * as auth from "../auth.js";
 import type * as foods_getFoodById from "../foods/getFoodById.js";
 import type * as foods_ingestFoods from "../foods/ingestFoods.js";
@@ -59,6 +60,7 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   ResendOTP: typeof ResendOTP;
+  ai: typeof ai;
   auth: typeof auth;
   "foods/getFoodById": typeof foods_getFoodById;
   "foods/ingestFoods": typeof foods_ingestFoods;
