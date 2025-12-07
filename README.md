@@ -1,4 +1,3 @@
-- [ ] TextInput move cursor (email input)
 - [ ] Corregir feature
 
 - [ ] Migrate to convex-better-auth for auth
@@ -14,6 +13,7 @@
 
 ---
 
+- [ ] Text input animation
 - [ ] Test email sign-in safe
 - [ ] Environment variables for different environments
 - [ ] Email sign in rate limits

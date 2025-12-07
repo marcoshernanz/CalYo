@@ -6,7 +6,6 @@ import {
   TextInput as RNTextInput,
   StyleSheet,
   Platform,
-  View,
   TextInputProps,
   Keyboard,
   StyleProp,
@@ -132,22 +131,20 @@ export default function TextInput({
         <AnimatedText size="12" weight="500" style={animatedStyles.label}>
           {label}
         </AnimatedText>
-        <View pointerEvents="none">
-          <RNTextInput
-            ref={textInputRef}
-            style={styles.textInput}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            placeholderTextColor={getColor("mutedForeground")}
-            cursorColor={getColor("foreground")}
-            selectionColor={Platform.select({
-              ios: getColor("foreground"),
-              android: getColor("foreground", 0.2),
-            })}
-            selectionHandleColor={getColor("foreground")}
-            {...props}
-          />
-        </View>
+        <RNTextInput
+          ref={textInputRef}
+          style={styles.textInput}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          placeholderTextColor={getColor("mutedForeground")}
+          cursorColor={getColor("foreground")}
+          selectionColor={Platform.select({
+            ios: getColor("foreground"),
+            android: getColor("foreground", 0.2),
+          })}
+          selectionHandleColor={getColor("foreground")}
+          {...props}
+        />
       </AnimatedCard>
     </Button>
   );
