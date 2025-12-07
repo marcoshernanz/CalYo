@@ -1,12 +1,13 @@
 import { v } from "convex/values";
 import { action } from "../../_generated/server";
-import { api } from "../../_generated/api";
+import { api, internal } from "../../_generated/api";
 import macrosToKcal from "../../../lib/utils/macrosToKcal";
 import detectMealItems from "./detectMealItems";
 import searchFdcCandidates from "./searchFdcCandidates";
 import selectCandidates from "./selectCandidates";
 import scaleNutrients from "../../../lib/utils/scaleNutrients";
 import nameMeal from "./nameMeal";
+import translateFood from "./translateFood";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { Id } from "../../_generated/dataModel";
 import logError from "@/lib/utils/logError";
@@ -74,6 +75,18 @@ const analyzeMealPhoto = action({
           identity: { source: "fdc", id: selectedItem.fdcId },
         });
         if (!fdcFood) continue;
+
+        if (!fdcFood.name.es) {
+          const { nameEs, categoryEs } = await translateFood({
+            nameEn: fdcFood.name.en,
+            categoryEn: fdcFood.category?.en,
+          });
+          await ctx.runMutation(internal.foods.updateFoodTranslation.default, {
+            id: fdcFood._id,
+            nameEs,
+            categoryEs,
+          });
+        }
 
         const nutrients = scaleNutrients({
           nutrients: fdcFood.macroNutrients,
