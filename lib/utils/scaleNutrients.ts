@@ -5,7 +5,7 @@ type Params = {
     carbs: number;
   };
   grams: number;
-}
+};
 
 export default function scaleNutrients({ nutrients, grams }: Params) {
   const factor = grams / 100;

@@ -74,7 +74,12 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
       </ScreenMainScrollView>
 
       <ScreenFooter>
-        <ScreenFooterButton variant="outline">
+        <ScreenFooterButton
+          variant="outline"
+          onPress={() => {
+            router.push({ pathname: "/app/fix-meal", params: { mealId } });
+          }}
+        >
           <ScreenFooterButtonIcon
             Icon={SparklesIcon}
             fill={getColor("foreground")}
