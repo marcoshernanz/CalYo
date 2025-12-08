@@ -79,6 +79,7 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
           onPress={() => {
             router.push({ pathname: "/app/fix-meal", params: { mealId } });
           }}
+          disabled={loading}
         >
           <ScreenFooterButtonIcon
             Icon={SparklesIcon}
