@@ -10,6 +10,7 @@ import type { Doc } from "../convex/_generated/dataModel";
 import { api } from "../convex/_generated/api";
 import { ConvexHttpClient } from "convex/browser";
 import fdcExtractMacros from "@/lib/fdc/fdcExtractMacros";
+import fdcExtractNutrients from "@/lib/fdc/fdcExtractNutrients";
 
 dotenv.config({ path: ".env.local" });
 
@@ -34,6 +35,7 @@ const FdcFood = z.object({
 });
 
 export type FoodItem = z.infer<typeof FdcFood>;
+type FoodDoc = Partial<WithoutSystemFields<Doc<"foods">>>;
 
 const dataTypeMap = {
   Foundation: "Foundation",
@@ -41,8 +43,9 @@ const dataTypeMap = {
   "Survey (FNDDS)": "Survey",
 } as const;
 
-function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"foods">> {
-  const { protein, fat, carbs } = fdcExtractMacros(item);
+function toConvexDoc(item: FoodItem): FoodDoc {
+  const macroNutrients = fdcExtractMacros(item);
+  const nutrients = fdcExtractNutrients(item);
 
   return {
     identity: {
@@ -54,9 +57,9 @@ function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"foods">> {
     category: item.foodCategory
       ? { en: item.foodCategory.description }
       : undefined,
-    macroNutrients: { protein, fat, carbs },
-    microNutrients: {},
-    hasEmbedding: false,
+    macroNutrients,
+    microNutrients: {}, // TODO: Keep it for backward compatibility
+    nutrients,
   };
 }
 
@@ -93,7 +96,7 @@ async function importFdcData(jsonPath: string) {
   const label = `import:${rootKey}`;
 
   const batchSize = 500;
-  let batch: WithoutSystemFields<Doc<"foods">>[] = [];
+  let batch: FoodDoc[] = [];
   let totalInserted = 0;
   let totalUpdated = 0;
 
@@ -134,6 +137,8 @@ async function importFdcData(jsonPath: string) {
         return;
       }
       const doc = toConvexDoc(parsed.data);
+      console.log(doc);
+      return;
       batch.push(doc);
       if (batch.length >= batchSize) {
         pipeline.pause();
