@@ -14,6 +14,7 @@
 
 ---
 
+- [ ] Keep long description and category but use a shorter name for foods
 - [ ] Text input animation
 - [ ] Test email sign-in safe
 - [ ] Environment variables for different environments
