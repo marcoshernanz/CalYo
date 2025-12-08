@@ -1,5 +1,3 @@
-- [ ] Corregir feature
-
 - [ ] Migrate to convex-better-auth for auth
 - [ ] Day selector circle (it spans more than it should)
 - [ ] Meal animation prefetch
