@@ -2,11 +2,12 @@ import { v } from "convex/values";
 import { action } from "../_generated/server";
 import { foodsFields } from "../tables/foods";
 import { internal } from "../_generated/api";
+import { partial } from "convex-helpers/validators";
 
 export const ingestFdcFoods = action({
   args: {
     token: v.string(),
-    docs: v.array(v.object(foodsFields)),
+    docs: v.array(partial(v.object(foodsFields))),
   },
   handler: async (
     ctx,

@@ -1,4 +1,5 @@
 - [ ] Micro-nutrients
+- [ ] MicroNutrients -> Nutrients
 
 - [ ] Migrate to convex-better-auth for auth
 - [ ] Day selector circle (it spans more than it should)
@@ -10,6 +11,7 @@
 - [ ] Fix convex functions https://stack.convex.dev/argument-validation-without-repetition#handling-partial-updates
 - [ ] Organize routes in folders
 - [ ] Animate home macro summary
+- [ ] Validate upsert foods doc
 
 - [ ] Basic information in settings
 - [ ] Sorter survey to auto generate nutrition plan
