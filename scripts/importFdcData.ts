@@ -138,8 +138,7 @@ async function importFdcData(jsonPath: string) {
         return;
       }
       const doc = toConvexDoc(parsed.data);
-      // console.log(doc);
-      return;
+
       batch.push(doc);
       if (batch.length >= batchSize) {
         pipeline.pause();
