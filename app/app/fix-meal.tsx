@@ -26,12 +26,11 @@ export default function FixMeal() {
   const router = useRouter();
   const correctMeal = useAction(api.meals.analyze.correctMeal.correctMeal);
   const [correction, setCorrection] = useState("");
-  const [loading, setLoading] = useState(false);
   const { status } = useRateLimit(api.rateLimit.getCorrectMealRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
   });
 
-  const handleCorrect = async () => {
+  const handleCorrect = () => {
     if (!mealId || !correction.trim()) return;
 
     if (status && !status.ok) {
@@ -42,15 +41,12 @@ export default function FixMeal() {
       return;
     }
 
-    setLoading(true);
     try {
-      await correctMeal({ mealId, correction });
-      router.dismissTo("/app");
+      void correctMeal({ mealId, correction });
+      router.back();
     } catch (error) {
       console.error(error);
       alert("Error correcting meal");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -77,18 +73,10 @@ export default function FixMeal() {
 
       <ScreenFooter>
         <ScreenFooterButton
-          onPress={() => void handleCorrect()}
-          disabled={
-            loading ||
-            !correction.trim() ||
-            (status !== undefined && !status.ok)
-          }
+          onPress={handleCorrect}
+          disabled={!correction.trim() || (status !== undefined && !status.ok)}
         >
-          {loading
-            ? "Corrigiendo..."
-            : status !== undefined && !status.ok
-              ? "Límite alcanzado"
-              : "Corregir"}
+          {status !== undefined && !status.ok ? "Límite alcanzado" : "Corregir"}
         </ScreenFooterButton>
       </ScreenFooter>
     </ScreenMain>
