@@ -1,3 +1,5 @@
+- [ ] Micro-nutrients
+
 - [ ] Migrate to convex-better-auth for auth
 - [ ] Day selector circle (it spans more than it should)
 - [ ] Meal animation prefetch
@@ -8,6 +10,11 @@
 - [ ] Fix convex functions https://stack.convex.dev/argument-validation-without-repetition#handling-partial-updates
 - [ ] Organize routes in folders
 - [ ] Animate home macro summary
+
+- [ ] Basic information in settings
+- [ ] Sorter survey to auto generate nutrition plan
+- [ ] Only foundation foods in AI picture?
+- [ ] Character limit in fix-results feature
 
 ---
 
