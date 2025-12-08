@@ -34,7 +34,6 @@ export async function processDetectedItems(
     selectedItemsPromise,
   ]);
 
-  // Clear existing items
   await ctx.runMutation(api.meals.clearMealItems.default, { mealId });
 
   const itemPromises = selectedItems.map(async (selectedItem) => {

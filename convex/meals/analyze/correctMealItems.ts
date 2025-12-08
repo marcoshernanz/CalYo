@@ -23,7 +23,7 @@ export default async function correctMealItems({
   try {
     const { object: detected } = await generateObject({
       model: analyzeMealConfig.imageProcessingModel,
-      temperature: 0.2,
+      temperature: analyzeMealConfig.temperature,
       output: "array",
       schema: detectionSchema,
       schemaName: "CorrectedIngredients",
