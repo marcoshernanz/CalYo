@@ -10,10 +10,23 @@ export const rateLimiter = new RateLimiter(components.rateLimiter, {
     rate: 20,
     period: DAY,
   },
+  correctMeal: {
+    kind: "fixed window",
+    rate: 20,
+    period: DAY,
+  },
 });
 
-export const { getRateLimit, getServerTime } = rateLimiter.hookAPI(
-  "analyzeMealPhoto",
+export const { getRateLimit: getAnalyzeMealPhotoRateLimit, getServerTime } =
+  rateLimiter.hookAPI("analyzeMealPhoto", {
+    key: async (ctx) => {
+      const userId = await getAuthUserId(ctx);
+      return userId ?? "anonymous";
+    },
+  });
+
+export const { getRateLimit: getCorrectMealRateLimit } = rateLimiter.hookAPI(
+  "correctMeal",
   {
     key: async (ctx) => {
       const userId = await getAuthUserId(ctx);

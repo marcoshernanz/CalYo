@@ -32,7 +32,7 @@ export type TextInputHandle = {
 
 type Props = {
   ref?: React.Ref<TextInputHandle>;
-  label: string;
+  label?: string;
   containerStyle?: StyleProp<ViewStyle>;
 } & TextInputProps;
 
@@ -128,15 +128,17 @@ export default function TextInput({
       style={containerStyle}
     >
       <AnimatedCard style={[styles.card, animatedStyles.card]}>
-        <AnimatedText size="12" weight="500" style={animatedStyles.label}>
-          {label}
-        </AnimatedText>
+        {label && (
+          <AnimatedText size="12" weight="500" style={animatedStyles.label}>
+            {label}
+          </AnimatedText>
+        )}
         <RNTextInput
           ref={textInputRef}
           style={styles.textInput}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          placeholderTextColor={getColor("mutedForeground")}
+          placeholderTextColor={getColor("mutedForeground", 0.6)}
           cursorColor={getColor("foreground")}
           selectionColor={Platform.select({
             ios: getColor("foreground"),

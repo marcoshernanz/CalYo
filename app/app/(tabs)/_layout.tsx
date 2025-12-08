@@ -68,20 +68,19 @@ function CenterAddButton() {
   const { bottom } = useSafeAreaInsets();
   const size = 59 + Math.max(0, bottom / 2 - 10);
   const router = useRouter();
-  const { status, check } = useRateLimit(api.rateLimit.getRateLimit, {
+  const { status } = useRateLimit(api.rateLimit.getAnalyzeMealPhotoRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
   });
 
   const handlePress = () => {
     if (status && !status.ok) {
-      const result = check(Date.now());
-      const limit = result?.config.rate;
       Toast.show({
-        text: `You have reached your daily limit of ${limit ?? 20} photos.`,
+        text: "Has alcanzado el límite diario de fotos.",
         variant: "error",
       });
       return;
     }
+
     router.push("/app/camera");
   };
 
