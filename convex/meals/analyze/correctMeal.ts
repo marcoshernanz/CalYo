@@ -4,6 +4,7 @@ import { api } from "../../_generated/api";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import correctMealItems from "./correctMealItems";
 import { processDetectedItems } from "./processDetectedItems";
+import { rateLimiter } from "../../rateLimit";
 
 export const correctMeal = action({
   args: {
@@ -13,6 +14,11 @@ export const correctMeal = action({
   handler: async (ctx, { mealId, correction }) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Unauthorized");
+
+    await rateLimiter.limit(ctx, "correctMeal", {
+      key: userId,
+      throws: true,
+    });
 
     const result = await ctx.runQuery(api.meals.getMeal.default, { mealId });
     if (!result) throw new Error("Meal not found");

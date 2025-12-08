@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { useRateLimit } from "@convex-dev/rate-limiter/react";
 import {
   ScreenMain,
   ScreenMainScrollView,
@@ -18,6 +19,7 @@ import {
   ScreenFooterButton,
 } from "@/components/ui/screen/ScreenFooter";
 import TextInput from "@/components/ui/TextInput";
+import { Toast } from "@/components/ui/Toast";
 
 export default function FixMeal() {
   const { mealId } = useLocalSearchParams<{ mealId: Id<"meals"> }>();
@@ -25,9 +27,21 @@ export default function FixMeal() {
   const correctMeal = useAction(api.meals.analyze.correctMeal.correctMeal);
   const [correction, setCorrection] = useState("");
   const [loading, setLoading] = useState(false);
+  const { status } = useRateLimit(api.rateLimit.getCorrectMealRateLimit, {
+    getServerTimeMutation: api.rateLimit.getServerTime,
+  });
 
   const handleCorrect = async () => {
     if (!mealId || !correction.trim()) return;
+
+    if (status && !status.ok) {
+      Toast.show({
+        text: "Has alcanzado el límite diario de correcciones.",
+        variant: "error",
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       await correctMeal({ mealId, correction });
@@ -64,9 +78,17 @@ export default function FixMeal() {
       <ScreenFooter>
         <ScreenFooterButton
           onPress={() => void handleCorrect()}
-          disabled={loading || !correction.trim()}
+          disabled={
+            loading ||
+            !correction.trim() ||
+            (status !== undefined && !status.ok)
+          }
         >
-          {loading ? "Corrigiendo..." : "Corregir"}
+          {loading
+            ? "Corrigiendo..."
+            : status !== undefined && !status.ok
+              ? "Límite alcanzado"
+              : "Corregir"}
         </ScreenFooterButton>
       </ScreenFooter>
     </ScreenMain>
