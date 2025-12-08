@@ -71,7 +71,7 @@ export default function FixMeal() {
         />
       </ScreenMainScrollView>
 
-      <ScreenFooter>
+      <ScreenFooter style={{ boxShadow: [] }}>
         <ScreenFooterButton
           onPress={handleCorrect}
           disabled={!correction.trim() || (status !== undefined && !status.ok)}
