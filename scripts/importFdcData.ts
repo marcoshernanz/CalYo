@@ -11,6 +11,7 @@ import { api } from "../convex/_generated/api";
 import { ConvexHttpClient } from "convex/browser";
 import fdcExtractMacros from "@/lib/fdc/fdcExtractMacros";
 import fdcExtractNutrients from "@/lib/fdc/fdcExtractNutrients";
+import logError from "@/lib/utils/logError";
 
 dotenv.config({ path: ".env.local" });
 
@@ -137,7 +138,7 @@ async function importFdcData(jsonPath: string) {
         return;
       }
       const doc = toConvexDoc(parsed.data);
-      console.log(doc);
+      // console.log(doc);
       return;
       batch.push(doc);
       if (batch.length >= batchSize) {
@@ -147,7 +148,7 @@ async function importFdcData(jsonPath: string) {
             pipeline.resume();
           })
           .catch((error: unknown) => {
-            console.error("Upsert error", error);
+            logError("Upsert error", error);
             pipeline.destroy(toError(error));
           });
       }
@@ -184,6 +185,6 @@ async function main() {
 }
 
 main().catch((e: unknown) => {
-  console.error("importFdcData error", e);
+  logError("importFdcData error", e);
   process.exit(1);
 });
