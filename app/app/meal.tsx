@@ -130,6 +130,56 @@ export default function MealScreen() {
     [dimensions.height, dimensions.width]
   );
 
+  const processLibraryImage = useCallback(async (uri: string) => {
+    const loaderContext = ImageManipulator.manipulate(uri);
+    let baseImage: ImageRef | null = null;
+
+    try {
+      baseImage = await loaderContext.renderAsync();
+    } catch (error) {
+      logError("Error loading image for processing", error);
+      return uri;
+    } finally {
+      loaderContext.release();
+    }
+
+    let resizedImage: ImageRef | null = null;
+
+    try {
+      if (baseImage.width > 1080) {
+        const targetWidth = 1080;
+        const targetHeight = Math.round(
+          baseImage.height * (targetWidth / baseImage.width)
+        );
+
+        const resizeContext = ImageManipulator.manipulate(baseImage);
+        try {
+          resizeContext.resize({ width: targetWidth, height: targetHeight });
+          resizedImage = await resizeContext.renderAsync();
+        } finally {
+          resizeContext.release();
+        }
+      }
+
+      const imageToSave = resizedImage ?? baseImage;
+
+      const result = await imageToSave.saveAsync({
+        format: SaveFormat.JPEG,
+        compress: 0.7,
+      });
+
+      return result.uri;
+    } catch (error) {
+      logError("Error processing library image", error);
+      return uri;
+    } finally {
+      if (resizedImage) {
+        resizedImage.release();
+      }
+      baseImage.release();
+    }
+  }, []);
+
   useEffect(() => {
     if (!photoUri || initialMealId || startedRef.current || mealId) return;
     startedRef.current = true;
@@ -138,7 +188,7 @@ export default function MealScreen() {
       try {
         const croppedUri = fromCamera
           ? await cropToDeviceAspect(photoUri)
-          : photoUri;
+          : await processLibraryImage(photoUri);
 
         const uploadUrl = await generateUploadUrl();
 
@@ -177,6 +227,7 @@ export default function MealScreen() {
     analyzeMealPhoto,
     createMeal,
     cropToDeviceAspect,
+    processLibraryImage,
     generateUploadUrl,
     photoUri,
     initialMealId,
