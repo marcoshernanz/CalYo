@@ -17,8 +17,7 @@ import {
   ScreenFooter,
   ScreenFooterButton,
 } from "@/components/ui/screen/ScreenFooter";
-import { TextInput, View, Text, StyleSheet } from "react-native";
-import getColor from "@/lib/ui/getColor";
+import TextInput from "@/components/ui/TextInput";
 
 export default function FixMeal() {
   const { mealId } = useLocalSearchParams<{ mealId: Id<"meals"> }>();
@@ -49,20 +48,17 @@ export default function FixMeal() {
       </ScreenHeader>
 
       <ScreenMainScrollView safeAreaProps={{ edges: ["left", "right"] }}>
-        <ScreenMainTitle title="¿Qué quieres corregir?" />
-
-        <View style={styles.container}>
-          <Text style={styles.label}>Describe los cambios:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Ej: No es pollo, es tofu. Añade una manzana."
-            placeholderTextColor={getColor("mutedForeground")}
-            value={correction}
-            onChangeText={setCorrection}
-            multiline
-            autoFocus
-          />
-        </View>
+        <ScreenMainTitle
+          title="¿Qué quieres corregir?"
+          description="Describe los cambios para corregir la comida"
+        />
+        <TextInput
+          placeholder="Ej: No es pollo, es tofu."
+          value={correction}
+          onChangeText={setCorrection}
+          multiline
+          autoFocus
+        />
       </ScreenMainScrollView>
 
       <ScreenFooter>
@@ -76,24 +72,3 @@ export default function FixMeal() {
     </ScreenMain>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginBottom: 8,
-    color: getColor("foreground"),
-  },
-  input: {
-    backgroundColor: getColor("secondary"),
-    color: getColor("foreground"),
-    padding: 16,
-    borderRadius: 12,
-    fontSize: 16,
-    minHeight: 120,
-    textAlignVertical: "top",
-  },
-});
