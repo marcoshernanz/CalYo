@@ -106,7 +106,7 @@ export default function ConfirmEmailScreen() {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior="padding"
-        keyboardVerticalOffset={-insets.bottom + 22}
+        keyboardVerticalOffset={-insets.bottom + 16}
       >
         <ScreenHeader>
           <ScreenHeaderBackButton />
