@@ -18,15 +18,16 @@ type Props = {
     color: string;
   };
   progress: SharedValue<number>;
+  onPress?: () => void;
 };
 
-export default function HomeSummaryCardBig({ item, progress }: Props) {
+export default function HomeSummaryCardBig({ item, progress, onPress }: Props) {
   const itemProgress = useDerivedValue(
     () => calcRatio(item.value, item.target) * progress.value
   );
 
   return (
-    <Button variant="base" size="base">
+    <Button variant="base" size="base" onPress={onPress}>
       <Card style={styles.card}>
         <View style={styles.cardTextContainer}>
           <Text size="12" weight="600" color={getColor("mutedForeground")}>

@@ -13,6 +13,7 @@ import FiberIcon from "../icons/micros/FiberIcon";
 import SugarIcon from "../icons/micros/SugarIcon";
 import SodiumIcon from "../icons/micros/SodiumIcon";
 import HealthIcon from "../icons/micros/HealthIcon";
+import { Link } from "expo-router";
 
 type Micro = {
   name: string;
@@ -77,16 +78,18 @@ export default function HomeMicroSummary({ totals }: Props) {
 
   return (
     <View style={styles.container}>
-      <HomeSummaryCardBig
-        item={{
-          name: "Calidad",
-          value: totals.score,
-          target: targets.score,
-          Icon: HealthIcon,
-          color: getColor("health"),
-        }}
-        progress={progress}
-      />
+      <Link href="/app/nutrients" asChild>
+        <HomeSummaryCardBig
+          item={{
+            name: "Calidad",
+            value: totals.score,
+            target: targets.score,
+            Icon: HealthIcon,
+            color: getColor("health"),
+          }}
+          progress={progress}
+        />
+      </Link>
       <View style={styles.cardsContainer}>
         {micros.map((nutrient) => (
           <HomeSummaryCard

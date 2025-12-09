@@ -3,6 +3,8 @@
 - [ ] Micro calculation
 - [ ] Health score calculation
 - [ ] Circular progress animation stopping too soon
+- [ ] Get micro-nutrients
+- [ ] Recalculate meal totals on Fix Meal?
 
 - [ ] Progress centralization (app context)
 - [ ] Progress animation on change
