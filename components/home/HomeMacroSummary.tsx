@@ -178,6 +178,8 @@ export default function HomeMacroSummary({ totals }: Props) {
 const styles = StyleSheet.create({
   container: {
     gap: 12,
+    flex: 1,
+    paddingHorizontal: 16,
   },
   caloriesCard: {
     backgroundColor: getColor("background"),

@@ -41,7 +41,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeArea edges={["top", "left", "right"]}>
+    <SafeArea edges={["top"]}>
       <LinearGradient
         colors={[getColor("primaryLight", 0.75), getColor("background")]}
         style={[styles.gradient, { height: dimensions.height * 0.75 }]}
@@ -57,7 +57,22 @@ export default function HomeScreen() {
           setSelectedDay={setSelectedDay}
           weekTotals={weekTotals}
         />
-        <HomeMacroSummary totals={dayTotals} />
+        <ScrollView
+          horizontal
+          style={{
+            flexGrow: 0,
+            width: dimensions.width,
+            overflow: "visible",
+          }}
+          contentContainerStyle={{
+            width: dimensions.width * 2,
+          }}
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+        >
+          <HomeMacroSummary totals={dayTotals} />
+          <HomeMacroSummary totals={dayTotals} />
+        </ScrollView>
         <HomeRecentlyLogged meals={dayMeals} />
       </ScrollView>
     </SafeArea>

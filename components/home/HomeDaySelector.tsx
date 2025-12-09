@@ -15,6 +15,7 @@ import getShadow from "@/lib/ui/getShadow";
 import Button from "../ui/Button";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import calcRatio from "@/lib/utils/calcRatio";
+import SafeArea from "../ui/SafeArea";
 
 type DayData = {
   weekDay: number;
@@ -137,7 +138,7 @@ export default function HomeDaySelector({
   });
 
   return (
-    <View style={styles.container}>
+    <SafeArea edges={["left", "right"]} style={styles.safeArea}>
       {weekDays.map((day) => (
         <DaySelectorItem
           key={`day-${day.weekDay}-${day.number}`}
@@ -149,12 +150,14 @@ export default function HomeDaySelector({
           }}
         />
       ))}
-    </View>
+    </SafeArea>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
+    flex: 0,
+    backgroundColor: "transparent",
     flexDirection: "row",
     gap: 4,
     paddingBottom: 16,

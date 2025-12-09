@@ -11,6 +11,7 @@ import { Doc } from "@/convex/_generated/dataModel";
 import getColor from "@/lib/ui/getColor";
 import { Link } from "expo-router";
 import WithSkeleton from "../ui/WithSkeleton";
+import SafeArea from "../ui/SafeArea";
 
 type LogItemProps = {
   meal: Doc<"meals">;
@@ -102,7 +103,7 @@ type Props = {
 
 export default function HomeRecentlyLogged({ meals }: Props) {
   return (
-    <View style={styles.container}>
+    <SafeArea edges={["left", "right"]} style={styles.safeArea}>
       <Text size="20" weight="600" style={styles.title}>
         Recientemente añadido
       </Text>
@@ -116,16 +117,18 @@ export default function HomeRecentlyLogged({ meals }: Props) {
             color={getColor("mutedForeground", 0.5)}
             style={styles.noMealsAdded}
           >
-            Añade comidas para verlas aquí...
+            Añade comidas para verlas aquí&hellip;
           </Text>
         )}
       </View>
-    </View>
+    </SafeArea>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
+    flex: 0,
+    backgroundColor: "transparent",
     paddingTop: 32,
   },
   title: {
