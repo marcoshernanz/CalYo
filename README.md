@@ -4,6 +4,10 @@
 - [ ] Health score calculation
 - [ ] Circular progress animation stopping too soon
 
+- [ ] Progress centralization (app context)
+- [ ] Progress animation on change
+- [ ] Number animation on change
+
 - [ ] Migrate to convex-better-auth for auth
 - [ ] Day selector circle (it spans more than it should)
 - [ ] Meal animation prefetch
