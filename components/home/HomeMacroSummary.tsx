@@ -5,7 +5,6 @@ import getColor from "@/lib/ui/getColor";
 import CircularProgress from "../ui/CircularProgress";
 import {
   cancelAnimation,
-  SharedValue,
   useDerivedValue,
   useSharedValue,
   withTiming,
@@ -21,6 +20,7 @@ import { profilesConfig } from "@/config/profilesConfig";
 import calcRatio from "@/lib/utils/calcRatio";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import HomeSummaryCard from "./HomeSummaryCard";
 
 type Macro = {
   name: string;
@@ -29,51 +29,6 @@ type Macro = {
   Icon: ComponentType<LucideProps>;
   color: string;
 };
-
-type MacroCardProps = {
-  macro: Macro;
-  progress: SharedValue<number>;
-};
-
-function MacroCard({ macro, progress }: MacroCardProps) {
-  const progressMacro = useDerivedValue(
-    () => calcRatio(macro.value, macro.target) * progress.value
-  );
-
-  return (
-    <Button variant="base" size="base" style={{ flex: 1 }}>
-      <Card style={styles.macroCard}>
-        <Text size="12" weight="600" color={getColor("mutedForeground")}>
-          {macro.name}
-        </Text>
-        <View style={styles.macroCardValueContainer}>
-          <Text size="18" weight="600">
-            {macro.value}
-          </Text>
-          <Text
-            size="10"
-            color={getColor("mutedForeground")}
-            style={styles.macroCardTargetText}
-          >
-            {" "}
-            / {macro.target}
-          </Text>
-        </View>
-        <View style={styles.macroCardProgressContainer}>
-          <CircularProgress
-            progress={progressMacro}
-            color={macro.color}
-            strokeWidth={4}
-            size={80}
-          />
-          <View style={styles.caloriesIconContainer}>
-            <macro.Icon size={18} strokeWidth={2.25} />
-          </View>
-        </View>
-      </Card>
-    </Button>
-  );
-}
 
 type Props = {
   totals: {
@@ -164,9 +119,9 @@ export default function HomeMacroSummary({ totals }: Props) {
       </Button>
       <View style={styles.cardsContainer}>
         {macros.map((macro) => (
-          <MacroCard
-            key={`macro-${macro.name}`}
-            macro={macro}
+          <HomeSummaryCard
+            key={`macro-summary-${macro.name}`}
+            item={macro}
             progress={progress}
           />
         ))}
