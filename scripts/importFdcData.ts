@@ -59,7 +59,6 @@ function toConvexDoc(item: FoodItem): FoodDoc {
       ? { en: item.foodCategory.description }
       : undefined,
     macroNutrients,
-    microNutrients: {}, // TODO: Keep it for backward compatibility
     nutrients,
   };
 }

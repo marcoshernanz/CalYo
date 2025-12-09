@@ -1,5 +1,4 @@
 - [ ] Micro-nutrients
-- [ ] MicroNutrients -> Nutrients
 
 - [ ] Migrate to convex-better-auth for auth
 - [ ] Day selector circle (it spans more than it should)

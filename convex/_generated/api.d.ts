@@ -34,6 +34,7 @@ import type * as meals_getMeal from "../meals/getMeal.js";
 import type * as meals_getWeekMeals from "../meals/getWeekMeals.js";
 import type * as meals_insertMealItem from "../meals/insertMealItem.js";
 import type * as meals_updateMeal from "../meals/updateMeal.js";
+import type * as migrations from "../migrations.js";
 import type * as nutrition_computeNutritionTargets from "../nutrition/computeNutritionTargets.js";
 import type * as profiles_completeOnboarding from "../profiles/completeOnboarding.js";
 import type * as profiles_getProfile from "../profiles/getProfile.js";
@@ -89,6 +90,7 @@ declare const fullApi: ApiFromModules<{
   "meals/getWeekMeals": typeof meals_getWeekMeals;
   "meals/insertMealItem": typeof meals_insertMealItem;
   "meals/updateMeal": typeof meals_updateMeal;
+  migrations: typeof migrations;
   "nutrition/computeNutritionTargets": typeof nutrition_computeNutritionTargets;
   "profiles/completeOnboarding": typeof profiles_completeOnboarding;
   "profiles/getProfile": typeof profiles_getProfile;
