@@ -1,11 +1,8 @@
 import { type LucideProps } from "lucide-react-native";
 import { StyleSheet, View } from "react-native";
-import Text from "../ui/Text";
 import getColor from "@/lib/ui/getColor";
-import CircularProgress from "../ui/CircularProgress";
 import {
   cancelAnimation,
-  useDerivedValue,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
@@ -14,13 +11,11 @@ import FatIcon from "../icons/macros/FatIcon";
 import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
 import CalorieIcon from "../icons/macros/CalorieIcon";
-import Card from "../ui/Card";
-import Button from "../ui/Button";
 import { profilesConfig } from "@/config/profilesConfig";
-import calcRatio from "@/lib/utils/calcRatio";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import HomeSummaryCard from "./HomeSummaryCard";
+import HomeSummaryCardBig from "./HomeSummaryCardBig";
 
 type Macro = {
   name: string;
@@ -45,9 +40,6 @@ export default function HomeMacroSummary({ totals }: Props) {
     profilesConfig.defaultValues.targets;
 
   const progress = useSharedValue(0);
-  const progressCalories = useDerivedValue(
-    () => calcRatio(totals.calories, targets.calories) * progress.value
-  );
 
   const macros: Macro[] = [
     {
@@ -84,39 +76,16 @@ export default function HomeMacroSummary({ totals }: Props) {
 
   return (
     <View style={styles.container}>
-      <Button variant="base" size="base">
-        <Card style={styles.caloriesCard}>
-          <View style={styles.caloriesTextContainer}>
-            <Text size="12" weight="600" color={getColor("mutedForeground")}>
-              Calorías
-            </Text>
-            <View style={styles.caloriesValueContainer}>
-              <Text size="40" weight="600">
-                {totals.calories}
-              </Text>
-              <Text
-                size="20"
-                color={getColor("mutedForeground")}
-                style={styles.caloriesTargetText}
-              >
-                {" "}
-                / {targets.calories}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.caloriesProgressContainer}>
-            <CircularProgress
-              progress={progressCalories}
-              color={getColor("foreground")}
-              strokeWidth={5}
-              size={80}
-            />
-            <View style={styles.caloriesIconContainer}>
-              <CalorieIcon size={20} strokeWidth={2.25} />
-            </View>
-          </View>
-        </Card>
-      </Button>
+      <HomeSummaryCardBig
+        item={{
+          name: "Calorías",
+          value: totals.calories,
+          target: targets.calories,
+          Icon: CalorieIcon,
+          color: getColor("foreground"),
+        }}
+        progress={progress}
+      />
       <View style={styles.cardsContainer}>
         {macros.map((macro) => (
           <HomeSummaryCard
@@ -136,59 +105,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
   },
-  caloriesCard: {
-    backgroundColor: getColor("background"),
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  caloriesTextContainer: {},
-  caloriesValueContainer: {
-    flexDirection: "row",
-    alignItems: "flex-end",
-  },
-  caloriesTargetText: {
-    paddingBottom: 6,
-  },
-  caloriesProgressContainer: {
-    height: 80,
-    width: 80,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  caloriesIconContainer: {
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 32,
-    height: 32,
-    borderRadius: 999,
-    backgroundColor: getColor("muted"),
-  },
   cardsContainer: {
     flexDirection: "row",
     gap: 8,
-  },
-
-  macroCard: {
-    backgroundColor: getColor("background"),
-    flex: 1,
-    padding: 16,
-  },
-  macroCardValueContainer: {
-    flexDirection: "row",
-    alignItems: "flex-end",
-    paddingBottom: 12,
-    paddingTop: 4,
-  },
-  macroCardTargetText: {
-    paddingBottom: 3,
-  },
-  macroCardProgressContainer: {
-    height: 80,
-    width: 80,
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
   },
 });

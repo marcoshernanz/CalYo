@@ -1,13 +1,13 @@
-import calcRatio from "@/lib/utils/calcRatio";
-import { SharedValue, useDerivedValue } from "react-native-reanimated";
+import { StyleSheet, View } from "react-native";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
-import { StyleSheet, View } from "react-native";
-import getColor from "@/lib/ui/getColor";
 import Text from "../ui/Text";
 import CircularProgress from "../ui/CircularProgress";
+import getColor from "@/lib/ui/getColor";
 import { ComponentType } from "react";
 import { LucideProps } from "lucide-react-native";
+import { SharedValue, useDerivedValue } from "react-native-reanimated";
+import calcRatio from "@/lib/utils/calcRatio";
 
 type Props = {
   item: {
@@ -20,39 +20,41 @@ type Props = {
   progress: SharedValue<number>;
 };
 
-export default function HomeSummaryCard({ item, progress }: Props) {
+export default function HomeSummaryCardBig({ item, progress }: Props) {
   const itemProgress = useDerivedValue(
     () => calcRatio(item.value, item.target) * progress.value
   );
 
   return (
-    <Button variant="base" size="base" style={{ flex: 1 }}>
+    <Button variant="base" size="base">
       <Card style={styles.card}>
-        <Text size="12" weight="600" color={getColor("mutedForeground")}>
-          {item.name}
-        </Text>
-        <View style={styles.cardValueContainer}>
-          <Text size="18" weight="600">
-            {item.value}
+        <View style={styles.cardTextContainer}>
+          <Text size="12" weight="600" color={getColor("mutedForeground")}>
+            Calorías
           </Text>
-          <Text
-            size="10"
-            color={getColor("mutedForeground")}
-            style={styles.cardTargetText}
-          >
-            {" "}
-            / {item.target}
-          </Text>
+          <View style={styles.cardValueContainer}>
+            <Text size="40" weight="600">
+              {item.value}
+            </Text>
+            <Text
+              size="20"
+              color={getColor("mutedForeground")}
+              style={styles.cardTargetText}
+            >
+              {" "}
+              / {item.target}
+            </Text>
+          </View>
         </View>
         <View style={styles.cardProgressContainer}>
           <CircularProgress
             progress={itemProgress}
-            color={item.color}
-            strokeWidth={4}
+            color={getColor("foreground")}
+            strokeWidth={5}
             size={80}
           />
           <View style={styles.cardIconContainer}>
-            <item.Icon size={18} strokeWidth={2.25} />
+            <item.Icon size={20} strokeWidth={2.25} />
           </View>
         </View>
       </Card>
@@ -63,24 +65,23 @@ export default function HomeSummaryCard({ item, progress }: Props) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: getColor("background"),
-    flex: 1,
-    padding: 16,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
+  cardTextContainer: {},
   cardValueContainer: {
     flexDirection: "row",
     alignItems: "flex-end",
-    paddingBottom: 12,
-    paddingTop: 4,
   },
   cardTargetText: {
-    paddingBottom: 3,
+    paddingBottom: 6,
   },
   cardProgressContainer: {
     height: 80,
     width: 80,
     alignItems: "center",
     justifyContent: "center",
-    alignSelf: "center",
   },
   cardIconContainer: {
     position: "absolute",
