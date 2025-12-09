@@ -8,6 +8,7 @@ import Animated, {
 } from "react-native-reanimated";
 import getColor from "@/lib/ui/getColor";
 import { useRef } from "react";
+import HomeNutrientSummary from "./HomeNutrientSummary";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -60,7 +61,7 @@ export default function HomeSummaryCarousel({ dayTotals }: Props) {
         pagingEnabled
       >
         <HomeMacroSummary totals={dayTotals} />
-        <HomeMacroSummary totals={dayTotals} />
+        <HomeNutrientSummary totals={dayTotals} />
       </Animated.ScrollView>
       <View style={styles.indicatorContainer}>
         <AnimatedPressable
