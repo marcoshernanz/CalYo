@@ -1,7 +1,7 @@
 import HomeDaySelector from "@/components/home/HomeDaySelector";
 import HomeHeader from "@/components/home/HomeHeader";
-import HomeMacroSummary from "@/components/home/HomeMacroSummary";
 import HomeRecentlyLogged from "@/components/home/HomeRecentlyLogged";
+import HomeSummaryCarousel from "@/components/home/HomeSummaryCarousel";
 import SafeArea from "@/components/ui/SafeArea";
 import { api } from "@/convex/_generated/api";
 import getColor from "@/lib/ui/getColor";
@@ -57,22 +57,7 @@ export default function HomeScreen() {
           setSelectedDay={setSelectedDay}
           weekTotals={weekTotals}
         />
-        <ScrollView
-          horizontal
-          style={{
-            flexGrow: 0,
-            width: dimensions.width,
-            overflow: "visible",
-          }}
-          contentContainerStyle={{
-            width: dimensions.width * 2,
-          }}
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-        >
-          <HomeMacroSummary totals={dayTotals} />
-          <HomeMacroSummary totals={dayTotals} />
-        </ScrollView>
+        <HomeSummaryCarousel dayTotals={dayTotals} />
         <HomeRecentlyLogged meals={dayMeals} />
       </ScrollView>
     </SafeArea>
