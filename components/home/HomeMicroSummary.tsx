@@ -5,16 +5,14 @@ import {
   withTiming,
 } from "react-native-reanimated";
 import { useEffect, type ComponentType } from "react";
-import {
-  HeartPulse,
-  Wheat,
-  Waves,
-  Candy,
-  type LucideProps,
-} from "lucide-react-native";
+import { type LucideProps } from "lucide-react-native";
 import getColor from "@/lib/ui/getColor";
 import HomeSummaryCard from "./HomeSummaryCard";
 import HomeSummaryCardBig from "./HomeSummaryCardBig";
+import FiberIcon from "../icons/micros/FiberIcon";
+import SugarIcon from "../icons/micros/SugarIcon";
+import SodiumIcon from "../icons/micros/SodiumIcon";
+import HealthIcon from "../icons/micros/HealthIcon";
 
 type Micro = {
   name: string;
@@ -49,22 +47,22 @@ export default function HomeMicroSummary({ totals }: Props) {
       name: "Fibra",
       value: totals.fiber,
       target: targets.fiber,
-      Icon: Wheat,
-      color: "#8B5CF6",
+      Icon: FiberIcon,
+      color: getColor("fiber"),
     },
     {
       name: "Azúcar",
       value: totals.sugar,
       target: targets.sugar,
-      Icon: Candy,
-      color: "#F43F5E",
+      Icon: SugarIcon,
+      color: getColor("sugar"),
     },
     {
       name: "Sodio",
       value: totals.sodium,
       target: targets.sodium,
-      Icon: Waves,
-      color: "#06B6D4",
+      Icon: SodiumIcon,
+      color: getColor("sodium"),
     },
   ];
 
@@ -84,8 +82,8 @@ export default function HomeMicroSummary({ totals }: Props) {
           name: "Calidad",
           value: totals.score,
           target: targets.score,
-          Icon: HeartPulse,
-          color: getColor("primary"),
+          Icon: HealthIcon,
+          color: getColor("health"),
         }}
         progress={progress}
       />

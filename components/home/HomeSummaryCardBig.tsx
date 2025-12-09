@@ -30,7 +30,7 @@ export default function HomeSummaryCardBig({ item, progress }: Props) {
       <Card style={styles.card}>
         <View style={styles.cardTextContainer}>
           <Text size="12" weight="600" color={getColor("mutedForeground")}>
-            Calorías
+            {item.name}
           </Text>
           <View style={styles.cardValueContainer}>
             <Text size="40" weight="600">
@@ -49,7 +49,7 @@ export default function HomeSummaryCardBig({ item, progress }: Props) {
         <View style={styles.cardProgressContainer}>
           <CircularProgress
             progress={itemProgress}
-            color={getColor("foreground")}
+            color={getColor("health")}
             strokeWidth={5}
             size={80}
           />
