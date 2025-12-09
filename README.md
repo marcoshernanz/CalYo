@@ -2,6 +2,7 @@
 - [ ] Micro targets calculation
 - [ ] Micro calculation
 - [ ] Health score calculation
+- [ ] Circular progress animation stopping too soon
 
 - [ ] Migrate to convex-better-auth for auth
 - [ ] Day selector circle (it spans more than it should)
