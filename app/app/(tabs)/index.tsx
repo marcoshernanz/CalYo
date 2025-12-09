@@ -57,7 +57,7 @@ export default function HomeScreen() {
           setSelectedDay={setSelectedDay}
           weekTotals={weekTotals}
         />
-        <HomeSummaryCarousel dayTotals={dayTotals} />
+        <HomeSummaryCarousel totals={dayTotals} />
         <HomeRecentlyLogged meals={dayMeals} />
       </ScrollView>
     </SafeArea>

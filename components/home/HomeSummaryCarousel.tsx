@@ -8,12 +8,12 @@ import Animated, {
 } from "react-native-reanimated";
 import getColor from "@/lib/ui/getColor";
 import { useRef } from "react";
-import HomeNutrientSummary from "./HomeNutrientSummary";
+import HomeMicroSummary from "./HomeMicroSummary";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 type Props = {
-  dayTotals: {
+  totals: {
     calories: number;
     protein: number;
     carbs: number;
@@ -21,7 +21,7 @@ type Props = {
   };
 };
 
-export default function HomeSummaryCarousel({ dayTotals }: Props) {
+export default function HomeSummaryCarousel({ totals }: Props) {
   const dimensions = useWindowDimensions();
   const scrollX = useSharedValue(0);
   const scrollViewRef = useRef<Animated.ScrollView>(null);
@@ -60,8 +60,15 @@ export default function HomeSummaryCarousel({ dayTotals }: Props) {
         showsHorizontalScrollIndicator={false}
         pagingEnabled
       >
-        <HomeMacroSummary totals={dayTotals} />
-        <HomeNutrientSummary totals={dayTotals} />
+        <HomeMacroSummary totals={totals} />
+        <HomeMicroSummary
+          totals={{
+            score: 67,
+            fiber: 15,
+            sugar: 40,
+            sodium: 1500,
+          }}
+        />
       </Animated.ScrollView>
       <View style={styles.indicatorContainer}>
         <AnimatedPressable

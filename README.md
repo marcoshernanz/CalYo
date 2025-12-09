@@ -1,4 +1,7 @@
 - [ ] Micro-nutrients
+- [ ] Micro targets calculation
+- [ ] Micro calculation
+- [ ] Health score calculation
 
 - [ ] Migrate to convex-better-auth for auth
 - [ ] Day selector circle (it spans more than it should)
