@@ -21,7 +21,7 @@ import {
   ScreenMainTitle,
 } from "../ui/screen/ScreenMain";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
-import { Doc, Id } from "@/convex/_generated/dataModel";
+import { Id } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useRateLimit } from "@convex-dev/rate-limiter/react";
@@ -30,13 +30,14 @@ import MealItems from "./MealItems";
 import Carousel from "../ui/Carousel";
 import SafeArea from "../ui/SafeArea";
 import MealMicros from "./MealMicros";
+import { MacrosType, NutrientsType } from "@/convex/tables/mealItems";
 
 type Props = {
   loading: boolean;
   name?: string;
   mealId?: Id<"meals">;
-  totalMacros?: Doc<"meals">["totalMacros"];
-  totalNutrients?: Doc<"meals">["totalNutrients"];
+  totalMacros?: MacrosType;
+  totalNutrients?: NutrientsType;
   mealItems?: React.ComponentProps<typeof MealItems>["items"];
 };
 

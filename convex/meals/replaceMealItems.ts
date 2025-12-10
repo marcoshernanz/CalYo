@@ -3,7 +3,7 @@ import { mutation } from "../_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import getFoodMacros from "../../lib/food/getFoodMacros";
 import getFoodNutrients from "../../lib/food/getFoodNutrients";
-import { Doc } from "../_generated/dataModel";
+import { MacrosType, NutrientsType } from "../tables/mealItems";
 
 const replaceMealItems = mutation({
   args: {
@@ -25,13 +25,13 @@ const replaceMealItems = mutation({
 
     await Promise.all(existingItems.map((item) => ctx.db.delete(item._id)));
 
-    const totalMacros: NonNullable<Doc<"meals">["totalMacros"]> = {
+    const totalMacros: MacrosType = {
       calories: 0,
       protein: 0,
       fat: 0,
       carbs: 0,
     };
-    const totalNutrients: NonNullable<Doc<"meals">["totalNutrients"]> = {
+    const totalNutrients: NutrientsType = {
       carbs: {},
       fats: {},
       protein: {},

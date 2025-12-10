@@ -8,8 +8,13 @@ import {
   ScreenMainScrollView,
 } from "@/components/ui/screen/ScreenMain";
 import Text from "@/components/ui/Text";
+import { api } from "@/convex/_generated/api";
+import { Doc } from "@/convex/_generated/dataModel";
+import { NutrientsType } from "@/convex/tables/mealItems";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 import getColor from "@/lib/ui/getColor";
+import { useQuery } from "convex/react";
+import { useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import Animated, {
@@ -163,6 +168,7 @@ function Metric({ metric, themeColor, progress }: MetricProps) {
 export default function Nutrients() {
   const { scrollY, onScroll } = useScrollY();
   const progress = useSharedValue(0);
+  const nutrients = useLocalSearchParams<NutrientsType>();
 
   useEffect(() => {
     progress.value = withTiming(1, { duration: 1500 });

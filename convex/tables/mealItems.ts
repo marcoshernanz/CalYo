@@ -1,5 +1,6 @@
 import { defineTable } from "convex/server";
 import { v } from "convex/values";
+import { Doc } from "../_generated/dataModel";
 
 export const macrosFields = {
   calories: v.number(),
@@ -65,3 +66,6 @@ export const mealItemsFields = {
 export const mealItems = defineTable(mealItemsFields).index("byMealId", [
   "mealId",
 ]);
+
+export type MacrosType = Doc<"mealItems">["macrosPer100g"];
+export type NutrientsType = Doc<"mealItems">["nutrientsPer100g"];

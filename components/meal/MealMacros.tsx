@@ -4,13 +4,13 @@ import { FlameIcon } from "lucide-react-native";
 import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
 import FatIcon from "../icons/macros/FatIcon";
-import { Doc } from "@/convex/_generated/dataModel";
 import MealSummaryCard from "./MealSummaryCard";
 import MealSummaryCardBig from "./MealSummaryCardBig";
+import { MacrosType } from "@/convex/tables/mealItems";
 
 type Props = {
   loading: boolean;
-  macros?: Doc<"meals">["totalMacros"];
+  macros?: MacrosType;
 };
 
 export default function MealMacros({ loading, macros }: Props) {

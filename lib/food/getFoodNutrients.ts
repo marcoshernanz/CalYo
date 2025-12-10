@@ -1,8 +1,7 @@
 import { Doc } from "@/convex/_generated/dataModel";
+import { NutrientsType } from "@/convex/tables/mealItems";
 
-export default function getFoodNutrients(
-  food: Doc<"foods">
-): Doc<"mealItems">["nutrientsPer100g"] {
+export default function getFoodNutrients(food: Doc<"foods">): NutrientsType {
   const n = food.nutrients;
   const m = food.macroNutrients;
 
