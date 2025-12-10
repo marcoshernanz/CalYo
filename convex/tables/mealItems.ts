@@ -9,6 +9,13 @@ export const macrosFields = {
   carbs: v.number(),
 };
 
+export const microsFields = {
+  score: v.number(),
+  fiber: v.number(),
+  sugar: v.number(),
+  sodium: v.number(),
+};
+
 export const nutrientsFields = {
   carbs: v.object({
     total: v.optional(v.number()),
@@ -60,6 +67,7 @@ export const mealItemsFields = {
   foodId: v.id("foods"),
   grams: v.number(),
   macrosPer100g: v.object(macrosFields),
+  microsPer100g: v.object(microsFields),
   nutrientsPer100g: v.object(nutrientsFields),
 };
 
@@ -68,4 +76,5 @@ export const mealItems = defineTable(mealItemsFields).index("byMealId", [
 ]);
 
 export type MacrosType = Doc<"mealItems">["macrosPer100g"];
+export type MicrosType = Doc<"mealItems">["microsPer100g"];
 export type NutrientsType = Doc<"mealItems">["nutrientsPer100g"];
