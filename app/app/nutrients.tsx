@@ -10,7 +10,7 @@ import {
 import Text from "@/components/ui/Text";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 import getColor from "@/lib/ui/getColor";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 const nutritionSections = [
   {
@@ -52,12 +52,12 @@ const nutritionSections = [
         label: "Monoinsaturadas",
         dbKey: "fattyAcidsTotalMonounsaturated",
         unit: "g",
-      }, // Añadido
+      },
       {
         label: "Poliinsaturadas",
         dbKey: "fattyAcidsTotalPolyunsaturated",
         unit: "g",
-      }, // Añadido
+      },
       { label: "Trans", dbKey: "fattyAcidsTotalTrans", unit: "g" },
       { label: "Colesterol", dbKey: "cholesterol", unit: "mg" },
     ],
@@ -66,11 +66,7 @@ const nutritionSections = [
     id: "protein",
     categoryLabel: "Proteínas",
     themeColor: getColor("protein"),
-    metrics: [
-      { label: "Proteína Total", dbKey: "protein", unit: "g" },
-      // Nota: He decidido no poner aminoácidos (Leucina, etc.)
-      // para mantener el diseño limpio como pediste.
-    ],
+    metrics: [{ label: "Proteína Total", dbKey: "protein", unit: "g" }],
   },
   {
     id: "vitamins",
@@ -78,8 +74,8 @@ const nutritionSections = [
     themeColor: getColor("purple"),
     metrics: [
       { label: "Vitamina A", dbKey: "vitaminARae", unit: "µg" },
-      { label: "Vitamina B12", dbKey: "vitaminB12", unit: "µg" }, // Crucial
-      { label: "Folato (B9)", dbKey: "folateDfe", unit: "µg" }, // Crucial
+      { label: "Vitamina B12", dbKey: "vitaminB12", unit: "µg" },
+      { label: "Folato (B9)", dbKey: "folateDfe", unit: "µg" },
       { label: "Vitamina C", dbKey: "vitaminCTotalAscorbicAcid", unit: "mg" },
       {
         label: "Vitamina D",
@@ -99,8 +95,8 @@ const nutritionSections = [
       { label: "Potasio", dbKey: "potassiumK", unit: "mg" },
       { label: "Magnesio", dbKey: "magnesiumMg", unit: "mg" },
       { label: "Calcio", dbKey: "calciumCa", unit: "mg" },
-      { label: "Hierro", dbKey: "ironFe", unit: "mg" }, // Añadido (Muy importante)
-      { label: "Zinc", dbKey: "zincZn", unit: "mg" }, // Añadido
+      { label: "Hierro", dbKey: "ironFe", unit: "mg" },
+      { label: "Zinc", dbKey: "zincZn", unit: "mg" },
     ],
   },
   {
@@ -129,54 +125,37 @@ export default function Nutrients() {
         scrollViewProps={{ onScroll, contentContainerStyle: { flexGrow: 1 } }}
         safeAreaProps={{ edges: ["left", "right", "bottom"] }}
       >
-        <View style={{ gap: 24 }}>
+        <View style={styles.container}>
           {nutritionSections.map((section) => (
             <View
               key={`micro-${section.id}-${section.categoryLabel}`}
-              style={{ gap: 8 }}
+              style={styles.section}
             >
               <Text size="18" weight="600">
                 {section.categoryLabel}
               </Text>
-              <View style={{ gap: 12 }}>
+              <View style={styles.metricsContainer}>
                 {section.metrics.map((metric) => (
                   <View
                     key={`summary-metric-${metric.label}`}
-                    style={{ gap: 4 }}
+                    style={styles.metric}
                   >
                     <Text size="14" weight="500">
                       {metric.label}
                     </Text>
-                    <View
-                      style={{
-                        height: 16,
-                        justifyContent: "center",
-                      }}
-                    >
+                    <View style={styles.progressContainer}>
+                      <View style={styles.backgroundBar} />
                       <View
-                        style={{
-                          height: "100%",
-                          backgroundColor: getColor("secondary"),
-                          width: "65%",
-                        }}
+                        style={[
+                          styles.overlayBar,
+                          { backgroundColor: section.themeColor },
+                        ]}
                       />
                       <View
-                        style={{
-                          height: "100%",
-                          backgroundColor: section.themeColor,
-                          opacity: 0.25,
-                          width: "35%",
-                          right: 0,
-                          position: "absolute",
-                        }}
-                      />
-                      <View
-                        style={{
-                          height: 6,
-                          backgroundColor: section.themeColor,
-                          width: "75%",
-                          position: "absolute",
-                        }}
+                        style={[
+                          styles.progressBar,
+                          { backgroundColor: section.themeColor },
+                        ]}
                       />
                     </View>
                   </View>
@@ -189,3 +168,42 @@ export default function Nutrients() {
     </ScreenMain>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    gap: 24,
+  },
+  section: {
+    gap: 8,
+  },
+  metricsContainer: {
+    gap: 12,
+  },
+  metric: {
+    gap: 4,
+  },
+  progressContainer: {
+    height: 16,
+    justifyContent: "center",
+    borderRadius: 999,
+    overflow: "hidden",
+  },
+  backgroundBar: {
+    height: "100%",
+    backgroundColor: getColor("secondary"),
+    width: "65%",
+  },
+  overlayBar: {
+    height: "100%",
+    opacity: 0.25,
+    width: "35%",
+    right: 0,
+    position: "absolute",
+  },
+  progressBar: {
+    height: 6,
+    width: "75%",
+    position: "absolute",
+    borderRadius: 999,
+  },
+});
