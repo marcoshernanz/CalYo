@@ -50,7 +50,7 @@ export default function HomeSummaryCardBig({ item, progress, onPress }: Props) {
         <View style={styles.cardProgressContainer}>
           <CircularProgress
             progress={itemProgress}
-            color={getColor("health")}
+            color={item.color}
             strokeWidth={5}
             size={80}
           />
