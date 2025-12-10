@@ -11,6 +11,8 @@
 - [ ] Lib functions inside convex folder so it's not shipped to the client?
 - [ ] getFoodNutrients units
 - [ ] Calories color
+- [ ] Refactor routes
+- [ ] Nutrition title (date, meal name, meal item name)
 
 - [ ] Refactor meal.tsx
 - [ ] Fix getMeal

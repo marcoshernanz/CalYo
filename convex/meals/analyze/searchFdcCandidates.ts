@@ -6,17 +6,13 @@ import { internal } from "../../_generated/api";
 import { v } from "convex/values";
 import macrosToKcal from "../../../lib/utils/macrosToKcal";
 import { analyzeMealConfig } from "./analyzeMealConfig";
+import { MacrosType } from "@/convex/tables/mealItems";
 
 export type Candidate = {
   fdcId: number;
   name: string;
   category: string | null;
-  macroNutrients: {
-    calories: number;
-    protein: number;
-    fat: number;
-    carbs: number;
-  };
+  macroNutrients: MacrosType;
   score: number;
 };
 

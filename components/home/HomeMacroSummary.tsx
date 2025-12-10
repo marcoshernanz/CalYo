@@ -16,6 +16,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import HomeSummaryCard from "./HomeSummaryCard";
 import HomeSummaryCardBig from "./HomeSummaryCardBig";
+import { MacrosType } from "@/convex/tables/mealItems";
 
 type Macro = {
   name: string;
@@ -26,12 +27,7 @@ type Macro = {
 };
 
 type Props = {
-  totals: {
-    calories: number;
-    protein: number;
-    carbs: number;
-    fat: number;
-  };
+  totals: MacrosType;
 };
 
 export default function HomeMacroSummary({ totals }: Props) {

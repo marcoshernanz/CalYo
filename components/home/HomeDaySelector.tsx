@@ -16,6 +16,7 @@ import Button from "../ui/Button";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import calcRatio from "@/lib/utils/calcRatio";
 import SafeArea from "../ui/SafeArea";
+import { MacrosType } from "@/convex/tables/mealItems";
 
 type DayData = {
   weekDay: number;
@@ -97,12 +98,7 @@ function DaySelectorItem({
 type Props = {
   selectedDay: number;
   setSelectedDay: Dispatch<SetStateAction<number>>;
-  weekTotals: {
-    calories: number;
-    protein: number;
-    carbs: number;
-    fat: number;
-  }[];
+  weekTotals: MacrosType[];
 };
 
 export default function HomeDaySelector({
