@@ -19,21 +19,21 @@ export default function MealMacros({ loading, macros }: Props) {
       label: "Hidratos",
       color: getColor("carb"),
       Icon: CarbIcon,
-      value: macros?.carbs ?? 0,
+      value: Math.round(macros?.carbs ?? 0),
       unit: "g",
     },
     {
       label: "Proteína",
       color: getColor("protein"),
       Icon: ProteinIcon,
-      value: macros?.protein ?? 0,
+      value: Math.round(macros?.protein ?? 0),
       unit: "g",
     },
     {
       label: "Grasas",
       color: getColor("fat"),
       Icon: FatIcon,
-      value: macros?.fat ?? 0,
+      value: Math.round(macros?.fat ?? 0),
       unit: "g",
     },
   ];
@@ -45,7 +45,7 @@ export default function MealMacros({ loading, macros }: Props) {
           label: "Calorías",
           Icon: FlameIcon,
           color: getColor("foreground"),
-          value: macros?.calories ?? 0,
+          value: Math.round(macros?.calories ?? 0),
           unit: "kcal",
         }}
         loading={loading}
@@ -65,48 +65,13 @@ export default function MealMacros({ loading, macros }: Props) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     gap: 6,
-    paddingBottom: 32,
-  },
-  caloriesCard: {
-    flexDirection: "row",
-    gap: 12,
-    padding: 12,
-  },
-  caloriesIconContainer: {
-    height: 64,
-    width: 64,
-    borderRadius: 16,
-    backgroundColor: getColor("muted"),
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  caloriesTextContainer: {
-    justifyContent: "center",
+    paddingHorizontal: 16,
+    // paddingBottom: 32,
   },
   macrosContainer: {
     flexDirection: "row",
     gap: 6,
-  },
-  macroCardButton: {
-    flex: 1,
-  },
-  macroCard: {
-    flex: 1,
-    padding: 12,
-    gap: 8,
-  },
-  macroValueContainer: {
-    flexDirection: "row",
-    gap: 4,
-    alignItems: "center",
-  },
-  macroIconContainer: {
-    height: 22,
-    width: 22,
-    borderRadius: 16,
-    backgroundColor: getColor("muted"),
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

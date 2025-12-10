@@ -27,6 +27,8 @@ import { api } from "@/convex/_generated/api";
 import { useRateLimit } from "@convex-dev/rate-limiter/react";
 import { Toast } from "../ui/Toast";
 import MealItems from "./MealItems";
+import Carousel from "../ui/Carousel";
+import SafeArea from "../ui/SafeArea";
 
 type Props = {
   loading: boolean;
@@ -92,11 +94,18 @@ export default function Meal({
 
       <ScreenMainScrollView
         scrollViewProps={{ onScroll }}
-        safeAreaProps={{ edges: ["left", "right"] }}
+        safeAreaProps={{ edges: [] }}
       >
-        <ScreenMainTitle title={name} loading={loading} />
-        <MealMacros loading={loading} macros={totalMacros} />
-        <MealItems loading={loading} items={mealItems} />
+        <SafeArea edges={["left", "right"]} style={{ flex: 0 }}>
+          <ScreenMainTitle title={name} loading={loading} />
+        </SafeArea>
+        <Carousel style={{ paddingBottom: 32 }}>
+          <MealMacros loading={loading} macros={totalMacros} />
+          <MealMacros loading={loading} macros={totalMacros} />
+        </Carousel>
+        <SafeArea edges={["left", "right"]} style={{ flex: 0 }}>
+          <MealItems loading={loading} items={mealItems} />
+        </SafeArea>
       </ScreenMainScrollView>
 
       <ScreenFooter>
