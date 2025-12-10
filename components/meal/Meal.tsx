@@ -29,6 +29,7 @@ import { Toast } from "../ui/Toast";
 import MealItems from "./MealItems";
 import Carousel from "../ui/Carousel";
 import SafeArea from "../ui/SafeArea";
+import MealMicros from "./MealMicros";
 
 type Props = {
   loading: boolean;
@@ -100,8 +101,11 @@ export default function Meal({
           <ScreenMainTitle title={name} loading={loading} />
         </SafeArea>
         <Carousel style={{ paddingBottom: 32 }}>
-          <MealMacros loading={loading} macros={totalMacros} />
-          <MealMacros loading={loading} macros={totalMacros} />
+          <MealMacros macros={totalMacros} loading={loading} />
+          <MealMicros
+            micros={{ score: 67, fiber: 15, sugar: 40, sodium: 1500 }}
+            loading={loading}
+          />
         </Carousel>
         <SafeArea edges={["left", "right"]} style={{ flex: 0 }}>
           <MealItems loading={loading} items={mealItems} />

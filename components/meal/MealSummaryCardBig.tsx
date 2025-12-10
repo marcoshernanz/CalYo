@@ -16,11 +16,12 @@ type Props = {
     unit: string;
   };
   loading: boolean;
+  onPress?: () => void;
 };
 
-export default function MealSummaryCardBig({ item, loading }: Props) {
+export default function MealSummaryCardBig({ item, loading, onPress }: Props) {
   return (
-    <Button variant="base" size="base">
+    <Button variant="base" size="base" onPress={onPress}>
       <Card style={styles.card}>
         <View style={styles.iconContainer}>
           <item.Icon color={item.color} />
