@@ -21,8 +21,8 @@ import Animated, {
 } from "react-native-reanimated";
 
 type MetricType = {
+  id: string | null;
   label: string;
-  dbKey: string | null;
   unit: string;
 };
 
@@ -39,26 +39,10 @@ const nutritionSections: NutritionSection[] = [
     categoryLabel: "Carbohidratos y Azúcares",
     themeColor: getColor("carb"),
     metrics: [
-      {
-        label: "Hidratos Totales",
-        dbKey: "carbohydrateByDifference",
-        unit: "g",
-      },
-      {
-        label: "Hidratos Netos",
-        dbKey: "carbohydrateNet",
-        unit: "g",
-      },
-      {
-        label: "Fibra",
-        dbKey: "fiberTotalDietary",
-        unit: "g",
-      },
-      {
-        label: "Azúcares Totales",
-        dbKey: "sugarsTotal",
-        unit: "g",
-      },
+      { id: "total", label: "Hidratos Totales", unit: "g" },
+      { id: "net", label: "Hidratos Netos", unit: "g" },
+      { id: "fiber", label: "Fibra", unit: "g" },
+      { id: "sugar", label: "Azúcares Totales", unit: "g" },
     ],
   },
   {
@@ -66,44 +50,38 @@ const nutritionSections: NutritionSection[] = [
     categoryLabel: "Grasas y Lípidos",
     themeColor: getColor("fat"),
     metrics: [
-      { label: "Grasas Totales", dbKey: "totalLipidFat", unit: "g" },
-      { label: "Saturadas", dbKey: "fattyAcidsTotalSaturated", unit: "g" },
-      {
-        label: "Monoinsaturadas",
-        dbKey: "fattyAcidsTotalMonounsaturated",
-        unit: "g",
-      },
-      {
-        label: "Poliinsaturadas",
-        dbKey: "fattyAcidsTotalPolyunsaturated",
-        unit: "g",
-      },
-      { label: "Trans", dbKey: "fattyAcidsTotalTrans", unit: "g" },
-      { label: "Colesterol", dbKey: "cholesterol", unit: "mg" },
+      { id: "total", label: "Grasas Totales", unit: "g" },
+      { id: "saturated", label: "Saturadas", unit: "g" },
+      { id: "monounsaturated", label: "Monoinsaturadas", unit: "g" },
+      { id: "polyunsaturated", label: "Poliinsaturadas", unit: "g" },
+      { id: "trans", label: "Trans", unit: "g" },
+      { id: "cholesterol", label: "Colesterol", unit: "mg" },
     ],
   },
   {
     id: "protein",
     categoryLabel: "Proteínas",
     themeColor: getColor("protein"),
-    metrics: [{ label: "Proteína Total", dbKey: "protein", unit: "g" }],
+    metrics: [
+      { id: "total", label: "Proteína Total", unit: "g" },
+      { id: "leucine", label: "Leucina", unit: "g" },
+      { id: "isoleucine", label: "Isoleucina", unit: "g" },
+      { id: "valine", label: "Valina", unit: "g" },
+      { id: "tryptophan", label: "Triptófano", unit: "g" },
+    ],
   },
   {
     id: "vitamins",
     categoryLabel: "Vitaminas",
     themeColor: getColor("purple"),
     metrics: [
-      { label: "Vitamina A", dbKey: "vitaminARae", unit: "µg" },
-      { label: "Vitamina B12", dbKey: "vitaminB12", unit: "µg" },
-      { label: "Folato (B9)", dbKey: "folateDfe", unit: "µg" },
-      { label: "Vitamina C", dbKey: "vitaminCTotalAscorbicAcid", unit: "mg" },
-      {
-        label: "Vitamina D",
-        dbKey: "vitaminDD2D3InternationalUnits",
-        unit: "IU",
-      },
-      { label: "Vitamina E", dbKey: "vitaminEAlphaTocopherol", unit: "mg" },
-      { label: "Vitamina K", dbKey: "vitaminKPhylloquinone", unit: "µg" },
+      { id: "a", label: "Vitamina A", unit: "µg" },
+      { id: "b12", label: "Vitamina B12", unit: "µg" },
+      { id: "b9", label: "Folato (B9)", unit: "µg" },
+      { id: "c", label: "Vitamina C", unit: "mg" },
+      { id: "d", label: "Vitamina D", unit: "IU" },
+      { id: "e", label: "Vitamina E", unit: "mg" },
+      { id: "k", label: "Vitamina K", unit: "µg" },
     ],
   },
   {
@@ -111,12 +89,12 @@ const nutritionSections: NutritionSection[] = [
     categoryLabel: "Minerales",
     themeColor: getColor("blue"),
     metrics: [
-      { label: "Sodio", dbKey: "sodiumNa", unit: "mg" },
-      { label: "Potasio", dbKey: "potassiumK", unit: "mg" },
-      { label: "Magnesio", dbKey: "magnesiumMg", unit: "mg" },
-      { label: "Calcio", dbKey: "calciumCa", unit: "mg" },
-      { label: "Hierro", dbKey: "ironFe", unit: "mg" },
-      { label: "Zinc", dbKey: "zincZn", unit: "mg" },
+      { id: "sodium", label: "Sodio", unit: "mg" },
+      { id: "potassium", label: "Potasio", unit: "mg" },
+      { id: "magnesium", label: "Magnesio", unit: "mg" },
+      { id: "calcium", label: "Calcio", unit: "mg" },
+      { id: "iron", label: "Hierro", unit: "mg" },
+      { id: "zinc", label: "Zinc", unit: "mg" },
     ],
   },
   {
@@ -124,9 +102,9 @@ const nutritionSections: NutritionSection[] = [
     categoryLabel: "Otros",
     themeColor: getColor("foreground"),
     metrics: [
-      { label: "Agua", dbKey: "water", unit: "g" },
-      { label: "Cafeína", dbKey: "caffeine", unit: "mg" },
-      { label: "Alcohol", dbKey: "alcoholEthyl", unit: "g" },
+      { id: "water", label: "Agua", unit: "g" },
+      { id: "caffeine", label: "Cafeína", unit: "mg" },
+      { id: "alcohol", label: "Alcohol", unit: "g" },
     ],
   },
 ];
