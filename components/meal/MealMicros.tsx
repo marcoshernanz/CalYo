@@ -8,13 +8,15 @@ import SodiumIcon from "../icons/micros/SodiumIcon";
 import HealthIcon from "../icons/micros/HealthIcon";
 import { Link } from "expo-router";
 import { MicrosType } from "@/convex/tables/mealItems";
+import { Id } from "@/convex/_generated/dataModel";
 
 type Props = {
+  mealItemId: Id<"mealItems">;
   loading: boolean;
   micros?: MicrosType;
 };
 
-export default function MealMicros({ loading, micros }: Props) {
+export default function MealMicros({ mealItemId, loading, micros }: Props) {
   const displayMicros = [
     {
       label: "Fibra",
@@ -41,7 +43,10 @@ export default function MealMicros({ loading, micros }: Props) {
 
   return (
     <View style={styles.container}>
-      <Link href="/app/nutrients" asChild>
+      <Link
+        href={{ pathname: "/app/mealItemNutrients", params: { mealItemId } }}
+        asChild
+      >
         <MealSummaryCardBig
           item={{
             label: "Calidad",

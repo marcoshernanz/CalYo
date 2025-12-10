@@ -1,4 +1,4 @@
-import { Doc } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 import {
   ScreenMain,
   ScreenMainScrollView,
@@ -15,14 +15,21 @@ import MealMacros from "../meal/MealMacros";
 import SafeArea from "../ui/SafeArea";
 import Carousel from "../ui/Carousel";
 import MealMicros from "../meal/MealMicros";
+import scaleMicrosPer100g from "@/lib/utils/nutrition/scaleMicrosPer100g";
 
 type Props = {
+  mealItemId: Id<"mealItems">;
   name?: string;
   mealItem?: Doc<"mealItems">;
   loading: boolean;
 };
 
-export default function MealItem({ name, mealItem, loading }: Props) {
+export default function MealItem({
+  mealItemId,
+  name,
+  mealItem,
+  loading,
+}: Props) {
   const { scrollY, onScroll } = useScrollY();
 
   const macrosPer100g = mealItem?.macrosPer100g ?? {
@@ -31,9 +38,20 @@ export default function MealItem({ name, mealItem, loading }: Props) {
     fat: 0,
     carbs: 0,
   };
+  const microsPer100g = mealItem?.microsPer100g ?? {
+    score: 0,
+    fiber: 0,
+    sugar: 0,
+    sodium: 0,
+  };
+
   const totalMacros = scaleMacrosPer100g({
     grams: mealItem?.grams ?? 0,
     macrosPer100g,
+  });
+  const totalMicros = scaleMicrosPer100g({
+    grams: mealItem?.grams ?? 0,
+    microsPer100g,
   });
 
   return (
@@ -53,7 +71,8 @@ export default function MealItem({ name, mealItem, loading }: Props) {
         <Carousel style={{ paddingBottom: 32 }}>
           <MealMacros macros={totalMacros} loading={loading} />
           <MealMicros
-            micros={{ score: 67, fiber: 15, sugar: 40, sodium: 1500 }}
+            mealItemId={mealItemId}
+            micros={totalMicros}
             loading={loading}
           />
         </Carousel>

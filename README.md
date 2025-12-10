@@ -13,7 +13,9 @@
 - [ ] Calories color
 - [ ] Refactor routes
 - [ ] Nutrition title (date, meal name, meal item name)
+
 - [ ] Clean replaceMealItems and scaleNutrientsPer100g
+- [ ] zeroMacros, zeroMicros, zeroNutrients
 
 - [ ] Refactor meal.tsx
 - [ ] Fix getMeal
