@@ -11,6 +11,10 @@
 - [ ] Lib functions inside convex folder so it's not shipped to the client?
 - [ ] getFoodNutrients units
 
+- [ ] Refactor meal.tsx
+- [ ] Fix getMeal
+- [ ] Fix getWeekMeals
+
 - [ ] Food only nutrients (remove macro-nutrients)
 - [ ] Food nutrients -> nutrientsPer100g
 
