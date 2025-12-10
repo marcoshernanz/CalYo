@@ -23,9 +23,7 @@ const replaceMealItems = mutation({
       .withIndex("byMealId", (q) => q.eq("mealId", mealId))
       .collect();
 
-    for (const item of existingItems) {
-      await ctx.db.delete(item._id);
-    }
+    await Promise.all(existingItems.map((item) => ctx.db.delete(item._id)));
 
     const totalMacros: NonNullable<Doc<"meals">["totalMacros"]> = {
       calories: 0,
@@ -42,14 +40,23 @@ const replaceMealItems = mutation({
       other: {},
     };
 
+    // Optimization: Fetch all foods in parallel
+    const uniqueFoodIds = [...new Set(foods.map((f) => f.foodId))];
+    const foodDocs = await Promise.all(
+      uniqueFoodIds.map((id) => ctx.db.get(id))
+    );
+    const foodMap = new Map(foodDocs.map((f, i) => [uniqueFoodIds[i], f]));
+
+    const itemsToInsert = [];
+
     for (const { foodId, grams } of foods) {
-      const food = await ctx.db.get(foodId);
+      const food = foodMap.get(foodId);
       if (!food) throw new Error(`Food not found: ${foodId}`);
 
       const macrosPer100g = getFoodMacros(food);
       const nutrientsPer100g = getFoodNutrients(food);
 
-      await ctx.db.insert("mealItems", {
+      itemsToInsert.push({
         mealId,
         foodId,
         grams,
@@ -87,6 +94,10 @@ const replaceMealItems = mutation({
         }
       }
     }
+
+    await Promise.all(
+      itemsToInsert.map((item) => ctx.db.insert("mealItems", item))
+    );
 
     await ctx.db.patch(mealId, {
       totalMacros,
