@@ -8,6 +8,7 @@
 - [ ] Nutrients text with current and target
 - [ ] Nutrients for each meal
 - [ ] Meal totals calculation in updateMeal
+- [ ] Lib functions inside convex folder so it's not shipped to the client?
 
 - [ ] Food only nutrients (remove macro-nutrients)
 - [ ] Food nutrients -> nutrientsPer100g
