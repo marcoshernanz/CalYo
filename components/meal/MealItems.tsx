@@ -22,7 +22,7 @@ type Props = {
 const placeholderRows = 4;
 const nameSkeletonWidths: DimensionValue[] = ["75%", "65%", "75%", "65%"];
 
-export default function MealIngredients({ items = [], loading }: Props) {
+export default function MealItems({ items = [], loading }: Props) {
   const count = loading
     ? Math.max(items.length, placeholderRows)
     : items.length;

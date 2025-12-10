@@ -1,4 +1,3 @@
-import MealIngredients from "./MealIngredients";
 import MealMacros from "./MealMacros";
 import {
   ScreenHeader,
@@ -27,6 +26,7 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useRateLimit } from "@convex-dev/rate-limiter/react";
 import { Toast } from "../ui/Toast";
+import MealItems from "./MealItems";
 
 type Props = {
   loading: boolean;
@@ -34,7 +34,7 @@ type Props = {
   mealId?: Id<"meals">;
   totalMacros?: Doc<"meals">["totalMacros"];
   totalNutrients?: Doc<"meals">["totalNutrients"];
-  mealItems?: React.ComponentProps<typeof MealIngredients>["items"];
+  mealItems?: React.ComponentProps<typeof MealItems>["items"];
 };
 
 export default function Meal({
@@ -96,7 +96,7 @@ export default function Meal({
       >
         <ScreenMainTitle title={name} loading={loading} />
         <MealMacros loading={loading} macros={totalMacros} />
-        <MealIngredients loading={loading} items={mealItems} />
+        <MealItems loading={loading} items={mealItems} />
       </ScreenMainScrollView>
 
       <ScreenFooter>

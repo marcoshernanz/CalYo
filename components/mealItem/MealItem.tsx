@@ -1,5 +1,4 @@
 import { Doc } from "@/convex/_generated/dataModel";
-import MealMacros from "./MealMacros";
 import {
   ScreenMain,
   ScreenMainScrollView,
@@ -12,6 +11,7 @@ import {
 } from "../ui/screen/ScreenHeader";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 import scaleMacrosPer100g from "@/lib/utils/scaleMacrosPer100g";
+import MealMacros from "../meal/MealMacros";
 
 type Props = {
   name?: string;
@@ -45,7 +45,7 @@ export default function MealItem({ name, mealItem, loading }: Props) {
         safeAreaProps={{ edges: ["left", "right", "bottom"] }}
       >
         <ScreenMainTitle title={name} loading={loading} />
-        <MealMacros loading={loading} totals={totals} />
+        <MealMacros loading={loading} macros={totals} />
       </ScreenMainScrollView>
     </ScreenMain>
   );
