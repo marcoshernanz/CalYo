@@ -33,10 +33,6 @@ export default function MealScreen() {
   const [mealId, setMealId] = useState<Id<"meals"> | undefined>(initialMealId);
   const startedRef = useRef(false);
 
-  // useEffect(() => {
-  //   setMealId(initialMealId);
-  // }, [initialMealId]);
-
   const data = useQuery(
     api.meals.getMeal.default,
     mealId ? { mealId } : "skip"
@@ -250,7 +246,7 @@ export default function MealScreen() {
     ? mealItems.map((item) => ({
         id: item._id,
         name: item.food.name.es ?? item.food.name.en,
-        calories: macrosToKcal(item.nutrients),
+        calories: macrosToKcal(item.macrosPer100g) * (item.grams / 100),
         grams: item.grams,
       }))
     : undefined;

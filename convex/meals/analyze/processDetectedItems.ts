@@ -54,17 +54,13 @@ export async function processDetectedItems(
       });
     }
 
-    const nutrients = scaleNutrients({
-      nutrients: fdcFood.macroNutrients,
-      grams: selectedItem.grams,
-    });
-    const calories = macrosToKcal(nutrients);
+    const calories = macrosToKcal(fdcFood.macroNutrients);
 
     await ctx.runMutation(api.meals.insertMealItem.default, {
       mealId,
       foodId: fdcFood._id,
       grams: selectedItem.grams,
-      nutrients,
+      macrosPer100g: fdcFood.macroNutrients,
     });
 
     return {
