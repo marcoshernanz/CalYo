@@ -5,8 +5,10 @@
 - [ ] Circular progress animation stopping too soon
 - [ ] Get micro-nutrients
 - [ ] Recalculate meal totals on Fix Meal?
+- [ ] Nutrients text with current and target
+- [ ] Nutrients for each meal
 
-- [ ] Progress centralization (app context)
+- [ ] Progress hook
 - [ ] Progress animation on change
 - [ ] Number animation on change
 
