@@ -17,7 +17,7 @@ type Props = {
     fat: number;
     carbs: number;
   };
-}
+};
 
 export default function MealMacros({ loading, totals }: Props) {
   const displayMacros = [

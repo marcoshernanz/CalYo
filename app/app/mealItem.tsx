@@ -13,7 +13,7 @@ export default function MealItemScreen() {
     mealItemId ? { mealItemId } : "skip"
   );
 
-  const isLoading = !mealItem;
+  const isLoading = mealItem === undefined;
 
   return (
     <MealItem
