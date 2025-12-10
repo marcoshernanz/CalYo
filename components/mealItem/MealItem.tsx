@@ -28,11 +28,11 @@ export default function MealItem({ name, mealItem, loading }: Props) {
     fat: 0,
     carbs: 0,
   };
-
-  const totals = scaleMacrosPer100g({
+  const macros = scaleMacrosPer100g({
     grams: mealItem?.grams ?? 0,
     macrosPer100g,
   });
+
   return (
     <ScreenMain edges={[]}>
       <ScreenHeader scrollY={scrollY}>
@@ -45,7 +45,7 @@ export default function MealItem({ name, mealItem, loading }: Props) {
         safeAreaProps={{ edges: ["left", "right", "bottom"] }}
       >
         <ScreenMainTitle title={name} loading={loading} />
-        <MealMacros loading={loading} macros={totals} />
+        <MealMacros loading={loading} macros={macros} />
       </ScreenMainScrollView>
     </ScreenMain>
   );
