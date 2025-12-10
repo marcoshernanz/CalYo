@@ -7,6 +7,10 @@
 - [ ] Recalculate meal totals on Fix Meal?
 - [ ] Nutrients text with current and target
 - [ ] Nutrients for each meal
+- [ ] Meal totals calculation in updateMeal
+
+- [ ] Food only nutrients (remove macro-nutrients)
+- [ ] Food nutrients -> nutrientsPer100g
 
 - [ ] Progress hook
 - [ ] Progress animation on change
