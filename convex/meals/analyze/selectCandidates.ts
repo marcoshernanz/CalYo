@@ -30,7 +30,7 @@ function buildCandidatesText(
     lines.push(`- ${item.name}:`);
     candidates.forEach((c, idx) => {
       lines.push(
-        `  ${idx + 1}) fdcId=${c.fdcId} | name=${c.name} | category=${c.category ?? "-"} | protein=${c.nutrients.protein}g, fat=${c.nutrients.fat}g, carbs=${c.nutrients.carbs}g, kcal=${c.calories}`
+        `  (${idx + 1}) fdcId=${c.fdcId} | name=${c.name} | category=${c.category ?? "-"} | protein=${c.macroNutrients.protein}g, fat=${c.macroNutrients.fat}g, carbs=${c.macroNutrients.carbs}g, kcal=${c.macroNutrients.calories}`
       );
     });
   }

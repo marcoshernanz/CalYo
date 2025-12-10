@@ -14,6 +14,7 @@
 - [ ] Refactor meal.tsx
 - [ ] Fix getMeal
 - [ ] Fix getWeekMeals
+- [ ] Test selectCandidates.tsx/ensureSelection
 
 - [ ] Food only nutrients (remove macro-nutrients)
 - [ ] Food nutrients -> nutrientsPer100g
