@@ -6,8 +6,6 @@ import selectCandidates from "./selectCandidates";
 import nameMeal from "./nameMeal";
 import { api, internal } from "../../_generated/api";
 import translateFood from "./translateFood";
-import scaleNutrients from "../../../lib/utils/scaleNutrients";
-import macrosToKcal from "../../../lib/utils/macrosToKcal";
 
 export async function processDetectedItems(
   ctx: ActionCtx,
@@ -34,8 +32,6 @@ export async function processDetectedItems(
     selectedItemsPromise,
   ]);
 
-  await ctx.runMutation(api.meals.clearMealItems.default, { mealId });
-
   const itemPromises = selectedItems.map(async (selectedItem) => {
     const fdcFood = await ctx.runQuery(api.foods.getFoodById.default, {
       identity: { source: "fdc", id: selectedItem.fdcId },
@@ -54,40 +50,22 @@ export async function processDetectedItems(
       });
     }
 
-    const calories = macrosToKcal(fdcFood.macroNutrients);
-
-    await ctx.runMutation(api.meals.insertMealItem.default, {
-      mealId,
+    return {
       foodId: fdcFood._id,
       grams: selectedItem.grams,
-      macrosPer100g: fdcFood.macroNutrients,
-    });
-
-    return {
-      calories,
-      protein: nutrients.protein,
-      fat: nutrients.fat,
-      carbs: nutrients.carbs,
     };
   });
 
   const results = await Promise.all(itemPromises);
+  const foods = results.filter((food) => food !== null);
 
-  const totals = { calories: 0, protein: 0, fat: 0, carbs: 0 };
-  for (const result of results) {
-    if (!result) continue;
-    totals.calories += result.calories;
-    totals.protein = +(totals.protein + result.protein).toFixed(1);
-    totals.fat = +(totals.fat + result.fat).toFixed(1);
-    totals.carbs = +(totals.carbs + result.carbs).toFixed(1);
-  }
+  await ctx.runMutation(api.meals.replaceMealItems.default, {
+    mealId,
+    foods,
+  });
 
   await ctx.runMutation(api.meals.updateMeal.default, {
     id: mealId,
-    meal: {
-      status: "done",
-      name: mealName,
-      totals,
-    },
+    meal: { status: "done", name: mealName },
   });
 }
