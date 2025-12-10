@@ -20,15 +20,15 @@ type LogItemProps = {
 function LogItem({ meal }: LogItemProps) {
   const macros = [
     {
-      value: meal.totals?.carbs ?? 20,
+      value: meal.totalMacros?.carbs ?? 20,
       Icon: CarbIcon,
     },
     {
-      value: meal.totals?.protein ?? 20,
+      value: meal.totalMacros?.protein ?? 20,
       Icon: ProteinIcon,
     },
     {
-      value: meal.totals?.fat ?? 20,
+      value: meal.totalMacros?.fat ?? 20,
       Icon: FatIcon,
     },
   ];
@@ -73,7 +73,7 @@ function LogItem({ meal }: LogItemProps) {
                 skeletonStyle={{ height: 14, width: "100%" }}
               >
                 <Text size="14" weight="500">
-                  {meal.totals?.calories ?? 200}
+                  {meal.totalMacros?.calories ?? 200}
                 </Text>
               </WithSkeleton>
             </View>
