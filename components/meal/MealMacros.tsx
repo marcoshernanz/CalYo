@@ -9,6 +9,7 @@ import ProteinIcon from "../icons/macros/ProteinIcon";
 import FatIcon from "../icons/macros/FatIcon";
 import Button from "../ui/Button";
 import { Doc } from "@/convex/_generated/dataModel";
+import MealSummaryCard from "./MealSummaryCard";
 
 type Props = {
   loading: boolean;
@@ -62,31 +63,11 @@ export default function MealMacros({ loading, macros }: Props) {
 
       <View style={styles.macrosContainer}>
         {displayMacros.map((macro, index) => (
-          <Button
+          <MealSummaryCard
             key={`macro-${macro.label}-${index}`}
-            variant="base"
-            size="base"
-            style={styles.macroCardButton}
-          >
-            <Card style={styles.macroCard}>
-              <Text size="12" color={getColor("mutedForeground")}>
-                {macro.label}
-              </Text>
-              <View style={styles.macroValueContainer}>
-                <View style={styles.macroIconContainer}>
-                  <macro.Icon size={14} color={macro.color} />
-                </View>
-                <WithSkeleton
-                  loading={loading}
-                  skeletonStyle={{ height: 16, width: 40, borderRadius: 4 }}
-                >
-                  <Text size="16" weight="600">
-                    {macro.value} g
-                  </Text>
-                </WithSkeleton>
-              </View>
-            </Card>
-          </Button>
+            macro={macro}
+            loading={loading}
+          />
         ))}
       </View>
     </View>
@@ -122,11 +103,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   macroCard: {
-    flex: 1,
-    padding: 12,
-    gap: 8,
-  },
-  macroCardSkeleton: {
     flex: 1,
     padding: 12,
     gap: 8,
