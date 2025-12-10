@@ -10,9 +10,30 @@ import {
 import Text from "@/components/ui/Text";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 import getColor from "@/lib/ui/getColor";
+import { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
+import Animated, {
+  cancelAnimation,
+  SharedValue,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
-const nutritionSections = [
+type MetricType = {
+  label: string;
+  dbKey: string | null;
+  unit: string;
+};
+
+type NutritionSection = {
+  id: string;
+  categoryLabel: string;
+  themeColor: string;
+  metrics: MetricType[];
+};
+
+const nutritionSections: NutritionSection[] = [
   {
     id: "carbs",
     categoryLabel: "Carbohidratos y Azúcares",
@@ -25,8 +46,7 @@ const nutritionSections = [
       },
       {
         label: "Hidratos Netos",
-        dbKey: null,
-        isCalculated: true,
+        dbKey: "carbohydrateNet",
         unit: "g",
       },
       {
@@ -83,7 +103,7 @@ const nutritionSections = [
         unit: "IU",
       },
       { label: "Vitamina E", dbKey: "vitaminEAlphaTocopherol", unit: "mg" },
-      { label: "Vitamina K", dbKey: "vitaminKPhylloquinone", unit: "µg" }, // Añadido
+      { label: "Vitamina K", dbKey: "vitaminKPhylloquinone", unit: "µg" },
     ],
   },
   {
@@ -111,8 +131,69 @@ const nutritionSections = [
   },
 ];
 
+type MetricProps = {
+  metric: MetricType;
+  themeColor: string;
+  progress: SharedValue<number>;
+};
+
+function Metric({ metric, themeColor, progress }: MetricProps) {
+  const value = 60; // TODO
+  const max = 100; // TODO
+  const target = [50, 80]; // TODO
+
+  const valuePercent = (value / max) * 100;
+  const targetPercent = [(target[0] / max) * 100, (target[1] / max) * 100];
+
+  const animatedStyles = {
+    progressBar: useAnimatedStyle(() => ({
+      width: `${valuePercent * progress.value}%`,
+    })),
+  };
+
+  return (
+    <View style={styles.metric}>
+      <Text size="14" weight="500">
+        {metric.label}
+      </Text>
+      <View style={styles.progressContainer}>
+        <View
+          style={[
+            styles.overlayBar,
+            {
+              backgroundColor: themeColor,
+              left: `${targetPercent[0]}%`,
+              right: `${100 - targetPercent[1]}%`,
+            },
+          ]}
+        />
+        <Animated.View
+          style={[
+            styles.progressBar,
+            {
+              backgroundColor: themeColor,
+              width: `${valuePercent}%`,
+            },
+            animatedStyles.progressBar,
+          ]}
+        />
+      </View>
+    </View>
+  );
+}
+
 export default function Nutrients() {
   const { scrollY, onScroll } = useScrollY();
+  const progress = useSharedValue(0);
+
+  useEffect(() => {
+    progress.value = withTiming(1, { duration: 1500 });
+
+    return () => {
+      cancelAnimation(progress);
+      progress.value = 0;
+    };
+  }, [progress]);
 
   return (
     <ScreenMain edges={[]}>
@@ -136,29 +217,12 @@ export default function Nutrients() {
               </Text>
               <View style={styles.metricsContainer}>
                 {section.metrics.map((metric) => (
-                  <View
+                  <Metric
                     key={`summary-metric-${metric.label}`}
-                    style={styles.metric}
-                  >
-                    <Text size="14" weight="500">
-                      {metric.label}
-                    </Text>
-                    <View style={styles.progressContainer}>
-                      <View style={styles.backgroundBar} />
-                      <View
-                        style={[
-                          styles.overlayBar,
-                          { backgroundColor: section.themeColor },
-                        ]}
-                      />
-                      <View
-                        style={[
-                          styles.progressBar,
-                          { backgroundColor: section.themeColor },
-                        ]}
-                      />
-                    </View>
-                  </View>
+                    metric={metric}
+                    themeColor={section.themeColor}
+                    progress={progress}
+                  />
                 ))}
               </View>
             </View>
@@ -187,15 +251,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 999,
     overflow: "hidden",
-  },
-  backgroundBar: {
-    height: "100%",
     backgroundColor: getColor("secondary"),
-    width: "65%",
   },
   overlayBar: {
     height: "100%",
-    opacity: 0.25,
+    opacity: 0.3,
     width: "35%",
     right: 0,
     position: "absolute",
