@@ -104,9 +104,13 @@ export default function MealScreen() {
   const mealItems = data?.mealItems ?? [];
 
   const isDone =
-    !!meal && meal.status === "done" && !!meal.name && !!meal.totals;
+    !!meal &&
+    meal.status === "done" &&
+    !!meal.name &&
+    !!meal.totalMacros &&
+    !!meal.totalNutrients;
 
-  const items = isDone
+  const items = isDone // TODO
     ? mealItems.map((item) => ({
         id: item._id,
         name: item.food.name.es ?? item.food.name.en,
@@ -122,8 +126,9 @@ export default function MealScreen() {
       loading={isLoading}
       name={meal?.name}
       mealId={meal?._id}
-      totals={meal?.totals}
-      items={items}
+      totalMacros={meal?.totalMacros}
+      totalNutrients={meal?.totalNutrients}
+      mealItems={items}
     />
   );
 }

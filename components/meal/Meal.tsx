@@ -22,7 +22,7 @@ import {
   ScreenMainTitle,
 } from "../ui/screen/ScreenMain";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
-import { Id } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
@@ -30,11 +30,18 @@ type Props = {
   loading: boolean;
   name?: string;
   mealId?: Id<"meals">;
-  totals?: React.ComponentProps<typeof MealMacros>["totals"];
-  items?: React.ComponentProps<typeof MealIngredients>["items"];
+  totalMacros?: Doc<"meals">["totalMacros"];
+  totalNutrients?: Doc<"meals">["totalNutrients"];
+  mealItems?: React.ComponentProps<typeof MealIngredients>["items"]; // TODO
 };
 
-export default function Meal({ loading, name, mealId, totals, items }: Props) {
+export default function Meal({
+  loading,
+  name,
+  mealId,
+  totalMacros,
+  mealItems,
+}: Props) {
   const router = useRouter();
   const updateMeal = useMutation(api.meals.updateMeal.default);
   const isDeletingRef = useRef(false);
@@ -70,7 +77,7 @@ export default function Meal({ loading, name, mealId, totals, items }: Props) {
       >
         <ScreenMainTitle title={name} loading={loading} />
         <MealMacros loading={loading} totals={totals} />
-        <MealIngredients loading={loading} items={items} />
+        <MealIngredients loading={loading} items={mealItems} />
       </ScreenMainScrollView>
 
       <ScreenFooter>
