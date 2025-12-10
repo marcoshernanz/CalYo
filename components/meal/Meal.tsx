@@ -25,6 +25,8 @@ import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useRateLimit } from "@convex-dev/rate-limiter/react";
+import { Toast } from "../ui/Toast";
 
 type Props = {
   loading: boolean;
@@ -49,10 +51,26 @@ export default function Meal({
 
   const { scrollY, onScroll } = useScrollY();
 
+  const { status } = useRateLimit(api.rateLimit.getCorrectMealRateLimit, {
+    getServerTimeMutation: api.rateLimit.getServerTime,
+  });
+
   const handleDelete = () => {
     if (!mealId || isDeletingRef.current) return;
     isDeletingRef.current = true;
     void updateMeal({ id: mealId, meal: { status: "deleted" } });
+  };
+
+  const handleFixMeal = () => {
+    if (status && !status.ok) {
+      Toast.show({
+        text: "Has alcanzado el límite diario de correcciones.",
+        variant: "error",
+      });
+      return;
+    }
+
+    router.push({ pathname: "/app/fix-meal", params: { mealId } });
   };
 
   return (
@@ -84,10 +102,8 @@ export default function Meal({
       <ScreenFooter>
         <ScreenFooterButton
           variant="outline"
-          onPress={() => {
-            router.push({ pathname: "/app/fix-meal", params: { mealId } });
-          }}
-          disabled={loading}
+          onPress={handleFixMeal}
+          disabled={loading || (status !== undefined && !status.ok)}
         >
           <ScreenFooterButtonIcon
             Icon={SparklesIcon}

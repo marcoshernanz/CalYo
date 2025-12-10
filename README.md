@@ -16,6 +16,8 @@
 - [ ] Fix getWeekMeals
 - [ ] Test selectCandidates.tsx/ensureSelection
 
+- [ ] Check fix meal rate limits
+
 - [ ] Food only nutrients (remove macro-nutrients)
 - [ ] Food nutrients -> nutrientsPer100g
 
