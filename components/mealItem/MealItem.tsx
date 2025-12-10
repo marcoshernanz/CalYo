@@ -12,6 +12,9 @@ import {
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 import scaleMacrosPer100g from "@/lib/utils/scaleMacrosPer100g";
 import MealMacros from "../meal/MealMacros";
+import SafeArea from "../ui/SafeArea";
+import Carousel from "../ui/Carousel";
+import MealMicros from "../meal/MealMicros";
 
 type Props = {
   name?: string;
@@ -28,7 +31,7 @@ export default function MealItem({ name, mealItem, loading }: Props) {
     fat: 0,
     carbs: 0,
   };
-  const macros = scaleMacrosPer100g({
+  const totalMacros = scaleMacrosPer100g({
     grams: mealItem?.grams ?? 0,
     macrosPer100g,
   });
@@ -42,10 +45,18 @@ export default function MealItem({ name, mealItem, loading }: Props) {
 
       <ScreenMainScrollView
         scrollViewProps={{ onScroll }}
-        safeAreaProps={{ edges: ["left", "right", "bottom"] }}
+        safeAreaProps={{ edges: [] }}
       >
-        <ScreenMainTitle title={name} loading={loading} />
-        <MealMacros loading={loading} macros={macros} />
+        <SafeArea edges={["left", "right"]} style={{ flex: 0 }}>
+          <ScreenMainTitle title={name} loading={loading} />
+        </SafeArea>
+        <Carousel style={{ paddingBottom: 32 }}>
+          <MealMacros macros={totalMacros} loading={loading} />
+          <MealMicros
+            micros={{ score: 67, fiber: 15, sugar: 40, sodium: 1500 }}
+            loading={loading}
+          />
+        </Carousel>
       </ScreenMainScrollView>
     </ScreenMain>
   );
