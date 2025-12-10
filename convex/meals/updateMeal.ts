@@ -5,10 +5,12 @@ import { mealsFields } from "../tables/meals";
 import { partial } from "convex-helpers/validators";
 import logError from "@/lib/utils/logError";
 
+const { userId, totalMacros, totalNutrients, ...updatableFields } = mealsFields;
+
 const updateMeal = mutation({
   args: {
     id: v.id("meals"),
-    meal: v.object(partial(mealsFields)),
+    meal: v.object(partial(updatableFields)),
   },
   handler: async (ctx, { id, meal }): Promise<null> => {
     try {
@@ -18,12 +20,6 @@ const updateMeal = mutation({
       const existingMeal = await ctx.db.get(id);
       if (!existingMeal) throw new Error("Not found");
       if (existingMeal.userId !== userId) throw new Error("Forbidden");
-
-      if (meal.totalMacros || meal.totalNutrients) {
-        throw new Error(
-          "Updating totalMacros or totalNutrients is not allowed"
-        );
-      }
 
       await ctx.db.patch(id, meal);
       return null;
