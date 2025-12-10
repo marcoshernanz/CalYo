@@ -10,7 +10,7 @@ import {
   ScreenHeaderTitle,
 } from "../ui/screen/ScreenHeader";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
-import scaleMacrosPer100g from "@/lib/utils/scaleMacrosPer100g";
+import scaleMacrosPer100g from "@/lib/utils/nutrition/scaleMacrosPer100g";
 import MealMacros from "../meal/MealMacros";
 import SafeArea from "../ui/SafeArea";
 import Carousel from "../ui/Carousel";

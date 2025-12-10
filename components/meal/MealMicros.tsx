@@ -7,15 +7,11 @@ import SugarIcon from "../icons/micros/SugarIcon";
 import SodiumIcon from "../icons/micros/SodiumIcon";
 import HealthIcon from "../icons/micros/HealthIcon";
 import { Link } from "expo-router";
+import { MicrosType } from "@/convex/tables/mealItems";
 
 type Props = {
   loading: boolean;
-  micros?: {
-    score: number;
-    fiber: number;
-    sugar: number;
-    sodium: number;
-  };
+  micros?: MicrosType;
 };
 
 export default function MealMicros({ loading, micros }: Props) {

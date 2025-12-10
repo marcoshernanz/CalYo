@@ -14,6 +14,7 @@ import SugarIcon from "../icons/micros/SugarIcon";
 import SodiumIcon from "../icons/micros/SodiumIcon";
 import HealthIcon from "../icons/micros/HealthIcon";
 import { Link } from "expo-router";
+import { MicrosType } from "@/convex/tables/mealItems";
 
 type Micro = {
   name: string;
@@ -24,12 +25,7 @@ type Micro = {
 };
 
 type Props = {
-  totals: {
-    score: number;
-    fiber: number;
-    sugar: number;
-    sodium: number;
-  };
+  totals: MicrosType;
 };
 
 export default function HomeMicroSummary({ totals }: Props) {
