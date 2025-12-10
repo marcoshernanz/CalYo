@@ -110,7 +110,7 @@ export default function MealScreen() {
     !!meal.totalMacros &&
     !!meal.totalNutrients;
 
-  const items = isDone // TODO
+  const items = isDone
     ? mealItems.map((item) => ({
         id: item._id,
         name: item.food.name.es ?? item.food.name.en,

@@ -32,7 +32,7 @@ type Props = {
   mealId?: Id<"meals">;
   totalMacros?: Doc<"meals">["totalMacros"];
   totalNutrients?: Doc<"meals">["totalNutrients"];
-  mealItems?: React.ComponentProps<typeof MealIngredients>["items"]; // TODO
+  mealItems?: React.ComponentProps<typeof MealIngredients>["items"];
 };
 
 export default function Meal({
@@ -40,6 +40,7 @@ export default function Meal({
   name,
   mealId,
   totalMacros,
+  totalNutrients,
   mealItems,
 }: Props) {
   const router = useRouter();
@@ -76,7 +77,7 @@ export default function Meal({
         safeAreaProps={{ edges: ["left", "right"] }}
       >
         <ScreenMainTitle title={name} loading={loading} />
-        <MealMacros loading={loading} totals={totals} />
+        <MealMacros loading={loading} macros={totalMacros} />
         <MealIngredients loading={loading} items={mealItems} />
       </ScreenMainScrollView>
 

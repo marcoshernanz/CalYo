@@ -8,36 +8,32 @@ import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
 import FatIcon from "../icons/macros/FatIcon";
 import Button from "../ui/Button";
+import { Doc } from "@/convex/_generated/dataModel";
 
 type Props = {
   loading: boolean;
-  totals?: {
-    calories: number;
-    protein: number;
-    fat: number;
-    carbs: number;
-  };
+  macros?: Doc<"meals">["totalMacros"];
 };
 
-export default function MealMacros({ loading, totals }: Props) {
+export default function MealMacros({ loading, macros }: Props) {
   const displayMacros = [
     {
       label: "Hidratos",
       color: getColor("carb"),
       Icon: CarbIcon,
-      value: totals?.carbs ?? 0,
+      value: macros?.carbs ?? 0,
     },
     {
       label: "Proteína",
       color: getColor("protein"),
       Icon: ProteinIcon,
-      value: totals?.protein ?? 0,
+      value: macros?.protein ?? 0,
     },
     {
       label: "Grasas",
       color: getColor("fat"),
       Icon: FatIcon,
-      value: totals?.fat ?? 0,
+      value: macros?.fat ?? 0,
     },
   ];
 
@@ -57,7 +53,7 @@ export default function MealMacros({ loading, totals }: Props) {
               skeletonStyle={{ height: 24, width: 100, borderRadius: 6 }}
             >
               <Text size="24" weight="700">
-                {totals?.calories} kcal
+                {macros?.calories} kcal
               </Text>
             </WithSkeleton>
           </View>
