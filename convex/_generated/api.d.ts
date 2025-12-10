@@ -28,11 +28,9 @@ import type * as meals_analyze_processDetectedItems from "../meals/analyze/proce
 import type * as meals_analyze_searchFdcCandidates from "../meals/analyze/searchFdcCandidates.js";
 import type * as meals_analyze_selectCandidates from "../meals/analyze/selectCandidates.js";
 import type * as meals_analyze_translateFood from "../meals/analyze/translateFood.js";
-import type * as meals_clearMealItems from "../meals/clearMealItems.js";
 import type * as meals_createMeal from "../meals/createMeal.js";
 import type * as meals_getMeal from "../meals/getMeal.js";
 import type * as meals_getWeekMeals from "../meals/getWeekMeals.js";
-import type * as meals_insertMealItem from "../meals/insertMealItem.js";
 import type * as meals_replaceMealItems from "../meals/replaceMealItems.js";
 import type * as meals_updateMeal from "../meals/updateMeal.js";
 import type * as migrations from "../migrations.js";
@@ -85,11 +83,9 @@ declare const fullApi: ApiFromModules<{
   "meals/analyze/searchFdcCandidates": typeof meals_analyze_searchFdcCandidates;
   "meals/analyze/selectCandidates": typeof meals_analyze_selectCandidates;
   "meals/analyze/translateFood": typeof meals_analyze_translateFood;
-  "meals/clearMealItems": typeof meals_clearMealItems;
   "meals/createMeal": typeof meals_createMeal;
   "meals/getMeal": typeof meals_getMeal;
   "meals/getWeekMeals": typeof meals_getWeekMeals;
-  "meals/insertMealItem": typeof meals_insertMealItem;
   "meals/replaceMealItems": typeof meals_replaceMealItems;
   "meals/updateMeal": typeof meals_updateMeal;
   migrations: typeof migrations;
