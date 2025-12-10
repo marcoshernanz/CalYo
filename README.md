@@ -16,6 +16,7 @@
 - [ ] Fix getWeekMeals
 - [ ] Test selectCandidates.tsx/ensureSelection
 
+- [ ] Fix home screen
 - [ ] Check fix meal rate limits
 
 - [ ] Food only nutrients (remove macro-nutrients)

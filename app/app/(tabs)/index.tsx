@@ -24,10 +24,10 @@ export default function HomeScreen() {
   const weekTotals = weekMeals.map((meals) =>
     meals.reduce(
       (acc, meal) => ({
-        calories: acc.calories + (meal.totals?.calories ?? 0),
-        protein: acc.protein + (meal.totals?.protein ?? 0),
-        carbs: acc.carbs + (meal.totals?.carbs ?? 0),
-        fat: acc.fat + (meal.totals?.fat ?? 0),
+        calories: acc.calories + (meal.totalMacros?.calories ?? 0),
+        protein: acc.protein + (meal.totalMacros?.protein ?? 0),
+        carbs: acc.carbs + (meal.totalMacros?.carbs ?? 0),
+        fat: acc.fat + (meal.totalMacros?.fat ?? 0),
       }),
       { calories: 0, protein: 0, carbs: 0, fat: 0 }
     )
