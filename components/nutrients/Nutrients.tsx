@@ -112,15 +112,21 @@ const nutritionSections: NutritionSection[] = [
 
 type MetricProps = {
   metric: MetricType;
+  value: number;
+  target: [number, number];
+  max: number;
   themeColor: string;
   progress: SharedValue<number>;
 };
 
-function Metric({ metric, themeColor, progress }: MetricProps) {
-  const value = 60; // TODO
-  const max = 100; // TODO
-  const target = [50, 80]; // TODO
-
+function Metric({
+  metric,
+  value,
+  target,
+  max,
+  themeColor,
+  progress,
+}: MetricProps) {
   const valuePercent = (value / max) * 100;
   const targetPercent = [(target[0] / max) * 100, (target[1] / max) * 100];
 
@@ -203,6 +209,9 @@ export default function Nutrients({ nutrients }: Props) {
                   <Metric
                     key={`summary-metric-${metric.label}`}
                     metric={metric}
+                    value={nutrients?.[section.id][metric.id] ?? 0}
+                    target={[65, 80]}
+                    max={100}
                     themeColor={section.themeColor}
                     progress={progress}
                   />
