@@ -1,4 +1,10 @@
-import { StyleSheet, useWindowDimensions, View, Pressable } from "react-native";
+import {
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  Pressable,
+  ViewStyle,
+} from "react-native";
 import Animated, {
   interpolateColor,
   useAnimatedScrollHandler,
@@ -13,9 +19,10 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 type Props = {
   children: React.ReactNode;
+  style?: ViewStyle;
 };
 
-export default function Carousel({ children }: Props) {
+export default function Carousel({ children, style }: Props) {
   const dimensions = useWindowDimensions();
   const scrollX = useSharedValue(0);
   const scrollViewRef = useRef<Animated.ScrollView>(null);
@@ -28,7 +35,7 @@ export default function Carousel({ children }: Props) {
   });
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Animated.ScrollView
         horizontal
         ref={scrollViewRef}
