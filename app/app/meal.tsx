@@ -10,7 +10,7 @@ import { Toast } from "@/components/ui/Toast";
 import { z } from "zod";
 import logError from "@/lib/utils/logError";
 import processLibraryImage from "@/lib/image/processLibraryImage";
-import cropImageToDeviceAspect from "@/lib/image/cropImageToDeviceAspect";
+import cropImageToAspect from "@/lib/image/cropImageToAspect";
 
 export default function MealScreen() {
   const dimensions = useWindowDimensions();
@@ -46,7 +46,7 @@ export default function MealScreen() {
 
     try {
       const croppedUri = fromCamera
-        ? await cropImageToDeviceAspect({ uri: photoUri, dimensions })
+        ? await cropImageToAspect({ uri: photoUri, dimensions })
         : await processLibraryImage(photoUri);
 
       const uploadUrl = await generateUploadUrl();

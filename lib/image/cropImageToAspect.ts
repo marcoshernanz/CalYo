@@ -7,10 +7,7 @@ type Params = {
   dimensions: ScaledSize;
 };
 
-export default async function cropImageToDeviceAspect({
-  uri,
-  dimensions,
-}: Params) {
+export default async function cropImageToAspect({ uri, dimensions }: Params) {
   const loaderContext = ImageManipulator.manipulate(uri);
   let baseImage: ImageRef | null = null;
 
