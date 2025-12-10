@@ -10,6 +10,7 @@
 - [ ] Meal totals calculation in updateMeal
 - [ ] Lib functions inside convex folder so it's not shipped to the client?
 - [ ] getFoodNutrients units
+- [ ] Calories color
 
 - [ ] Refactor meal.tsx
 - [ ] Fix getMeal

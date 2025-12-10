@@ -1,15 +1,12 @@
-import WithSkeleton from "../ui/WithSkeleton";
 import { StyleSheet, View } from "react-native";
-import Card from "../ui/Card";
 import getColor from "@/lib/ui/getColor";
 import { FlameIcon } from "lucide-react-native";
-import Text from "../ui/Text";
 import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
 import FatIcon from "../icons/macros/FatIcon";
-import Button from "../ui/Button";
 import { Doc } from "@/convex/_generated/dataModel";
 import MealSummaryCard from "./MealSummaryCard";
+import MealSummaryCardBig from "./MealSummaryCardBig";
 
 type Props = {
   loading: boolean;
@@ -23,44 +20,36 @@ export default function MealMacros({ loading, macros }: Props) {
       color: getColor("carb"),
       Icon: CarbIcon,
       value: macros?.carbs ?? 0,
+      unit: "g",
     },
     {
       label: "Proteína",
       color: getColor("protein"),
       Icon: ProteinIcon,
       value: macros?.protein ?? 0,
+      unit: "g",
     },
     {
       label: "Grasas",
       color: getColor("fat"),
       Icon: FatIcon,
       value: macros?.fat ?? 0,
+      unit: "g",
     },
   ];
 
   return (
     <View style={styles.container}>
-      <Button variant="base" size="base">
-        <Card style={styles.caloriesCard}>
-          <View style={styles.caloriesIconContainer}>
-            <FlameIcon />
-          </View>
-          <View style={styles.caloriesTextContainer}>
-            <Text size="12" color={getColor("mutedForeground")}>
-              Calorías
-            </Text>
-            <WithSkeleton
-              loading={loading}
-              skeletonStyle={{ height: 24, width: 100, borderRadius: 6 }}
-            >
-              <Text size="24" weight="700">
-                {macros?.calories} kcal
-              </Text>
-            </WithSkeleton>
-          </View>
-        </Card>
-      </Button>
-
+      <MealSummaryCardBig
+        item={{
+          label: "Calorías",
+          Icon: FlameIcon,
+          color: getColor("foreground"),
+          value: macros?.calories ?? 0,
+          unit: "kcal",
+        }}
+        loading={loading}
+      />
       <View style={styles.macrosContainer}>
         {displayMacros.map((macro, index) => (
           <MealSummaryCard

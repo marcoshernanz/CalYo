@@ -55,7 +55,7 @@ export default function HomeSummaryCardBig({ item, progress, onPress }: Props) {
             size={80}
           />
           <View style={styles.cardIconContainer}>
-            <item.Icon size={20} strokeWidth={2.25} />
+            <item.Icon size={20} strokeWidth={2.25} color={item.color} />
           </View>
         </View>
       </Card>
