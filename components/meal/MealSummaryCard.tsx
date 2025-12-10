@@ -23,14 +23,14 @@ export default function MealSummaryCard({ macro, loading }: Props) {
       // key={`macro-${macro.label}-${index}`}
       variant="base"
       size="base"
-      style={styles.macroCardButton}
+      style={styles.cardButton}
     >
-      <Card style={styles.macroCard}>
+      <Card style={styles.card}>
         <Text size="12" color={getColor("mutedForeground")}>
           {macro.label}
         </Text>
-        <View style={styles.macroValueContainer}>
-          <View style={styles.macroIconContainer}>
+        <View style={styles.valueContainer}>
+          <View style={styles.iconContainer}>
             <macro.Icon size={14} color={macro.color} />
           </View>
           <WithSkeleton
@@ -48,20 +48,20 @@ export default function MealSummaryCard({ macro, loading }: Props) {
 }
 
 const styles = StyleSheet.create({
-  macroCardButton: {
+  cardButton: {
     flex: 1,
   },
-  macroCard: {
+  card: {
     flex: 1,
     padding: 12,
     gap: 8,
   },
-  macroValueContainer: {
+  valueContainer: {
     flexDirection: "row",
     gap: 4,
     alignItems: "center",
   },
-  macroIconContainer: {
+  iconContainer: {
     height: 22,
     width: 22,
     borderRadius: 16,
