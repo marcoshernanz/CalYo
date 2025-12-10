@@ -40,7 +40,6 @@ const replaceMealItems = mutation({
       other: {},
     };
 
-    // Optimization: Fetch all foods in parallel
     const uniqueFoodIds = [...new Set(foods.map((f) => f.foodId))];
     const foodDocs = await Promise.all(
       uniqueFoodIds.map((id) => ctx.db.get(id))
