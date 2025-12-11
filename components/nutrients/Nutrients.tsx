@@ -22,6 +22,14 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
+const unitScaleMap: Record<string, number> = {
+  g: 1,
+  mg: 1000,
+  µg: 1000000,
+  ml: 1,
+  IU: 1,
+};
+
 type MetricProps = {
   metric: NutrientMetric;
   value: number;
@@ -30,7 +38,8 @@ type MetricProps = {
 };
 
 function Metric({ metric, value, themeColor, progress }: MetricProps) {
-  const valuePercent = (value / metric.max) * 100;
+  const scaledValue = value * unitScaleMap[metric.unit];
+  const valuePercent = (scaledValue / metric.max) * 100;
   const targetPercent = [
     (metric.target[0] / metric.max) * 100,
     (metric.target[1] / metric.max) * 100,
