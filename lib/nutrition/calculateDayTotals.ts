@@ -2,7 +2,7 @@ import { addNutrients, getEmptyNutrients } from "@/config/nutrientsConfig";
 import { Doc } from "@/convex/_generated/dataModel";
 
 export function calculateDayTotals(meals: Doc<"meals">[]) {
-  return meals.reduce(
+  const totals = meals.reduce(
     (acc, meal) => ({
       macros: {
         calories: acc.macros.calories + (meal.totalMacros?.calories ?? 0),
@@ -11,7 +11,9 @@ export function calculateDayTotals(meals: Doc<"meals">[]) {
         fat: acc.macros.fat + (meal.totalMacros?.fat ?? 0),
       },
       micros: {
-        score: acc.micros.score + (meal.totalMicros?.score ?? 0),
+        score:
+          acc.micros.score +
+          (meal.totalMicros?.score ?? 0) * (meal.totalMacros?.calories ?? 0),
         fiber: acc.micros.fiber + (meal.totalMicros?.fiber ?? 0),
         sugar: acc.micros.sugar + (meal.totalMicros?.sugar ?? 0),
         sodium: acc.micros.sodium + (meal.totalMicros?.sodium ?? 0),
@@ -26,4 +28,12 @@ export function calculateDayTotals(meals: Doc<"meals">[]) {
       nutrients: getEmptyNutrients(),
     }
   );
+
+  if (totals.macros.calories > 0) {
+    totals.micros.score /= totals.macros.calories;
+  } else {
+    totals.micros.score = 0;
+  }
+
+  return totals;
 }

@@ -46,6 +46,7 @@ const replaceMealItems = mutation({
       sodium: 0,
     };
     let totalNutrients: NutrientsType = getEmptyNutrients();
+    let totalWeightedScore = 0;
 
     const uniqueFoodIds = [...new Set(foods.map((f) => f.foodId))];
     const foodDocs = await Promise.all(
@@ -73,19 +74,24 @@ const replaceMealItems = mutation({
       });
 
       const ratio = grams / 100;
+      const itemCalories = macrosPer100g.calories * ratio;
 
-      totalMacros.calories += macrosPer100g.calories * ratio;
+      totalMacros.calories += itemCalories;
       totalMacros.protein += macrosPer100g.protein * ratio;
       totalMacros.fat += macrosPer100g.fat * ratio;
       totalMacros.carbs += macrosPer100g.carbs * ratio;
 
-      totalMicros.score += microsPer100g.score * ratio;
+      totalWeightedScore += microsPer100g.score * itemCalories;
       totalMicros.fiber += microsPer100g.fiber * ratio;
       totalMicros.sugar += microsPer100g.sugar * ratio;
       totalMicros.sodium += microsPer100g.sodium * ratio;
 
       const scaledNutrients = multiplyNutrients(nutrientsPer100g, ratio);
       totalNutrients = addNutrients(totalNutrients, scaledNutrients);
+    }
+
+    if (totalMacros.calories > 0) {
+      totalMicros.score = totalWeightedScore / totalMacros.calories;
     }
 
     await Promise.all(
