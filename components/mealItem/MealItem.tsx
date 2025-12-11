@@ -71,7 +71,8 @@ export default function MealItem({
         <Carousel style={{ paddingBottom: 32 }}>
           <MealMacros macros={totalMacros} loading={loading} />
           <MealMicros
-            mealItemId={mealItemId}
+            source="mealItem"
+            id={mealItemId}
             micros={totalMicros}
             loading={loading}
           />

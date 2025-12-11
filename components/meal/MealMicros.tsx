@@ -10,13 +10,16 @@ import { Link } from "expo-router";
 import { MicrosType } from "@/convex/tables/mealItems";
 import { Id } from "@/convex/_generated/dataModel";
 
+type SourceType =
+  | { source: "meal"; id?: Id<"meals"> }
+  | { source: "mealItem"; id?: Id<"mealItems"> };
+
 type Props = {
-  mealItemId: Id<"mealItems">;
   loading: boolean;
   micros?: MicrosType;
-};
+} & SourceType;
 
-export default function MealMicros({ mealItemId, loading, micros }: Props) {
+export default function MealMicros({ source, id, loading, micros }: Props) {
   const displayMicros = [
     {
       label: "Fibra",
@@ -44,10 +47,17 @@ export default function MealMicros({ mealItemId, loading, micros }: Props) {
   return (
     <View style={styles.container}>
       <Link
-        href={{
-          pathname: "/app/(mealItem)/mealItemNutrients",
-          params: { mealItemId },
-        }}
+        href={
+          source === "meal"
+            ? {
+                pathname: "/app/(meal)/mealNutrients",
+                params: { mealId: id },
+              }
+            : {
+                pathname: "/app/(mealItem)/mealItemNutrients",
+                params: { mealItemId: id },
+              }
+        }
         asChild
       >
         <MealSummaryCardBig
