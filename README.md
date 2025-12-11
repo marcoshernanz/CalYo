@@ -15,6 +15,7 @@
 - [ ] Nutrition title (date, meal name, meal item name)
 
 - [ ] Health average instead of sum
+- [ ] Make meal analysis faster
 
 - [ ] Clean replaceMealItems and scaleNutrientsPer100g
 - [ ] zeroMacros, zeroMicros, zeroNutrients
