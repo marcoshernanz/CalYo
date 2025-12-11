@@ -8,6 +8,7 @@ import {
   ScreenMainScrollView,
 } from "@/components/ui/screen/ScreenMain";
 import Text from "@/components/ui/Text";
+import { NutrientMetric, nutrientsData } from "@/config/nutrientsConfig";
 import { NutrientsType } from "@/convex/tables/mealItems";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 import getColor from "@/lib/ui/getColor";
@@ -21,114 +22,19 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-type MetricType = {
-  id: string | null;
-  label: string;
-  unit: string;
-};
-
-type NutritionSection = {
-  id: string;
-  categoryLabel: string;
-  themeColor: string;
-  metrics: MetricType[];
-};
-
-const nutritionSections: NutritionSection[] = [
-  {
-    id: "carbs",
-    categoryLabel: "Carbohidratos y Azúcares",
-    themeColor: getColor("carb"),
-    metrics: [
-      { id: "total", label: "Hidratos Totales", unit: "g" },
-      { id: "net", label: "Hidratos Netos", unit: "g" },
-      { id: "fiber", label: "Fibra", unit: "g" },
-      { id: "sugar", label: "Azúcares Totales", unit: "g" },
-    ],
-  },
-  {
-    id: "fats",
-    categoryLabel: "Grasas y Lípidos",
-    themeColor: getColor("fat"),
-    metrics: [
-      { id: "total", label: "Grasas Totales", unit: "g" },
-      { id: "saturated", label: "Saturadas", unit: "g" },
-      { id: "monounsaturated", label: "Monoinsaturadas", unit: "g" },
-      { id: "polyunsaturated", label: "Poliinsaturadas", unit: "g" },
-      { id: "trans", label: "Trans", unit: "g" },
-      { id: "cholesterol", label: "Colesterol", unit: "mg" },
-    ],
-  },
-  {
-    id: "protein",
-    categoryLabel: "Proteínas",
-    themeColor: getColor("protein"),
-    metrics: [
-      { id: "total", label: "Proteína Total", unit: "g" },
-      { id: "leucine", label: "Leucina", unit: "g" },
-      { id: "isoleucine", label: "Isoleucina", unit: "g" },
-      { id: "valine", label: "Valina", unit: "g" },
-      { id: "tryptophan", label: "Triptófano", unit: "g" },
-    ],
-  },
-  {
-    id: "vitamins",
-    categoryLabel: "Vitaminas",
-    themeColor: getColor("purple"),
-    metrics: [
-      { id: "a", label: "Vitamina A", unit: "µg" },
-      { id: "b12", label: "Vitamina B12", unit: "µg" },
-      { id: "b9", label: "Folato (B9)", unit: "µg" },
-      { id: "c", label: "Vitamina C", unit: "mg" },
-      { id: "d", label: "Vitamina D", unit: "IU" },
-      { id: "e", label: "Vitamina E", unit: "mg" },
-      { id: "k", label: "Vitamina K", unit: "µg" },
-    ],
-  },
-  {
-    id: "minerals",
-    categoryLabel: "Minerales",
-    themeColor: getColor("blue"),
-    metrics: [
-      { id: "sodium", label: "Sodio", unit: "mg" },
-      { id: "potassium", label: "Potasio", unit: "mg" },
-      { id: "magnesium", label: "Magnesio", unit: "mg" },
-      { id: "calcium", label: "Calcio", unit: "mg" },
-      { id: "iron", label: "Hierro", unit: "mg" },
-      { id: "zinc", label: "Zinc", unit: "mg" },
-    ],
-  },
-  {
-    id: "other",
-    categoryLabel: "Otros",
-    themeColor: getColor("foreground"),
-    metrics: [
-      { id: "water", label: "Agua", unit: "g" },
-      { id: "caffeine", label: "Cafeína", unit: "mg" },
-      { id: "alcohol", label: "Alcohol", unit: "g" },
-    ],
-  },
-];
-
 type MetricProps = {
-  metric: MetricType;
+  metric: NutrientMetric;
   value: number;
-  target: [number, number];
-  max: number;
   themeColor: string;
   progress: SharedValue<number>;
 };
 
-function Metric({
-  metric,
-  value,
-  target,
-  max,
-  themeColor,
-  progress,
-}: MetricProps) {
-  const valuePercent = (value / max) * 100;
-  const targetPercent = [(target[0] / max) * 100, (target[1] / max) * 100];
+function Metric({ metric, value, themeColor, progress }: MetricProps) {
+  const valuePercent = (value / metric.max) * 100;
+  const targetPercent = [
+    (metric.target[0] / metric.max) * 100,
+    (metric.target[1] / metric.max) * 100,
+  ];
 
   const animatedStyles = {
     progressBar: useAnimatedStyle(() => ({
@@ -196,7 +102,7 @@ export default function Nutrients({ nutrients }: Props) {
         safeAreaProps={{ edges: ["left", "right", "bottom"] }}
       >
         <View style={styles.container}>
-          {nutritionSections.map((section) => (
+          {nutrientsData.map((section) => (
             <View
               key={`micro-${section.id}-${section.categoryLabel}`}
               style={styles.section}
@@ -205,17 +111,24 @@ export default function Nutrients({ nutrients }: Props) {
                 {section.categoryLabel}
               </Text>
               <View style={styles.metricsContainer}>
-                {section.metrics.map((metric) => (
-                  <Metric
-                    key={`summary-metric-${metric.label}`}
-                    metric={metric}
-                    value={nutrients?.[section.id][metric.id] ?? 0}
-                    target={[65, 80]}
-                    max={100}
-                    themeColor={section.themeColor}
-                    progress={progress}
-                  />
-                ))}
+                {section.metrics.map((metric) => {
+                  const value =
+                    (
+                      nutrients?.[section.id] as
+                        | Record<string, number | undefined>
+                        | undefined
+                    )?.[metric.id] ?? 0;
+
+                  return (
+                    <Metric
+                      key={`summary-metric-${metric.label}`}
+                      metric={metric}
+                      value={value}
+                      themeColor={section.themeColor}
+                      progress={progress}
+                    />
+                  );
+                })}
               </View>
             </View>
           ))}
