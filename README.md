@@ -1,22 +1,15 @@
-- [ ] Showcase bad vs good micros
+- [ ] Calories color
+- [ ] Health score calculation
+- [ ] Nutrition title (date, meal name, meal item name)
+- [ ] Health average instead of sum
 
 - [ ] Micro-nutrients
-- [ ] Micro targets calculation
-- [ ] Micro calculation
-- [ ] Health score calculation
 - [ ] Circular progress animation stopping too soon
-- [ ] Get micro-nutrients
-- [ ] Recalculate meal totals on Fix Meal?
 - [ ] Nutrients text with current and target
-- [ ] Nutrients for each meal
-- [ ] Meal totals calculation in updateMeal
 - [ ] Lib functions inside convex folder so it's not shipped to the client?
-- [ ] getFoodNutrients units
-- [ ] Calories color
 - [ ] Refactor routes
-- [ ] Nutrition title (date, meal name, meal item name)
+- [ ] Showcase bad vs good micros
 
-- [ ] Health average instead of sum
 - [ ] Make meal analysis faster
 
 - [ ] Clean replaceMealItems and scaleNutrientsPer100g
@@ -26,9 +19,6 @@
 - [ ] Fix getMeal
 - [ ] Fix getWeekMeals
 - [ ] Test selectCandidates.tsx/ensureSelection
-
-- [ ] Fix home screen
-- [ ] Check fix meal rate limits
 
 - [ ] Personalized nutrient targets
 
