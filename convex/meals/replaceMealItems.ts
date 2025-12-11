@@ -94,6 +94,7 @@ const replaceMealItems = mutation({
 
     await ctx.db.patch(mealId, {
       totalMacros,
+      totalMicros,
       totalNutrients,
     });
 
