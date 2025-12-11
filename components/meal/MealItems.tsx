@@ -87,7 +87,7 @@ export default function MealItems({ items = [], loading }: Props) {
                       </Text>
                       <Text size="14">&middot;</Text>
                       <Text size="14" color={getColor("mutedForeground")}>
-                        {item?.calories} kcal
+                        {Math.round(item?.calories ?? 0)} kcal
                       </Text>
                     </View>
                   </WithSkeleton>
@@ -102,7 +102,7 @@ export default function MealItems({ items = [], loading }: Props) {
                     }}
                   >
                     <Text size="14" weight="500">
-                      {item?.grams} g
+                      {Math.round(item?.grams ?? 0)} g
                     </Text>
                   </WithSkeleton>
                 </Card>
