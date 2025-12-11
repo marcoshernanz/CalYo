@@ -1,6 +1,4 @@
 - [ ] Health score calculation
-- [ ] Nutrition title (date, meal name, meal item name)
-- [ ] Health average instead of sum
 
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
@@ -19,6 +17,7 @@
 - [ ] Fix getWeekMeals
 - [ ] Test selectCandidates.tsx/ensureSelection
 
+- [ ] Nutrients screen loading (title & bars)
 - [ ] Personalized nutrient targets
 
 - [ ] Food only nutrients (remove macro-nutrients)
@@ -45,7 +44,11 @@
 - [ ] Only foundation foods in AI picture?
 - [ ] Character limit in fix-results feature
 
-- [ ] Link prefetch
+- [ ] Link prefetch
+
+- [ ] Delete account setting
+- [ ] Log food with text
+
 
 ---
 
