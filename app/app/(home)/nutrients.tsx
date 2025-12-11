@@ -1,22 +1,12 @@
 import Nutrients from "@/components/nutrients/Nutrients";
-import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
-import scaleNutrientsPer100g from "@/lib/utils/nutrition/scaleNutrientsPer100g";
-import { useQuery } from "convex/react";
+import { NutrientsType } from "@/convex/tables/mealItems";
 import { useLocalSearchParams } from "expo-router";
 
 export default function NutrientsScreen() {
-  const { mealItemId } = useLocalSearchParams<{
-    mealItemId: Id<"mealItems">;
-  }>();
-  const mealItem =
-    useQuery(api.mealItems.getMealItem.default, { mealItemId }) ?? undefined;
-  const nutrients = mealItem
-    ? scaleNutrientsPer100g({
-        grams: mealItem.grams,
-        nutrientsPer100g: mealItem.nutrientsPer100g,
-      })
+  const { nutrients } = useLocalSearchParams<{ nutrients: string }>();
+  const parsedNutrients = nutrients
+    ? (JSON.parse(nutrients) as NutrientsType)
     : undefined;
 
-  return <Nutrients nutrients={nutrients} />;
+  return <Nutrients nutrients={parsedNutrients} />;
 }

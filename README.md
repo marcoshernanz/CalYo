@@ -14,6 +14,8 @@
 - [ ] Refactor routes
 - [ ] Nutrition title (date, meal name, meal item name)
 
+- [ ] Health average instead of sum
+
 - [ ] Clean replaceMealItems and scaleNutrientsPer100g
 - [ ] zeroMacros, zeroMicros, zeroNutrients
 

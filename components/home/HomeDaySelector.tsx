@@ -98,28 +98,31 @@ function DaySelectorItem({
 type Props = {
   selectedDay: number;
   setSelectedDay: Dispatch<SetStateAction<number>>;
-  weekTotals: MacrosType[];
+  weekTotalMacros: MacrosType[];
 };
 
 export default function HomeDaySelector({
   selectedDay,
   setSelectedDay,
-  weekTotals,
+  weekTotalMacros,
 }: Props) {
   const start = startOfWeek(new Date(), { weekStartsOn: 1 });
   const weekDays: DayData[] = Array.from({ length: 7 }, (_, index) => {
     const date = addDays(start, index);
-    const calories = Math.max(2000, macrosToKcal(weekTotals.at(index) ?? {}));
+    const calories = Math.max(
+      2000,
+      macrosToKcal(weekTotalMacros.at(index) ?? {})
+    );
     const carbsRatio = calcRatio(
-      macrosToKcal({ carbs: weekTotals.at(index)?.carbs }),
+      macrosToKcal({ carbs: weekTotalMacros.at(index)?.carbs }),
       calories
     );
     const proteinRatio = calcRatio(
-      macrosToKcal({ protein: weekTotals.at(index)?.protein }),
+      macrosToKcal({ protein: weekTotalMacros.at(index)?.protein }),
       calories
     );
     const fatRatio = calcRatio(
-      macrosToKcal({ fat: weekTotals.at(index)?.fat }),
+      macrosToKcal({ fat: weekTotalMacros.at(index)?.fat }),
       calories
     );
 

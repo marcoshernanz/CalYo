@@ -27,10 +27,10 @@ type Macro = {
 };
 
 type Props = {
-  totals: MacrosType;
+  totalMacros: MacrosType;
 };
 
-export default function HomeMacroSummary({ totals }: Props) {
+export default function HomeMacroSummary({ totalMacros }: Props) {
   const targets =
     useQuery(api.profiles.getProfile.default)?.targets ??
     profilesConfig.defaultValues.targets;
@@ -40,21 +40,21 @@ export default function HomeMacroSummary({ totals }: Props) {
   const macros: Macro[] = [
     {
       name: "Hidratos",
-      value: totals.carbs,
+      value: totalMacros.carbs,
       target: targets.carbs,
       Icon: CarbIcon,
       color: getColor("carb"),
     },
     {
       name: "Proteína",
-      value: totals.protein,
+      value: totalMacros.protein,
       target: targets.protein,
       Icon: ProteinIcon,
       color: getColor("protein"),
     },
     {
       name: "Grasas",
-      value: totals.fat,
+      value: totalMacros.fat,
       target: targets.fat,
       Icon: FatIcon,
       color: getColor("fat"),
@@ -75,7 +75,7 @@ export default function HomeMacroSummary({ totals }: Props) {
       <HomeSummaryCardBig
         item={{
           name: "Calorías",
-          value: totals.calories,
+          value: totalMacros.calories,
           target: targets.calories,
           Icon: CalorieIcon,
           color: getColor("foreground"),

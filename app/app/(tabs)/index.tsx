@@ -5,6 +5,7 @@ import HomeMicroSummary from "@/components/home/HomeMicroSummary";
 import HomeRecentlyLogged from "@/components/home/HomeRecentlyLogged";
 import Carousel from "@/components/ui/Carousel";
 import SafeArea from "@/components/ui/SafeArea";
+import { addNutrients, getEmptyNutrients } from "@/config/nutrientsConfig";
 import { api } from "@/convex/_generated/api";
 import getColor from "@/lib/ui/getColor";
 import { useQuery } from "convex/react";
@@ -23,7 +24,7 @@ export default function HomeScreen() {
   const weekMeals = rawWeekMeals ?? Array.from({ length: 7 }, () => []);
   const dayMeals = weekMeals.at(selectedDay) ?? [];
 
-  const weekTotals = weekMeals.map((meals) =>
+  const weekTotalMacros = weekMeals.map((meals) =>
     meals.reduce(
       (acc, meal) => ({
         calories: acc.calories + (meal.totalMacros?.calories ?? 0),
@@ -35,12 +36,30 @@ export default function HomeScreen() {
     )
   );
 
-  const dayTotals = weekTotals.at(selectedDay) ?? {
-    calories: 0,
-    protein: 0,
-    carbs: 0,
-    fat: 0,
-  };
+  const dayTotals = dayMeals.reduce(
+    (acc, meal) => ({
+      macros: {
+        calories: acc.macros.calories + (meal.totalMacros?.calories ?? 0),
+        protein: acc.macros.protein + (meal.totalMacros?.protein ?? 0),
+        carbs: acc.macros.carbs + (meal.totalMacros?.carbs ?? 0),
+        fat: acc.macros.fat + (meal.totalMacros?.fat ?? 0),
+      },
+      micros: {
+        score: acc.micros.score + (meal.totalMicros?.score ?? 0),
+        fiber: acc.micros.fiber + (meal.totalMicros?.fiber ?? 0),
+        sugar: acc.micros.sugar + (meal.totalMicros?.sugar ?? 0),
+        sodium: acc.micros.sodium + (meal.totalMicros?.sodium ?? 0),
+      },
+      nutrients: meal.totalNutrients
+        ? addNutrients(acc.nutrients, meal.totalNutrients)
+        : acc.nutrients,
+    }),
+    {
+      macros: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+      micros: { score: 0, fiber: 0, sugar: 0, sodium: 0 },
+      nutrients: getEmptyNutrients(),
+    }
+  );
 
   return (
     <SafeArea edges={["top"]}>
@@ -57,12 +76,13 @@ export default function HomeScreen() {
         <HomeDaySelector
           selectedDay={selectedDay}
           setSelectedDay={setSelectedDay}
-          weekTotals={weekTotals}
+          weekTotalMacros={weekTotalMacros}
         />
         <Carousel>
-          <HomeMacroSummary totals={dayTotals} />
+          <HomeMacroSummary totalMacros={dayTotals.macros} />
           <HomeMicroSummary
-            totals={{ score: 67, fiber: 15, sugar: 40, sodium: 1500 }}
+            totalMicros={dayTotals.micros}
+            totalNutrients={dayTotals.nutrients}
           />
         </Carousel>
         <HomeRecentlyLogged meals={dayMeals} />

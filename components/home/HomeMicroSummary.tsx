@@ -14,7 +14,7 @@ import SugarIcon from "../icons/micros/SugarIcon";
 import SodiumIcon from "../icons/micros/SodiumIcon";
 import HealthIcon from "../icons/micros/HealthIcon";
 import { Link } from "expo-router";
-import { MicrosType } from "@/convex/tables/mealItems";
+import { MicrosType, NutrientsType } from "@/convex/tables/mealItems";
 
 type Micro = {
   name: string;
@@ -25,10 +25,14 @@ type Micro = {
 };
 
 type Props = {
-  totals: MicrosType;
+  totalMicros: MicrosType;
+  totalNutrients: NutrientsType;
 };
 
-export default function HomeMicroSummary({ totals }: Props) {
+export default function HomeMicroSummary({
+  totalMicros,
+  totalNutrients,
+}: Props) {
   // TODO
   const targets = {
     score: 100,
@@ -42,21 +46,21 @@ export default function HomeMicroSummary({ totals }: Props) {
   const micros: Micro[] = [
     {
       name: "Fibra",
-      value: totals.fiber,
+      value: totalMicros.fiber,
       target: targets.fiber,
       Icon: FiberIcon,
       color: getColor("fiber"),
     },
     {
       name: "Azúcar",
-      value: totals.sugar,
+      value: totalMicros.sugar,
       target: targets.sugar,
       Icon: SugarIcon,
       color: getColor("sugar"),
     },
     {
       name: "Sodio",
-      value: totals.sodium,
+      value: totalMicros.sodium,
       target: targets.sodium,
       Icon: SodiumIcon,
       color: getColor("sodium"),
@@ -74,11 +78,17 @@ export default function HomeMicroSummary({ totals }: Props) {
 
   return (
     <View style={styles.container}>
-      <Link href="/app/(home)/nutrients" asChild>
+      <Link
+        href={{
+          pathname: "/app/(home)/nutrients",
+          params: { nutrients: JSON.stringify(totalNutrients) },
+        }}
+        asChild
+      >
         <HomeSummaryCardBig
           item={{
             name: "Calidad",
-            value: totals.score,
+            value: totalMicros.score,
             target: targets.score,
             Icon: HealthIcon,
             color: getColor("health"),
