@@ -19,18 +19,9 @@ type LogItemProps = {
 
 function LogItem({ meal }: LogItemProps) {
   const macros = [
-    {
-      value: meal.totalMacros?.carbs ?? 20,
-      Icon: CarbIcon,
-    },
-    {
-      value: meal.totalMacros?.protein ?? 20,
-      Icon: ProteinIcon,
-    },
-    {
-      value: meal.totalMacros?.fat ?? 20,
-      Icon: FatIcon,
-    },
+    { value: meal.totalMacros?.carbs, Icon: CarbIcon },
+    { value: meal.totalMacros?.protein, Icon: ProteinIcon },
+    { value: meal.totalMacros?.fat, Icon: FatIcon },
   ];
 
   const isLoading = meal.status !== "done";
@@ -60,10 +51,7 @@ function LogItem({ meal }: LogItemProps) {
             <Text size="14">{format(meal._creationTime, "HH:mm")}</Text>
           </View>
           <View style={styles.itemDetailsContainer}>
-            <View
-              key={`macro-calories`}
-              style={[styles.itemMacroContainer, { marginRight: "auto" }]}
-            >
+            <View style={[styles.itemMacroContainer, { marginRight: "auto" }]}>
               <View style={styles.itemMacroIcon}>
                 <CalorieIcon size={16} strokeWidth={2.25} />
               </View>
@@ -72,7 +60,7 @@ function LogItem({ meal }: LogItemProps) {
                 skeletonStyle={{ height: 14, width: "100%" }}
               >
                 <Text size="14" weight="500">
-                  {meal.totalMacros?.calories ?? 200}
+                  {Math.round(meal.totalMacros?.calories ?? 200)}
                 </Text>
               </WithSkeleton>
             </View>
@@ -85,7 +73,7 @@ function LogItem({ meal }: LogItemProps) {
                   loading={isLoading}
                   skeletonStyle={{ height: 14, width: "100%" }}
                 >
-                  <Text size="14">{macro.value}</Text>
+                  <Text size="14">{Math.round(macro.value ?? 20)}</Text>
                 </WithSkeleton>
               </View>
             ))}

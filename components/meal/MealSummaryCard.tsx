@@ -8,7 +8,7 @@ import { LucideProps } from "lucide-react-native";
 import getColor from "@/lib/ui/getColor";
 
 type Props = {
-  macro: {
+  item: {
     label: string;
     Icon: ComponentType<LucideProps>;
     color: string;
@@ -18,23 +18,23 @@ type Props = {
   loading: boolean;
 };
 
-export default function MealSummaryCard({ macro, loading }: Props) {
+export default function MealSummaryCard({ item, loading }: Props) {
   return (
     <Button variant="base" size="base" style={styles.cardButton}>
       <Card style={styles.card}>
         <Text size="12" color={getColor("mutedForeground")}>
-          {macro.label}
+          {item.label}
         </Text>
         <View style={styles.valueContainer}>
           <View style={styles.iconContainer}>
-            <macro.Icon size={14} color={macro.color} />
+            <item.Icon size={14} color={item.color} />
           </View>
           <WithSkeleton
             loading={loading}
             skeletonStyle={{ height: 16, width: 40, borderRadius: 4 }}
           >
             <Text size="16" weight="600">
-              {macro.value} {macro.unit}
+              {Math.round(item.value)} {item.unit}
             </Text>
           </WithSkeleton>
         </View>

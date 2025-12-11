@@ -33,7 +33,7 @@ export default function HomeSummaryCard({ item, progress }: Props) {
         </Text>
         <View style={styles.cardValueContainer}>
           <Text size="18" weight="600">
-            {item.value}
+            {Math.round(item.value)}
           </Text>
           <Text
             size="10"

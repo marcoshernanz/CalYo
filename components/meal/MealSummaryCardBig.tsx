@@ -35,7 +35,7 @@ export default function MealSummaryCardBig({ item, loading, onPress }: Props) {
             skeletonStyle={{ height: 24, width: 100, borderRadius: 6 }}
           >
             <Text size="24" weight="700">
-              {item.value} {item.unit}
+              {Math.round(item.value)} {item.unit}
             </Text>
           </WithSkeleton>
         </View>

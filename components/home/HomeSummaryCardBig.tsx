@@ -35,7 +35,7 @@ export default function HomeSummaryCardBig({ item, progress, onPress }: Props) {
           </Text>
           <View style={styles.cardValueContainer}>
             <Text size="40" weight="600">
-              {item.value}
+              {Math.round(item.value)}
             </Text>
             <Text
               size="20"
