@@ -51,6 +51,8 @@
 - [ ] Only foundation foods in AI picture?
 - [ ] Character limit in fix-results feature
 
+- [ ] Link prefetch
+
 ---
 
 - [ ] Keep long description and category but use a shorter name for foods

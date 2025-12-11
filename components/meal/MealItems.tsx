@@ -5,7 +5,6 @@ import getColor from "@/lib/ui/getColor";
 import Button from "../ui/Button";
 import WithSkeleton from "../ui/WithSkeleton";
 import { Link } from "expo-router";
-import { useEffect, useState } from "react";
 
 type Item = {
   id: string;
@@ -26,12 +25,6 @@ export default function MealItems({ items = [], loading }: Props) {
   const count = loading
     ? Math.max(items.length, placeholderRows)
     : items.length;
-
-  const [hasMounted, setHasMounted] = useState(false);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
 
   return (
     <View>
@@ -70,7 +63,6 @@ export default function MealItems({ items = [], loading }: Props) {
                 params: { mealItemId: item?.id },
               }}
               asChild
-              prefetch={hasMounted}
             >
               <Button variant="base" size="base">
                 <Card style={styles.card}>
