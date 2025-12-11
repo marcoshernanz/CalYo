@@ -27,11 +27,13 @@ type Micro = {
 type Props = {
   totalMicros: MicrosType;
   totalNutrients: NutrientsType;
+  dayIndex: number;
 };
 
 export default function HomeMicroSummary({
   totalMicros,
   totalNutrients,
+  dayIndex,
 }: Props) {
   // TODO
   const targets = {
@@ -79,10 +81,7 @@ export default function HomeMicroSummary({
   return (
     <View style={styles.container}>
       <Link
-        href={{
-          pathname: "/app/(home)/nutrients",
-          params: { nutrients: JSON.stringify(totalNutrients) },
-        }}
+        href={{ pathname: "/app/(home)/nutrients", params: { dayIndex } }}
         asChild
       >
         <HomeSummaryCardBig
