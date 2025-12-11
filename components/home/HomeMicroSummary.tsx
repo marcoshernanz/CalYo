@@ -62,7 +62,7 @@ export default function HomeMicroSummary({
     },
     {
       name: "Sodio",
-      value: totalMicros.sodium,
+      value: totalMicros.sodium * 1000,
       target: targets.sodium,
       Icon: SodiumIcon,
       color: getColor("sodium"),

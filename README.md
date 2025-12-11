@@ -13,7 +13,6 @@
 - [ ] Calories color
 - [ ] Refactor routes
 - [ ] Nutrition title (date, meal name, meal item name)
-- [ ] Micros units
 - [ ] Micros targets
 
 - [ ] Health average instead of sum
