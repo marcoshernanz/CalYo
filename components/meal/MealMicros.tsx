@@ -75,7 +75,7 @@ export default function MealMicros({ source, id, loading, micros }: Props) {
         {displayMicros.map((macro, index) => (
           <MealSummaryCard
             key={`macro-${macro.label}-${index}`}
-            macro={macro}
+            item={macro}
             loading={loading}
           />
         ))}
@@ -89,7 +89,6 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 6,
     paddingHorizontal: 16,
-    // paddingBottom: 32,
   },
   macrosContainer: {
     flexDirection: "row",

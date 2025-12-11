@@ -30,14 +30,14 @@ import MealItems from "./MealItems";
 import Carousel from "../ui/Carousel";
 import SafeArea from "../ui/SafeArea";
 import MealMicros from "./MealMicros";
-import { MacrosType, NutrientsType } from "@/convex/tables/mealItems";
+import { MacrosType, MicrosType } from "@/convex/tables/mealItems";
 
 type Props = {
   loading: boolean;
   name?: string;
   mealId?: Id<"meals">;
   totalMacros?: MacrosType;
-  totalNutrients?: NutrientsType;
+  totalMicros?: MicrosType;
   mealItems?: React.ComponentProps<typeof MealItems>["items"];
 };
 
@@ -46,7 +46,7 @@ export default function Meal({
   name,
   mealId,
   totalMacros,
-  totalNutrients,
+  totalMicros,
   mealItems,
 }: Props) {
   const router = useRouter();
@@ -106,7 +106,7 @@ export default function Meal({
           <MealMicros
             source="meal"
             id={mealId}
-            micros={{ score: 67, fiber: 15, sugar: 40, sodium: 1500 }}
+            micros={totalMicros}
             loading={loading}
           />
         </Carousel>

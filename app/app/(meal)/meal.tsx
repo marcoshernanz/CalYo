@@ -127,7 +127,7 @@ export default function MealScreen() {
       name={meal?.name}
       mealId={meal?._id}
       totalMacros={meal?.totalMacros}
-      totalNutrients={meal?.totalNutrients}
+      totalMicros={meal?.totalMicros}
       mealItems={items}
     />
   );
