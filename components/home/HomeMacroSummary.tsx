@@ -78,7 +78,7 @@ export default function HomeMacroSummary({ totalMacros }: Props) {
           value: totalMacros.calories,
           target: targets.calories,
           Icon: CalorieIcon,
-          color: getColor("foreground"),
+          color: getColor("calorie"),
         }}
         progress={progress}
       />

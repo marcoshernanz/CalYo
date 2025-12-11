@@ -1,4 +1,3 @@
-- [ ] Calories color
 - [ ] Health score calculation
 - [ ] Nutrition title (date, meal name, meal item name)
 - [ ] Health average instead of sum

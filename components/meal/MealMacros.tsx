@@ -44,7 +44,7 @@ export default function MealMacros({ loading, macros }: Props) {
         item={{
           label: "Calorías",
           Icon: FlameIcon,
-          color: getColor("foreground"),
+          color: getColor("calorie"),
           value: Math.round(macros?.calories ?? 0),
           unit: "kcal",
         }}

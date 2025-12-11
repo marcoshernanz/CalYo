@@ -78,7 +78,7 @@ export default function OnboardingPlan() {
         name: "Calorías",
         amount: calories,
         ratio: 1,
-        color: getColor("foreground"),
+        color: getColor("calorie"),
         formatAmount: (amount: number) => {
           "worklet";
           return `${Math.round(amount)}`;
