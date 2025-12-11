@@ -197,7 +197,7 @@ export default function AdjustMacroTargetsScreen() {
           variant="outline"
           style={{ flex: 0 }}
           onPress={() => {
-            router.navigate("/app/generateMacroTargets");
+            router.navigate("/app/(settings)/generateMacroTargets");
           }}
         >
           Generar Automáticamente

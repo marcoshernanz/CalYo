@@ -1,9 +1,12 @@
 import HomeDaySelector from "@/components/home/HomeDaySelector";
 import HomeHeader from "@/components/home/HomeHeader";
 import HomeMacroSummary from "@/components/home/HomeMacroSummary";
+import HomeMicroSummary from "@/components/home/HomeMicroSummary";
 import HomeRecentlyLogged from "@/components/home/HomeRecentlyLogged";
+import Carousel from "@/components/ui/Carousel";
 import SafeArea from "@/components/ui/SafeArea";
 import { api } from "@/convex/_generated/api";
+import { calculateDayTotals } from "@/lib/nutrition/calculateDayTotals";
 import getColor from "@/lib/ui/getColor";
 import { useQuery } from "convex/react";
 import { getDay } from "date-fns";
@@ -21,27 +24,22 @@ export default function HomeScreen() {
   const weekMeals = rawWeekMeals ?? Array.from({ length: 7 }, () => []);
   const dayMeals = weekMeals.at(selectedDay) ?? [];
 
-  const weekTotals = weekMeals.map((meals) =>
+  const weekTotalMacros = weekMeals.map((meals) =>
     meals.reduce(
       (acc, meal) => ({
-        calories: acc.calories + (meal.totals?.calories ?? 0),
-        protein: acc.protein + (meal.totals?.protein ?? 0),
-        carbs: acc.carbs + (meal.totals?.carbs ?? 0),
-        fat: acc.fat + (meal.totals?.fat ?? 0),
+        calories: acc.calories + (meal.totalMacros?.calories ?? 0),
+        protein: acc.protein + (meal.totalMacros?.protein ?? 0),
+        carbs: acc.carbs + (meal.totalMacros?.carbs ?? 0),
+        fat: acc.fat + (meal.totalMacros?.fat ?? 0),
       }),
       { calories: 0, protein: 0, carbs: 0, fat: 0 }
     )
   );
 
-  const dayTotals = weekTotals.at(selectedDay) ?? {
-    calories: 0,
-    protein: 0,
-    carbs: 0,
-    fat: 0,
-  };
+  const dayTotals = calculateDayTotals(dayMeals);
 
   return (
-    <SafeArea edges={["top", "left", "right"]}>
+    <SafeArea edges={["top"]}>
       <LinearGradient
         colors={[getColor("primaryLight", 0.75), getColor("background")]}
         style={[styles.gradient, { height: dimensions.height * 0.75 }]}
@@ -55,9 +53,15 @@ export default function HomeScreen() {
         <HomeDaySelector
           selectedDay={selectedDay}
           setSelectedDay={setSelectedDay}
-          weekTotals={weekTotals}
+          weekTotalMacros={weekTotalMacros}
         />
-        <HomeMacroSummary totals={dayTotals} />
+        <Carousel>
+          <HomeMacroSummary totalMacros={dayTotals.macros} />
+          <HomeMicroSummary
+            totalMicros={dayTotals.micros}
+            dayIndex={selectedDay}
+          />
+        </Carousel>
         <HomeRecentlyLogged meals={dayMeals} />
       </ScrollView>
     </SafeArea>

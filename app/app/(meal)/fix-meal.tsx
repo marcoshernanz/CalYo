@@ -23,7 +23,7 @@ import { Toast } from "@/components/ui/Toast";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useSafeArea } from "@/components/ui/SafeArea";
 
-export default function FixMeal() {
+export default function FixMealScreen() {
   const { mealId } = useLocalSearchParams<{ mealId: Id<"meals"> }>();
   const router = useRouter();
   const insets = useSafeArea();

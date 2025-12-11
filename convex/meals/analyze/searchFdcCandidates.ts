@@ -6,13 +6,13 @@ import { internal } from "../../_generated/api";
 import { v } from "convex/values";
 import macrosToKcal from "../../../lib/utils/macrosToKcal";
 import { analyzeMealConfig } from "./analyzeMealConfig";
+import { MacrosType } from "@/convex/tables/mealItems";
 
 export type Candidate = {
   fdcId: number;
   name: string;
   category: string | null;
-  nutrients: { protein: number; fat: number; carbs: number };
-  calories: number;
+  macroNutrients: MacrosType;
   score: number;
 };
 
@@ -29,12 +29,10 @@ export const mapResult = internalQuery({
       fdcId: doc.identity.id,
       name: doc.name.en,
       category: doc.category?.en ?? null,
-      nutrients: {
-        protein: doc.macroNutrients.protein,
-        fat: doc.macroNutrients.fat,
-        carbs: doc.macroNutrients.carbs,
+      macroNutrients: {
+        calories: macrosToKcal(doc.macroNutrients),
+        ...doc.macroNutrients,
       },
-      calories: macrosToKcal(doc.macroNutrients),
       score: _score,
     };
   },

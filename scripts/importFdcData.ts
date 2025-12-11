@@ -9,6 +9,8 @@ import type { WithoutSystemFields } from "convex/server";
 import type { Doc } from "../convex/_generated/dataModel";
 import { api } from "../convex/_generated/api";
 import { ConvexHttpClient } from "convex/browser";
+import fdcExtractMacros from "@/lib/fdc/fdcExtractMacros";
+import fdcExtractNutrients from "@/lib/fdc/fdcExtractNutrients";
 import logError from "@/lib/utils/logError";
 
 dotenv.config({ path: ".env.local" });
@@ -22,6 +24,7 @@ const FdcFood = z.object({
       amount: z.number().nullish(),
       nutrient: z.object({
         id: z.number(),
+        unitName: z.enum(["g", "mg", "µg", "kcal", "kJ", "IU", "sp gr"]),
       }),
     })
   ),
@@ -32,17 +35,8 @@ const FdcFood = z.object({
     .optional(),
 });
 
-type FoodItem = z.infer<typeof FdcFood>;
-
-const nutrientTargets = {
-  protein: [1003],
-  fat: [1004, 1085],
-  carbsByDiff: [1005],
-  carbsBySum: [1050],
-  sugar: [1063],
-  starch: [1009],
-  fiber: [1079],
-};
+export type FoodItem = z.infer<typeof FdcFood>;
+type FoodDoc = Partial<WithoutSystemFields<Doc<"foods">>>;
 
 const dataTypeMap = {
   Foundation: "Foundation",
@@ -50,41 +44,9 @@ const dataTypeMap = {
   "Survey (FNDDS)": "Survey",
 } as const;
 
-function getAmount(
-  nutrients: FoodItem["foodNutrients"],
-  target: number[]
-): number | undefined {
-  for (const nutrient of nutrients) {
-    const amount = nutrient.amount ?? undefined;
-    if (amount === undefined) continue;
-
-    const id = nutrient.nutrient.id;
-    if (id && target.includes(id) && amount >= 0) {
-      return amount;
-    }
-  }
-
-  return undefined;
-}
-
-function computeCarbs(nutrients: FoodItem["foodNutrients"]): number {
-  const byDiff = getAmount(nutrients, nutrientTargets.carbsByDiff);
-  if (byDiff !== undefined) return byDiff;
-
-  const bySum = getAmount(nutrients, nutrientTargets.carbsBySum);
-  if (bySum !== undefined) return bySum;
-
-  const sugar = getAmount(nutrients, nutrientTargets.sugar) ?? 0;
-  const starch = getAmount(nutrients, nutrientTargets.starch) ?? 0;
-  const fiber = getAmount(nutrients, nutrientTargets.fiber) ?? 0;
-  const total = sugar + starch + fiber;
-  return Math.max(0, total);
-}
-
-function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"foods">> {
-  const protein = getAmount(item.foodNutrients, nutrientTargets.protein) ?? 0;
-  const fat = getAmount(item.foodNutrients, nutrientTargets.fat) ?? 0;
-  const carbs = computeCarbs(item.foodNutrients);
+function toConvexDoc(item: FoodItem): FoodDoc {
+  const macroNutrients = fdcExtractMacros(item);
+  const nutrients = fdcExtractNutrients(item);
 
   return {
     identity: {
@@ -96,9 +58,8 @@ function toConvexDoc(item: FoodItem): WithoutSystemFields<Doc<"foods">> {
     category: item.foodCategory
       ? { en: item.foodCategory.description }
       : undefined,
-    macroNutrients: { protein, fat, carbs },
-    microNutrients: {},
-    hasEmbedding: false,
+    macroNutrients,
+    nutrients,
   };
 }
 
@@ -135,7 +96,7 @@ async function importFdcData(jsonPath: string) {
   const label = `import:${rootKey}`;
 
   const batchSize = 500;
-  let batch: WithoutSystemFields<Doc<"foods">>[] = [];
+  let batch: FoodDoc[] = [];
   let totalInserted = 0;
   let totalUpdated = 0;
 
@@ -176,6 +137,7 @@ async function importFdcData(jsonPath: string) {
         return;
       }
       const doc = toConvexDoc(parsed.data);
+
       batch.push(doc);
       if (batch.length >= batchSize) {
         pipeline.pause();

@@ -7,6 +7,7 @@ import Card from "../ui/Card";
 import Button from "../ui/Button";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import SafeArea from "../ui/SafeArea";
 
 export default function HomeHeader() {
   const streak = useQuery(api.home.getStreak.default, {
@@ -14,7 +15,7 @@ export default function HomeHeader() {
   });
 
   return (
-    <View style={styles.header}>
+    <SafeArea edges={["left", "right"]} style={styles.safeArea}>
       <View style={styles.logoContainer}>
         <CalyoLogo width={28} height={28} color={getColor("foreground")} />
         <Text size="28" weight="600">
@@ -31,16 +32,18 @@ export default function HomeHeader() {
           <Text weight="600">{streak ?? 0}</Text>
         </Card>
       </Button>
-    </View>
+    </SafeArea>
   );
 }
 
 const styles = StyleSheet.create({
-  header: {
+  safeArea: {
+    flex: 0,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 16,
+    backgroundColor: "transparent",
   },
   logoContainer: {
     flexDirection: "row",

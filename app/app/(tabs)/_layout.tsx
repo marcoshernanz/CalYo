@@ -81,7 +81,7 @@ function CenterAddButton() {
       return;
     }
 
-    router.push("/app/camera");
+    router.push("/app/(home)/camera");
   };
 
   return (

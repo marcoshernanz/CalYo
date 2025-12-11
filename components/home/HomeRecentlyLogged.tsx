@@ -11,6 +11,7 @@ import { Doc } from "@/convex/_generated/dataModel";
 import getColor from "@/lib/ui/getColor";
 import { Link } from "expo-router";
 import WithSkeleton from "../ui/WithSkeleton";
+import SafeArea from "../ui/SafeArea";
 
 type LogItemProps = {
   meal: Doc<"meals">;
@@ -18,27 +19,17 @@ type LogItemProps = {
 
 function LogItem({ meal }: LogItemProps) {
   const macros = [
-    {
-      value: meal.totals?.carbs ?? 20,
-      Icon: CarbIcon,
-    },
-    {
-      value: meal.totals?.protein ?? 20,
-      Icon: ProteinIcon,
-    },
-    {
-      value: meal.totals?.fat ?? 20,
-      Icon: FatIcon,
-    },
+    { value: meal.totalMacros?.carbs, Icon: CarbIcon },
+    { value: meal.totalMacros?.protein, Icon: ProteinIcon },
+    { value: meal.totalMacros?.fat, Icon: FatIcon },
   ];
 
   const isLoading = meal.status !== "done";
 
   return (
     <Link
-      href={{ pathname: "/app/meal", params: { mealId: meal._id } }}
+      href={{ pathname: "/app/(meal)/meal", params: { mealId: meal._id } }}
       asChild
-      prefetch
     >
       <Button variant="base" size="base">
         <Card style={styles.itemCard}>
@@ -60,10 +51,7 @@ function LogItem({ meal }: LogItemProps) {
             <Text size="14">{format(meal._creationTime, "HH:mm")}</Text>
           </View>
           <View style={styles.itemDetailsContainer}>
-            <View
-              key={`macro-calories`}
-              style={[styles.itemMacroContainer, { marginRight: "auto" }]}
-            >
+            <View style={[styles.itemMacroContainer, { marginRight: "auto" }]}>
               <View style={styles.itemMacroIcon}>
                 <CalorieIcon size={16} strokeWidth={2.25} />
               </View>
@@ -72,7 +60,7 @@ function LogItem({ meal }: LogItemProps) {
                 skeletonStyle={{ height: 14, width: "100%" }}
               >
                 <Text size="14" weight="500">
-                  {meal.totals?.calories ?? 200}
+                  {Math.round(meal.totalMacros?.calories ?? 200)}
                 </Text>
               </WithSkeleton>
             </View>
@@ -85,7 +73,7 @@ function LogItem({ meal }: LogItemProps) {
                   loading={isLoading}
                   skeletonStyle={{ height: 14, width: "100%" }}
                 >
-                  <Text size="14">{macro.value}</Text>
+                  <Text size="14">{Math.round(macro.value ?? 20)}</Text>
                 </WithSkeleton>
               </View>
             ))}
@@ -102,7 +90,7 @@ type Props = {
 
 export default function HomeRecentlyLogged({ meals }: Props) {
   return (
-    <View style={styles.container}>
+    <SafeArea edges={["left", "right"]} style={styles.safeArea}>
       <Text size="20" weight="600" style={styles.title}>
         Recientemente añadido
       </Text>
@@ -116,16 +104,18 @@ export default function HomeRecentlyLogged({ meals }: Props) {
             color={getColor("mutedForeground", 0.5)}
             style={styles.noMealsAdded}
           >
-            Añade comidas para verlas aquí...
+            Añade comidas para verlas aquí&hellip;
           </Text>
         )}
       </View>
-    </View>
+    </SafeArea>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
+    flex: 0,
+    backgroundColor: "transparent",
     paddingTop: 32,
   },
   title: {

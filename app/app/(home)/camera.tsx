@@ -30,7 +30,7 @@ export default function CameraScreen() {
     source: "camera" | "library";
   }) => {
     router.replace({
-      pathname: "/app/meal",
+      pathname: "/app/(meal)/meal",
       params: { photoUri: uri, source },
     });
   };

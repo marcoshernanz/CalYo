@@ -12,8 +12,8 @@
     "eas:prod": "eas build --profile production",
     "lint": "npx eslint .",
     "tsc": "tsc",
-    "script:importFdc": "npx ts-node scripts/importFdcData.ts",
-    "script:syncFoods": "npx ts-node scripts/syncFoodsData.ts"
+    "script:importFdc": "ts-node -r tsconfig-paths/register scripts/importFdcData.ts",
+    "script:syncFoods": "ts-node -r tsconfig-paths/register scripts/syncFoodsData.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.23",
@@ -94,6 +94,8 @@
     "react-native-svg-transformer": "^1.5.1",
     "stream-chain": "^3.4.0",
     "stream-json": "^1.9.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.46.3"
   },

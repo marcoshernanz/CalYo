@@ -5,7 +5,6 @@ import getColor from "@/lib/ui/getColor";
 import Button from "../ui/Button";
 import WithSkeleton from "../ui/WithSkeleton";
 import { Link } from "expo-router";
-import { useEffect, useState } from "react";
 
 type Item = {
   id: string;
@@ -22,16 +21,10 @@ type Props = {
 const placeholderRows = 4;
 const nameSkeletonWidths: DimensionValue[] = ["75%", "65%", "75%", "65%"];
 
-export default function MealIngredients({ items = [], loading }: Props) {
+export default function MealItems({ items = [], loading }: Props) {
   const count = loading
     ? Math.max(items.length, placeholderRows)
     : items.length;
-
-  const [hasMounted, setHasMounted] = useState(false);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
 
   return (
     <View>
@@ -66,11 +59,10 @@ export default function MealIngredients({ items = [], loading }: Props) {
             <Link
               key={key}
               href={{
-                pathname: "/app/mealItem",
+                pathname: "/app/(mealItem)/mealItem",
                 params: { mealItemId: item?.id },
               }}
               asChild
-              prefetch={hasMounted}
             >
               <Button variant="base" size="base">
                 <Card style={styles.card}>
@@ -95,7 +87,7 @@ export default function MealIngredients({ items = [], loading }: Props) {
                       </Text>
                       <Text size="14">&middot;</Text>
                       <Text size="14" color={getColor("mutedForeground")}>
-                        {item?.calories} kcal
+                        {Math.round(item?.calories ?? 0)} kcal
                       </Text>
                     </View>
                   </WithSkeleton>
@@ -110,7 +102,7 @@ export default function MealIngredients({ items = [], loading }: Props) {
                     }}
                   >
                     <Text size="14" weight="500">
-                      {item?.grams} g
+                      {Math.round(item?.grams ?? 0)} g
                     </Text>
                   </WithSkeleton>
                 </Card>

@@ -1,4 +1,33 @@
+- [ ] Calories color
+- [ ] Health score calculation
+- [ ] Nutrition title (date, meal name, meal item name)
+- [ ] Health average instead of sum
+
 - [ ] Micro-nutrients
+- [ ] Circular progress animation stopping too soon
+- [ ] Nutrients text with current and target
+- [ ] Lib functions inside convex folder so it's not shipped to the client?
+- [ ] Refactor routes
+- [ ] Showcase bad vs good micros
+
+- [ ] Make meal analysis faster
+
+- [ ] Clean replaceMealItems and scaleNutrientsPer100g
+- [ ] zeroMacros, zeroMicros, zeroNutrients
+
+- [ ] Refactor meal.tsx
+- [ ] Fix getMeal
+- [ ] Fix getWeekMeals
+- [ ] Test selectCandidates.tsx/ensureSelection
+
+- [ ] Personalized nutrient targets
+
+- [ ] Food only nutrients (remove macro-nutrients)
+- [ ] Food nutrients -> nutrientsPer100g
+
+- [ ] Progress hook
+- [ ] Progress animation on change
+- [ ] Number animation on change
 
 - [ ] Migrate to convex-better-auth for auth
 - [ ] Day selector circle (it spans more than it should)
@@ -10,11 +39,14 @@
 - [ ] Fix convex functions https://stack.convex.dev/argument-validation-without-repetition#handling-partial-updates
 - [ ] Organize routes in folders
 - [ ] Animate home macro summary
+- [ ] Validate upsert foods doc
 
 - [ ] Basic information in settings
 - [ ] Sorter survey to auto generate nutrition plan
 - [ ] Only foundation foods in AI picture?
 - [ ] Character limit in fix-results feature
+
+- [ ] Link prefetch
 
 ---
 

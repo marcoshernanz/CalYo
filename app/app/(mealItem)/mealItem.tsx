@@ -1,4 +1,4 @@
-import MealItem from "@/components/meal/MealItem";
+import MealItem from "@/components/mealItem/MealItem";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
@@ -13,10 +13,11 @@ export default function MealItemScreen() {
     mealItemId ? { mealItemId } : "skip"
   );
 
-  const isLoading = !mealItem;
+  const isLoading = mealItem === undefined;
 
   return (
     <MealItem
+      mealItemId={mealItemId}
       name={mealItem?.food.name.es ?? mealItem?.food.name.en}
       mealItem={mealItem ?? undefined}
       loading={isLoading}

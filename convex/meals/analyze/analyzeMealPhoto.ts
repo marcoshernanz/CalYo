@@ -24,14 +24,9 @@ const analyzeMealPhoto = action({
       const imageUrl = await ctx.storage.getUrl(storageId);
       if (!imageUrl) throw new Error("Image not found");
 
-      mealId = await ctx.runMutation(api.meals.createMeal.default);
-
-      await ctx.runMutation(api.meals.updateMeal.default, {
-        id: mealId,
-        meal: {
-          status: "processing",
-          photoStorageId: storageId,
-        },
+      mealId = await ctx.runMutation(api.meals.createMeal.default, {
+        status: "processing",
+        photoStorageId: storageId,
       });
 
       const detectedItems = await detectMealItems({ imageUrl });
