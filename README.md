@@ -1,5 +1,3 @@
-- [ ] Health score calculation
-
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
 - [ ] Nutrients text with current and target
