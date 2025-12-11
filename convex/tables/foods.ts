@@ -27,6 +27,9 @@ export const foodsFields = {
     fat: v.number(),
     carbs: v.number(),
   }),
+
+  healthScore: v.optional(v.number()),
+
   nutrients: v.object({
     nitrogen: v.optional(v.number()),
     protein: v.optional(v.number()),
@@ -275,6 +278,7 @@ export const foodsFields = {
     vitaminA: v.optional(v.number()),
     glutathione: v.optional(v.number()),
   }),
+
   embedding: v.optional(v.array(v.float64())),
   hasEmbedding: v.boolean(),
 };

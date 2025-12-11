@@ -6,6 +6,9 @@ import selectCandidates from "./selectCandidates";
 import nameMeal from "./nameMeal";
 import { api, internal } from "../../_generated/api";
 import translateFood from "./translateFood";
+import getFoodMacros from "../../../lib/food/getFoodMacros";
+import getFoodNutrients from "../../../lib/food/getFoodNutrients";
+import calculateHealthScore from "./calculateHealthScore";
 
 export async function processDetectedItems(
   ctx: ActionCtx,
@@ -47,6 +50,20 @@ export async function processDetectedItems(
         id: fdcFood._id,
         nameEs,
         categoryEs,
+      });
+    }
+
+    if (fdcFood.healthScore === undefined) {
+      const macros = getFoodMacros(fdcFood);
+      const nutrients = getFoodNutrients(fdcFood);
+      const healthScore = await calculateHealthScore({
+        name: fdcFood.name.en,
+        macros,
+        nutrients,
+      });
+      await ctx.runMutation(internal.foods.updateFoodHealthScore.default, {
+        id: fdcFood._id,
+        healthScore,
       });
     }
 
