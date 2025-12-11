@@ -25,6 +25,8 @@
 - [ ] Fix home screen
 - [ ] Check fix meal rate limits
 
+- [ ] Personalized nutrient targets
+
 - [ ] Food only nutrients (remove macro-nutrients)
 - [ ] Food nutrients -> nutrientsPer100g
 
