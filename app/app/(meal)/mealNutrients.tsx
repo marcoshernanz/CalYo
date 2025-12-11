@@ -9,6 +9,7 @@ export default function MealNutrientsScreen() {
     mealId: Id<"meals">;
   }>();
   const meal = useQuery(api.meals.getMeal.default, { mealId }) ?? undefined;
+  const name = meal?.meal.name ?? "";
 
-  return <Nutrients nutrients={meal?.meal.totalNutrients} />;
+  return <Nutrients nutrients={meal?.meal.totalNutrients} title={name} />;
 }

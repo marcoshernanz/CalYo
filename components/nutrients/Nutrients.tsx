@@ -6,6 +6,7 @@ import {
 import {
   ScreenMain,
   ScreenMainScrollView,
+  ScreenMainTitle,
 } from "@/components/ui/screen/ScreenMain";
 import Text from "@/components/ui/Text";
 import { NutrientMetric, nutrientsData } from "@/config/nutrientsConfig";
@@ -84,9 +85,10 @@ function Metric({ metric, value, themeColor, progress }: MetricProps) {
 
 type Props = {
   nutrients?: NutrientsType;
+  title: string;
 };
 
-export default function Nutrients({ nutrients }: Props) {
+export default function Nutrients({ nutrients, title }: Props) {
   const { scrollY, onScroll } = useScrollY();
   const progress = useSharedValue(0);
 
@@ -110,6 +112,7 @@ export default function Nutrients({ nutrients }: Props) {
         scrollViewProps={{ onScroll, contentContainerStyle: { flexGrow: 1 } }}
         safeAreaProps={{ edges: ["left", "right", "bottom"] }}
       >
+        <ScreenMainTitle title={title} />
         <View style={styles.container}>
           {nutrientsData.map((section) => (
             <View

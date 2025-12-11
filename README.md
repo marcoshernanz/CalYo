@@ -1,5 +1,4 @@
 - [ ] Health score calculation
-- [ ] Nutrition title (date, meal name, meal item name)
 
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
@@ -18,6 +17,7 @@
 - [ ] Fix getWeekMeals
 - [ ] Test selectCandidates.tsx/ensureSelection
 
+- [ ] Nutrients screen loading (title & bars)
 - [ ] Personalized nutrient targets
 
 - [ ] Food only nutrients (remove macro-nutrients)
