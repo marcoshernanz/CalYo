@@ -19,7 +19,7 @@ export default function SettingsScreen() {
         showsVerticalScrollIndicator={false}
       >
         <SettingsGroup>
-          <Link href="/app/adjustMacroTargets" asChild>
+          <Link href="/app/(settings)/adjustMacroTargets" asChild>
             <SettingsItem text="Ajustar Macronutrientes" Icon={PieChartIcon} />
           </Link>
         </SettingsGroup>

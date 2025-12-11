@@ -5,7 +5,7 @@ import scaleNutrientsPer100g from "@/lib/utils/nutrition/scaleNutrientsPer100g";
 import { useQuery } from "convex/react";
 import { useLocalSearchParams } from "expo-router";
 
-export default function MealItemNutrients() {
+export default function MealNutrientsScreen() {
   const { mealItemId } = useLocalSearchParams<{
     mealItemId: Id<"mealItems">;
   }>();

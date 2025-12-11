@@ -66,7 +66,7 @@ export default function MealItems({ items = [], loading }: Props) {
             <Link
               key={key}
               href={{
-                pathname: "/app/mealItem",
+                pathname: "/app/(mealItem)/mealItem",
                 params: { mealItemId: item?.id },
               }}
               asChild

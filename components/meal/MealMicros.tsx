@@ -44,7 +44,10 @@ export default function MealMicros({ mealItemId, loading, micros }: Props) {
   return (
     <View style={styles.container}>
       <Link
-        href={{ pathname: "/app/mealItemNutrients", params: { mealItemId } }}
+        href={{
+          pathname: "/app/(mealItem)/mealItemNutrients",
+          params: { mealItemId },
+        }}
         asChild
       >
         <MealSummaryCardBig

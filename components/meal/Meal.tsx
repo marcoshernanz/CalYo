@@ -74,7 +74,7 @@ export default function Meal({
       return;
     }
 
-    router.push({ pathname: "/app/fix-meal", params: { mealId } });
+    router.push({ pathname: "/app/(meal)/fix-meal", params: { mealId } });
   };
 
   return (

@@ -74,7 +74,7 @@ export default function HomeMicroSummary({ totals }: Props) {
 
   return (
     <View style={styles.container}>
-      <Link href="/app/nutrients" asChild>
+      <Link href="/app/(home)/nutrients" asChild>
         <HomeSummaryCardBig
           item={{
             name: "Calidad",
