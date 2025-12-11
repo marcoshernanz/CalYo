@@ -9,9 +9,18 @@ type Props = {
   Icon: LucideIcon;
   onPress?: () => void;
   isLast?: boolean;
+  destructive?: boolean;
 };
 
-export default function SettingsItem({ text, Icon, onPress, isLast }: Props) {
+export default function SettingsItem({
+  text,
+  Icon,
+  onPress,
+  isLast,
+  destructive = false,
+}: Props) {
+  const color = destructive ? getColor("destructive") : getColor("foreground");
+
   return (
     <View style={[styles.container, !isLast && { borderBottomWidth: 1 }]}>
       <Button
@@ -20,8 +29,8 @@ export default function SettingsItem({ text, Icon, onPress, isLast }: Props) {
         style={styles.button}
         onPress={onPress}
       >
-        <Icon size={18} color={getColor("foreground")} />
-        <Text size="16" weight="500">
+        <Icon size={18} color={color} />
+        <Text size="16" weight="500" color={color}>
           {text}
         </Text>
       </Button>
