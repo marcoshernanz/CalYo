@@ -64,7 +64,7 @@ export default function AdjustMacroTargetsScreen() {
   const macros: Macro[] = [
     {
       name: "Calorías",
-      color: getColor("foreground"),
+      color: getColor("calorie"),
       Icon: CalorieIcon,
       value: calories,
       setValue: setCalories,

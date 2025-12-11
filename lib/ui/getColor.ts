@@ -9,6 +9,7 @@ const colors = {
   secondary: [229, 231, 235], // #e5e7eb
   destructive: [239, 68, 68], // #ef4444
 
+  calorie: [3, 7, 18], // #030712
   carb: [234, 179, 8], // #eab308
   protein: [239, 68, 68], // #ef4444
   fat: [16, 185, 129], // #10b981
