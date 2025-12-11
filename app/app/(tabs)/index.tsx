@@ -59,7 +59,6 @@ export default function HomeScreen() {
           <HomeMacroSummary totalMacros={dayTotals.macros} />
           <HomeMicroSummary
             totalMicros={dayTotals.micros}
-            totalNutrients={dayTotals.nutrients}
             dayIndex={selectedDay}
           />
         </Carousel>

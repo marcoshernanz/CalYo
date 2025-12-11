@@ -1,3 +1,5 @@
+- [ ] Showcase bad vs good micros
+
 - [ ] Micro-nutrients
 - [ ] Micro targets calculation
 - [ ] Micro calculation
@@ -13,7 +15,6 @@
 - [ ] Calories color
 - [ ] Refactor routes
 - [ ] Nutrition title (date, meal name, meal item name)
-- [ ] Micros targets
 
 - [ ] Health average instead of sum
 - [ ] Make meal analysis faster

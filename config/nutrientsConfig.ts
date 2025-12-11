@@ -405,3 +405,13 @@ export function multiplyNutrients(
     return acc;
   }, {} as NutrientsType);
 }
+
+export function getTargets(category: string, metric: string): [number, number] {
+  const categoryData = nutrientsData.find((cat) => cat.id === category);
+  if (!categoryData) return [0, 0];
+
+  const metricData = categoryData.metrics.find((met) => met.id === metric);
+  if (!metricData) return [0, 0];
+
+  return metricData.target;
+}

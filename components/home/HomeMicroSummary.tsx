@@ -14,7 +14,8 @@ import SugarIcon from "../icons/micros/SugarIcon";
 import SodiumIcon from "../icons/micros/SodiumIcon";
 import HealthIcon from "../icons/micros/HealthIcon";
 import { Link } from "expo-router";
-import { MicrosType, NutrientsType } from "@/convex/tables/mealItems";
+import { MicrosType } from "@/convex/tables/mealItems";
+import { getTargets } from "@/config/nutrientsConfig";
 
 type Micro = {
   name: string;
@@ -26,21 +27,15 @@ type Micro = {
 
 type Props = {
   totalMicros: MicrosType;
-  totalNutrients: NutrientsType;
   dayIndex: number;
 };
 
-export default function HomeMicroSummary({
-  totalMicros,
-  totalNutrients,
-  dayIndex,
-}: Props) {
-  // TODO
+export default function HomeMicroSummary({ totalMicros, dayIndex }: Props) {
   const targets = {
     score: 100,
-    fiber: 30,
-    sugar: 50,
-    sodium: 2300,
+    fiber: getTargets("carbs", "fiber")[1],
+    sugar: getTargets("carbs", "sugar")[1],
+    sodium: getTargets("minerals", "sodium")[1],
   };
 
   const progress = useSharedValue(0);
