@@ -1,5 +1,4 @@
-- [ ] Make meal analysis faster
-- [ ] Fix micros units in meal and mealItem
+- [ ] Log food with text
 
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
@@ -44,9 +43,6 @@
 - [ ] Character limit in fix-results feature
 
 - [ ] Link prefetch
-
-- [ ] Log food with text
-
 
 ---
 
