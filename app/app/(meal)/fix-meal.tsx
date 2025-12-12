@@ -71,7 +71,7 @@ export default function FixMealScreen() {
             description="Describe los cambios para corregir la comida"
           />
           <TextInput
-            placeholder="Ej: No es pollo, es tofu."
+            placeholder="Ej: No es pollo, es tofu"
             value={correction}
             onChangeText={setCorrection}
             multiline
