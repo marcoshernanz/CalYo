@@ -1,3 +1,6 @@
+- [ ] Disclaimer padding & links
+- [ ] Nutrients text with values
+
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
 - [ ] Nutrients text with current and target
@@ -44,7 +47,6 @@
 
 - [ ] Link prefetch
 
-- [ ] Delete account setting
 - [ ] Log food with text
 
 

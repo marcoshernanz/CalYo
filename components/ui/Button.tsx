@@ -16,7 +16,14 @@ import Animated, {
 } from "react-native-reanimated";
 import Text, { TextProps } from "./Text";
 
-type Variant = "primary" | "secondary" | "ghost" | "outline" | "text" | "base";
+type Variant =
+  | "primary"
+  | "secondary"
+  | "ghost"
+  | "outline"
+  | "text"
+  | "base"
+  | "destructive";
 type Size = "sm" | "md" | "lg" | "xl" | "base";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -111,6 +118,14 @@ export default function Button({
       },
       text: {
         fontWeight: undefined,
+      },
+    },
+    destructive: {
+      container: {
+        backgroundColor: getColor("red"),
+      },
+      text: {
+        color: getColor("background"),
       },
     },
   };
