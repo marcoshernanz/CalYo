@@ -3,7 +3,6 @@ import { Id } from "../../_generated/dataModel";
 import { DetectedItem } from "./detectMealItems";
 import searchFdcCandidates from "./searchFdcCandidates";
 import selectCandidates from "./selectCandidates";
-import nameMeal from "./nameMeal";
 import { api, internal } from "../../_generated/api";
 import translateFood from "./translateFood";
 import getFoodMacros from "../../../lib/food/getFoodMacros";
@@ -15,39 +14,18 @@ export async function processDetectedItems(
   mealId: Id<"meals">,
   detectedItems: DetectedItem[],
   imageUrl: string,
-  mealName?: string
+  mealName: string
 ) {
-  const mealNamePromise = (async () => {
-    if (mealName) return mealName;
-    console.time("nameMeal");
-    const name = await nameMeal({ items: detectedItems });
-    console.timeEnd("nameMeal");
-    return name;
-  })();
+  const candidatesByItem = await searchFdcCandidates({
+    ctx,
+    detectedItems,
+  });
 
-  const selectedItemsPromise = (async () => {
-    console.time("searchFdcCandidates");
-    const candidatesByItem = await searchFdcCandidates({
-      ctx,
-      detectedItems,
-    });
-    console.timeEnd("searchFdcCandidates");
-
-    console.time("selectCandidates");
-    const selection = await selectCandidates({
-      detectedItems,
-      candidatesByItem,
-      imageUrl,
-    });
-    console.timeEnd("selectCandidates");
-    return selection;
-  })();
-
-  const [finalMealName, selectedItems] = await Promise.all([
-    mealNamePromise,
-    selectedItemsPromise,
-  ]);
-  console.timeLog("analyzeMealPhoto", "Meal named and items selected");
+  const selectedItems = await selectCandidates({
+    detectedItems,
+    candidatesByItem,
+    imageUrl,
+  });
 
   const itemPromises = selectedItems.map(async (selectedItem, i) => {
     const fdcFood = await ctx.runQuery(api.foods.getFoodById.default, {
@@ -66,7 +44,6 @@ export async function processDetectedItems(
         categoryEs,
       });
     }
-    console.timeLog("analyzeMealPhoto", "Food translated:", i + 1);
 
     if (fdcFood.healthScore === undefined) {
       const macros = getFoodMacros(fdcFood);
@@ -81,14 +58,12 @@ export async function processDetectedItems(
         healthScore,
       });
     }
-    console.timeLog("analyzeMealPhoto", "Health score calculated:", i + 1);
 
     return {
       foodId: fdcFood._id,
       grams: selectedItem.grams,
     };
   });
-  console.timeLog("analyzeMealPhoto", "Processing selected items");
 
   const results = await Promise.all(itemPromises);
   const foods = results.filter((food) => food !== null);
@@ -97,12 +72,9 @@ export async function processDetectedItems(
     mealId,
     foods,
   });
-  console.timeLog("analyzeMealPhoto", "Meal items replaced");
 
   await ctx.runMutation(api.meals.updateMeal.default, {
     id: mealId,
-    meal: { status: "done", name: finalMealName },
+    meal: { status: "done", name: mealName },
   });
-
-  console.timeLog("analyzeMealPhoto", "Meal updated");
 }
