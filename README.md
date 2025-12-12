@@ -1,4 +1,6 @@
 - [ ] Log food with text
+- [ ] Sodium container overflow with high sodium values
+- [ ] Carousel buttons going up and down
 
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
@@ -43,6 +45,7 @@
 - [ ] Character limit in fix-results feature
 
 - [ ] Link prefetch
+- [ ] Photo scanner overlay
 
 ---
 
