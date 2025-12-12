@@ -1,5 +1,4 @@
 - [ ] Disclaimer padding & links
-- [ ] Nutrients text with values
 
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
