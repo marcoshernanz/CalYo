@@ -1,4 +1,6 @@
 - [ ] Log food with text
+- [ ] Log front-end rate limits
+
 - [ ] Sodium container overflow with high sodium values
 - [ ] Carousel buttons going up and down
 
