@@ -39,12 +39,18 @@ export const correctMeal = action({
       grams: item.grams,
     }));
 
-    const newDetectedItems = await correctMealItems({
+    const { mealName, items: newDetectedItems } = await correctMealItems({
       imageUrl,
       previousItems,
       correction,
     });
 
-    await processDetectedItems(ctx, mealId, newDetectedItems, imageUrl);
+    await processDetectedItems(
+      ctx,
+      mealId,
+      newDetectedItems,
+      imageUrl,
+      mealName
+    );
   },
 });

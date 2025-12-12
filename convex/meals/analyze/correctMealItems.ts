@@ -1,12 +1,19 @@
 import { generateObject } from "ai";
 import { z } from "zod/v4";
 import { analyzeMealConfig, analyzeMealPrompts } from "./analyzeMealConfig";
-import { DetectedItem } from "./detectMealItems";
+import { DetectedItem, DetectedMeal } from "./detectMealItems";
 import logError from "@/lib/utils/logError";
 
-const detectionSchema = z.object({
-  name: z.string().min(1),
-  grams: z.number().int().min(1).max(1500),
+const correctionSchema = z.object({
+  mealName: z
+    .string()
+    .describe("Short, appetizing, generic meal name in Spanish"),
+  items: z.array(
+    z.object({
+      name: z.string().min(1),
+      grams: z.number().int().min(1).max(1500),
+    })
+  ),
 });
 
 type Params = {
@@ -19,15 +26,15 @@ export default async function correctMealItems({
   imageUrl,
   previousItems,
   correction,
-}: Params): Promise<DetectedItem[]> {
+}: Params): Promise<DetectedMeal> {
   try {
     const { object: detected } = await generateObject({
       model: analyzeMealConfig.imageProcessingModel,
       temperature: analyzeMealConfig.temperature,
-      output: "array",
-      schema: detectionSchema,
-      schemaName: "CorrectedIngredients",
-      schemaDescription: "The revised list of ingredients.",
+      output: "object",
+      schema: correctionSchema,
+      schemaName: "CorrectedMeal",
+      schemaDescription: "The revised meal name and list of ingredients.",
       system: analyzeMealPrompts.correct,
       messages: [
         {
