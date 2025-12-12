@@ -10,6 +10,10 @@ import { LucideIcon } from "lucide-react-native";
 import getColor from "@/lib/ui/getColor";
 import Text from "./Text";
 
+const AnimatedPopoverContent = Animated.createAnimatedComponent(
+  PopoverPrimitive.Content
+);
+
 const EnterFromTopRight = new Keyframe({
   0: {
     opacity: 0,
@@ -33,10 +37,6 @@ const ExitToTopRight = new Keyframe({
     easing: Easing.in(Easing.cubic),
   },
 }).duration(200);
-
-const AnimatedPopoverContent = Animated.createAnimatedComponent(
-  PopoverPrimitive.Content
-);
 
 export type PopoverOption = {
   Icon: LucideIcon;
