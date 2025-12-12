@@ -20,7 +20,7 @@ export default function PlanInfoSheet() {
         </Button>
       }
     >
-      <View style={{ gap: 20 }}>
+      <View style={{ gap: 32 }}>
         <View style={{ gap: 8 }}>
           <Text size="16" weight="600">
             Aviso Médico
@@ -35,7 +35,7 @@ export default function PlanInfoSheet() {
           <Text size="16" weight="600">
             Metodología y Fuentes
           </Text>
-          <View style={{ gap: 4 }}>
+          <View style={{ gap: 8 }}>
             <Text size="14">
               &bull;{" "}
               <Text size="14" weight="600">
