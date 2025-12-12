@@ -1,4 +1,5 @@
 - [ ] Make meal analysis faster
+- [ ] Fix micros units in meal and mealItem
 
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
