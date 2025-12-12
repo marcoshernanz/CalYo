@@ -1,4 +1,4 @@
-- [ ] Disclaimer padding & links
+- [ ] Make meal analysis faster
 
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
@@ -6,8 +6,6 @@
 - [ ] Lib functions inside convex folder so it's not shipped to the client?
 - [ ] Refactor routes
 - [ ] Showcase bad vs good micros
-
-- [ ] Make meal analysis faster
 
 - [ ] Clean replaceMealItems and scaleNutrientsPer100g
 - [ ] zeroMacros, zeroMicros, zeroNutrients
