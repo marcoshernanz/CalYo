@@ -4,7 +4,7 @@ import Button from "@/components/ui/Button";
 import { CircleQuestionMarkIcon } from "lucide-react-native";
 import getColor from "@/lib/ui/getColor";
 import Text from "@/components/ui/Text";
-import { View } from "react-native";
+import { View, Linking } from "react-native";
 
 export default function PlanInfoSheet() {
   return (
@@ -41,24 +41,57 @@ export default function PlanInfoSheet() {
               <Text size="14" weight="600">
                 Tasa Metabólica Basal (TMB):
               </Text>{" "}
-              Calculada mediante la ecuación de Mifflin-St Jeor. (Mifflin et
-              al., 1990).
+              Calculada mediante la ecuación de Mifflin-St Jeor.{" "}
+              <Text
+                size="14"
+                style={{ textDecorationLine: "underline" }}
+                onPress={() =>
+                  void Linking.openURL(
+                    "https://pubmed.ncbi.nlm.nih.gov/2305711/"
+                  )
+                }
+              >
+                (Mifflin et al., 1990)
+              </Text>
+              .
             </Text>
             <Text size="14">
               &bull;{" "}
               <Text size="14" weight="600">
                 Gasto Energético:
               </Text>{" "}
-              Estimado según el Compendio de Actividades Físicas. (Ainsworth et
-              al., 2011).
+              Estimado según el Compendio de Actividades Físicas.{" "}
+              <Text
+                size="14"
+                style={{ textDecorationLine: "underline" }}
+                onPress={() =>
+                  void Linking.openURL(
+                    "https://pubmed.ncbi.nlm.nih.gov/21681120/"
+                  )
+                }
+              >
+                (Ainsworth et al., 2011)
+              </Text>
+              .
             </Text>
             <Text size="14">
               &bull;{" "}
               <Text size="14" weight="600">
                 Seguridad:
               </Text>{" "}
-              Los límites mínimos de calorías se basan en las Guías Alimentarias
-              para los Estadounidenses (2020-2025).
+              Los límites mínimos de calorías se basan en las{" "}
+              <Text
+                size="14"
+                style={{ textDecorationLine: "underline" }}
+                onPress={() =>
+                  void Linking.openURL(
+                    "https://www.dietaryguidelines.gov/sites/default/files/2020-12/Dietary_Guidelines_for_Americans_2020-2025.pdf"
+                  )
+                }
+              >
+                Guías Alimentarias para los Estadounidenses (2020-2025)
+              </Text>
+              .
             </Text>
           </View>
         </View>
