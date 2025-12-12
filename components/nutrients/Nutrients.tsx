@@ -52,11 +52,27 @@ function Metric({ metric, value, themeColor, progress }: MetricProps) {
     })),
   };
 
+  const roundedValue =
+    metric.max > 20
+      ? Math.round(scaledValue)
+      : Math.round(scaledValue * 10) / 10;
+
   return (
     <View style={styles.metric}>
-      <Text size="14" weight="500">
-        {metric.label}
-      </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Text size="14" weight="500">
+          {metric.label}
+        </Text>
+        <Text size="14">
+          {roundedValue} {metric.unit}
+        </Text>
+      </View>
       <View style={styles.progressContainer}>
         <View
           style={[
