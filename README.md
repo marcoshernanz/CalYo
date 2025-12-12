@@ -3,6 +3,9 @@
 
 - [ ] Sodium container overflow with high sodium values
 - [ ] Carousel buttons going up and down
+- [ ] Remove scroll-view from fix-meal
+- [ ] Fix meal max characters
+- [ ] Describe meal max characters
 
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
