@@ -25,22 +25,22 @@ export default function MealMicros({ source, id, loading, micros }: Props) {
       label: "Fibra",
       color: getColor("fiber"),
       Icon: FiberIcon,
-      value: Math.round(micros?.fiber ?? 0),
+      value: micros?.fiber ?? 0,
       unit: "g",
     },
     {
       label: "Azúcar",
       color: getColor("sugar"),
       Icon: SugarIcon,
-      value: Math.round(micros?.sugar ?? 0),
+      value: micros?.sugar ?? 0,
       unit: "g",
     },
     {
       label: "Sodio",
       color: getColor("sodium"),
       Icon: SodiumIcon,
-      value: Math.round(micros?.sodium ?? 0),
-      unit: "g",
+      value: (micros?.sodium ?? 0) * 1000,
+      unit: "mg",
     },
   ];
 
