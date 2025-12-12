@@ -29,9 +29,10 @@ const analyzeMealPhoto = action({
         photoStorageId: storageId,
       });
 
-      const detectedItems = await detectMealItems({ imageUrl });
+      const { mealName, items: detectedItems } = await detectMealItems({
+        imageUrl,
+      });
       if (detectedItems.length === 0) {
-        console.log("No meal items detected");
         await ctx.runMutation(api.meals.updateMeal.default, {
           id: mealId,
           meal: { status: "error" },
@@ -39,7 +40,13 @@ const analyzeMealPhoto = action({
         return mealId;
       }
 
-      await processDetectedItems(ctx, mealId, detectedItems, imageUrl);
+      await processDetectedItems(
+        ctx,
+        mealId,
+        detectedItems,
+        imageUrl,
+        mealName
+      );
 
       return mealId;
     } catch (error) {

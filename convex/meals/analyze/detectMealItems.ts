@@ -4,11 +4,19 @@ import { analyzeMealConfig, analyzeMealPrompts } from "./analyzeMealConfig";
 import logError from "@/lib/utils/logError";
 
 const detectionSchema = z.object({
-  name: z.string().min(1),
-  grams: z.number().int().min(1).max(1500),
+  mealName: z
+    .string()
+    .describe("Short, appetizing, generic meal name in Spanish"),
+  items: z.array(
+    z.object({
+      name: z.string().min(1),
+      grams: z.number().int().min(1).max(1500),
+    })
+  ),
 });
 
-export type DetectedItem = z.infer<typeof detectionSchema>;
+export type DetectedMeal = z.infer<typeof detectionSchema>;
+export type DetectedItem = DetectedMeal["items"][number];
 
 type Params = {
   imageUrl: string;
@@ -16,16 +24,15 @@ type Params = {
 
 export default async function detectMealItems({
   imageUrl,
-}: Params): Promise<DetectedItem[]> {
+}: Params): Promise<DetectedMeal> {
   try {
     const { object: detected } = await generateObject({
       model: analyzeMealConfig.imageProcessingModel,
       temperature: analyzeMealConfig.temperature,
-      output: "array",
+      output: "object",
       schema: detectionSchema,
-      schemaName: "DetectedIngredients",
-      schemaDescription:
-        "Single-ingredient items with grams from a meal photo.",
+      schemaName: "DetectedMeal",
+      schemaDescription: "Meal name and ingredients from a meal photo.",
       system: analyzeMealPrompts.detect,
       messages: [
         {

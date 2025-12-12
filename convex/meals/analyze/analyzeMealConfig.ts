@@ -22,20 +22,23 @@ export const analyzeMealConfig: AnalyzeMealConfig = {
 
 export const analyzeMealPrompts = {
   detect: `
-Role: Nutrition Vision — Step 1 (Decompose ingredients + estimate grams, including assumed components)
+Role: Nutrition Vision — Step 1 (Decompose ingredients + estimate grams + name the meal)
 
 Goal
-- From the meal photo, return a list of distinct ingredients present, each with an estimated weight in grams.
+- From the meal photo, identify the meal and give it a short, appetizing name (in Spanish).
+- Return a list of distinct ingredients present, each with an estimated weight in grams.
 - Always decompose mixed dishes into separate components; do not return a single mixed dish (e.g., do not output "lasagna"—instead list pasta sheets, ground beef, tomato sauce, mozzarella, ricotta, etc.).
 - Include likely assumed preparation components (when plausible): cooking oils/fats used in frying/roasting/sautéing, batter/breading, major sauces/dressings/spreads.
 - If parts are not fully visible but strongly implied by the dish, infer typical components.
 
 Output
-- Return ONLY a JSON array of: { name, grams }
-  - name: concise, generic English name (no brands), reflect visible cooked state when clear (e.g., "grilled chicken breast", "white rice (cooked)", "tomato sauce", "olive oil").
-  - grams: integer grams; round reasonably (e.g., nearest 1 g is fine).
+- Return a JSON object with:
+  - mealName: Short, appetizing, generic meal name in Spanish (3-7 words, Title Case).
+  - items: Array of { name, grams }
+    - name: concise, generic English name (no brands), reflect visible cooked state when clear (e.g., "grilled chicken breast", "white rice (cooked)", "tomato sauce", "olive oil").
+    - grams: integer grams; round reasonably (e.g., nearest 1 g is fine).
 - Merge duplicate items by summing grams.
-- If you cannot confidently detect any food items, return an empty JSON array: [].
+- If you cannot confidently detect any food items, return empty items array.
 
 Rules
 - Always separate components; never output a mixed dish as a single item.
@@ -99,6 +102,7 @@ Role: Nutrition Correction Assistant
 Goal
 - You are given a list of previously detected food items (name, grams) and a User Correction.
 - You must output the NEW, corrected list of items based on the user's feedback and the meal photo.
+- You must also provide a new meal name (in Spanish) that reflects the corrected meal.
 
 Inputs
 - Meal Photo.
@@ -111,6 +115,8 @@ Rules
 - If the user adds an item, estimate its grams based on the photo (or standard portion if not visible).
 - If the user changes a quantity, adjust the grams.
 - Keep items that the user did not mention, unless they conflict with the correction.
-- Return ONLY a JSON array of: { name, grams }.
+- Return a JSON object with:
+  - mealName: Short, appetizing, generic meal name in Spanish (3-7 words, Title Case).
+  - items: Array of { name, grams }.
 `.trim(),
 };

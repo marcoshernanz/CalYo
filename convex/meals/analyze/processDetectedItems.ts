@@ -3,7 +3,6 @@ import { Id } from "../../_generated/dataModel";
 import { DetectedItem } from "./detectMealItems";
 import searchFdcCandidates from "./searchFdcCandidates";
 import selectCandidates from "./selectCandidates";
-import nameMeal from "./nameMeal";
 import { api, internal } from "../../_generated/api";
 import translateFood from "./translateFood";
 import getFoodMacros from "../../../lib/food/getFoodMacros";
@@ -14,28 +13,21 @@ export async function processDetectedItems(
   ctx: ActionCtx,
   mealId: Id<"meals">,
   detectedItems: DetectedItem[],
-  imageUrl: string
+  imageUrl: string,
+  mealName: string
 ) {
-  const mealNamePromise = nameMeal({ items: detectedItems });
-  const selectedItemsPromise = (async () => {
-    const candidatesByItem = await searchFdcCandidates({
-      ctx,
-      detectedItems,
-    });
+  const candidatesByItem = await searchFdcCandidates({
+    ctx,
+    detectedItems,
+  });
 
-    return selectCandidates({
-      detectedItems,
-      candidatesByItem,
-      imageUrl,
-    });
-  })();
+  const selectedItems = await selectCandidates({
+    detectedItems,
+    candidatesByItem,
+    imageUrl,
+  });
 
-  const [mealName, selectedItems] = await Promise.all([
-    mealNamePromise,
-    selectedItemsPromise,
-  ]);
-
-  const itemPromises = selectedItems.map(async (selectedItem) => {
+  const itemPromises = selectedItems.map(async (selectedItem, i) => {
     const fdcFood = await ctx.runQuery(api.foods.getFoodById.default, {
       identity: { source: "fdc", id: selectedItem.fdcId },
     });
