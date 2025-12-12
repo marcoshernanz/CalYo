@@ -1,15 +1,32 @@
 import SettingsGroup from "@/components/settings/SettingsGroup";
 import SettingsItem from "@/components/settings/SettingsItem";
+import AlertDialog from "@/components/ui/AlertDialog";
 import SafeArea from "@/components/ui/SafeArea";
 import Title from "@/components/ui/Title";
 import { useAuthContext } from "@/context/AuthContext";
+import { api } from "@/convex/_generated/api";
+import { useMutation } from "convex/react";
 import { Link, useRouter } from "expo-router";
-import { LogOutIcon, PieChartIcon } from "lucide-react-native";
+import { LogOutIcon, PieChartIcon, UserXIcon } from "lucide-react-native";
 import { ScrollView, StyleSheet } from "react-native";
 
 export default function SettingsScreen() {
   const { signOut } = useAuthContext();
+  const deleteUser = useMutation(api.users.deleteUser.default);
   const router = useRouter();
+
+  const handleDeleteAccount = async () => {
+    await deleteUser();
+    await signOut();
+    if (router.canDismiss()) router.dismissAll();
+    router.replace("/auth");
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    if (router.canDismiss()) router.dismissAll();
+    router.replace("/auth");
+  };
 
   return (
     <SafeArea edges={["top", "left", "right"]}>
@@ -24,15 +41,25 @@ export default function SettingsScreen() {
           </Link>
         </SettingsGroup>
         <SettingsGroup>
+          <AlertDialog
+            trigger={
+              <SettingsItem
+                destructive
+                text="Eliminar Cuenta"
+                Icon={UserXIcon}
+              />
+            }
+            destructive
+            title="Eliminar Cuenta"
+            description="¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer."
+            onConfirm={() => void handleDeleteAccount()}
+          />
+        </SettingsGroup>
+        <SettingsGroup>
           <SettingsItem
             text="Cerrar Sesión"
             Icon={LogOutIcon}
-            onPress={() => {
-              void signOut().then(() => {
-                if (router.canDismiss()) router.dismissAll();
-                router.replace("/auth");
-              });
-            }}
+            onPress={() => void handleSignOut()}
           />
         </SettingsGroup>
       </ScrollView>

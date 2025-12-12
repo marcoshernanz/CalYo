@@ -14,7 +14,7 @@ const getProfile = query({
         .first();
 
       if (!profile) {
-        throw new Error("Profile not found");
+        return null;
       }
 
       return profile;
