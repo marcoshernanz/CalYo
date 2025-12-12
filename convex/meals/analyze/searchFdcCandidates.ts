@@ -69,16 +69,20 @@ export default async function searchFdcCandidates({
   const resultsList = await Promise.all(searches);
 
   const candidatesByItem: Record<string, Candidate[]> = {};
-  for (let i = 0; i < names.length; i++) {
-    const results = resultsList[i];
-    const mapped: Candidate[] = await Promise.all(
-      results.map((r) =>
-        ctx.runQuery(internal.meals.analyze.searchFdcCandidates.mapResult, r)
-      )
-    );
-    candidatesByItem[names[i]] = mapped
-      .sort((a, b) => b.score - a.score)
-      .slice(0, analyzeMealConfig.candidatesPerItem);
-  }
+
+  await Promise.all(
+    names.map(async (name, i) => {
+      const results = resultsList[i];
+      const mapped: Candidate[] = await Promise.all(
+        results.map((r) =>
+          ctx.runQuery(internal.meals.analyze.searchFdcCandidates.mapResult, r)
+        )
+      );
+      candidatesByItem[name] = mapped
+        .sort((a, b) => b.score - a.score)
+        .slice(0, analyzeMealConfig.candidatesPerItem);
+    })
+  );
+
   return candidatesByItem;
 }

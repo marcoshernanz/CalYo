@@ -87,6 +87,7 @@ export default async function selectCandidates({
 }: Params): Promise<{ fdcId: number; grams: number }[]> {
   const candidatesText = buildCandidatesText(detectedItems, candidatesByItem);
 
+  console.time("selectCandidates:generateObject");
   const { object: selectedItems } = await generateObject({
     model: analyzeMealConfig.candidateSelectionModel,
     temperature: analyzeMealConfig.temperature,
@@ -116,6 +117,7 @@ export default async function selectCandidates({
       },
     ],
   });
+  console.timeEnd("selectCandidates:generateObject");
 
   return ensureSelections({ detectedItems, candidatesByItem, selectedItems });
 }
