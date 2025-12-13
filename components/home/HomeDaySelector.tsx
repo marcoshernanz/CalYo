@@ -17,6 +17,9 @@ import macrosToKcal from "@/lib/utils/macrosToKcal";
 import calcRatio from "@/lib/utils/calcRatio";
 import SafeArea from "../ui/SafeArea";
 import { MacrosType } from "@/convex/tables/mealItems";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { profilesConfig } from "@/config/profilesConfig";
 
 type DayData = {
   weekDay: number;
@@ -106,11 +109,15 @@ export default function HomeDaySelector({
   setSelectedDay,
   weekTotalMacros,
 }: Props) {
+  const targets =
+    useQuery(api.profiles.getProfile.default)?.targets ??
+    profilesConfig.defaultValues.targets;
+
   const start = startOfWeek(new Date(), { weekStartsOn: 1 });
   const weekDays: DayData[] = Array.from({ length: 7 }, (_, index) => {
     const date = addDays(start, index);
     const calories = Math.max(
-      2000,
+      targets.calories,
       macrosToKcal(weekTotalMacros.at(index) ?? {})
     );
     const carbsRatio = calcRatio(
