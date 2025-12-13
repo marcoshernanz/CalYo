@@ -14,7 +14,10 @@ import Text from "../ui/Text";
 import { CameraIcon, LucideIcon, PenLineIcon } from "lucide-react-native";
 import getColor from "../../lib/ui/getColor";
 import Button from "../ui/Button";
-import { Href, Link } from "expo-router";
+import { Href, useRouter } from "expo-router";
+import { useRateLimit } from "@convex-dev/rate-limiter/react";
+import { api } from "@/convex/_generated/api";
+import { Toast } from "../ui/Toast";
 
 const AnimatedPopoverContent = Animated.createAnimatedComponent(
   PopoverPrimitive.Content
@@ -52,19 +55,37 @@ type Option = {
 
 const options: Option[] = [
   {
-    label: "Escanear",
-    icon: CameraIcon,
-    href: "/app/(add)/camera",
-  },
-  {
     label: "Describir",
     icon: PenLineIcon,
     href: "/app/(add)/describe",
   },
+  {
+    label: "Escanear",
+    icon: CameraIcon,
+    href: "/app/(add)/camera",
+  },
 ];
 
 export default function TabsAddOptions() {
+  const router = useRouter();
   const popoverTriggerRef = useRef<TriggerRef>(null);
+  const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
+    getServerTimeMutation: api.rateLimit.getServerTime,
+  });
+
+  const handleOptionPress = (href: Href) => {
+    popoverTriggerRef.current?.close();
+
+    if (status && !status.ok) {
+      Toast.show({
+        text: "Has alcanzado el límite diario de funciones de IA.",
+        variant: "error",
+      });
+      return;
+    }
+
+    router.push(href);
+  };
 
   return (
     <PopoverPrimitive.Root>
@@ -87,27 +108,22 @@ export default function TabsAddOptions() {
           >
             <View style={styles.container}>
               {options.map((option, index) => (
-                <Link
+                <Button
                   key={`option-${option.label}-${index}`}
-                  href={option.href}
-                  asChild
+                  variant="base"
+                  size="base"
+                  style={{ flex: 1 }}
+                  onPress={() => {
+                    handleOptionPress(option.href);
+                  }}
                 >
-                  <Button
-                    variant="base"
-                    size="base"
-                    style={{ flex: 1 }}
-                    onPress={() => {
-                      popoverTriggerRef.current?.close();
-                    }}
-                  >
-                    <Card style={styles.card}>
-                      <option.icon size={28} color={getColor("foreground")} />
-                      <Text size="14" weight="600">
-                        {option.label}
-                      </Text>
-                    </Card>
-                  </Button>
-                </Link>
+                  <Card style={styles.card}>
+                    <option.icon size={28} color={getColor("foreground")} />
+                    <Text size="14" weight="600">
+                      {option.label}
+                    </Text>
+                  </Card>
+                </Button>
               ))}
             </View>
           </AnimatedPopoverContent>
