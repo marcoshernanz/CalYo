@@ -40,13 +40,13 @@ const analyzeMealPhoto = action({
         return mealId;
       }
 
-      await processDetectedItems(
+      await processDetectedItems({
         ctx,
         mealId,
         detectedItems,
         imageUrl,
-        mealName
-      );
+        mealName,
+      });
 
       return mealId;
     } catch (error) {

@@ -37,14 +37,13 @@ const analyzeMealDescription = action({
         return mealId;
       }
 
-      await processDetectedItems(
+      await processDetectedItems({
         ctx,
         mealId,
         detectedItems,
-        undefined,
         mealName,
-        description
-      );
+        description,
+      });
 
       return mealId;
     } catch (error) {

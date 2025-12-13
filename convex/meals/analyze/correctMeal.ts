@@ -45,12 +45,12 @@ export const correctMeal = action({
       correction,
     });
 
-    await processDetectedItems(
+    await processDetectedItems({
       ctx,
       mealId,
-      newDetectedItems,
+      detectedItems: newDetectedItems,
       imageUrl,
-      mealName
-    );
+      mealName,
+    });
   },
 });

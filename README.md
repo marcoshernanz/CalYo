@@ -7,6 +7,8 @@
 - [ ] Fix meal max characters
 - [ ] Describe meal max characters
 
+- [ ] Description context for AI in the fix meal feature
+
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
 - [ ] Nutrients text with current and target
