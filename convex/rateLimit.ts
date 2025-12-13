@@ -10,6 +10,11 @@ export const rateLimiter = new RateLimiter(components.rateLimiter, {
     rate: 20,
     period: DAY,
   },
+  analyzeMealDescription: {
+    kind: "fixed window",
+    rate: 20,
+    period: DAY,
+  },
   correctMeal: {
     kind: "fixed window",
     rate: 20,
@@ -19,6 +24,14 @@ export const rateLimiter = new RateLimiter(components.rateLimiter, {
 
 export const { getRateLimit: getAnalyzeMealPhotoRateLimit, getServerTime } =
   rateLimiter.hookAPI("analyzeMealPhoto", {
+    key: async (ctx) => {
+      const userId = await getAuthUserId(ctx);
+      return userId ?? "anonymous";
+    },
+  });
+
+export const { getRateLimit: getAnalyzeMealDescriptionRateLimit } =
+  rateLimiter.hookAPI("analyzeMealDescription", {
     key: async (ctx) => {
       const userId = await getAuthUserId(ctx);
       return userId ?? "anonymous";

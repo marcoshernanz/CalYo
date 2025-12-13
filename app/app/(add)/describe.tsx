@@ -12,14 +12,40 @@ import { ScreenMain, ScreenMainTitle } from "@/components/ui/screen/ScreenMain";
 import TextInput from "@/components/ui/TextInput";
 import { useState } from "react";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import { useAction } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Href, useRouter } from "expo-router";
+import { Alert } from "react-native";
+import { Id } from "@/convex/_generated/dataModel";
 
 export default function DescribeScreen() {
   const insets = useSafeArea();
+  const router = useRouter();
+  const analyzeMealDescription = useAction(
+    api.meals.analyze.analyzeMealDescription.default
+  );
 
   const [description, setDescription] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   // TODO: Rate-limits
   const status = { ok: true };
+
+  const handleAnalyze = async () => {
+    if (!description.trim()) return;
+    setIsAnalyzing(true);
+    try {
+      const mealId = (await analyzeMealDescription({
+        description,
+      })) as Id<"meals">;
+      router.push(`/(meal)/${mealId}` as Href);
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Error", "Failed to analyze meal description.");
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   return (
     <ScreenMain edges={[]}>
@@ -50,14 +76,14 @@ export default function DescribeScreen() {
 
         <ScreenFooter style={{ boxShadow: [] }}>
           <ScreenFooterButton
-            // onPress={handleCorrect}
-            disabled={
-              !description.trim() || (status !== undefined && !status.ok)
-            }
+            onPress={() => void handleAnalyze()}
+            disabled={!description.trim() || !status.ok || isAnalyzing}
           >
-            {status !== undefined && !status.ok
+            {!status.ok
               ? "Límite alcanzado"
-              : "Analizar comida"}
+              : isAnalyzing
+                ? "Analizando..."
+                : "Analizar comida"}
           </ScreenFooterButton>
         </ScreenFooter>
       </KeyboardAvoidingView>

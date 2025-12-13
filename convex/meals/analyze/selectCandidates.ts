@@ -1,4 +1,4 @@
-import { generateObject } from "ai";
+import { generateObject, ModelMessage } from "ai";
 import { analyzeMealConfig, analyzeMealPrompts } from "./analyzeMealConfig";
 import { DetectedItem } from "./detectMealItems";
 import { Candidate } from "./searchFdcCandidates";
@@ -77,7 +77,7 @@ function ensureSelections({
 type Params = {
   detectedItems: DetectedItem[];
   candidatesByItem: CandidatesByItem;
-  imageUrl: string;
+  imageUrl?: string;
 };
 
 export default async function selectCandidates({
@@ -86,6 +86,31 @@ export default async function selectCandidates({
   imageUrl,
 }: Params): Promise<{ fdcId: number; grams: number }[]> {
   const candidatesText = buildCandidatesText(detectedItems, candidatesByItem);
+
+  const messages: ModelMessage[] = [];
+
+  if (imageUrl) {
+    messages.push({
+      role: "user",
+      content: [{ type: "image", image: imageUrl }],
+    });
+  }
+
+  messages.push(
+    {
+      role: "assistant",
+      content: [
+        {
+          type: "text",
+          text: "Detected items (JSON):\n" + JSON.stringify(detectedItems),
+        },
+      ],
+    },
+    {
+      role: "user",
+      content: candidatesText,
+    }
+  );
 
   const { object: selectedItems } = await generateObject({
     model: analyzeMealConfig.candidateSelectionModel,
@@ -96,25 +121,7 @@ export default async function selectCandidates({
     schemaDescription:
       "Mapping from detected items to FDC candidates and grams.",
     system: analyzeMealPrompts.select,
-    messages: [
-      {
-        role: "user",
-        content: [{ type: "image", image: imageUrl }],
-      },
-      {
-        role: "assistant",
-        content: [
-          {
-            type: "text",
-            text: "Detected items (JSON):\n" + JSON.stringify(detectedItems),
-          },
-        ],
-      },
-      {
-        role: "user",
-        content: candidatesText,
-      },
-    ],
+    messages,
   });
 
   return ensureSelections({ detectedItems, candidatesByItem, selectedItems });

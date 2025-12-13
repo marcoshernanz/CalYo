@@ -13,7 +13,7 @@ export async function processDetectedItems(
   ctx: ActionCtx,
   mealId: Id<"meals">,
   detectedItems: DetectedItem[],
-  imageUrl: string,
+  imageUrl: string | undefined,
   mealName: string
 ) {
   const candidatesByItem = await searchFdcCandidates({
