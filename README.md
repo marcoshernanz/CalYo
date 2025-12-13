@@ -1,6 +1,5 @@
 - [ ] Log food with text
 - [ ] Log front-end rate limits
-- [ ] Rotate add button 45º when the pop-over opens
 
 - [ ] Sodium container overflow with high sodium values
 - [ ] Carousel buttons going up and down
@@ -9,6 +8,7 @@
 - [ ] Describe meal max characters
 
 - [ ] Description context for AI in the fix meal feature
+- [ ] Tabs add button above popover overlay
 
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
