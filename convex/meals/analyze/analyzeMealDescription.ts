@@ -42,7 +42,8 @@ const analyzeMealDescription = action({
         mealId,
         detectedItems,
         undefined,
-        mealName
+        mealName,
+        description
       );
 
       return mealId;

@@ -78,12 +78,14 @@ type Params = {
   detectedItems: DetectedItem[];
   candidatesByItem: CandidatesByItem;
   imageUrl?: string;
+  description?: string;
 };
 
 export default async function selectCandidates({
   detectedItems,
   candidatesByItem,
   imageUrl,
+  description,
 }: Params): Promise<{ fdcId: number; grams: number }[]> {
   const candidatesText = buildCandidatesText(detectedItems, candidatesByItem);
 
@@ -93,6 +95,11 @@ export default async function selectCandidates({
     messages.push({
       role: "user",
       content: [{ type: "image", image: imageUrl }],
+    });
+  } else if (description) {
+    messages.push({
+      role: "user",
+      content: [{ type: "text", text: `Meal description: "${description}"` }],
     });
   }
 
@@ -112,6 +119,10 @@ export default async function selectCandidates({
     }
   );
 
+  const systemPrompt = imageUrl
+    ? analyzeMealPrompts.selectImage
+    : analyzeMealPrompts.selectText;
+
   const { object: selectedItems } = await generateObject({
     model: analyzeMealConfig.candidateSelectionModel,
     temperature: analyzeMealConfig.temperature,
@@ -120,7 +131,7 @@ export default async function selectCandidates({
     schemaName: "SelectedCandidates",
     schemaDescription:
       "Mapping from detected items to FDC candidates and grams.",
-    system: analyzeMealPrompts.select,
+    system: systemPrompt,
     messages,
   });
 

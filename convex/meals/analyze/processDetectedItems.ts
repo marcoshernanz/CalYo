@@ -14,7 +14,8 @@ export async function processDetectedItems(
   mealId: Id<"meals">,
   detectedItems: DetectedItem[],
   imageUrl: string | undefined,
-  mealName: string
+  mealName: string,
+  description?: string
 ) {
   const candidatesByItem = await searchFdcCandidates({
     ctx,
@@ -25,6 +26,7 @@ export async function processDetectedItems(
     detectedItems,
     candidatesByItem,
     imageUrl,
+    description,
   });
 
   const itemPromises = selectedItems.map(async (selectedItem, i) => {
