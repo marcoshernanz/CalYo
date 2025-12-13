@@ -12,25 +12,20 @@ import { ScreenMain, ScreenMainTitle } from "@/components/ui/screen/ScreenMain";
 import TextInput from "@/components/ui/TextInput";
 import { useState } from "react";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
-import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Href, useRouter } from "expo-router";
-import { Alert } from "react-native";
+import { useRouter } from "expo-router";
 import { useRateLimit } from "@convex-dev/rate-limiter/react";
 import { Toast } from "@/components/ui/Toast";
 
 export default function DescribeScreen() {
   const insets = useSafeArea();
   const router = useRouter();
-  const analyzeMealDescription = useAction(
-    api.meals.analyze.analyzeMealDescription.default
-  );
   const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
   });
   const [description, setDescription] = useState("");
 
-  const handleAnalyze = async () => {
+  const handleAnalyze = () => {
     if (!description.trim()) return;
 
     if (status && !status.ok) {
@@ -41,15 +36,10 @@ export default function DescribeScreen() {
       return;
     }
 
-    try {
-      const mealId = await analyzeMealDescription({
-        description,
-      });
-      router.push(`/(meal)/${mealId}` as Href);
-    } catch (error) {
-      console.error(error);
-      Alert.alert("Error", "Failed to analyze meal description.");
-    }
+    router.replace({
+      pathname: "/app/(meal)/meal",
+      params: { description },
+    });
   };
 
   return (
@@ -81,7 +71,9 @@ export default function DescribeScreen() {
 
         <ScreenFooter style={{ boxShadow: [] }}>
           <ScreenFooterButton
-            onPress={() => void handleAnalyze()}
+            onPress={() => {
+              handleAnalyze();
+            }}
             disabled={
               !description.trim() || (status !== undefined && !status.ok)
             }

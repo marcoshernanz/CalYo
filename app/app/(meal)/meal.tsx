@@ -17,10 +17,12 @@ export default function MealScreen() {
   const router = useRouter();
   const {
     photoUri,
+    description,
     mealId: initialMealId,
     source,
   } = useLocalSearchParams<{
     photoUri?: string;
+    description?: string;
     mealId?: Id<"meals">;
     source?: "camera" | "library";
   }>();
@@ -28,6 +30,9 @@ export default function MealScreen() {
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl.default);
   const analyzeMealPhoto = useAction(
     api.meals.analyze.analyzeMealPhoto.default
+  );
+  const analyzeMealDescription = useAction(
+    api.meals.analyze.analyzeMealDescription.default
   );
 
   const [mealId, setMealId] = useState<Id<"meals"> | undefined>(initialMealId);
@@ -41,48 +46,61 @@ export default function MealScreen() {
   const fromCamera = source === "camera";
 
   const handleMealCreation = useCallback(async () => {
-    if (!photoUri || initialMealId || startedRef.current || mealId) return;
+    if (
+      (!photoUri && !description) ||
+      initialMealId ||
+      startedRef.current ||
+      mealId
+    )
+      return;
     startedRef.current = true;
 
     try {
-      const croppedUri = fromCamera
-        ? await cropImageToAspect({ uri: photoUri, dimensions })
-        : await processLibraryImage(photoUri);
+      if (photoUri) {
+        const croppedUri = fromCamera
+          ? await cropImageToAspect({ uri: photoUri, dimensions })
+          : await processLibraryImage(photoUri);
 
-      const uploadUrl = await generateUploadUrl();
+        const uploadUrl = await generateUploadUrl();
 
-      const fileRes = await fetch(croppedUri);
-      const blob = await fileRes.blob();
+        const fileRes = await fetch(croppedUri);
+        const blob = await fileRes.blob();
 
-      const uploadRes = await fetch(uploadUrl, {
-        method: "POST",
-        headers: { "Content-Type": blob.type || "image/jpeg" },
-        body: blob,
-      });
-      if (!uploadRes.ok) {
-        throw new Error(`Upload failed: ${uploadRes.status}`);
+        const uploadRes = await fetch(uploadUrl, {
+          method: "POST",
+          headers: { "Content-Type": blob.type || "image/jpeg" },
+          body: blob,
+        });
+        if (!uploadRes.ok) {
+          throw new Error(`Upload failed: ${uploadRes.status}`);
+        }
+        const json: unknown = await uploadRes.json();
+        const schema = z.object({
+          storageId: z.string(),
+        });
+
+        const { data, success } = schema.safeParse(json);
+
+        if (!success) {
+          throw new Error("Upload response missing storageId");
+        }
+        const storageId = data.storageId as Id<"_storage">;
+
+        const mealId = await analyzeMealPhoto({ storageId });
+        setMealId(mealId);
+      } else if (description) {
+        const mealId = await analyzeMealDescription({ description });
+        setMealId(mealId);
       }
-      const json: unknown = await uploadRes.json();
-      const schema = z.object({
-        storageId: z.string(),
-      });
-
-      const { data, success } = schema.safeParse(json);
-
-      if (!success) {
-        throw new Error("Upload response missing storageId");
-      }
-      const storageId = data.storageId as Id<"_storage">;
-
-      const mealId = await analyzeMealPhoto({ storageId });
-      setMealId(mealId);
     } catch (e) {
       logError("Start meal error", e);
       Toast.show({ text: "Error al analizar la comida", variant: "error" });
       router.replace("/app");
     }
   }, [
+    analyzeMealDescription,
     analyzeMealPhoto,
+    description,
     dimensions,
     fromCamera,
     generateUploadUrl,
