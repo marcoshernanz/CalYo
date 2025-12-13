@@ -1,12 +1,17 @@
 import calcRatio from "@/lib/utils/calcRatio";
-import { SharedValue, useDerivedValue } from "react-native-reanimated";
+import {
+  SharedValue,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
 import { StyleSheet, View } from "react-native";
 import getColor from "@/lib/ui/getColor";
 import Text from "../ui/Text";
 import CircularProgress from "../ui/CircularProgress";
-import { ComponentType } from "react";
+import { ComponentType, useEffect } from "react";
 import { LucideProps } from "lucide-react-native";
 
 type Props = {
@@ -21,8 +26,15 @@ type Props = {
 };
 
 export default function HomeSummaryCard({ item, progress }: Props) {
+  const ratio = calcRatio(item.value, item.target);
+  const animatedRatio = useSharedValue(ratio);
+
+  useEffect(() => {
+    animatedRatio.value = withTiming(ratio, { duration: 750 });
+  }, [ratio, animatedRatio]);
+
   const itemProgress = useDerivedValue(
-    () => calcRatio(item.value, item.target) * progress.value
+    () => animatedRatio.value * progress.value
   );
 
   return (

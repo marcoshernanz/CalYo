@@ -1,5 +1,4 @@
 - [ ] Progress hook
-- [ ] Progress animation on change
 
 - [ ] Sodium container overflow with high sodium values
 - [ ] Description context for AI in the fix meal feature
