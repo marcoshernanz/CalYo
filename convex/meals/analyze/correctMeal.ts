@@ -5,6 +5,7 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import correctMealItems from "./correctMealItems";
 import { processDetectedItems } from "./processDetectedItems";
 import { rateLimiter } from "../../rateLimit";
+import { analyzeMealConfig } from "./analyzeMealConfig";
 
 export const correctMeal = action({
   args: {
@@ -12,6 +13,9 @@ export const correctMeal = action({
     correction: v.string(),
   },
   handler: async (ctx, { mealId, correction }) => {
+    if (correction.length > analyzeMealConfig.maxUserInputLength) {
+      throw new Error("Correction too long");
+    }
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Unauthorized");
 

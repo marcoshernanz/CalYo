@@ -7,10 +7,14 @@ import logError from "@/lib/utils/logError";
 import { rateLimiter } from "../../rateLimit";
 import { processDetectedItems } from "./processDetectedItems";
 import detectMealItemsFromText from "./detectMealItemsFromText";
+import { analyzeMealConfig } from "./analyzeMealConfig";
 
 const analyzeMealDescription = action({
   args: { description: v.string() },
   handler: async (ctx, { description }): Promise<Id<"meals">> => {
+    if (description.length > analyzeMealConfig.maxUserInputLength) {
+      throw new Error("Description too long");
+    }
     let mealId: Id<"meals"> | undefined = undefined;
     try {
       const userId = await getAuthUserId(ctx);

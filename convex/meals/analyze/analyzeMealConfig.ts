@@ -9,6 +9,7 @@ type AnalyzeMealConfig = {
   embeddingsModel: EmbeddingModel;
   candidateSelectionModel: LanguageModel;
   namingModel: LanguageModel;
+  maxUserInputLength: number;
 };
 
 export const analyzeMealConfig: AnalyzeMealConfig = {
@@ -18,6 +19,7 @@ export const analyzeMealConfig: AnalyzeMealConfig = {
   embeddingsModel: google.textEmbeddingModel("gemini-embedding-001"),
   candidateSelectionModel: openrouter.chat("x-ai/grok-4.1-fast"),
   namingModel: openrouter.chat("x-ai/grok-4.1-fast"),
+  maxUserInputLength: 500,
 };
 
 export const analyzeMealPrompts = {
