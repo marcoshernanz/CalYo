@@ -4,11 +4,7 @@ import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useRateLimit } from "@convex-dev/rate-limiter/react";
-import {
-  ScreenMain,
-  ScreenMainScrollView,
-  ScreenMainTitle,
-} from "@/components/ui/screen/ScreenMain";
+import { ScreenMain, ScreenMainTitle } from "@/components/ui/screen/ScreenMain";
 import {
   ScreenHeader,
   ScreenHeaderBackButton,
@@ -21,7 +17,7 @@ import {
 import TextInput from "@/components/ui/TextInput";
 import { Toast } from "@/components/ui/Toast";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
-import { useSafeArea } from "@/components/ui/SafeArea";
+import SafeArea, { useSafeArea } from "@/components/ui/SafeArea";
 
 export default function FixMealScreen() {
   const { mealId } = useLocalSearchParams<{ mealId: Id<"meals"> }>();
@@ -65,7 +61,7 @@ export default function FixMealScreen() {
           <ScreenHeaderTitle title="Corregir Comida" />
         </ScreenHeader>
 
-        <ScreenMainScrollView safeAreaProps={{ edges: ["left", "right"] }}>
+        <SafeArea edges={["left", "right"]}>
           <ScreenMainTitle
             title="¿Qué quieres corregir?"
             description="Describe los cambios para corregir la comida"
@@ -77,7 +73,7 @@ export default function FixMealScreen() {
             multiline
             autoFocus
           />
-        </ScreenMainScrollView>
+        </SafeArea>
 
         <ScreenFooter style={{ boxShadow: [] }}>
           <ScreenFooterButton
