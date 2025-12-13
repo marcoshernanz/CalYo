@@ -1,12 +1,7 @@
 import { type LucideProps } from "lucide-react-native";
 import { StyleSheet, View } from "react-native";
 import getColor from "@/lib/ui/getColor";
-import {
-  cancelAnimation,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
-import { useEffect, type ComponentType } from "react";
+import { type ComponentType } from "react";
 import FatIcon from "../icons/macros/FatIcon";
 import CarbIcon from "../icons/macros/CarbIcon";
 import ProteinIcon from "../icons/macros/ProteinIcon";
@@ -17,6 +12,7 @@ import { api } from "@/convex/_generated/api";
 import HomeSummaryCard from "./HomeSummaryCard";
 import HomeSummaryCardBig from "./HomeSummaryCardBig";
 import { MacrosType } from "@/convex/tables/mealItems";
+import useProgress from "@/lib/hooks/reanimated/useProgress";
 
 type Macro = {
   name: string;
@@ -35,7 +31,7 @@ export default function HomeMacroSummary({ totalMacros }: Props) {
     useQuery(api.profiles.getProfile.default)?.targets ??
     profilesConfig.defaultValues.targets;
 
-  const progress = useSharedValue(0);
+  const progress = useProgress();
 
   const macros: Macro[] = [
     {
@@ -60,15 +56,6 @@ export default function HomeMacroSummary({ totalMacros }: Props) {
       color: getColor("fat"),
     },
   ];
-
-  useEffect(() => {
-    progress.value = withTiming(1, { duration: 1500 });
-
-    return () => {
-      cancelAnimation(progress);
-      progress.value = 0;
-    };
-  }, [progress]);
 
   return (
     <View style={styles.container}>

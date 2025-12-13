@@ -1,10 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import {
-  cancelAnimation,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
-import { useEffect, type ComponentType } from "react";
+import { type ComponentType } from "react";
 import { type LucideProps } from "lucide-react-native";
 import getColor from "@/lib/ui/getColor";
 import HomeSummaryCard from "./HomeSummaryCard";
@@ -16,6 +11,7 @@ import HealthIcon from "../icons/micros/HealthIcon";
 import { Link } from "expo-router";
 import { MicrosType } from "@/convex/tables/mealItems";
 import { getTargets } from "@/config/nutrientsConfig";
+import useProgress from "@/lib/hooks/reanimated/useProgress";
 
 type Micro = {
   name: string;
@@ -38,7 +34,7 @@ export default function HomeMicroSummary({ totalMicros, dayIndex }: Props) {
     sodium: getTargets("minerals", "sodium")[1],
   };
 
-  const progress = useSharedValue(0);
+  const progress = useProgress();
 
   const micros: Micro[] = [
     {
@@ -63,15 +59,6 @@ export default function HomeMicroSummary({ totalMicros, dayIndex }: Props) {
       color: getColor("sodium"),
     },
   ];
-
-  useEffect(() => {
-    progress.value = withTiming(1, { duration: 1500 });
-
-    return () => {
-      cancelAnimation(progress);
-      progress.value = 0;
-    };
-  }, [progress]);
 
   return (
     <View style={styles.container}>

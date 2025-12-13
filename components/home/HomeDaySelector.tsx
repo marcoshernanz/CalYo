@@ -1,16 +1,11 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { StyleSheet, View } from "react-native";
 import { addDays, format, getDay, startOfWeek } from "date-fns";
 import { es } from "date-fns/locale";
 import Text from "../ui/Text";
 import getColor from "@/lib/ui/getColor";
 import CircularProgress from "../ui/CircularProgress";
-import {
-  cancelAnimation,
-  useDerivedValue,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import { useDerivedValue } from "react-native-reanimated";
 import getShadow from "@/lib/ui/getShadow";
 import Button from "../ui/Button";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
@@ -20,6 +15,7 @@ import { MacrosType } from "@/convex/tables/mealItems";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { profilesConfig } from "@/config/profilesConfig";
+import useProgress from "@/lib/hooks/reanimated/useProgress";
 
 type DayData = {
   weekDay: number;
@@ -43,21 +39,12 @@ function DaySelectorItem({
   isToday,
   onPress,
 }: DaySelectorItemProps) {
-  const progress = useSharedValue(0);
+  const progress = useProgress();
   const progressCarbs = useDerivedValue(() => day.carbsRatio * progress.value);
   const progressProtein = useDerivedValue(
     () => day.proteinRatio * progress.value
   );
   const progressFat = useDerivedValue(() => day.fatRatio * progress.value);
-
-  useEffect(() => {
-    progress.value = withTiming(1, { duration: 1500 });
-
-    return () => {
-      cancelAnimation(progress);
-      progress.value = 0;
-    };
-  }, [progress]);
 
   return (
     <Button
