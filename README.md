@@ -1,4 +1,4 @@
-- [ ] Progress hook
+- [ ] Showcase bad vs good micros
 
 - [ ] Sodium container overflow with high sodium values
 - [ ] Description context for AI in the fix meal feature
@@ -6,9 +6,8 @@
 
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
-- [ ] Nutrients text with target rage
+- [ ] Nutrients text with target range
 - [ ] Lib functions inside convex folder so it's not shipped to the client?
-- [ ] Showcase bad vs good micros
 
 - [ ] Clean replaceMealItems and scaleNutrientsPer100g
 
