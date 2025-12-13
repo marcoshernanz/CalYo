@@ -11,16 +11,13 @@ import {
 import Text from "@/components/ui/Text";
 import { NutrientMetric, nutrientsData } from "@/config/nutrientsConfig";
 import { NutrientsType } from "@/convex/tables/mealItems";
+import useProgress from "@/lib/hooks/reanimated/useProgress";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
 import getColor from "@/lib/ui/getColor";
-import { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import Animated, {
-  cancelAnimation,
   SharedValue,
   useAnimatedStyle,
-  useSharedValue,
-  withTiming,
 } from "react-native-reanimated";
 
 const unitScaleMap: Record<string, number> = {
@@ -106,16 +103,7 @@ type Props = {
 
 export default function Nutrients({ nutrients, title }: Props) {
   const { scrollY, onScroll } = useScrollY();
-  const progress = useSharedValue(0);
-
-  useEffect(() => {
-    progress.value = withTiming(1, { duration: 1500 });
-
-    return () => {
-      cancelAnimation(progress);
-      progress.value = 0;
-    };
-  }, [progress]);
+  const progress = useProgress();
 
   return (
     <ScreenMain edges={[]}>

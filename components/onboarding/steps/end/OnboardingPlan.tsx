@@ -2,22 +2,17 @@ import CircularProgress from "@/components/ui/CircularProgress";
 import Description from "@/components/ui/Description";
 import Title from "@/components/ui/Title";
 import getColor from "@/lib/ui/getColor";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import AnimateableText from "react-native-animateable-text";
-import {
-  cancelAnimation,
-  useAnimatedProps,
-  useDerivedValue,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import { useAnimatedProps, useDerivedValue } from "react-native-reanimated";
 import OnboardingStep from "../../OnboardingStep";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
 import calcRatio from "@/lib/utils/calcRatio";
 import resolveFontFamily from "@/lib/ui/resolveFontFamily";
 import { useOnboardingContext } from "@/context/OnboardingContext";
 import PlanInfoSheet from "./PlanInfoSheet";
+import useProgress from "@/lib/hooks/reanimated/useProgress";
 
 type MacroCardProps = {
   name: string;
@@ -34,7 +29,7 @@ function MacroCard({
   formatAmount,
   color,
 }: MacroCardProps) {
-  const progress = useSharedValue(0);
+  const progress = useProgress();
   const progressRatio = useDerivedValue(() => ratio * progress.value);
 
   const animatedProps = {
@@ -42,15 +37,6 @@ function MacroCard({
       text: formatAmount(Math.round(amount * progress.value)),
     })),
   };
-
-  useEffect(() => {
-    progress.value = withTiming(1, { duration: 1500 });
-
-    return () => {
-      cancelAnimation(progress);
-      progress.value = 0;
-    };
-  }, [progress, ratio]);
 
   return (
     <View style={styles.macroCard}>
