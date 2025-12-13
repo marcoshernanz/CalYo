@@ -16,10 +16,7 @@ const analyzeMealPhoto = action({
       const userId = await getAuthUserId(ctx);
       if (userId === null) throw new Error("Unauthorized");
 
-      await rateLimiter.limit(ctx, "analyzeMealPhoto", {
-        key: userId,
-        throws: true,
-      });
+      await rateLimiter.limit(ctx, "aiFeatures", { key: userId, throws: true });
 
       const imageUrl = await ctx.storage.getUrl(storageId);
       if (!imageUrl) throw new Error("Image not found");

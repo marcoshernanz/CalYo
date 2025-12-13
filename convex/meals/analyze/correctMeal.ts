@@ -15,10 +15,7 @@ export const correctMeal = action({
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Unauthorized");
 
-    await rateLimiter.limit(ctx, "correctMeal", {
-      key: userId,
-      throws: true,
-    });
+    await rateLimiter.limit(ctx, "aiFeatures", { key: userId, throws: true });
 
     const result = await ctx.runQuery(api.meals.getMeal.default, { mealId });
     if (!result) throw new Error("Meal not found");

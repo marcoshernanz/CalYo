@@ -55,7 +55,7 @@ export default function Meal({
 
   const { scrollY, onScroll } = useScrollY();
 
-  const { status } = useRateLimit(api.rateLimit.getCorrectMealRateLimit, {
+  const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
   });
 

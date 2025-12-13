@@ -29,7 +29,7 @@ export default function FixMealScreen() {
   const insets = useSafeArea();
   const correctMeal = useAction(api.meals.analyze.correctMeal.correctMeal);
   const [correction, setCorrection] = useState("");
-  const { status } = useRateLimit(api.rateLimit.getCorrectMealRateLimit, {
+  const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
   });
 
