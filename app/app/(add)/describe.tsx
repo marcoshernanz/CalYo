@@ -17,6 +17,7 @@ import { useRouter } from "expo-router";
 import { useRateLimit } from "@convex-dev/rate-limiter/react";
 import { Toast } from "@/components/ui/Toast";
 import { StyleSheet } from "react-native";
+import { analyzeMealConfig } from "@/convex/meals/analyze/analyzeMealConfig";
 
 export default function DescribeScreen() {
   const insets = useSafeArea();
@@ -67,6 +68,7 @@ export default function DescribeScreen() {
             multiline
             autoFocus
             style={styles.textInput}
+            maxLength={analyzeMealConfig.maxUserInputLength}
           />
         </SafeArea>
 

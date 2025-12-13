@@ -18,6 +18,7 @@ import TextInput from "@/components/ui/TextInput";
 import { Toast } from "@/components/ui/Toast";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import SafeArea, { useSafeArea } from "@/components/ui/SafeArea";
+import { analyzeMealConfig } from "@/convex/meals/analyze/analyzeMealConfig";
 
 export default function FixMealScreen() {
   const { mealId } = useLocalSearchParams<{ mealId: Id<"meals"> }>();
@@ -72,6 +73,7 @@ export default function FixMealScreen() {
             onChangeText={setCorrection}
             multiline
             autoFocus
+            maxLength={analyzeMealConfig.maxUserInputLength}
           />
         </SafeArea>
 

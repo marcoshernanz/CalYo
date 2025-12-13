@@ -1,9 +1,5 @@
-- [ ] Remove scroll-view from fix-meal
-
 - [ ] Sodium container overflow with high sodium values
 - [ ] Carousel buttons going up and down
-- [ ] Fix meal max characters
-- [ ] Describe meal max characters
 
 - [ ] Description context for AI in the fix meal feature
 - [ ] Tabs add button above popover overlay
