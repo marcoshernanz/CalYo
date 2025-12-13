@@ -1,16 +1,16 @@
 import { v } from "convex/values";
 import { action } from "../../_generated/server";
 import { api } from "../../_generated/api";
-import detectMealItems from "./detectMealItems";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { Id } from "../../_generated/dataModel";
 import logError from "@/lib/utils/logError";
 import { rateLimiter } from "../../rateLimit";
 import { processDetectedItems } from "./processDetectedItems";
+import detectMealItemsFromText from "./detectMealItemsFromText";
 
-const analyzeMealPhoto = action({
-  args: { storageId: v.id("_storage") },
-  handler: async (ctx, { storageId }): Promise<Id<"meals">> => {
+const analyzeMealDescription = action({
+  args: { description: v.string() },
+  handler: async (ctx, { description }): Promise<Id<"meals">> => {
     let mealId: Id<"meals"> | undefined = undefined;
     try {
       const userId = await getAuthUserId(ctx);
@@ -18,17 +18,14 @@ const analyzeMealPhoto = action({
 
       await rateLimiter.limit(ctx, "aiFeatures", { key: userId, throws: true });
 
-      const imageUrl = await ctx.storage.getUrl(storageId);
-      if (!imageUrl) throw new Error("Image not found");
-
       mealId = await ctx.runMutation(api.meals.createMeal.default, {
         status: "processing",
-        photoStorageId: storageId,
       });
 
-      const { mealName, items: detectedItems } = await detectMealItems({
-        imageUrl,
+      const { mealName, items: detectedItems } = await detectMealItemsFromText({
+        description,
       });
+
       if (detectedItems.length === 0) {
         await ctx.runMutation(api.meals.updateMeal.default, {
           id: mealId,
@@ -41,13 +38,13 @@ const analyzeMealPhoto = action({
         ctx,
         mealId,
         detectedItems,
-        imageUrl,
         mealName,
+        description,
       });
 
       return mealId;
     } catch (error) {
-      logError("analyzeMealPhoto error", error);
+      logError("analyzeMealDescription error", error);
       try {
         if (mealId) {
           await ctx.runMutation(api.meals.updateMeal.default, {
@@ -63,4 +60,4 @@ const analyzeMealPhoto = action({
   },
 });
 
-export default analyzeMealPhoto;
+export default analyzeMealDescription;

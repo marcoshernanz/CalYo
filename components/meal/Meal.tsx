@@ -55,7 +55,7 @@ export default function Meal({
 
   const { scrollY, onScroll } = useScrollY();
 
-  const { status } = useRateLimit(api.rateLimit.getCorrectMealRateLimit, {
+  const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
   });
 
@@ -68,7 +68,7 @@ export default function Meal({
   const handleFixMeal = () => {
     if (status && !status.ok) {
       Toast.show({
-        text: "Has alcanzado el límite diario de correcciones.",
+        text: "Has alcanzado el límite diario de funciones de IA.",
         variant: "error",
       });
       return;

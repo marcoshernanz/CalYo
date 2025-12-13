@@ -29,7 +29,7 @@ export default function FixMealScreen() {
   const insets = useSafeArea();
   const correctMeal = useAction(api.meals.analyze.correctMeal.correctMeal);
   const [correction, setCorrection] = useState("");
-  const { status } = useRateLimit(api.rateLimit.getCorrectMealRateLimit, {
+  const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
   });
 
@@ -38,7 +38,7 @@ export default function FixMealScreen() {
 
     if (status && !status.ok) {
       Toast.show({
-        text: "Has alcanzado el límite diario de correcciones.",
+        text: "Has alcanzado el límite diario de funciones de IA.",
         variant: "error",
       });
       return;
@@ -71,7 +71,7 @@ export default function FixMealScreen() {
             description="Describe los cambios para corregir la comida"
           />
           <TextInput
-            placeholder="Ej: No es pollo, es tofu."
+            placeholder="Ej: No es pollo, es tofu"
             value={correction}
             onChangeText={setCorrection}
             multiline

@@ -9,13 +9,23 @@ import getFoodMacros from "../../../lib/food/getFoodMacros";
 import getFoodNutrients from "../../../lib/food/getFoodNutrients";
 import calculateHealthScore from "./calculateHealthScore";
 
-export async function processDetectedItems(
-  ctx: ActionCtx,
-  mealId: Id<"meals">,
-  detectedItems: DetectedItem[],
-  imageUrl: string,
-  mealName: string
-) {
+type Params = {
+  ctx: ActionCtx;
+  mealId: Id<"meals">;
+  detectedItems: DetectedItem[];
+  imageUrl?: string;
+  mealName: string;
+  description?: string;
+};
+
+export async function processDetectedItems({
+  ctx,
+  mealId,
+  detectedItems,
+  imageUrl,
+  mealName,
+  description,
+}: Params) {
   const candidatesByItem = await searchFdcCandidates({
     ctx,
     detectedItems,
@@ -25,6 +35,7 @@ export async function processDetectedItems(
     detectedItems,
     candidatesByItem,
     imageUrl,
+    description,
   });
 
   const itemPromises = selectedItems.map(async (selectedItem, i) => {

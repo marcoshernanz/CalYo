@@ -40,6 +40,7 @@ export default function TextInput({
   ref,
   label,
   containerStyle,
+  style,
   ...props
 }: Props) {
   const textInputRef = useRef<RNTextInput>(null);
@@ -135,7 +136,6 @@ export default function TextInput({
         )}
         <RNTextInput
           ref={textInputRef}
-          style={styles.textInput}
           onFocus={handleFocus}
           onBlur={handleBlur}
           placeholderTextColor={getColor("mutedForeground", 0.6)}
@@ -145,6 +145,7 @@ export default function TextInput({
             android: getColor("foreground", 0.2),
           })}
           selectionHandleColor={getColor("foreground")}
+          style={[styles.textInput, style]}
           {...props}
         />
       </AnimatedCard>

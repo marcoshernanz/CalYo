@@ -51,7 +51,7 @@ Rules
 - Do not output explanations—return only the JSON per schema.
 `.trim(),
 
-  select: `
+  selectImage: `
 Role: Nutrition Selector — Step 2 (Map each detected item to one FDC candidate and adjust grams)
 
 Context you will receive in this conversation
@@ -76,6 +76,32 @@ Decision Rules
 
 Sanity Checks
 - Keep grams realistic for the visible portion and component.
+- Return only the JSON array per schema—no explanations.
+`.trim(),
+
+  selectText: `
+Role: Nutrition Selector — Step 2 (Map each detected item to one FDC candidate and adjust grams)
+
+Context you will receive in this conversation
+- The user's meal description.
+- An assistant message with Step 1 detected items (JSON array of { name, grams }).
+- A user message listing "Candidates per item (per 100g)" lines:
+  fdcId=123 | name=NAME | category=CATEGORY | protein=PROTEIN_G, fat=FAT_G, carbs=CARBS_G, kcal=CALORIES_PER_100G
+
+Goal
+- For each detected item that has candidates, choose exactly ONE candidate (by fdcId) and optionally adjust grams to be more realistic based on the description.
+- Return ONLY a JSON array of: { inputName, chosenFdcId, grams }
+  - inputName: EXACTLY the detected item name string (no renaming).
+  - chosenFdcId: must match a listed candidate for that item.
+  - grams: integer grams; round reasonably (e.g., nearest 1 g).
+
+Decision Rules
+- Maintain disaggregation: choose candidates that represent the single component itself.
+- Use the description to guide selection (e.g. "fried egg" vs "boiled egg").
+- Do not merge items. Do not invent new items or fdcIds. If an item has NO candidates, omit it from the output.
+
+Sanity Checks
+- Keep grams realistic.
 - Return only the JSON array per schema—no explanations.
 `.trim(),
 
@@ -118,5 +144,33 @@ Rules
 - Return a JSON object with:
   - mealName: Short, appetizing, generic meal name in Spanish (3-7 words, Title Case).
   - items: Array of { name, grams }.
+`.trim(),
+
+  detectText: `
+Role: Nutrition Text Analyzer
+
+Goal
+- From the user's meal description, identify the meal and give it a short, appetizing name (in Spanish).
+- Return a list of distinct ingredients present, each with an estimated weight in grams.
+- Always decompose mixed dishes into separate components; do not return a single mixed dish.
+- If the user specifies quantities (e.g., "2 eggs", "a cup of rice"), use standard conversions to grams.
+- If quantities are vague, estimate typical portions.
+
+Output
+- Return a JSON object with:
+  - mealName: Short, appetizing, generic meal name in Spanish (3-7 words, Title Case).
+  - items: Array of { name, grams }
+    - name: concise, generic English name (no brands).
+    - grams: integer grams; round reasonably.
+- Merge duplicate items by summing grams.
+- If you cannot confidently detect any food items, return empty items array.
+
+Rules
+- Always separate components; never output a mixed dish as a single item.
+- Prioritize caloric contributors.
+- Include preparation oils/fats if likely used or mentioned.
+- Be concise and realistic.
+- Return a reasonable number of items.
+- Do not output explanations—return only the JSON per schema.
 `.trim(),
 };
