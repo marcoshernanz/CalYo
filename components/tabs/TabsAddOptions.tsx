@@ -1,5 +1,5 @@
 import { TriggerRef } from "@rn-primitives/popover";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import * as PopoverPrimitive from "@rn-primitives/popover";
 import TabsAddButton from "./TabsAddButton";
 import { StyleSheet, View } from "react-native";
@@ -69,6 +69,7 @@ const options: Option[] = [
 export default function TabsAddOptions() {
   const router = useRouter();
   const popoverTriggerRef = useRef<TriggerRef>(null);
+  const [isOpen, setIsOpen] = useState(false);
   const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
   });
@@ -88,9 +89,9 @@ export default function TabsAddOptions() {
   };
 
   return (
-    <PopoverPrimitive.Root>
+    <PopoverPrimitive.Root onOpenChange={setIsOpen}>
       <PopoverPrimitive.Trigger asChild ref={popoverTriggerRef}>
-        <TabsAddButton />
+        <TabsAddButton isOpen={isOpen} />
       </PopoverPrimitive.Trigger>
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Overlay style={StyleSheet.absoluteFill}>
