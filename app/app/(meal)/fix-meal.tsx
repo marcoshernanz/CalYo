@@ -38,7 +38,7 @@ export default function FixMealScreen() {
 
     if (status && !status.ok) {
       Toast.show({
-        text: "Has alcanzado el límite diario de correcciones.",
+        text: "Has alcanzado el límite diario de funciones de IA.",
         variant: "error",
       });
       return;
