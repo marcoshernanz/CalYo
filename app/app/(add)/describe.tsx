@@ -16,6 +16,7 @@ import { api } from "@/convex/_generated/api";
 import { useRouter } from "expo-router";
 import { useRateLimit } from "@convex-dev/rate-limiter/react";
 import { Toast } from "@/components/ui/Toast";
+import { StyleSheet } from "react-native";
 
 export default function DescribeScreen() {
   const insets = useSafeArea();
@@ -65,15 +66,13 @@ export default function DescribeScreen() {
             onChangeText={setDescription}
             multiline
             autoFocus
-            style={{ minHeight: 38, textAlignVertical: "top" }}
+            style={styles.textInput}
           />
         </SafeArea>
 
         <ScreenFooter style={{ boxShadow: [] }}>
           <ScreenFooterButton
-            onPress={() => {
-              handleAnalyze();
-            }}
+            onPress={handleAnalyze}
             disabled={
               !description.trim() || (status !== undefined && !status.ok)
             }
@@ -87,3 +86,10 @@ export default function DescribeScreen() {
     </ScreenMain>
   );
 }
+
+const styles = StyleSheet.create({
+  textInput: {
+    minHeight: 38,
+    textAlignVertical: "top",
+  },
+});
