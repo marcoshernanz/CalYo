@@ -13,6 +13,9 @@ import * as ImagePicker from "expo-image-picker";
 import logError from "@/lib/utils/logError";
 import getColor from "@/lib/ui/getColor";
 import { useSafeArea } from "@/components/ui/SafeArea";
+import { useRateLimit } from "@convex-dev/rate-limiter/react";
+import { api } from "@/convex/_generated/api";
+import { Toast } from "@/components/ui/Toast";
 
 export default function CameraScreen() {
   const insets = useSafeArea();
@@ -21,6 +24,10 @@ export default function CameraScreen() {
   const cameraRef = useRef<CameraView>(null);
   const isBusyRef = useRef(false);
   const [enableTorch, setEnableTorch] = useState(false);
+
+  const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
+    getServerTimeMutation: api.rateLimit.getServerTime,
+  });
 
   const navigateToMeal = ({
     uri,
@@ -37,11 +44,19 @@ export default function CameraScreen() {
 
   const takePhoto = async () => {
     if (!cameraRef.current || isBusyRef.current) return;
+
+    if (status && !status.ok) {
+      Toast.show({
+        text: "Has alcanzado el límite diario de funciones de IA.",
+        variant: "error",
+      });
+      return;
+    }
+
     isBusyRef.current = true;
 
     try {
       const photo = await cameraRef.current.takePictureAsync();
-
       navigateToMeal({ uri: photo.uri, source: "camera" });
     } catch (error) {
       logError("Error taking photo", error);
@@ -52,6 +67,14 @@ export default function CameraScreen() {
 
   const handleUpload = async () => {
     if (isBusyRef.current) return;
+
+    if (status && !status.ok) {
+      Toast.show({
+        text: "Has alcanzado el límite diario de funciones de IA.",
+        variant: "error",
+      });
+      return;
+    }
 
     try {
       const result = await ImagePicker.launchImageLibraryAsync({

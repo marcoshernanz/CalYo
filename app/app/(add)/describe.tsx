@@ -16,7 +16,8 @@ import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Href, useRouter } from "expo-router";
 import { Alert } from "react-native";
-import { Id } from "@/convex/_generated/dataModel";
+import { useRateLimit } from "@convex-dev/rate-limiter/react";
+import { Toast } from "@/components/ui/Toast";
 
 export default function DescribeScreen() {
   const insets = useSafeArea();
@@ -24,26 +25,30 @@ export default function DescribeScreen() {
   const analyzeMealDescription = useAction(
     api.meals.analyze.analyzeMealDescription.default
   );
-
+  const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
+    getServerTimeMutation: api.rateLimit.getServerTime,
+  });
   const [description, setDescription] = useState("");
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-
-  // TODO: Rate-limits
-  const status = { ok: true };
 
   const handleAnalyze = async () => {
     if (!description.trim()) return;
-    setIsAnalyzing(true);
+
+    if (status && !status.ok) {
+      Toast.show({
+        text: "Has alcanzado el límite diario de funciones de IA.",
+        variant: "error",
+      });
+      return;
+    }
+
     try {
-      const mealId = (await analyzeMealDescription({
+      const mealId = await analyzeMealDescription({
         description,
-      })) as Id<"meals">;
+      });
       router.push(`/(meal)/${mealId}` as Href);
     } catch (error) {
       console.error(error);
       Alert.alert("Error", "Failed to analyze meal description.");
-    } finally {
-      setIsAnalyzing(false);
     }
   };
 
@@ -77,13 +82,13 @@ export default function DescribeScreen() {
         <ScreenFooter style={{ boxShadow: [] }}>
           <ScreenFooterButton
             onPress={() => void handleAnalyze()}
-            disabled={!description.trim() || !status.ok || isAnalyzing}
+            disabled={
+              !description.trim() || (status !== undefined && !status.ok)
+            }
           >
-            {!status.ok
+            {status !== undefined && !status.ok
               ? "Límite alcanzado"
-              : isAnalyzing
-                ? "Analizando..."
-                : "Analizar comida"}
+              : "Analizar comida"}
           </ScreenFooterButton>
         </ScreenFooter>
       </KeyboardAvoidingView>
