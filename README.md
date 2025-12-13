@@ -1,20 +1,18 @@
-- [ ] Sodium container overflow with high sodium values
-- [ ] Carousel buttons going up and down
+- [ ] Progress hook
+- [ ] Progress animation on change
 
+- [ ] Sodium container overflow with high sodium values
 - [ ] Description context for AI in the fix meal feature
 - [ ] Tabs add button above popover overlay
 
 - [ ] Micro-nutrients
 - [ ] Circular progress animation stopping too soon
-- [ ] Nutrients text with current and target
+- [ ] Nutrients text with target rage
 - [ ] Lib functions inside convex folder so it's not shipped to the client?
-- [ ] Refactor routes
 - [ ] Showcase bad vs good micros
 
 - [ ] Clean replaceMealItems and scaleNutrientsPer100g
-- [ ] zeroMacros, zeroMicros, zeroNutrients
 
-- [ ] Refactor meal.tsx
 - [ ] Fix getMeal
 - [ ] Fix getWeekMeals
 - [ ] Test selectCandidates.tsx/ensureSelection
@@ -25,12 +23,9 @@
 - [ ] Food only nutrients (remove macro-nutrients)
 - [ ] Food nutrients -> nutrientsPer100g
 
-- [ ] Progress hook
-- [ ] Progress animation on change
 - [ ] Number animation on change
 
 - [ ] Migrate to convex-better-auth for auth
-- [ ] Day selector circle (it spans more than it should)
 - [ ] Meal animation prefetch
 - [ ] More colors instead of opacity
 - [ ] react-native-reanimated performance
