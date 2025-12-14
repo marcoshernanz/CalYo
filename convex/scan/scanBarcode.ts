@@ -32,12 +32,13 @@ const OpenFoodFactsResponse = z.object({
 const scanBarcode = action({
   args: {
     barcode: v.string(),
-    locale: v.optional(v.string()),
+    locale: v.string(),
   },
   handler: async (ctx, args) => {
-    const localeString = args.locale ?? "es-ES";
+    const localeString = args.locale;
     const parts = localeString.split("-");
-    const languageCode = parts[0].toLowerCase();
+    // const languageCode = parts[0].toLowerCase();
+    const languageCode = "es";
     const countryCode = parts[1] ? parts[1].toLowerCase() : "es";
 
     const params = new URLSearchParams({
