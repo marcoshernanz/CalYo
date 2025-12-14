@@ -1,4 +1,5 @@
 - [ ] Barcode scanner
+- [ ] Localized measurement system
 
 - [ ] Showcase bad vs good micros
 
