@@ -11,7 +11,7 @@ import Animated, {
 } from "react-native-reanimated";
 import Card from "../ui/Card";
 import Text from "../ui/Text";
-import { CameraIcon, LucideIcon, PenLineIcon } from "lucide-react-native";
+import { LucideIcon, PenLineIcon, ScanIcon } from "lucide-react-native";
 import getColor from "../../lib/ui/getColor";
 import Button from "../ui/Button";
 import { Href, useRouter } from "expo-router";
@@ -61,7 +61,7 @@ const options: Option[] = [
   },
   {
     label: "Escanear",
-    icon: CameraIcon,
+    icon: ScanIcon,
     href: "/app/(add)/camera",
   },
 ];
