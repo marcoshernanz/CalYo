@@ -48,6 +48,7 @@ export default (): ExpoConfig => ({
     "expo-secure-store",
     "expo-apple-authentication",
     "expo-router",
+    "expo-localization",
     [
       "expo-splash-screen",
       {
