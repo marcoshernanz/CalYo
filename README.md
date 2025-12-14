@@ -1,3 +1,5 @@
+- [ ] Barcode scanner
+
 - [ ] Showcase bad vs good micros
 
 - [ ] Sodium container overflow with high sodium values
