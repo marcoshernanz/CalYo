@@ -120,7 +120,7 @@ export default function TabsAddOptions() {
                 >
                   <Card style={styles.card}>
                     <option.icon size={28} color={getColor("foreground")} />
-                    <Text size="14" weight="600">
+                    <Text size="14" weight="500">
                       {option.label}
                     </Text>
                   </Card>
