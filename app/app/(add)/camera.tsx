@@ -3,22 +3,24 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
 import {
   ArrowLeftIcon,
+  CameraIcon,
   FlashlightIcon,
   FlashlightOffIcon,
   ImageIcon,
+  ScanBarcodeIcon,
 } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import logError from "@/lib/utils/logError";
 import getColor from "@/lib/ui/getColor";
-import { useSafeArea } from "@/components/ui/SafeArea";
+import SafeArea from "@/components/ui/SafeArea";
 import { useRateLimit } from "@convex-dev/rate-limiter/react";
 import { api } from "@/convex/_generated/api";
 import { Toast } from "@/components/ui/Toast";
+import Card from "@/components/ui/Card";
 
 export default function CameraScreen() {
-  const insets = useSafeArea();
   const [permission, requestPermission] = useCameraPermissions();
   const router = useRouter();
   const cameraRef = useRef<CameraView>(null);
@@ -110,58 +112,92 @@ export default function CameraScreen() {
 
   return (
     <View style={styles.container}>
-      <Button
-        size="sm"
-        style={[styles.backButton, { top: insets.top, left: insets.left }]}
-        onPress={() => {
-          router.back();
-        }}
-      >
-        <ArrowLeftIcon color="white" size={22} />
-      </Button>
-
       <CameraView
         style={styles.camera}
         ref={cameraRef}
         facing="back"
         enableTorch={enableTorch}
       />
-      <View style={styles.controlsContainer}>
+
+      <SafeArea
+        edges={["top", "left", "right"]}
+        style={{
+          ...StyleSheet.absoluteFillObject,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        }}
+      >
         <Button
-          variant="base"
-          size="base"
-          style={styles.button}
+          size="sm"
+          style={styles.backButton}
           onPress={() => {
-            void handleUpload();
+            router.back();
           }}
         >
-          <ImageIcon color="white" />
+          <ArrowLeftIcon color="white" size={22} />
         </Button>
-        <View style={styles.shutterOuter}>
-          <Button
-            variant="base"
-            size="base"
-            style={styles.shutterInner}
-            onPress={() => {
-              void takePhoto();
-            }}
-          />
+
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <View
+            style={{ height: 100, width: 300, backgroundColor: "red" }}
+          ></View>
         </View>
-        <Button
-          variant="base"
-          size="base"
-          style={styles.button}
-          onPress={() => {
-            setEnableTorch((enableTorch) => !enableTorch);
-          }}
-        >
-          {enableTorch ? (
-            <FlashlightOffIcon color="white" />
-          ) : (
-            <FlashlightIcon color="white" />
-          )}
-        </Button>
-      </View>
+        <View style={styles.bottomContainer}>
+          <View style={styles.optionsContainer}>
+            <Button variant="base" size="base" style={{ flex: 1 }}>
+              <Card style={styles.card}>
+                <CameraIcon color={getColor("foreground")} />
+              </Card>
+            </Button>
+            <Button variant="base" size="base" style={{ flex: 1 }}>
+              <Card style={styles.card}>
+                <ScanBarcodeIcon color={getColor("foreground")} />
+              </Card>
+            </Button>
+          </View>
+          <View style={styles.controlsContainer}>
+            <Button
+              variant="base"
+              size="base"
+              style={styles.button}
+              onPress={() => {
+                void handleUpload();
+              }}
+            >
+              <ImageIcon color="white" />
+            </Button>
+            <View style={styles.shutterOuter}>
+              <Button
+                variant="base"
+                size="base"
+                style={styles.shutterInner}
+                onPress={() => {
+                  void takePhoto();
+                }}
+              />
+            </View>
+            <Button
+              variant="base"
+              size="base"
+              style={styles.button}
+              onPress={() => {
+                setEnableTorch((enableTorch) => !enableTorch);
+              }}
+            >
+              {enableTorch ? (
+                <FlashlightOffIcon color="white" />
+              ) : (
+                <FlashlightIcon color="white" />
+              )}
+            </Button>
+          </View>
+        </View>
+      </SafeArea>
     </View>
   );
 }
@@ -173,7 +209,6 @@ const styles = StyleSheet.create({
   },
   backButton: {
     aspectRatio: 1,
-    position: "absolute",
     zIndex: 10,
     backgroundColor: "rgba(0, 0, 0, 0.4)",
     borderRadius: 999,
@@ -181,13 +216,25 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
   },
+  bottomContainer: {
+    paddingBottom: 50,
+  },
+  optionsContainer: {
+    marginBottom: 20,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    // alignItems: "center",
+    gap: 16,
+  },
+  card: {
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 2,
+  },
   controlsContainer: {
-    position: "absolute",
-    bottom: 40,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    width: "100%",
   },
   button: {
     height: 56,
