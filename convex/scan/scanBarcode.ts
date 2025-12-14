@@ -29,7 +29,7 @@ const OpenFoodFactsResponse = z.object({
   product: ProductSchema.nullable().optional(),
 });
 
-export const scanBarcode = action({
+const scanBarcode = action({
   args: {
     barcode: v.string(),
     locale: v.optional(v.string()),
@@ -95,3 +95,5 @@ export const scanBarcode = action({
     };
   },
 });
+
+export default scanBarcode;
