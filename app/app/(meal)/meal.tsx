@@ -11,6 +11,7 @@ import { z } from "zod";
 import logError from "@/lib/utils/logError";
 import processLibraryImage from "@/lib/image/processLibraryImage";
 import cropImageToAspect from "@/lib/image/cropImageToAspect";
+import { getLocales } from "expo-localization";
 
 export default function MealScreen() {
   const dimensions = useWindowDimensions();
@@ -20,11 +21,13 @@ export default function MealScreen() {
     description,
     mealId: initialMealId,
     source,
+    barcode,
   } = useLocalSearchParams<{
     photoUri?: string;
     description?: string;
     mealId?: Id<"meals">;
     source?: "camera" | "library";
+    barcode?: string;
   }>();
 
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl.default);
@@ -33,6 +36,9 @@ export default function MealScreen() {
   );
   const analyzeMealDescription = useAction(
     api.meals.analyze.analyzeMealDescription.default
+  );
+  const analyzeMealBarcode = useAction(
+    api.meals.analyze.analyzeMealBarcode.default
   );
 
   const [mealId, setMealId] = useState<Id<"meals"> | undefined>(initialMealId);
@@ -88,9 +94,17 @@ export default function MealScreen() {
     [analyzeMealDescription]
   );
 
+  const createMealFromBarcode = useCallback(
+    async (barcode: string) => {
+      const locale = getLocales().at(0)?.languageTag ?? "es-ES";
+      return await analyzeMealBarcode({ barcode, locale });
+    },
+    [analyzeMealBarcode]
+  );
+
   const startMealAnalysis = useCallback(async () => {
     if (
-      (!photoUri && !description) ||
+      (!photoUri && !description && !barcode) ||
       initialMealId ||
       startedRef.current ||
       mealId
@@ -105,6 +119,9 @@ export default function MealScreen() {
       } else if (description) {
         const mealId = await createMealFromDescription(description);
         setMealId(mealId);
+      } else if (barcode) {
+        const mealId = await createMealFromBarcode(barcode);
+        setMealId(mealId);
       }
     } catch (e) {
       logError("Start meal error", e);
@@ -114,10 +131,12 @@ export default function MealScreen() {
   }, [
     createMealFromDescription,
     createMealFromPhoto,
+    createMealFromBarcode,
     description,
     initialMealId,
     mealId,
     photoUri,
+    barcode,
     router,
   ]);
 
