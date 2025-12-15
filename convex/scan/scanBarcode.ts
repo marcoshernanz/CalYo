@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { z } from "zod";
 import { action } from "../_generated/server";
+import appConfig from "../../app.config";
 
 const NutrientValue = z.coerce.number().catch(0).default(0);
 
@@ -41,6 +42,12 @@ const scanBarcode = action({
     const languageCode = "es";
     const countryCode = parts[1] ? parts[1].toLowerCase() : "es";
 
+    const config = appConfig();
+    const appName = config.name;
+    const appVersion = config.version;
+    const supportEmail = process.env.EXPO_PUBLIC_SUPPORT_EMAIL;
+    const userAgent = `${appName}/${appVersion} (${supportEmail})`;
+
     const params = new URLSearchParams({
       cc: countryCode,
       lc: languageCode,
@@ -51,7 +58,11 @@ const scanBarcode = action({
 
     let rawJson: unknown;
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: {
+          "User-Agent": userAgent,
+        },
+      });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       rawJson = await response.json();
     } catch (error) {
