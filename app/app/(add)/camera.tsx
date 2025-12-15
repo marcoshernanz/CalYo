@@ -19,13 +19,18 @@ import { useRateLimit } from "@convex-dev/rate-limiter/react";
 import { api } from "@/convex/_generated/api";
 import { Toast } from "@/components/ui/Toast";
 import Card from "@/components/ui/Card";
+import ScannerRect from "@/components/ui/ScannerRect";
 
 export default function CameraScreen() {
   const [permission, requestPermission] = useCameraPermissions();
+  const [enableTorch, setEnableTorch] = useState(false);
   const router = useRouter();
   const cameraRef = useRef<CameraView>(null);
   const isBusyRef = useRef(false);
-  const [enableTorch, setEnableTorch] = useState(false);
+
+  const [selectedOption, setSelectedOption] = useState<"photo" | "barcode">(
+    "photo"
+  );
 
   const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
@@ -119,13 +124,7 @@ export default function CameraScreen() {
         enableTorch={enableTorch}
       />
 
-      <SafeArea
-        edges={["top", "left", "right"]}
-        style={{
-          ...StyleSheet.absoluteFillObject,
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-        }}
-      >
+      <SafeArea edges={["top", "left", "right"]} style={styles.safeArea}>
         <Button
           size="sm"
           style={styles.backButton}
@@ -136,26 +135,87 @@ export default function CameraScreen() {
           <ArrowLeftIcon color="white" size={22} />
         </Button>
 
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        {selectedOption === "barcode" && (
           <View
-            style={{ height: 100, width: 300, backgroundColor: "red" }}
-          ></View>
-        </View>
+            style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <View
+              style={{
+                width: "90%",
+                aspectRatio: 1.5,
+                backgroundColor: "transparent",
+                borderWidth: 2,
+                borderRadius: 16,
+                borderColor: "#FFF",
+                boxShadow: [
+                  {
+                    offsetX: 0,
+                    offsetY: 0,
+                    color: `rgba(0, 0, 0, 0.5)`,
+                    spreadDistance: 999,
+                  },
+                ],
+              }}
+            ></View>
+          </View>
+        )}
+        {selectedOption === "photo" && (
+          <View
+            style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              paddingVertical: 16,
+            }}
+          >
+            <View
+              style={{
+                width: "90%",
+                height: "90%",
+              }}
+            >
+              <ScannerRect />
+            </View>
+          </View>
+        )}
+
         <View style={styles.bottomContainer}>
           <View style={styles.optionsContainer}>
-            <Button variant="base" size="base" style={{ flex: 1 }}>
-              <Card style={styles.card}>
+            <Button
+              variant="base"
+              size="base"
+              style={{ flex: 1 }}
+              onPress={() => {
+                setSelectedOption("photo");
+              }}
+            >
+              <Card
+                style={[
+                  styles.card,
+                  selectedOption !== "photo" && { opacity: 0.5 },
+                ]}
+              >
                 <CameraIcon color={getColor("foreground")} />
               </Card>
             </Button>
-            <Button variant="base" size="base" style={{ flex: 1 }}>
-              <Card style={styles.card}>
+            <Button
+              variant="base"
+              size="base"
+              style={{ flex: 1 }}
+              onPress={() => {
+                setSelectedOption("barcode");
+              }}
+            >
+              <Card
+                style={[
+                  styles.card,
+                  selectedOption !== "barcode" && { opacity: 0.5 },
+                ]}
+              >
                 <ScanBarcodeIcon color={getColor("foreground")} />
               </Card>
             </Button>
@@ -207,14 +267,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: getColor("background"),
   },
+  camera: {
+    flex: 1,
+  },
+  safeArea: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "transparent",
+  },
   backButton: {
     aspectRatio: 1,
     zIndex: 10,
     backgroundColor: "rgba(0, 0, 0, 0.4)",
     borderRadius: 999,
-  },
-  camera: {
-    flex: 1,
   },
   bottomContainer: {
     paddingBottom: 50,
@@ -223,7 +287,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     flexDirection: "row",
     justifyContent: "space-around",
-    // alignItems: "center",
     gap: 16,
   },
   card: {
