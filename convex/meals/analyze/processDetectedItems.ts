@@ -39,7 +39,7 @@ export async function processDetectedItems({
   });
 
   const itemPromises = selectedItems.map(async (selectedItem, i) => {
-    const fdcFood = await ctx.runQuery(api.foods.getFoodById.default, {
+    const fdcFood = await ctx.runQuery(api.foods.getFoodByIdentity.default, {
       identity: { source: "fdc", id: selectedItem.fdcId },
     });
     if (!fdcFood) return null;
