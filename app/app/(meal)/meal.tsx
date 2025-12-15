@@ -45,7 +45,50 @@ export default function MealScreen() {
 
   const fromCamera = source === "camera";
 
-  const handleMealCreation = useCallback(async () => {
+  const createMealFromPhoto = useCallback(
+    async (uri: string) => {
+      const croppedUri = fromCamera
+        ? await cropImageToAspect({ uri, dimensions })
+        : await processLibraryImage(uri);
+
+      const uploadUrl = await generateUploadUrl();
+
+      const fileRes = await fetch(croppedUri);
+      const blob = await fileRes.blob();
+
+      const uploadRes = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": blob.type || "image/jpeg" },
+        body: blob,
+      });
+      if (!uploadRes.ok) {
+        throw new Error(`Upload failed: ${uploadRes.status}`);
+      }
+      const json: unknown = await uploadRes.json();
+      const schema = z.object({
+        storageId: z.string(),
+      });
+
+      const { data, success } = schema.safeParse(json);
+
+      if (!success) {
+        throw new Error("Upload response missing storageId");
+      }
+      const storageId = data.storageId as Id<"_storage">;
+
+      return await analyzeMealPhoto({ storageId });
+    },
+    [analyzeMealPhoto, dimensions, fromCamera, generateUploadUrl]
+  );
+
+  const createMealFromDescription = useCallback(
+    async (description: string) => {
+      return await analyzeMealDescription({ description });
+    },
+    [analyzeMealDescription]
+  );
+
+  const startMealAnalysis = useCallback(async () => {
     if (
       (!photoUri && !description) ||
       initialMealId ||
@@ -57,39 +100,10 @@ export default function MealScreen() {
 
     try {
       if (photoUri) {
-        const croppedUri = fromCamera
-          ? await cropImageToAspect({ uri: photoUri, dimensions })
-          : await processLibraryImage(photoUri);
-
-        const uploadUrl = await generateUploadUrl();
-
-        const fileRes = await fetch(croppedUri);
-        const blob = await fileRes.blob();
-
-        const uploadRes = await fetch(uploadUrl, {
-          method: "POST",
-          headers: { "Content-Type": blob.type || "image/jpeg" },
-          body: blob,
-        });
-        if (!uploadRes.ok) {
-          throw new Error(`Upload failed: ${uploadRes.status}`);
-        }
-        const json: unknown = await uploadRes.json();
-        const schema = z.object({
-          storageId: z.string(),
-        });
-
-        const { data, success } = schema.safeParse(json);
-
-        if (!success) {
-          throw new Error("Upload response missing storageId");
-        }
-        const storageId = data.storageId as Id<"_storage">;
-
-        const mealId = await analyzeMealPhoto({ storageId });
+        const mealId = await createMealFromPhoto(photoUri);
         setMealId(mealId);
       } else if (description) {
-        const mealId = await analyzeMealDescription({ description });
+        const mealId = await createMealFromDescription(description);
         setMealId(mealId);
       }
     } catch (e) {
@@ -98,12 +112,9 @@ export default function MealScreen() {
       router.replace("/app");
     }
   }, [
-    analyzeMealDescription,
-    analyzeMealPhoto,
+    createMealFromDescription,
+    createMealFromPhoto,
     description,
-    dimensions,
-    fromCamera,
-    generateUploadUrl,
     initialMealId,
     mealId,
     photoUri,
@@ -111,8 +122,8 @@ export default function MealScreen() {
   ]);
 
   useEffect(() => {
-    void handleMealCreation();
-  }, [handleMealCreation]);
+    void startMealAnalysis();
+  }, [startMealAnalysis]);
 
   if (mealId && data === null) {
     return <Redirect href="/app" />;
