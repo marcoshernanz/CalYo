@@ -14,7 +14,7 @@ export const foodsFields = {
     }),
     v.object({
       source: v.literal("off"),
-      code: v.string(),
+      id: v.string(),
     })
   ),
 
