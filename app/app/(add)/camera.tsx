@@ -7,8 +7,6 @@ import {
 } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
-import { getLocales } from "expo-localization";
-import { useAction } from "convex/react";
 import { useRateLimit } from "@convex-dev/rate-limiter/react";
 import { ArrowLeftIcon } from "lucide-react-native";
 
@@ -29,9 +27,7 @@ type CameraMode = "photo" | "barcode";
 export default function CameraScreen() {
   const router = useRouter();
   const [permission, requestPermission] = useCameraPermissions();
-  const deviceLanguage = getLocales().at(0)?.languageTag ?? "es-ES";
 
-  const scanBarcode = useAction(api.scan.scanBarcode.default);
   const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
   });
@@ -61,19 +57,6 @@ export default function CameraScreen() {
     return true;
   };
 
-  const navigateToMeal = ({
-    uri,
-    source,
-  }: {
-    uri: string;
-    source: "camera" | "library";
-  }) => {
-    router.replace({
-      pathname: "/app/(meal)/meal",
-      params: { photoUri: uri, source },
-    });
-  };
-
   const takePhoto = async () => {
     if (!cameraRef.current || isBusyRef.current) return;
     if (!checkRateLimit()) return;
@@ -83,7 +66,10 @@ export default function CameraScreen() {
     try {
       const photo = await cameraRef.current.takePictureAsync();
       if (photo.uri) {
-        navigateToMeal({ uri: photo.uri, source: "camera" });
+        router.replace({
+          pathname: "/app/(meal)/meal",
+          params: { photoUri: photo.uri, source: "camera" },
+        });
       }
     } catch (error) {
       logError("Error taking photo", error);
@@ -108,7 +94,10 @@ export default function CameraScreen() {
       if (!asset?.uri) return;
 
       isBusyRef.current = true;
-      navigateToMeal({ uri: asset.uri, source: "library" });
+      router.replace({
+        pathname: "/app/(meal)/meal",
+        params: { photoUri: asset.uri, source: "library" },
+      });
     } catch (error) {
       logError("Error picking photo", error);
     } finally {
@@ -116,17 +105,15 @@ export default function CameraScreen() {
     }
   };
 
-  const handleBarCodeScanned = async ({ data }: BarcodeScanningResult) => {
+  const handleBarcodeScanned = ({ data }: BarcodeScanningResult) => {
     if (isBusyRef.current) return;
     isBusyRef.current = true;
 
     try {
-      const response = await scanBarcode({
-        barcode: data,
-        locale: deviceLanguage,
+      router.replace({
+        pathname: "/app/(meal)/meal",
+        params: { barcode: data, source: "camera" },
       });
-      console.log(response);
-      alert(`Bar code scanned! Data: ${data}`);
     } catch (error) {
       logError("Error scanning barcode", error);
     } finally {
@@ -149,7 +136,7 @@ export default function CameraScreen() {
         enableTorch={enableTorch}
         onBarcodeScanned={(data) => {
           if (selectedOption === "barcode" && !isBusyRef.current) {
-            void handleBarCodeScanned(data);
+            handleBarcodeScanned(data);
           }
         }}
         barcodeScannerSettings={{
