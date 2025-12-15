@@ -25,6 +25,10 @@ export const mapResult = internalQuery({
     const doc = await ctx.db.get(_id);
     if (!doc) throw new Error("Document not found");
 
+    if (doc.identity.source !== "fdc") {
+      throw new Error("Expected FDC food");
+    }
+
     return {
       fdcId: doc.identity.id,
       name: doc.name.en,
