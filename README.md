@@ -4,6 +4,9 @@
 - [ ] Add meal items when creating meal, instead of doing it in 2 steps
 - [ ] Rate limit barcode reading
 - [ ] Only embed fdc foods
+- [ ] OFF per user rate limits
+- [ ] OFF nutrients extraction
+- [ ] OFF capitalize brand
 
 - [ ] Showcase bad vs good micros
 
