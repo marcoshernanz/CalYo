@@ -48,13 +48,14 @@ const scanBarcode = action({
     const supportEmail = process.env.EXPO_PUBLIC_SUPPORT_EMAIL;
     const userAgent = `${appName}/${appVersion} (${supportEmail})`;
 
-    const params = new URLSearchParams({
+    const url = new URL(
+      `https://world.openfoodfacts.net/api/v2/product/${args.barcode}`
+    );
+    url.search = new URLSearchParams({
       cc: countryCode,
       lc: languageCode,
       fields: `code,product_name,product_name_${languageCode},brands,nutriments`,
-    });
-
-    const url = `https://world.openfoodfacts.net/api/v2/product/${args.barcode}?${params.toString()}`;
+    }).toString();
 
     let rawJson: unknown;
     try {
