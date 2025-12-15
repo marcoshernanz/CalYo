@@ -1,5 +1,6 @@
 - [ ] Barcode scanner
 - [ ] Localized measurement system
+- [ ] Remove TabBarOptions timeout for navigation
 
 - [ ] Showcase bad vs good micros
 

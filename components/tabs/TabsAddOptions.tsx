@@ -2,7 +2,7 @@ import { TriggerRef } from "@rn-primitives/popover";
 import { useRef, useState } from "react";
 import * as PopoverPrimitive from "@rn-primitives/popover";
 import TabsAddButton from "./TabsAddButton";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import Animated, {
   Easing,
   FadeIn,
@@ -85,7 +85,13 @@ export default function TabsAddOptions() {
       return;
     }
 
-    router.push(href);
+    if (Platform.OS === "android") {
+      setTimeout(() => {
+        router.push(href);
+      }, 250);
+    } else {
+      router.push(href);
+    }
   };
 
   return (
