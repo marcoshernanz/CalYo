@@ -147,16 +147,14 @@ export default function CameraScreen() {
         ref={cameraRef}
         facing="back"
         enableTorch={enableTorch}
-        onBarcodeScanned={
-          selectedOption === "barcode" && !isBusyRef.current
-            ? (data) => void handleBarCodeScanned(data)
-            : undefined
-        }
-        barcodeScannerSettings={
-          selectedOption === "barcode"
-            ? { barcodeTypes: ["ean13", "upc_a", "upc_e"] }
-            : undefined
-        }
+        onBarcodeScanned={(data) => {
+          if (selectedOption === "barcode" && !isBusyRef.current) {
+            void handleBarCodeScanned(data);
+          }
+        }}
+        barcodeScannerSettings={{
+          barcodeTypes: ["ean13", "upc_a", "upc_e"],
+        }}
       />
 
       <SafeArea edges={["top", "left", "right"]} style={styles.safeArea}>
