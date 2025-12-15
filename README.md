@@ -1,6 +1,9 @@
 - [ ] Barcode scanner
 - [ ] Localized measurement system
 - [ ] Remove TabBarOptions timeout for navigation
+- [ ] Add meal items when creating meal, instead of doing it in 2 steps
+- [ ] Rate limit barcode reading
+- [ ] Only embed fdc foods
 
 - [ ] Showcase bad vs good micros
 
