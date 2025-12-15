@@ -42,7 +42,11 @@ const analyzeMealBarcode = action({
           food: {
             identity: { source: "off", id: barcode },
             name: { en: product.name, es: product.name },
-            macroNutrients: { ...product },
+            macroNutrients: {
+              protein: product.protein,
+              fat: product.fat,
+              carbs: product.carbs,
+            },
             nutrients: {},
             hasEmbedding: false,
           },
