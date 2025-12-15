@@ -11,8 +11,8 @@
 import type * as ResendOTP from "../ResendOTP.js";
 import type * as ai from "../ai.js";
 import type * as auth from "../auth.js";
+import type * as foods_createFood from "../foods/createFood.js";
 import type * as foods_getFoodByIdentity from "../foods/getFoodByIdentity.js";
-import type * as foods_getOrCreateFoodFromBarcode from "../foods/getOrCreateFoodFromBarcode.js";
 import type * as foods_ingestFoods from "../foods/ingestFoods.js";
 import type * as foods_updateFoodHealthScore from "../foods/updateFoodHealthScore.js";
 import type * as foods_updateFoodTranslation from "../foods/updateFoodTranslation.js";
@@ -74,8 +74,8 @@ declare const fullApi: ApiFromModules<{
   ResendOTP: typeof ResendOTP;
   ai: typeof ai;
   auth: typeof auth;
+  "foods/createFood": typeof foods_createFood;
   "foods/getFoodByIdentity": typeof foods_getFoodByIdentity;
-  "foods/getOrCreateFoodFromBarcode": typeof foods_getOrCreateFoodFromBarcode;
   "foods/ingestFoods": typeof foods_ingestFoods;
   "foods/updateFoodHealthScore": typeof foods_updateFoodHealthScore;
   "foods/updateFoodTranslation": typeof foods_updateFoodTranslation;
