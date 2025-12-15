@@ -148,7 +148,7 @@ export default function CameraScreen() {
         facing="back"
         enableTorch={enableTorch}
         onBarcodeScanned={
-          selectedOption === "barcode"
+          selectedOption === "barcode" && !isBusyRef.current
             ? (data) => void handleBarCodeScanned(data)
             : undefined
         }
