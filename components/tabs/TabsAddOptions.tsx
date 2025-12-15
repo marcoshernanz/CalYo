@@ -88,7 +88,7 @@ export default function TabsAddOptions() {
     if (Platform.OS === "android") {
       setTimeout(() => {
         router.push(href);
-      }, 250);
+      }, 200);
     } else {
       router.push(href);
     }
