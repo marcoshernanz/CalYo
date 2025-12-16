@@ -1,11 +1,10 @@
 - [ ] Barcode scanner
+- [ ] Update meal item grams
+
 - [ ] Localized measurement system
 - [ ] Remove TabBarOptions timeout for navigation
 - [ ] Add meal items when creating meal, instead of doing it in 2 steps
-- [ ] Rate limit barcode reading
-- [ ] OFF per user rate limits
 - [ ] OFF nutrients extraction
-- [ ] OFF capitalize brand
 
 - [ ] Showcase bad vs good micros
 
