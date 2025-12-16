@@ -1,5 +1,5 @@
+import Constants from "expo-constants";
 import { z } from "zod";
-import appConfig from "../../app.config";
 
 const ProductSchema = z.looseObject({
   code: z.string(),
@@ -20,9 +20,8 @@ export async function fetchProduct(barcode: string, locale: string) {
   const languageCode = "es";
   const countryCode = parts[1] ? parts[1].toLowerCase() : "es";
 
-  const config = appConfig();
-  const appName = config.name;
-  const appVersion = config.version;
+  const appName = Constants.expoConfig?.name ?? "Calyo";
+  const appVersion = Constants.expoConfig?.version ?? "1.0.0";
   const supportEmail = process.env.EXPO_PUBLIC_SUPPORT_EMAIL;
   const userAgent = `${appName}/${appVersion} (${supportEmail})`;
 
@@ -37,7 +36,7 @@ export async function fetchProduct(barcode: string, locale: string) {
 
   let rawJson: unknown;
   try {
-    const response = await fetch(url, {
+    const response = await fetch(url.toString(), {
       headers: {
         "User-Agent": userAgent,
       },

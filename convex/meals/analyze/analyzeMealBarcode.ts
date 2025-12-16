@@ -4,13 +4,21 @@ import { api, internal } from "../../_generated/api";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { Id } from "../../_generated/dataModel";
 import logError from "@/lib/utils/logError";
-import { fetchProduct } from "../../scan/fetchProduct";
 import offExtractMacros from "@/lib/off/offExtractMacros";
 import offExtractNutrients from "@/lib/off/offExtractNutrients";
 
 const analyzeMealBarcode = action({
-  args: { barcode: v.string(), locale: v.string() },
-  handler: async (ctx, { barcode, locale }): Promise<Id<"meals">> => {
+  args: {
+    barcode: v.string(),
+    locale: v.string(),
+    product: v.optional(
+      v.object({
+        name: v.string(),
+        nutriments: v.record(v.string(), v.any()),
+      })
+    ),
+  },
+  handler: async (ctx, { barcode, locale, product }): Promise<Id<"meals">> => {
     let mealId: Id<"meals"> | undefined = undefined;
     try {
       const userId = await getAuthUserId(ctx);
@@ -29,8 +37,6 @@ const analyzeMealBarcode = action({
       let foodId = existingFood?._id;
       let name = existingFood?.name.es ?? existingFood?.name.en;
       if (!foodId) {
-        const product = await fetchProduct(barcode, locale);
-
         if (!product) {
           await ctx.runMutation(api.meals.updateMeal.default, {
             id: mealId,
@@ -40,7 +46,7 @@ const analyzeMealBarcode = action({
         }
 
         name = product.name;
-        const nutriments = product.nutriments;
+        const nutriments = product.nutriments as Record<string, unknown>;
         const macroNutrients = offExtractMacros(nutriments);
         const nutrients = offExtractNutrients(nutriments);
 

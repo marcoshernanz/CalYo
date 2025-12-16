@@ -2,7 +2,7 @@ import Meal from "@/components/meal/Meal";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
-import { useAction, useMutation, useQuery } from "convex/react";
+import { useAction, useMutation, useQuery, useConvex } from "convex/react";
 import { Redirect, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useWindowDimensions } from "react-native";
@@ -12,10 +12,12 @@ import logError from "@/lib/utils/logError";
 import processLibraryImage from "@/lib/image/processLibraryImage";
 import cropImageToAspect from "@/lib/image/cropImageToAspect";
 import { getLocales } from "expo-localization";
+import { fetchProduct } from "@/lib/off/fetchProduct";
 
 export default function MealScreen() {
   const dimensions = useWindowDimensions();
   const router = useRouter();
+  const convex = useConvex();
   const {
     photoUri,
     description,
@@ -97,9 +99,26 @@ export default function MealScreen() {
   const createMealFromBarcode = useCallback(
     async (barcode: string) => {
       const locale = getLocales().at(0)?.languageTag ?? "es-ES";
-      return await analyzeMealBarcode({ barcode, locale });
+
+      const existingFood = await convex.query(
+        api.foods.getFoodByIdentity.default,
+        {
+          identity: { source: "off", id: barcode },
+        }
+      );
+
+      if (existingFood) {
+        return await analyzeMealBarcode({ barcode, locale });
+      }
+
+      const product = await fetchProduct(barcode, locale);
+      if (!product) {
+        throw new Error("Product not found in Open Food Facts");
+      }
+
+      return await analyzeMealBarcode({ barcode, locale, product });
     },
-    [analyzeMealBarcode]
+    [analyzeMealBarcode, convex]
   );
 
   const startMealAnalysis = useCallback(async () => {

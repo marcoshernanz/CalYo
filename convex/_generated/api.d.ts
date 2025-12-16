@@ -45,7 +45,6 @@ import type * as profiles_completeOnboarding from "../profiles/completeOnboardin
 import type * as profiles_getProfile from "../profiles/getProfile.js";
 import type * as profiles_updateProfile from "../profiles/updateProfile.js";
 import type * as rateLimit from "../rateLimit.js";
-import type * as scan_fetchProduct from "../scan/fetchProduct.js";
 import type * as storage_generateUploadUrl from "../storage/generateUploadUrl.js";
 import type * as tables_foods from "../tables/foods.js";
 import type * as tables_mealItems from "../tables/mealItems.js";
@@ -108,7 +107,6 @@ declare const fullApi: ApiFromModules<{
   "profiles/getProfile": typeof profiles_getProfile;
   "profiles/updateProfile": typeof profiles_updateProfile;
   rateLimit: typeof rateLimit;
-  "scan/fetchProduct": typeof scan_fetchProduct;
   "storage/generateUploadUrl": typeof storage_generateUploadUrl;
   "tables/foods": typeof tables_foods;
   "tables/mealItems": typeof tables_mealItems;
