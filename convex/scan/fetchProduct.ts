@@ -1,25 +1,12 @@
 import { z } from "zod";
 import appConfig from "../../app.config";
 
-const NutrientValue = z.coerce.number().catch(0).default(0);
-
 const ProductSchema = z
   .object({
     code: z.string(),
     product_name: z.string().nullable().optional(),
     brands: z.string().nullable().optional(),
-    nutriments: z
-      .object({
-        proteins_100g: NutrientValue,
-        carbohydrates_100g: NutrientValue,
-        fat_100g: NutrientValue,
-      })
-      .optional()
-      .default({
-        proteins_100g: 0,
-        carbohydrates_100g: 0,
-        fat_100g: 0,
-      }),
+    nutriments: z.record(z.string(), z.any()).optional().default({}),
   })
   .loose();
 
@@ -95,8 +82,6 @@ export async function fetchProduct(barcode: string, locale: string) {
   return {
     barcode: barcode,
     name: fullName,
-    protein: Number(p.nutriments.proteins_100g.toFixed(1)),
-    carbs: Number(p.nutriments.carbohydrates_100g.toFixed(1)),
-    fat: Number(p.nutriments.fat_100g.toFixed(1)),
+    nutriments: p.nutriments,
   };
 }

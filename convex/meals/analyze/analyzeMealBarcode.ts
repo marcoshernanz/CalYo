@@ -5,6 +5,8 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { Id } from "../../_generated/dataModel";
 import logError from "@/lib/utils/logError";
 import { fetchProduct } from "../../scan/fetchProduct";
+import offExtractMacros from "@/lib/off/offExtractMacros";
+import offExtractNutrients from "@/lib/off/offExtractNutrients";
 
 const analyzeMealBarcode = action({
   args: { barcode: v.string(), locale: v.string() },
@@ -38,16 +40,16 @@ const analyzeMealBarcode = action({
         }
 
         name = product.name;
+        const nutriments = product.nutriments;
+        const macroNutrients = offExtractMacros(nutriments);
+        const nutrients = offExtractNutrients(nutriments);
+
         foodId = await ctx.runMutation(internal.foods.createFood.default, {
           food: {
             identity: { source: "off", id: barcode },
             name: { en: product.name, es: product.name },
-            macroNutrients: {
-              protein: product.protein,
-              fat: product.fat,
-              carbs: product.carbs,
-            },
-            nutrients: {},
+            macroNutrients,
+            nutrients,
             hasEmbedding: false,
           },
         });
