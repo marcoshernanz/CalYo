@@ -1,14 +1,12 @@
 import { z } from "zod";
 import appConfig from "../../app.config";
 
-const ProductSchema = z
-  .object({
-    code: z.string(),
-    product_name: z.string().nullable().optional(),
-    brands: z.string().nullable().optional(),
-    nutriments: z.record(z.string(), z.any()).optional().default({}),
-  })
-  .loose();
+const ProductSchema = z.looseObject({
+  code: z.string(),
+  product_name: z.string().nullable().optional(),
+  brands: z.string().nullable().optional(),
+  nutriments: z.record(z.string(), z.any()).optional().default({}),
+});
 
 const OpenFoodFactsResponse = z.object({
   status: z.union([z.number(), z.string()]).optional(),
