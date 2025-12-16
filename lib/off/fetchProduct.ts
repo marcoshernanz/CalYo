@@ -20,7 +20,7 @@ export async function fetchProduct(barcode: string, locale: string) {
   const languageCode = "es";
   const countryCode = parts[1] ? parts[1].toLowerCase() : "es";
 
-  const appName = Constants.expoConfig?.name ?? "Calyo";
+  const appName = Constants.expoConfig?.name ?? "CalYo";
   const appVersion = Constants.expoConfig?.version ?? "1.0.0";
   const supportEmail = process.env.EXPO_PUBLIC_SUPPORT_EMAIL;
   const userAgent = `${appName}/${appVersion} (${supportEmail})`;

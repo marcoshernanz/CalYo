@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import CalyoLogo from "@/assets/svg/calyo-logo.svg";
+import CalYoLogo from "@/assets/svg/calyo-logo.svg";
 import getColor from "@/lib/ui/getColor";
 import Text from "../ui/Text";
 import { FlameIcon } from "lucide-react-native";
@@ -17,7 +17,7 @@ export default function HomeHeader() {
   return (
     <SafeArea edges={["left", "right"]} style={styles.safeArea}>
       <View style={styles.logoContainer}>
-        <CalyoLogo width={28} height={28} color={getColor("foreground")} />
+        <CalYoLogo width={28} height={28} color={getColor("foreground")} />
         <Text size="28" weight="600">
           CalYo
         </Text>
