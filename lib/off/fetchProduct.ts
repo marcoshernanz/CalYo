@@ -77,7 +77,6 @@ export async function fetchProduct(barcode: string, locale: string) {
   const fullName = p.brands ? `${p.brands} - ${finalName}` : finalName;
 
   return {
-    barcode: barcode,
     name: fullName,
     nutriments: p.nutriments,
   };
