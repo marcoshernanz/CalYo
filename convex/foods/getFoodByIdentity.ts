@@ -8,6 +8,10 @@ const getFoodByIdentity = query({
       v.object({
         source: v.literal("fdc"),
         id: v.number(),
+      }),
+      v.object({
+        source: v.literal("off"),
+        id: v.string(),
       })
     ),
   },

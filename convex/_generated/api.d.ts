@@ -11,7 +11,8 @@
 import type * as ResendOTP from "../ResendOTP.js";
 import type * as ai from "../ai.js";
 import type * as auth from "../auth.js";
-import type * as foods_getFoodById from "../foods/getFoodById.js";
+import type * as foods_createFood from "../foods/createFood.js";
+import type * as foods_getFoodByIdentity from "../foods/getFoodByIdentity.js";
 import type * as foods_ingestFoods from "../foods/ingestFoods.js";
 import type * as foods_updateFoodHealthScore from "../foods/updateFoodHealthScore.js";
 import type * as foods_updateFoodTranslation from "../foods/updateFoodTranslation.js";
@@ -19,6 +20,7 @@ import type * as foods_upsertFoods from "../foods/upsertFoods.js";
 import type * as home_getStreak from "../home/getStreak.js";
 import type * as http from "../http.js";
 import type * as mealItems_getMealItem from "../mealItems/getMealItem.js";
+import type * as meals_analyze_analyzeMealBarcode from "../meals/analyze/analyzeMealBarcode.js";
 import type * as meals_analyze_analyzeMealConfig from "../meals/analyze/analyzeMealConfig.js";
 import type * as meals_analyze_analyzeMealDescription from "../meals/analyze/analyzeMealDescription.js";
 import type * as meals_analyze_analyzeMealPhoto from "../meals/analyze/analyzeMealPhoto.js";
@@ -71,7 +73,8 @@ declare const fullApi: ApiFromModules<{
   ResendOTP: typeof ResendOTP;
   ai: typeof ai;
   auth: typeof auth;
-  "foods/getFoodById": typeof foods_getFoodById;
+  "foods/createFood": typeof foods_createFood;
+  "foods/getFoodByIdentity": typeof foods_getFoodByIdentity;
   "foods/ingestFoods": typeof foods_ingestFoods;
   "foods/updateFoodHealthScore": typeof foods_updateFoodHealthScore;
   "foods/updateFoodTranslation": typeof foods_updateFoodTranslation;
@@ -79,6 +82,7 @@ declare const fullApi: ApiFromModules<{
   "home/getStreak": typeof home_getStreak;
   http: typeof http;
   "mealItems/getMealItem": typeof mealItems_getMealItem;
+  "meals/analyze/analyzeMealBarcode": typeof meals_analyze_analyzeMealBarcode;
   "meals/analyze/analyzeMealConfig": typeof meals_analyze_analyzeMealConfig;
   "meals/analyze/analyzeMealDescription": typeof meals_analyze_analyzeMealDescription;
   "meals/analyze/analyzeMealPhoto": typeof meals_analyze_analyzeMealPhoto;

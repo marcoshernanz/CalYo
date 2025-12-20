@@ -2,7 +2,7 @@ import Meal from "@/components/meal/Meal";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import macrosToKcal from "@/lib/utils/macrosToKcal";
-import { useAction, useMutation, useQuery } from "convex/react";
+import { useAction, useMutation, useQuery, useConvex } from "convex/react";
 import { Redirect, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useWindowDimensions } from "react-native";
@@ -11,20 +11,25 @@ import { z } from "zod";
 import logError from "@/lib/utils/logError";
 import processLibraryImage from "@/lib/image/processLibraryImage";
 import cropImageToAspect from "@/lib/image/cropImageToAspect";
+import { getLocales } from "expo-localization";
+import { fetchProduct } from "@/lib/off/fetchProduct";
 
 export default function MealScreen() {
   const dimensions = useWindowDimensions();
   const router = useRouter();
+  const convex = useConvex();
   const {
     photoUri,
     description,
     mealId: initialMealId,
     source,
+    barcode,
   } = useLocalSearchParams<{
     photoUri?: string;
     description?: string;
     mealId?: Id<"meals">;
     source?: "camera" | "library";
+    barcode?: string;
   }>();
 
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl.default);
@@ -33,6 +38,9 @@ export default function MealScreen() {
   );
   const analyzeMealDescription = useAction(
     api.meals.analyze.analyzeMealDescription.default
+  );
+  const analyzeMealBarcode = useAction(
+    api.meals.analyze.analyzeMealBarcode.default
   );
 
   const [mealId, setMealId] = useState<Id<"meals"> | undefined>(initialMealId);
@@ -45,9 +53,77 @@ export default function MealScreen() {
 
   const fromCamera = source === "camera";
 
-  const handleMealCreation = useCallback(async () => {
+  const createMealFromPhoto = useCallback(
+    async (uri: string) => {
+      const croppedUri = fromCamera
+        ? await cropImageToAspect({ uri, dimensions })
+        : await processLibraryImage(uri);
+
+      const uploadUrl = await generateUploadUrl();
+
+      const fileRes = await fetch(croppedUri);
+      const blob = await fileRes.blob();
+
+      const uploadRes = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": blob.type || "image/jpeg" },
+        body: blob,
+      });
+      if (!uploadRes.ok) {
+        throw new Error(`Upload failed: ${uploadRes.status}`);
+      }
+      const json: unknown = await uploadRes.json();
+      const schema = z.object({
+        storageId: z.string(),
+      });
+
+      const { data, success } = schema.safeParse(json);
+
+      if (!success) {
+        throw new Error("Upload response missing storageId");
+      }
+      const storageId = data.storageId as Id<"_storage">;
+
+      return await analyzeMealPhoto({ storageId });
+    },
+    [analyzeMealPhoto, dimensions, fromCamera, generateUploadUrl]
+  );
+
+  const createMealFromDescription = useCallback(
+    async (description: string) => {
+      return await analyzeMealDescription({ description });
+    },
+    [analyzeMealDescription]
+  );
+
+  const createMealFromBarcode = useCallback(
+    async (barcode: string) => {
+      const locale = getLocales().at(0)?.languageTag ?? "es-ES";
+
+      const existingFood = await convex.query(
+        api.foods.getFoodByIdentity.default,
+        {
+          identity: { source: "off", id: barcode },
+        }
+      );
+
+      if (existingFood) {
+        return await analyzeMealBarcode({ barcode });
+      }
+
+      const product = await fetchProduct(barcode, locale);
+      if (!product) {
+        throw new Error("Product not found in Open Food Facts");
+      }
+
+      return await analyzeMealBarcode({ barcode, product });
+    },
+    [analyzeMealBarcode, convex]
+  );
+
+  const startMealAnalysis = useCallback(async () => {
     if (
-      (!photoUri && !description) ||
+      (!photoUri && !description && !barcode) ||
       initialMealId ||
       startedRef.current ||
       mealId
@@ -57,39 +133,13 @@ export default function MealScreen() {
 
     try {
       if (photoUri) {
-        const croppedUri = fromCamera
-          ? await cropImageToAspect({ uri: photoUri, dimensions })
-          : await processLibraryImage(photoUri);
-
-        const uploadUrl = await generateUploadUrl();
-
-        const fileRes = await fetch(croppedUri);
-        const blob = await fileRes.blob();
-
-        const uploadRes = await fetch(uploadUrl, {
-          method: "POST",
-          headers: { "Content-Type": blob.type || "image/jpeg" },
-          body: blob,
-        });
-        if (!uploadRes.ok) {
-          throw new Error(`Upload failed: ${uploadRes.status}`);
-        }
-        const json: unknown = await uploadRes.json();
-        const schema = z.object({
-          storageId: z.string(),
-        });
-
-        const { data, success } = schema.safeParse(json);
-
-        if (!success) {
-          throw new Error("Upload response missing storageId");
-        }
-        const storageId = data.storageId as Id<"_storage">;
-
-        const mealId = await analyzeMealPhoto({ storageId });
+        const mealId = await createMealFromPhoto(photoUri);
         setMealId(mealId);
       } else if (description) {
-        const mealId = await analyzeMealDescription({ description });
+        const mealId = await createMealFromDescription(description);
+        setMealId(mealId);
+      } else if (barcode) {
+        const mealId = await createMealFromBarcode(barcode);
         setMealId(mealId);
       }
     } catch (e) {
@@ -98,21 +148,20 @@ export default function MealScreen() {
       router.replace("/app");
     }
   }, [
-    analyzeMealDescription,
-    analyzeMealPhoto,
+    createMealFromDescription,
+    createMealFromPhoto,
+    createMealFromBarcode,
     description,
-    dimensions,
-    fromCamera,
-    generateUploadUrl,
     initialMealId,
     mealId,
     photoUri,
+    barcode,
     router,
   ]);
 
   useEffect(() => {
-    void handleMealCreation();
-  }, [handleMealCreation]);
+    void startMealAnalysis();
+  }, [startMealAnalysis]);
 
   if (mealId && data === null) {
     return <Redirect href="/app" />;

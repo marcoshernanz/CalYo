@@ -2,7 +2,7 @@ import { TriggerRef } from "@rn-primitives/popover";
 import { useRef, useState } from "react";
 import * as PopoverPrimitive from "@rn-primitives/popover";
 import TabsAddButton from "./TabsAddButton";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import Animated, {
   Easing,
   FadeIn,
@@ -11,7 +11,7 @@ import Animated, {
 } from "react-native-reanimated";
 import Card from "../ui/Card";
 import Text from "../ui/Text";
-import { CameraIcon, LucideIcon, PenLineIcon } from "lucide-react-native";
+import { LucideIcon, PenLineIcon, ScanIcon } from "lucide-react-native";
 import getColor from "../../lib/ui/getColor";
 import Button from "../ui/Button";
 import { Href, useRouter } from "expo-router";
@@ -61,7 +61,7 @@ const options: Option[] = [
   },
   {
     label: "Escanear",
-    icon: CameraIcon,
+    icon: ScanIcon,
     href: "/app/(add)/camera",
   },
 ];
@@ -85,7 +85,13 @@ export default function TabsAddOptions() {
       return;
     }
 
-    router.push(href);
+    if (Platform.OS === "android") {
+      setTimeout(() => {
+        router.push(href);
+      }, 200);
+    } else {
+      router.push(href);
+    }
   };
 
   return (
@@ -120,7 +126,7 @@ export default function TabsAddOptions() {
                 >
                   <Card style={styles.card}>
                     <option.icon size={28} color={getColor("foreground")} />
-                    <Text size="14" weight="600">
+                    <Text size="14" weight="500">
                       {option.label}
                     </Text>
                   </Card>

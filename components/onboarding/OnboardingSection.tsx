@@ -17,7 +17,7 @@ const sections = [
   {
     title: "Objetivo",
     description:
-      "Define tu meta y Calyo diseñará un programa para ayudarte a alcanzarla.",
+      "Define tu meta y CalYo diseñará un programa para ayudarte a alcanzarla.",
   },
   {
     title: "Programa",

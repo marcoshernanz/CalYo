@@ -1,63 +1,76 @@
-import Button from "@/components/ui/Button";
-import { CameraView, useCameraPermissions } from "expo-camera";
-import { useRouter } from "expo-router";
-import {
-  ArrowLeftIcon,
-  FlashlightIcon,
-  FlashlightOffIcon,
-  ImageIcon,
-} from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
+import {
+  BarcodeScanningResult,
+  CameraView,
+  useCameraPermissions,
+} from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
-import logError from "@/lib/utils/logError";
-import getColor from "@/lib/ui/getColor";
-import { useSafeArea } from "@/components/ui/SafeArea";
+import { useRouter } from "expo-router";
 import { useRateLimit } from "@convex-dev/rate-limiter/react";
-import { api } from "@/convex/_generated/api";
+import { ArrowLeftIcon } from "lucide-react-native";
+
+import Button from "@/components/ui/Button";
+import SafeArea from "@/components/ui/SafeArea";
 import { Toast } from "@/components/ui/Toast";
+import getColor from "@/lib/ui/getColor";
+import logError from "@/lib/utils/logError";
+import { api } from "@/convex/_generated/api";
+
+import CameraControls from "@/components/camera/CameraControls";
+import CameraModeSelector from "@/components/camera/CameraModeSelector";
+import BarcodeOverlay from "@/components/camera/BarcodeOverlay";
+import PhotoOverlay from "@/components/camera/PhotoOverlay";
+
+type CameraMode = "photo" | "barcode";
 
 export default function CameraScreen() {
-  const insets = useSafeArea();
-  const [permission, requestPermission] = useCameraPermissions();
   const router = useRouter();
-  const cameraRef = useRef<CameraView>(null);
-  const isBusyRef = useRef(false);
-  const [enableTorch, setEnableTorch] = useState(false);
+  const [permission, requestPermission] = useCameraPermissions();
 
   const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
   });
 
-  const navigateToMeal = ({
-    uri,
-    source,
-  }: {
-    uri: string;
-    source: "camera" | "library";
-  }) => {
-    router.replace({
-      pathname: "/app/(meal)/meal",
-      params: { photoUri: uri, source },
-    });
-  };
+  const [enableTorch, setEnableTorch] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<CameraMode>("photo");
 
-  const takePhoto = async () => {
-    if (!cameraRef.current || isBusyRef.current) return;
+  const cameraRef = useRef<CameraView>(null);
+  const isBusyRef = useRef(false);
 
+  useEffect(() => {
+    if (!permission?.granted) {
+      requestPermission().catch((error: unknown) => {
+        logError("Error requesting camera permission", error);
+      });
+    }
+  }, [permission?.granted, requestPermission]);
+
+  const checkRateLimit = () => {
     if (status && !status.ok) {
       Toast.show({
         text: "Has alcanzado el límite diario de funciones de IA.",
         variant: "error",
       });
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const takePhoto = async () => {
+    if (!cameraRef.current || isBusyRef.current) return;
+    if (!checkRateLimit()) return;
 
     isBusyRef.current = true;
 
     try {
       const photo = await cameraRef.current.takePictureAsync();
-      navigateToMeal({ uri: photo.uri, source: "camera" });
+      if (photo.uri) {
+        router.replace({
+          pathname: "/app/(meal)/meal",
+          params: { photoUri: photo.uri, source: "camera" },
+        });
+      }
     } catch (error) {
       logError("Error taking photo", error);
     } finally {
@@ -67,14 +80,7 @@ export default function CameraScreen() {
 
   const handleUpload = async () => {
     if (isBusyRef.current) return;
-
-    if (status && !status.ok) {
-      Toast.show({
-        text: "Has alcanzado el límite diario de funciones de IA.",
-        variant: "error",
-      });
-      return;
-    }
+    if (!checkRateLimit()) return;
 
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -88,7 +94,10 @@ export default function CameraScreen() {
       if (!asset?.uri) return;
 
       isBusyRef.current = true;
-      navigateToMeal({ uri: asset.uri, source: "library" });
+      router.replace({
+        pathname: "/app/(meal)/meal",
+        params: { photoUri: asset.uri, source: "library" },
+      });
     } catch (error) {
       logError("Error picking photo", error);
     } finally {
@@ -96,13 +105,23 @@ export default function CameraScreen() {
     }
   };
 
-  useEffect(() => {
-    if (!permission?.granted) {
-      requestPermission().catch((error: unknown) => {
-        logError("Error requesting camera permission", error);
+  const handleBarcodeScanned = ({ data }: BarcodeScanningResult) => {
+    if (isBusyRef.current) return;
+    isBusyRef.current = true;
+
+    try {
+      router.replace({
+        pathname: "/app/(meal)/meal",
+        params: { barcode: data, source: "camera" },
       });
+    } catch (error) {
+      logError("Error scanning barcode", error);
+    } finally {
+      setTimeout(() => {
+        isBusyRef.current = false;
+      }, 1000);
     }
-  }, [permission?.granted, requestPermission]);
+  };
 
   if (!permission?.granted) {
     return null;
@@ -110,58 +129,52 @@ export default function CameraScreen() {
 
   return (
     <View style={styles.container}>
-      <Button
-        size="sm"
-        style={[styles.backButton, { top: insets.top, left: insets.left }]}
-        onPress={() => {
-          router.back();
-        }}
-      >
-        <ArrowLeftIcon color="white" size={22} />
-      </Button>
-
       <CameraView
         style={styles.camera}
         ref={cameraRef}
         facing="back"
         enableTorch={enableTorch}
+        onBarcodeScanned={(data) => {
+          if (selectedOption === "barcode" && !isBusyRef.current) {
+            handleBarcodeScanned(data);
+          }
+        }}
+        barcodeScannerSettings={{
+          barcodeTypes: ["ean13", "upc_a", "upc_e"],
+        }}
       />
-      <View style={styles.controlsContainer}>
+
+      <SafeArea edges={["top", "left", "right"]} style={styles.safeArea}>
         <Button
-          variant="base"
-          size="base"
-          style={styles.button}
+          size="sm"
+          style={styles.backButton}
           onPress={() => {
-            void handleUpload();
+            router.back();
           }}
         >
-          <ImageIcon color="white" />
+          <ArrowLeftIcon color="white" size={22} />
         </Button>
-        <View style={styles.shutterOuter}>
-          <Button
-            variant="base"
-            size="base"
-            style={styles.shutterInner}
-            onPress={() => {
-              void takePhoto();
+
+        {selectedOption === "barcode" && <BarcodeOverlay />}
+        {selectedOption === "photo" && <PhotoOverlay />}
+
+        <View style={styles.bottomContainer}>
+          <CameraModeSelector
+            selectedMode={selectedOption}
+            onSelectMode={setSelectedOption}
+          />
+
+          <CameraControls
+            mode={selectedOption}
+            enableTorch={enableTorch}
+            onToggleTorch={() => {
+              setEnableTorch((prev) => !prev);
             }}
+            onTakePhoto={() => void takePhoto()}
+            onUpload={() => void handleUpload()}
           />
         </View>
-        <Button
-          variant="base"
-          size="base"
-          style={styles.button}
-          onPress={() => {
-            setEnableTorch((enableTorch) => !enableTorch);
-          }}
-        >
-          {enableTorch ? (
-            <FlashlightOffIcon color="white" />
-          ) : (
-            <FlashlightIcon color="white" />
-          )}
-        </Button>
-      </View>
+      </SafeArea>
     </View>
   );
 }
@@ -171,44 +184,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: getColor("background"),
   },
+  camera: {
+    flex: 1,
+  },
+  safeArea: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "transparent",
+  },
   backButton: {
     aspectRatio: 1,
-    position: "absolute",
     zIndex: 10,
     backgroundColor: "rgba(0, 0, 0, 0.4)",
     borderRadius: 999,
   },
-  camera: {
-    flex: 1,
-  },
-  controlsContainer: {
-    position: "absolute",
-    bottom: 40,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
-    width: "100%",
-  },
-  button: {
-    height: 56,
-    width: 56,
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 999,
-  },
-  shutterOuter: {
-    height: 72,
-    width: 72,
-    borderRadius: 999,
-    borderWidth: 2,
-    borderColor: "#FFF",
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
-    padding: 4,
-  },
-  shutterInner: {
-    flex: 1,
-    borderRadius: 999,
-    backgroundColor: "#FFF",
+  bottomContainer: {
+    paddingBottom: 50,
   },
 });

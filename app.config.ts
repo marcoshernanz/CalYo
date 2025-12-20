@@ -13,15 +13,15 @@ const getUniqueIdentifier = () => {
 
 const getAppName = () => {
   if (isDevelopment) {
-    return "Calyo (Dev)";
+    return "CalYo (Dev)";
   } else {
-    return "Calyo";
+    return "CalYo";
   }
 };
 
 export default (): ExpoConfig => ({
   name: getAppName(),
-  slug: "Calyo",
+  slug: "CalYo",
   version: "1.1.0",
   orientation: "portrait",
   icon: "./assets/images/icon.png",
@@ -48,6 +48,7 @@ export default (): ExpoConfig => ({
     "expo-secure-store",
     "expo-apple-authentication",
     "expo-router",
+    "expo-localization",
     [
       "expo-splash-screen",
       {
