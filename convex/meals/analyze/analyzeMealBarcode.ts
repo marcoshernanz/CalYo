@@ -2,10 +2,13 @@ import { v } from "convex/values";
 import { action } from "../../_generated/server";
 import { api, internal } from "../../_generated/api";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { Id } from "../../_generated/dataModel";
+import { Doc, Id } from "../../_generated/dataModel";
 import logError from "@/lib/utils/logError";
 import offExtractMacros from "@/lib/off/offExtractMacros";
 import offExtractNutrients from "@/lib/off/offExtractNutrients";
+import calculateHealthScore from "./calculateHealthScore";
+import getFoodMacros from "@/lib/food/getFoodMacros";
+import getFoodNutrients from "@/lib/food/getFoodNutrients";
 
 const analyzeMealBarcode = action({
   args: {
@@ -49,6 +52,16 @@ const analyzeMealBarcode = action({
         const macroNutrients = offExtractMacros(nutriments);
         const nutrients = offExtractNutrients(nutriments);
 
+        const food = { macroNutrients, nutrients } as Doc<"foods">;
+        const macros = getFoodMacros(food);
+        const structuredNutrients = getFoodNutrients(food);
+
+        const healthScore = await calculateHealthScore({
+          name: product.name,
+          macros,
+          nutrients: structuredNutrients,
+        });
+
         foodId = await ctx.runMutation(internal.foods.createFood.default, {
           food: {
             identity: { source: "off", id: barcode },
@@ -56,7 +69,21 @@ const analyzeMealBarcode = action({
             macroNutrients,
             nutrients,
             hasEmbedding: false,
+            healthScore,
           },
+        });
+      } else if (existingFood && existingFood.healthScore === undefined) {
+        const macros = getFoodMacros(existingFood);
+        const structuredNutrients = getFoodNutrients(existingFood);
+
+        const healthScore = await calculateHealthScore({
+          name: existingFood.name.en,
+          macros,
+          nutrients: structuredNutrients,
+        });
+        await ctx.runMutation(internal.foods.updateFoodHealthScore.default, {
+          id: existingFood._id,
+          healthScore,
         });
       }
       await ctx.runMutation(api.meals.replaceMealItems.default, {
