@@ -1,7 +1,13 @@
 import { ComponentProps } from "react";
 import SafeArea from "../SafeArea";
 import Animated from "react-native-reanimated";
-import { ScrollViewProps, StyleSheet, View } from "react-native";
+import {
+  ScrollViewProps,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native";
 import WithSkeleton from "../WithSkeleton";
 import Text from "../Text";
 import getColor from "@/lib/ui/getColor";
@@ -35,13 +41,15 @@ export function ScreenMainTitle({
   title,
   description,
   loading = false,
+  style,
 }: {
   title?: string;
   description?: string;
   loading?: boolean;
+  style?: StyleProp<ViewStyle>;
 }) {
   return (
-    <View style={styles.titleContainer}>
+    <View style={[styles.titleContainer, style]}>
       <WithSkeleton
         loading={loading}
         skeletonStyle={{
