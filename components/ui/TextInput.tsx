@@ -10,6 +10,7 @@ import {
   Keyboard,
   StyleProp,
   ViewStyle,
+  View,
 } from "react-native";
 import Animated, {
   interpolateColor,
@@ -33,6 +34,7 @@ export type TextInputHandle = {
 type Props = {
   ref?: React.Ref<TextInputHandle>;
   label?: string;
+  suffix?: string;
   containerStyle?: StyleProp<ViewStyle>;
   cardStyle?: StyleProp<ViewStyle>;
 } & TextInputProps;
@@ -40,6 +42,7 @@ type Props = {
 export default function TextInput({
   ref,
   label,
+  suffix,
   containerStyle,
   cardStyle,
   style,
@@ -136,20 +139,23 @@ export default function TextInput({
             {label}
           </AnimatedText>
         )}
-        <RNTextInput
-          ref={textInputRef}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          placeholderTextColor={getColor("mutedForeground", 0.6)}
-          cursorColor={getColor("foreground")}
-          selectionColor={Platform.select({
-            ios: getColor("foreground"),
-            android: getColor("foreground", 0.2),
-          })}
-          selectionHandleColor={getColor("foreground")}
-          style={[styles.textInput, style]}
-          {...props}
-        />
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <RNTextInput
+            ref={textInputRef}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            placeholderTextColor={getColor("mutedForeground", 0.6)}
+            cursorColor={getColor("foreground")}
+            selectionColor={Platform.select({
+              ios: getColor("foreground"),
+              android: getColor("foreground", 0.2),
+            })}
+            selectionHandleColor={getColor("foreground")}
+            style={[styles.textInput, style, { flex: 1 }]}
+            {...props}
+          />
+          {suffix && <Text style={[styles.textInput, style]}>{suffix}</Text>}
+        </View>
       </AnimatedCard>
     </Button>
   );
