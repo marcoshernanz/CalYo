@@ -86,7 +86,7 @@ export default function MealItem({
               }}
               suffix="g"
               inputMode="numeric"
-              maxLength={5}
+              maxLength={4}
               cardStyle={styles.textInputCard}
               style={{ textAlign: "center" }}
             />
