@@ -10,7 +10,6 @@ import offExtractNutrients from "@/lib/off/offExtractNutrients";
 const analyzeMealBarcode = action({
   args: {
     barcode: v.string(),
-    locale: v.string(),
     product: v.optional(
       v.object({
         name: v.string(),
@@ -18,7 +17,7 @@ const analyzeMealBarcode = action({
       })
     ),
   },
-  handler: async (ctx, { barcode, locale, product }): Promise<Id<"meals">> => {
+  handler: async (ctx, { barcode, product }): Promise<Id<"meals">> => {
     let mealId: Id<"meals"> | undefined = undefined;
     try {
       const userId = await getAuthUserId(ctx);

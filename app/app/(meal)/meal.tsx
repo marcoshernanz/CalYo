@@ -108,7 +108,7 @@ export default function MealScreen() {
       );
 
       if (existingFood) {
-        return await analyzeMealBarcode({ barcode, locale });
+        return await analyzeMealBarcode({ barcode });
       }
 
       const product = await fetchProduct(barcode, locale);
@@ -116,7 +116,7 @@ export default function MealScreen() {
         throw new Error("Product not found in Open Food Facts");
       }
 
-      return await analyzeMealBarcode({ barcode, locale, product });
+      return await analyzeMealBarcode({ barcode, product });
     },
     [analyzeMealBarcode, convex]
   );
