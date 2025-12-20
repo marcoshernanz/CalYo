@@ -1,5 +1,6 @@
-- [ ] Barcode scanner
 - [ ] Update meal item grams
+
+- [ ] Navigate to meal item after scanning barcode
 
 - [ ] Localized measurement system
 - [ ] Remove TabBarOptions timeout for navigation
