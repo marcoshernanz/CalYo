@@ -34,12 +34,14 @@ type Props = {
   ref?: React.Ref<TextInputHandle>;
   label?: string;
   containerStyle?: StyleProp<ViewStyle>;
+  cardStyle?: StyleProp<ViewStyle>;
 } & TextInputProps;
 
 export default function TextInput({
   ref,
   label,
   containerStyle,
+  cardStyle,
   style,
   ...props
 }: Props) {
@@ -128,7 +130,7 @@ export default function TextInput({
       onPress={() => textInputRef.current?.focus()}
       style={containerStyle}
     >
-      <AnimatedCard style={[styles.card, animatedStyles.card]}>
+      <AnimatedCard style={[styles.card, animatedStyles.card, cardStyle]}>
         {label && (
           <AnimatedText size="12" weight="500" style={animatedStyles.label}>
             {label}
@@ -155,7 +157,7 @@ export default function TextInput({
 
 const styles = StyleSheet.create({
   card: {
-    padding: 12,
+    paddingVertical: 12,
     paddingHorizontal: 16,
     gap: 4,
   },
