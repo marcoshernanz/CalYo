@@ -79,13 +79,14 @@ export default function MealItem({
               style={styles.title}
             />
             <TextInput
-              value={`${String(grams ?? "")}g`}
+              value={String(grams ?? "")}
               onChangeText={(text) => {
                 const numberText = text.replace(/[^0-9]/g, "");
                 setGrams(numberText === "" ? undefined : Number(numberText));
               }}
+              suffix="g"
               inputMode="numeric"
-              maxLength={8}
+              maxLength={5}
               cardStyle={styles.textInputCard}
               style={{ textAlign: "center" }}
             />
