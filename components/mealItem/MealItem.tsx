@@ -92,7 +92,7 @@ export default function MealItem({
             />
           </View>
         </SafeArea>
-        <Carousel style={{ paddingBottom: 32 }}>
+        <Carousel style={styles.carousel}>
           <MealMacros macros={totalMacros} loading={loading} />
           <MealMicros
             source="mealItem"
@@ -122,7 +122,11 @@ const styles = StyleSheet.create({
   },
   textInputCard: {
     borderRadius: 999,
-    paddingVertical: 10,
-    minWidth: 100,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    minWidth: 80,
+  },
+  carousel: {
+    paddingBottom: 32,
   },
 });
