@@ -46,6 +46,7 @@ export default function TextInput({
   containerStyle,
   cardStyle,
   style,
+  pointerEvents,
   ...props
 }: Props) {
   const textInputRef = useRef<RNTextInput>(null);
@@ -139,7 +140,10 @@ export default function TextInput({
             {label}
           </AnimatedText>
         )}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View
+          style={{ flexDirection: "row", alignItems: "center" }}
+          pointerEvents={pointerEvents}
+        >
           <RNTextInput
             ref={textInputRef}
             onFocus={handleFocus}
