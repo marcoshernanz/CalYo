@@ -43,7 +43,7 @@ export default function FixMealScreen() {
 
     try {
       void correctMeal({ mealId, correction });
-      router.back();
+      router.dismiss();
     } catch (error) {
       console.error(error);
       alert("Error correcting meal");
