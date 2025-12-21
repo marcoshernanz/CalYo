@@ -19,6 +19,7 @@ import scaleMicrosPer100g from "@/lib/utils/nutrition/scaleMicrosPer100g";
 import TextInput from "../ui/TextInput";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { ScreenFooter, ScreenFooterButton } from "../ui/screen/ScreenFooter";
 
 type Props = {
   mealItemId: Id<"mealItems">;
@@ -35,7 +36,7 @@ export default function MealItem({
 }: Props) {
   const { scrollY, onScroll } = useScrollY();
   const [grams, setGrams] = useState<number | undefined>(
-    mealItem?.grams ?? 100
+    Math.round(mealItem?.grams ?? 100)
   );
 
   const macrosPer100g = mealItem?.macrosPer100g ?? {
@@ -52,11 +53,11 @@ export default function MealItem({
   };
 
   const totalMacros = scaleMacrosPer100g({
-    grams: mealItem?.grams ?? 0,
+    grams: grams ?? 0,
     macrosPer100g,
   });
   const totalMicros = scaleMicrosPer100g({
-    grams: mealItem?.grams ?? 0,
+    grams: grams ?? 0,
     microsPer100g,
   });
 
@@ -102,6 +103,16 @@ export default function MealItem({
           />
         </Carousel>
       </ScreenMainScrollView>
+
+      <ScreenFooter style={{ boxShadow: [] }}>
+        <ScreenFooterButton
+          onPress={() => {
+            // router.dismissTo("/app");
+          }}
+        >
+          Hecho
+        </ScreenFooterButton>
+      </ScreenFooter>
     </ScreenMain>
   );
 }
