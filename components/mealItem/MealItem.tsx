@@ -1,4 +1,7 @@
 import { Doc, Id } from "@/convex/_generated/dataModel";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useRouter } from "expo-router";
 import {
   ScreenMain,
   ScreenMainScrollView,
@@ -35,6 +38,8 @@ export default function MealItem({
   loading,
 }: Props) {
   const { scrollY, onScroll } = useScrollY();
+  const updateMealItem = useMutation(api.mealItems.updateMealItem.default);
+  const router = useRouter();
   const [grams, setGrams] = useState<number | undefined>(
     Math.round(mealItem?.grams ?? 100)
   );
@@ -107,7 +112,10 @@ export default function MealItem({
       <ScreenFooter style={{ boxShadow: [] }}>
         <ScreenFooterButton
           onPress={() => {
-            // router.dismissTo("/app");
+            if (grams !== undefined) {
+              void updateMealItem({ mealItemId, grams });
+            }
+            router.dismiss();
           }}
         >
           Hecho
