@@ -96,6 +96,7 @@ export default function MealItem({
                 const numberText = text.replace(/[^0-9]/g, "");
                 setGrams(numberText === "" ? undefined : Number(numberText));
               }}
+              pointerEvents="none"
               suffix="g"
               inputMode="numeric"
               maxLength={4}
