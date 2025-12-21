@@ -2,6 +2,8 @@
 
 - [ ] Navigate to meal item after scanning barcode
 
+- [ ] Meal item grams loading state
+- [ ] Make Convex functions safe
 - [ ] Localized measurement system
 - [ ] Remove TabBarOptions timeout for navigation
 - [ ] Add meal items when creating meal, instead of doing it in 2 steps
