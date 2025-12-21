@@ -113,7 +113,7 @@ export default function MealItem({
         <ScreenFooterButton
           onPress={() => {
             if (grams !== undefined) {
-              void updateMealItem({ mealItemId, grams });
+              void updateMealItem({ mealItemId, mealItem: { grams } });
             }
             router.dismiss();
           }}

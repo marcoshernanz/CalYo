@@ -1,11 +1,13 @@
 import { mutation } from "../_generated/server";
 import { v } from "convex/values";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { partial } from "convex-helpers/validators";
+import { mealItemsFields } from "../tables/mealItems";
 
 export default mutation({
   args: {
     mealItemId: v.id("mealItems"),
-    grams: v.number(),
+    mealItem: v.object(partial(mealItemsFields)),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
@@ -27,8 +29,6 @@ export default mutation({
       throw new Error("Forbidden");
     }
 
-    await ctx.db.patch(args.mealItemId, {
-      grams: args.grams,
-    });
+    await ctx.db.patch(args.mealItemId, args.mealItem);
   },
 });
