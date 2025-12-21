@@ -20,6 +20,7 @@ import type * as foods_upsertFoods from "../foods/upsertFoods.js";
 import type * as home_getStreak from "../home/getStreak.js";
 import type * as http from "../http.js";
 import type * as mealItems_getMealItem from "../mealItems/getMealItem.js";
+import type * as mealItems_updateMealItem from "../mealItems/updateMealItem.js";
 import type * as meals_analyze_analyzeMealBarcode from "../meals/analyze/analyzeMealBarcode.js";
 import type * as meals_analyze_analyzeMealConfig from "../meals/analyze/analyzeMealConfig.js";
 import type * as meals_analyze_analyzeMealDescription from "../meals/analyze/analyzeMealDescription.js";
@@ -82,6 +83,7 @@ declare const fullApi: ApiFromModules<{
   "home/getStreak": typeof home_getStreak;
   http: typeof http;
   "mealItems/getMealItem": typeof mealItems_getMealItem;
+  "mealItems/updateMealItem": typeof mealItems_updateMealItem;
   "meals/analyze/analyzeMealBarcode": typeof meals_analyze_analyzeMealBarcode;
   "meals/analyze/analyzeMealConfig": typeof meals_analyze_analyzeMealConfig;
   "meals/analyze/analyzeMealDescription": typeof meals_analyze_analyzeMealDescription;
