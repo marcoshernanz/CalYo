@@ -1,4 +1,7 @@
 import { Doc, Id } from "@/convex/_generated/dataModel";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useRouter } from "expo-router";
 import {
   ScreenMain,
   ScreenMainScrollView,
@@ -16,6 +19,10 @@ import SafeArea from "../ui/SafeArea";
 import Carousel from "../ui/Carousel";
 import MealMicros from "../meal/MealMicros";
 import scaleMicrosPer100g from "@/lib/utils/nutrition/scaleMicrosPer100g";
+import TextInput from "../ui/TextInput";
+import { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { ScreenFooter, ScreenFooterButton } from "../ui/screen/ScreenFooter";
 
 type Props = {
   mealItemId: Id<"mealItems">;
@@ -31,6 +38,17 @@ export default function MealItem({
   loading,
 }: Props) {
   const { scrollY, onScroll } = useScrollY();
+  const updateMealItem = useMutation(api.mealItems.updateMealItem.default);
+  const router = useRouter();
+  const [grams, setGrams] = useState<number | undefined>(
+    Math.round(mealItem?.grams ?? 100)
+  );
+
+  useEffect(() => {
+    if (mealItem?.grams !== undefined) {
+      setGrams(mealItem.grams);
+    }
+  }, [mealItem?.grams]);
 
   const macrosPer100g = mealItem?.macrosPer100g ?? {
     calories: 0,
@@ -46,11 +64,11 @@ export default function MealItem({
   };
 
   const totalMacros = scaleMacrosPer100g({
-    grams: mealItem?.grams ?? 0,
+    grams: grams ?? 0,
     macrosPer100g,
   });
   const totalMicros = scaleMicrosPer100g({
-    grams: mealItem?.grams ?? 0,
+    grams: grams ?? 0,
     microsPer100g,
   });
 
@@ -65,10 +83,29 @@ export default function MealItem({
         scrollViewProps={{ onScroll }}
         safeAreaProps={{ edges: [] }}
       >
-        <SafeArea edges={["left", "right"]} style={{ flex: 0 }}>
-          <ScreenMainTitle title={name} loading={loading} />
+        <SafeArea edges={["left", "right"]} style={styles.safeArea}>
+          <View style={styles.headerContainer}>
+            <ScreenMainTitle
+              title={name}
+              loading={loading}
+              style={styles.title}
+            />
+            <TextInput
+              value={String(grams ?? "")}
+              onChangeText={(text) => {
+                const numberText = text.replace(/[^0-9]/g, "");
+                setGrams(numberText === "" ? undefined : Number(numberText));
+              }}
+              pointerEvents="none"
+              suffix="g"
+              inputMode="numeric"
+              maxLength={4}
+              cardStyle={styles.textInputCard}
+              style={{ textAlign: "center" }}
+            />
+          </View>
         </SafeArea>
-        <Carousel style={{ paddingBottom: 32 }}>
+        <Carousel style={styles.carousel}>
           <MealMacros macros={totalMacros} loading={loading} />
           <MealMicros
             source="mealItem"
@@ -78,6 +115,44 @@ export default function MealItem({
           />
         </Carousel>
       </ScreenMainScrollView>
+
+      <ScreenFooter style={{ boxShadow: [] }}>
+        <ScreenFooterButton
+          onPress={() => {
+            if (grams !== undefined) {
+              void updateMealItem({ mealItemId, mealItem: { grams } });
+            }
+            router.dismiss();
+          }}
+        >
+          Hecho
+        </ScreenFooterButton>
+      </ScreenFooter>
     </ScreenMain>
   );
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 0,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    gap: 12,
+    paddingBottom: 16,
+    alignItems: "center",
+  },
+  title: {
+    flex: 1,
+    paddingBottom: 0,
+  },
+  textInputCard: {
+    borderRadius: 999,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    minWidth: 80,
+  },
+  carousel: {
+    paddingBottom: 32,
+  },
+});
