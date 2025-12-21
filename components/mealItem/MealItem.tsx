@@ -20,7 +20,7 @@ import Carousel from "../ui/Carousel";
 import MealMicros from "../meal/MealMicros";
 import scaleMicrosPer100g from "@/lib/utils/nutrition/scaleMicrosPer100g";
 import TextInput from "../ui/TextInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { ScreenFooter, ScreenFooterButton } from "../ui/screen/ScreenFooter";
 
@@ -43,6 +43,12 @@ export default function MealItem({
   const [grams, setGrams] = useState<number | undefined>(
     Math.round(mealItem?.grams ?? 100)
   );
+
+  useEffect(() => {
+    if (mealItem?.grams !== undefined) {
+      setGrams(mealItem.grams);
+    }
+  }, [mealItem?.grams]);
 
   const macrosPer100g = mealItem?.macrosPer100g ?? {
     calories: 0,
