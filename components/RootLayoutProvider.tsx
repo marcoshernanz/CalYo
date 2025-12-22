@@ -17,6 +17,7 @@ import { SplashScreenController } from "./SplashScreenController";
 import { PortalHost } from "@rn-primitives/portal";
 import ToastProvider from "./ui/Toast";
 import OnboardingContextProvider from "@/context/OnboardingContext";
+import { SubscriptionProvider } from "@/context/SubscriptionContext";
 
 type Props = {
   children: React.ReactNode;
@@ -57,14 +58,16 @@ export default function RootLayoutProvider({ children }: Props) {
             <KeyboardProvider>
               <BottomSheetModalProvider>
                 <AppContextProvider>
-                  <OnboardingContextProvider>
-                    <SplashScreenController>
-                      <StatusBar style="dark" />
-                      {children}
-                      <ToastProvider />
-                      <PortalHost />
-                    </SplashScreenController>
-                  </OnboardingContextProvider>
+                  <SubscriptionProvider>
+                    <OnboardingContextProvider>
+                      <SplashScreenController>
+                        <StatusBar style="dark" />
+                        {children}
+                        <ToastProvider />
+                        <PortalHost />
+                      </SplashScreenController>
+                    </OnboardingContextProvider>
+                  </SubscriptionProvider>
                 </AppContextProvider>
               </BottomSheetModalProvider>
             </KeyboardProvider>

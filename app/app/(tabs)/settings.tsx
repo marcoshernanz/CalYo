@@ -4,14 +4,23 @@ import AlertDialog from "@/components/ui/AlertDialog";
 import SafeArea from "@/components/ui/SafeArea";
 import Title from "@/components/ui/Title";
 import { useAuthContext } from "@/context/AuthContext";
+import { useSubscription } from "@/context/SubscriptionContext";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { Link, useRouter } from "expo-router";
-import { LogOutIcon, PieChartIcon, UserXIcon } from "lucide-react-native";
-import { ScrollView, StyleSheet } from "react-native";
+import {
+  LogOutIcon,
+  PieChartIcon,
+  UserXIcon,
+  CrownIcon,
+  CreditCardIcon,
+} from "lucide-react-native";
+import { Alert, ScrollView, StyleSheet } from "react-native";
 
 export default function SettingsScreen() {
   const { signOut } = useAuthContext();
+  const { isPro, presentPaywall, presentCustomerCenter, restorePurchases } =
+    useSubscription();
   const deleteUser = useMutation(api.users.deleteUser.default);
   const router = useRouter();
 
@@ -39,6 +48,34 @@ export default function SettingsScreen() {
           <Link href="/app/(settings)/adjustMacroTargets" asChild>
             <SettingsItem text="Ajustar Macronutrientes" Icon={PieChartIcon} />
           </Link>
+        </SettingsGroup>
+        <SettingsGroup>
+          {!isPro && (
+            <SettingsItem
+              text="Upgrade to Pro"
+              Icon={CrownIcon}
+              onPress={() => void presentPaywall()}
+            />
+          )}
+          <SettingsItem
+            text="Manage Subscription"
+            Icon={CreditCardIcon}
+            onPress={() => void presentCustomerCenter()}
+          />
+          <SettingsItem
+            text="Restore Purchases"
+            Icon={CreditCardIcon}
+            onPress={
+              void (async () => {
+                const customerInfo = await restorePurchases();
+                if (customerInfo) {
+                  Alert.alert("Success", "Purchases restored successfully");
+                } else {
+                  Alert.alert("Error", "Failed to restore purchases");
+                }
+              })
+            }
+          />
         </SettingsGroup>
         <SettingsGroup>
           <AlertDialog
