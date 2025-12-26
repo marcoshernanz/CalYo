@@ -21,4 +21,5 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 
 ### 📲 Try it out
-[Link to App Store / TestFlight / Website if available]
+* [iOS](https://apps.apple.com/app/id6752223421)
+* [Android](https://play.google.com/store/apps/details?id=com.marcoshernanz.calyo)
