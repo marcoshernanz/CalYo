@@ -1,14 +1,15 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Platform } from "react-native";
 import Purchases, { CustomerInfo } from "react-native-purchases";
-import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
+import RevenueCatUI from "react-native-purchases-ui";
 import { revenueCatConfig } from "@/config/revenueCatConfig";
+import { useRouter } from "expo-router";
 
 type SubscriptionContextType = {
   isPro: boolean;
   customerInfo: CustomerInfo | null;
   isLoading: boolean;
-  presentPaywall: () => Promise<boolean>;
+  navigateToPaywall: () => void;
   presentCustomerCenter: () => Promise<void>;
   restorePurchases: () => Promise<CustomerInfo | null>;
 };
@@ -22,6 +23,7 @@ export function SubscriptionProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   const [isPro, setIsPro] = useState(false);
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,8 +32,6 @@ export function SubscriptionProvider({
     void (async () => {
       try {
         if (Platform.OS === "android" || Platform.OS === "ios") {
-          await Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
-
           if (revenueCatConfig.apiKey) {
             Purchases.configure({ apiKey: revenueCatConfig.apiKey });
           }
@@ -72,24 +72,8 @@ export function SubscriptionProvider({
     }
   };
 
-  const presentPaywall = async (): Promise<boolean> => {
-    try {
-      const result = await RevenueCatUI.presentPaywallIfNeeded({
-        requiredEntitlementIdentifier: revenueCatConfig.entitlementId,
-      });
-
-      if (
-        result === PAYWALL_RESULT.PURCHASED ||
-        result === PAYWALL_RESULT.RESTORED
-      ) {
-        return true;
-      }
-
-      return false;
-    } catch (e) {
-      console.error("Present paywall error:", e);
-      return false;
-    }
+  const navigateToPaywall = () => {
+    router.push("/app/paywall");
   };
 
   const presentCustomerCenter = async () => {
@@ -118,7 +102,7 @@ export function SubscriptionProvider({
         isPro,
         customerInfo,
         isLoading,
-        presentPaywall,
+        navigateToPaywall,
         presentCustomerCenter,
         restorePurchases,
       }}
