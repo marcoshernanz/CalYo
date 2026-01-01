@@ -4,7 +4,7 @@ import AlertDialog from "@/components/ui/AlertDialog";
 import SafeArea from "@/components/ui/SafeArea";
 import Title from "@/components/ui/Title";
 import { useAuthContext } from "@/context/AuthContext";
-import { useSubscription } from "@/context/SubscriptionContext";
+import { useSubscriptionContext } from "@/context/SubscriptionContext";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { Link, useRouter } from "expo-router";
@@ -20,7 +20,7 @@ import { Alert, ScrollView, StyleSheet } from "react-native";
 export default function SettingsScreen() {
   const { signOut } = useAuthContext();
   const { isPro, presentPaywall, presentCustomerCenter, restorePurchases } =
-    useSubscription();
+    useSubscriptionContext();
   const deleteUser = useMutation(api.users.deleteUser.default);
   const router = useRouter();
 

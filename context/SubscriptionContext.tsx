@@ -128,11 +128,11 @@ export function SubscriptionProvider({
   );
 }
 
-export function useSubscription() {
+export function useSubscriptionContext() {
   const context = useContext(SubscriptionContext);
   if (context === undefined) {
     throw new Error(
-      "useSubscription must be used within a SubscriptionProvider"
+      "useSubscriptionContext must be used within a SubscriptionProvider"
     );
   }
   return context;
