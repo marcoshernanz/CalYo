@@ -14,6 +14,7 @@ import {
   UserXIcon,
   CrownIcon,
   CreditCardIcon,
+  RefreshCwIcon,
 } from "lucide-react-native";
 import { Alert, ScrollView, StyleSheet } from "react-native";
 
@@ -25,7 +26,6 @@ export default function SettingsScreen() {
   const router = useRouter();
 
   const handleRestorePurchases = async () => {
-    console.log("AAA");
     const customerInfo = await restorePurchases();
     if (customerInfo) {
       Alert.alert("Success", "Purchases restored successfully");
@@ -62,19 +62,19 @@ export default function SettingsScreen() {
         <SettingsGroup>
           {!isPro && (
             <SettingsItem
-              text="Upgrade to Pro"
+              text="Hazte Pro"
               Icon={CrownIcon}
               onPress={navigateToPaywall}
             />
           )}
           <SettingsItem
-            text="Manage Subscription"
+            text="Gestionar suscripción"
             Icon={CreditCardIcon}
             onPress={() => void presentCustomerCenter()}
           />
           <SettingsItem
-            text="Restore Purchases"
-            Icon={CreditCardIcon}
+            text="Restaurar compras"
+            Icon={RefreshCwIcon}
             onPress={() => void handleRestorePurchases()}
           />
         </SettingsGroup>
