@@ -19,7 +19,7 @@ import { Alert, ScrollView, StyleSheet } from "react-native";
 
 export default function SettingsScreen() {
   const { signOut } = useAuthContext();
-  const { isPro, presentPaywall, presentCustomerCenter, restorePurchases } =
+  const { isPro, presentCustomerCenter, restorePurchases } =
     useSubscriptionContext();
   const deleteUser = useMutation(api.users.deleteUser.default);
   const router = useRouter();
@@ -64,7 +64,9 @@ export default function SettingsScreen() {
             <SettingsItem
               text="Upgrade to Pro"
               Icon={CrownIcon}
-              onPress={() => void presentPaywall()}
+              onPress={() => {
+                router.push("/app/paywall");
+              }}
             />
           )}
           <SettingsItem
