@@ -9,6 +9,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import Purchases, {
+  PACKAGE_TYPE,
   PurchasesOffering,
   PurchasesPackage,
 } from "react-native-purchases";
@@ -68,6 +69,7 @@ export default function Paywall() {
           setOffering(offerings.current);
           if (offerings.current.availablePackages.length > 0) {
             setSelectedPackage(offerings.current.availablePackages[0]);
+            console.log(offerings.current.availablePackages[0]);
           }
         }
       } catch {
@@ -175,16 +177,19 @@ export default function Paywall() {
                       weight="600"
                       color={isSelected ? getColor("background") : undefined}
                     >
-                      €4.17 / mes
+                      {pkg.product.pricePerMonthString} / mes
                     </Text>
                   </View>
 
-                  <Text size="12">1 month</Text>
+                  <Text size="12">{pkg.product.title}</Text>
                   <Text size="18" weight="600">
-                    €9.99
+                    {pkg.product.priceString}
                   </Text>
                   <Text size="12" color={getColor("mutedForeground", 0.75)}>
-                    Billed monthly
+                    Billed{" "}
+                    {pkg.packageType === PACKAGE_TYPE.MONTHLY
+                      ? "monthly"
+                      : "annually"}
                   </Text>
                 </Card>
               </Button>
