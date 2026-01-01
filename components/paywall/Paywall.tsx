@@ -70,8 +70,11 @@ export default function Paywall() {
         if (offerings.current !== null) {
           setOffering(offerings.current);
           if (offerings.current.availablePackages.length > 0) {
-            setSelectedPackage(offerings.current.availablePackages[0]);
-            console.log(offerings.current.availablePackages[0]);
+            setSelectedPackage(
+              offerings.current.availablePackages[
+                offerings.current.availablePackages.length - 1
+              ]
+            );
           }
         }
       } catch {
