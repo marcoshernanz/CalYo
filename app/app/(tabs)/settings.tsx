@@ -24,6 +24,16 @@ export default function SettingsScreen() {
   const deleteUser = useMutation(api.users.deleteUser.default);
   const router = useRouter();
 
+  const handleRestorePurchases = async () => {
+    console.log("AAA");
+    const customerInfo = await restorePurchases();
+    if (customerInfo) {
+      Alert.alert("Success", "Purchases restored successfully");
+    } else {
+      Alert.alert("Error", "Failed to restore purchases");
+    }
+  };
+
   const handleDeleteAccount = async () => {
     await deleteUser();
     await signOut();
@@ -65,16 +75,7 @@ export default function SettingsScreen() {
           <SettingsItem
             text="Restore Purchases"
             Icon={CreditCardIcon}
-            onPress={
-              void (async () => {
-                const customerInfo = await restorePurchases();
-                if (customerInfo) {
-                  Alert.alert("Success", "Purchases restored successfully");
-                } else {
-                  Alert.alert("Error", "Failed to restore purchases");
-                }
-              })
-            }
+            onPress={() => void handleRestorePurchases()}
           />
         </SettingsGroup>
         <SettingsGroup>
