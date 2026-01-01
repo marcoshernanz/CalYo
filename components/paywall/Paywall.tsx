@@ -166,7 +166,8 @@ export default function Paywall() {
                         weight="600"
                         color={isSelected ? getColor("background") : undefined}
                       >
-                        {currencyMap[pkg.product.currencyCode]}
+                        {currencyMap[pkg.product.currencyCode] ??
+                          pkg.product.currencyCode}
                         {Math.round((pkg.product.pricePerMonth ?? 0) * 100) /
                           100}{" "}
                         / mes
@@ -176,7 +177,8 @@ export default function Paywall() {
 
                   <Text size="12">{pkg.product.title}</Text>
                   <Text size="18" weight="600">
-                    {currencyMap[pkg.product.currencyCode]}
+                    {currencyMap[pkg.product.currencyCode] ??
+                      pkg.product.currencyCode}
                     {Math.round(pkg.product.price * 100) / 100}
                   </Text>
                   <Text size="12" color={getColor("mutedForeground", 0.75)}>
