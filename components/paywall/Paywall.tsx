@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  ActivityIndicator,
-  ScrollView,
-  SafeAreaView,
-} from "react-native";
+import { View, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import Purchases, {
   PACKAGE_TYPE,
   PurchasesOffering,
@@ -33,6 +25,7 @@ import { revenueCatConfig } from "@/config/revenueCatConfig";
 import Text from "../ui/Text";
 import getColor from "../../lib/ui/getColor";
 import { CameraIcon, PenLineIcon, SparklesIcon } from "lucide-react-native";
+import { useSubscriptionContext } from "@/context/SubscriptionContext";
 
 const proFeatures = [
   {
@@ -52,6 +45,11 @@ const proFeatures = [
   },
 ];
 
+const currencyMap: Record<string, string> = {
+  USD: "$",
+  EUR: "€",
+};
+
 export default function Paywall() {
   const router = useRouter();
   const { scrollY, onScroll } = useScrollY();
@@ -60,6 +58,7 @@ export default function Paywall() {
     useState<PurchasesPackage | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isPurchasing, setIsPurchasing] = useState(false);
+  const { restorePurchases } = useSubscriptionContext();
 
   useEffect(() => {
     void (async () => {
@@ -84,27 +83,22 @@ export default function Paywall() {
   }, []);
 
   const handlePurchase = async (pkg: PurchasesPackage) => {
-    if (isPurchasing) return;
     setIsPurchasing(true);
-
     try {
       const { customerInfo } = await Purchases.purchasePackage(pkg);
-
       if (
         typeof customerInfo.entitlements.active[
           revenueCatConfig.entitlementId
         ] !== "undefined"
       ) {
-        Toast.show({
-          variant: "success",
-          text: "Subscription successful",
-        });
-        router.back(); // Close paywall on success
+        if (router.canGoBack()) {
+          router.back();
+        }
       }
-      // TODO
-    } catch (e: any) {
-      if (!e.userCancelled) {
-        Alert.alert("Purchase Error", e.message);
+    } catch (e) {
+      const error = e as { userCancelled?: boolean; message?: string };
+      if (!error.userCancelled && error.message) {
+        Alert.alert("Error", error.message);
       }
     } finally {
       setIsPurchasing(false);
@@ -113,19 +107,13 @@ export default function Paywall() {
 
   const handleRestore = async () => {
     setIsPurchasing(true);
-    try {
-      const customerInfo = await Purchases.restorePurchases();
-      if (customerInfo.entitlements.active["CalYo Pro"]) {
-        Alert.alert("Success", "Purchases restored!");
-        router.back();
-      } else {
-        Alert.alert("Info", "No active subscriptions found to restore.");
-      }
-    } catch (e: any) {
-      Alert.alert("Error", e.message);
-    } finally {
-      setIsPurchasing(false);
+    const customerInfo = await restorePurchases();
+    if (customerInfo) {
+      Alert.alert("Success", "Purchases restored successfully");
+    } else {
+      Alert.alert("Error", "Failed to restore purchases");
     }
+    setIsPurchasing(false);
   };
 
   if (isLoading) {
@@ -166,24 +154,30 @@ export default function Paywall() {
                 style={{ flex: 1 }}
               >
                 <Card style={[styles.card, isSelected && styles.selectedCard]}>
-                  <View
-                    style={[
-                      styles.badge,
-                      isSelected && { backgroundColor: getColor("primary") },
-                    ]}
-                  >
-                    <Text
-                      size="10"
-                      weight="600"
-                      color={isSelected ? getColor("background") : undefined}
+                  {pkg.packageType === PACKAGE_TYPE.ANNUAL && (
+                    <View
+                      style={[
+                        styles.badge,
+                        isSelected && { backgroundColor: getColor("primary") },
+                      ]}
                     >
-                      {pkg.product.pricePerMonthString} / mes
-                    </Text>
-                  </View>
+                      <Text
+                        size="10"
+                        weight="600"
+                        color={isSelected ? getColor("background") : undefined}
+                      >
+                        {currencyMap[pkg.product.currencyCode]}
+                        {Math.round((pkg.product.pricePerMonth ?? 0) * 100) /
+                          100}{" "}
+                        / mes
+                      </Text>
+                    </View>
+                  )}
 
                   <Text size="12">{pkg.product.title}</Text>
                   <Text size="18" weight="600">
-                    {pkg.product.priceString}
+                    {currencyMap[pkg.product.currencyCode]}
+                    {Math.round(pkg.product.price * 100) / 100}
                   </Text>
                   <Text size="12" color={getColor("mutedForeground", 0.75)}>
                     Billed{" "}
@@ -239,11 +233,7 @@ export default function Paywall() {
           }
           disabled={!selectedPackage || isPurchasing}
         >
-          {isPurchasing
-            ? "Processing..."
-            : selectedPackage
-              ? `Subscribe for ${selectedPackage.product.priceString}`
-              : "Select a plan"}
+          Start 7-day free trial
         </ScreenFooterButton>
         <ScreenFooterButton
           variant="ghost"
