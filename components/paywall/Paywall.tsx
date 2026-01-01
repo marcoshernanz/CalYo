@@ -29,18 +29,21 @@ import { useSubscriptionContext } from "@/context/SubscriptionContext";
 
 const proFeatures = [
   {
-    title: "Log with a photo",
-    description: "AI meal logger with a picture of your food",
+    title: "Foto y listo",
+    description:
+      "La IA identifica tu comida y calcula las calorías al instante. Solo apunta y dispara.",
     Icon: CameraIcon,
   },
   {
-    title: "Log with description",
-    description: "AI meal logger by describing your meal",
+    title: "Registro por texto",
+    description:
+      "Simplemente describe tu plato y la IA calculará los macros automáticamente.",
     Icon: PenLineIcon,
   },
   {
-    title: "Fix meal",
-    description: "Correct mistakes easily with AI",
+    title: "Control total y edición",
+    description:
+      "Ajusta ingredientes o cantidades fácilmente si la IA se equivoca. Tú tienes la última palabra.",
     Icon: SparklesIcon,
   },
 ];
@@ -128,7 +131,7 @@ export default function Paywall() {
     <ScreenMain edges={[]}>
       <ScreenHeader scrollY={scrollY}>
         <ScreenHeaderBackButton />
-        <ScreenHeaderTitle title="Plans" />
+        <ScreenHeaderTitle title="Planes" />
       </ScreenHeader>
 
       <ScreenMainScrollView
@@ -137,7 +140,7 @@ export default function Paywall() {
       >
         <ScreenMainTitle
           title="CalYo Pro"
-          description="Reach your goals with faster food logging"
+          description="Logra tus objetivos registrando tus comidas en segundos, no en minutos"
           style={styles.title}
         />
         <View style={styles.packageContainer}>
@@ -175,17 +178,21 @@ export default function Paywall() {
                     </View>
                   )}
 
-                  <Text size="12">{pkg.product.title}</Text>
+                  <Text size="12">
+                    {pkg.packageType === PACKAGE_TYPE.MONTHLY
+                      ? "1 mes"
+                      : "12 meses"}
+                  </Text>
                   <Text size="18" weight="600">
                     {currencyMap[pkg.product.currencyCode] ??
                       pkg.product.currencyCode}
                     {Math.round(pkg.product.price * 100) / 100}
                   </Text>
                   <Text size="12" color={getColor("mutedForeground", 0.75)}>
-                    Billed{" "}
+                    Facturación{" "}
                     {pkg.packageType === PACKAGE_TYPE.MONTHLY
-                      ? "monthly"
-                      : "annually"}
+                      ? "mensual"
+                      : "anual"}
                   </Text>
                 </Card>
               </Button>
@@ -195,7 +202,7 @@ export default function Paywall() {
 
         <View>
           <Text size="20" weight="600" style={{ paddingBottom: 16 }}>
-            Why go Pro?
+            ¿Por qué ser Pro?
           </Text>
           <Card style={styles.featuresCard}>
             {proFeatures.map(({ title, description, Icon }, index) => {
@@ -235,7 +242,7 @@ export default function Paywall() {
           }
           disabled={!selectedPackage || isPurchasing}
         >
-          Start 7-day free trial
+          Empezar prueba gratis de 7 días
         </ScreenFooterButton>
         <ScreenFooterButton
           variant="ghost"
@@ -248,7 +255,7 @@ export default function Paywall() {
           hitSlop={4}
           onPress={() => void handleRestore()}
         >
-          Restore Purchases
+          Restaurar compras
         </ScreenFooterButton>
       </ScreenFooter>
     </ScreenMain>
