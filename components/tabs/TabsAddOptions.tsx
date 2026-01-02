@@ -18,6 +18,7 @@ import { Href, useRouter } from "expo-router";
 import { useRateLimit } from "@convex-dev/rate-limiter/react";
 import { api } from "@/convex/_generated/api";
 import { Toast } from "../ui/Toast";
+import ProLabel from "../ProLabel";
 
 const AnimatedPopoverContent = Animated.createAnimatedComponent(
   PopoverPrimitive.Content
@@ -51,6 +52,7 @@ type Option = {
   label: string;
   icon: LucideIcon;
   href: Href;
+  isPro: boolean;
 };
 
 const options: Option[] = [
@@ -58,11 +60,13 @@ const options: Option[] = [
     label: "Describir",
     icon: PenLineIcon,
     href: "/app/(add)/describe",
+    isPro: true,
   },
   {
     label: "Escanear",
     icon: ScanIcon,
     href: "/app/(add)/camera",
+    isPro: false,
   },
 ];
 
@@ -119,11 +123,12 @@ export default function TabsAddOptions() {
                   key={`option-${option.label}-${index}`}
                   variant="base"
                   size="base"
-                  style={{ flex: 1 }}
+                  style={{ flex: 1, position: "relative" }}
                   onPress={() => {
                     handleOptionPress(option.href);
                   }}
                 >
+                  {option.isPro && <ProLabel />}
                   <Card style={styles.card}>
                     <option.icon size={28} color={getColor("foreground")} />
                     <Text size="14" weight="500">
