@@ -12,17 +12,14 @@ export const syncSubscriptionStatus = action({
       const userId = await getAuthUserId(ctx);
       if (!userId) throw new Error("Unauthorized");
 
-      const secretKey = process.env.REVENUECAT_SECRET_KEY;
-      if (!secretKey) {
-        throw new Error("REVENUECAT_SECRET_KEY is not set");
-      }
+      const apiKey = revenueCatConfig.apiKey;
 
       const response = await fetch(
         `https://api.revenuecat.com/v1/subscribers/${userId}`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${secretKey}`,
+            Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json",
           },
         }
