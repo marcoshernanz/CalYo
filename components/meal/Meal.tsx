@@ -32,6 +32,7 @@ import SafeArea from "../ui/SafeArea";
 import MealMicros from "./MealMicros";
 import { MacrosType, MicrosType } from "@/convex/tables/mealItems";
 import ProLabel from "../ProLabel";
+import { useSubscriptionContext } from "@/context/SubscriptionContext";
 
 type Props = {
   loading: boolean;
@@ -53,6 +54,7 @@ export default function Meal({
   const router = useRouter();
   const updateMeal = useMutation(api.meals.updateMeal.default);
   const isDeletingRef = useRef(false);
+  const { isPro, navigateToPaywall } = useSubscriptionContext();
 
   const { scrollY, onScroll } = useScrollY();
 
@@ -67,6 +69,11 @@ export default function Meal({
   };
 
   const handleFixMeal = () => {
+    if (!isPro) {
+      navigateToPaywall();
+      return;
+    }
+
     if (status && !status.ok) {
       Toast.show({
         text: "Has alcanzado el límite diario de funciones de IA.",
@@ -123,7 +130,7 @@ export default function Meal({
           disabled={loading || (status !== undefined && !status.ok)}
           style={{ position: "relative" }}
         >
-          <ProLabel />
+          {!isPro && <ProLabel />}
           <ScreenFooterButtonIcon
             Icon={SparklesIcon}
             fill={getColor("foreground")}
