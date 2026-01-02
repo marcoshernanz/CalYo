@@ -45,6 +45,8 @@ import type * as migrations from "../migrations.js";
 import type * as nutrition_computeNutritionTargets from "../nutrition/computeNutritionTargets.js";
 import type * as profiles_completeOnboarding from "../profiles/completeOnboarding.js";
 import type * as profiles_getProfile from "../profiles/getProfile.js";
+import type * as profiles_syncSubscriptionStatus from "../profiles/syncSubscriptionStatus.js";
+import type * as profiles_updateProStatus from "../profiles/updateProStatus.js";
 import type * as profiles_updateProfile from "../profiles/updateProfile.js";
 import type * as rateLimit from "../rateLimit.js";
 import type * as storage_generateUploadUrl from "../storage/generateUploadUrl.js";
@@ -109,6 +111,8 @@ declare const fullApi: ApiFromModules<{
   "nutrition/computeNutritionTargets": typeof nutrition_computeNutritionTargets;
   "profiles/completeOnboarding": typeof profiles_completeOnboarding;
   "profiles/getProfile": typeof profiles_getProfile;
+  "profiles/syncSubscriptionStatus": typeof profiles_syncSubscriptionStatus;
+  "profiles/updateProStatus": typeof profiles_updateProStatus;
   "profiles/updateProfile": typeof profiles_updateProfile;
   rateLimit: typeof rateLimit;
   "storage/generateUploadUrl": typeof storage_generateUploadUrl;

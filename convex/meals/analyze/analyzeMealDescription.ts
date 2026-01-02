@@ -20,6 +20,9 @@ const analyzeMealDescription = action({
       const userId = await getAuthUserId(ctx);
       if (userId === null) throw new Error("Unauthorized");
 
+      const profile = await ctx.runQuery(api.profiles.getProfile.default);
+      if (!profile?.isPro) throw new Error("Pro subscription required");
+
       await rateLimiter.limit(ctx, "aiFeatures", { key: userId, throws: true });
 
       mealId = await ctx.runMutation(api.meals.createMeal.default, {
