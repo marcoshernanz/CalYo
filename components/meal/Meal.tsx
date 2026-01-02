@@ -31,6 +31,7 @@ import Carousel from "../ui/Carousel";
 import SafeArea from "../ui/SafeArea";
 import MealMicros from "./MealMicros";
 import { MacrosType, MicrosType } from "@/convex/tables/mealItems";
+import ProLabel from "../ProLabel";
 
 type Props = {
   loading: boolean;
@@ -120,7 +121,9 @@ export default function Meal({
           variant="outline"
           onPress={handleFixMeal}
           disabled={loading || (status !== undefined && !status.ok)}
+          style={{ position: "relative" }}
         >
+          <ProLabel />
           <ScreenFooterButtonIcon
             Icon={SparklesIcon}
             fill={getColor("foreground")}
