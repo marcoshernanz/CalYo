@@ -34,7 +34,9 @@ export default function CameraScreen() {
   });
 
   const [enableTorch, setEnableTorch] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<CameraMode>("photo");
+  const [selectedOption, setSelectedOption] = useState<CameraMode>(
+    isPro ? "photo" : "barcode"
+  );
 
   const cameraRef = useRef<CameraView>(null);
   const isBusyRef = useRef(false);
