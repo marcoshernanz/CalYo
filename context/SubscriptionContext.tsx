@@ -36,10 +36,8 @@ export function SubscriptionProvider({
 
   useEffect(() => {
     if (!isLoading && profile?.userId) {
-      // Identify the user in RevenueCat
       Purchases.logIn(profile.userId)
         .then(() => {
-          // Sync status with server
           return syncSubscriptionStatus();
         })
         .catch((error: unknown) => {
