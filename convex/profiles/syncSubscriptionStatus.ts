@@ -2,7 +2,8 @@ import { action } from "../_generated/server";
 import { internal } from "../_generated/api";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import logError from "@/lib/utils/logError";
-import { revenueCatConfig } from "@/config/revenueCatConfig";
+import { z } from "zod/v4";
+import { revenueCatConfig } from "../../config/revenueCatConfig";
 
 export const syncSubscriptionStatus = action({
   args: {},
@@ -27,38 +28,48 @@ export const syncSubscriptionStatus = action({
         }
       );
 
-      console.log(response);
+      if (!response.ok) {
+        throw new Error(`RevenueCat API error: ${response.statusText}`);
+      }
 
-      // if (!response.ok) {
-      //   throw new Error(`RevenueCat API error: ${response.statusText}`);
-      // }
+      const revenueCatResponseSchema = z.object({
+        subscriber: z.object({
+          entitlements: z.record(
+            z.string(),
+            z.object({
+              expires_date: z.string().nullable(),
+            })
+          ),
+        }),
+      });
 
-      // const data = await response.json();
-      // const entitlements = data.subscriber?.entitlements || {};
-      // const proEntitlement = entitlements[revenueCatConfig.entitlementId];
+      const json = (await response.json()) as unknown;
+      const data = revenueCatResponseSchema.parse(json);
+      const entitlements = data.subscriber.entitlements;
+      const proEntitlement = entitlements[revenueCatConfig.entitlementId] as
+        | (typeof entitlements)[string]
+        | undefined;
 
-      // let isPro = false;
-      // if (proEntitlement) {
-      //   const expiresDate = proEntitlement.expires_date;
-      //   if (expiresDate === null) {
-      //     // Lifetime subscription
-      //     isPro = true;
-      //   } else {
-      //     const now = new Date();
-      //     const expiration = new Date(expiresDate);
-      //     if (expiration > now) {
-      //       isPro = true;
-      //     }
-      //   }
-      // }
+      let isPro = false;
+      if (proEntitlement) {
+        const expiresDate = proEntitlement.expires_date;
+        if (expiresDate === null) {
+          isPro = true;
+        } else {
+          const now = new Date();
+          const expiration = new Date(expiresDate);
+          if (expiration > now) {
+            isPro = true;
+          }
+        }
+      }
 
-      // await ctx.runMutation(internal.profiles.updateProStatus.default, {
-      //   isPro,
-      //   userId,
-      // });
+      await ctx.runMutation(internal.profiles.updateProStatus.default, {
+        isPro,
+        userId,
+      });
     } catch (error) {
       logError("syncSubscriptionStatus error", error);
-      // Don't throw to client, just log
     }
   },
 });
