@@ -83,7 +83,7 @@ export default function TabsAddOptions() {
   const handleOptionPress = (option: Option) => {
     popoverTriggerRef.current?.close();
 
-    if (!isPro) {
+    if (!isPro && option.isPro) {
       if (Platform.OS === "android") {
         setTimeout(() => {
           navigateToPaywall();
