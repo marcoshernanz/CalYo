@@ -21,13 +21,14 @@ import CameraControls from "@/components/camera/CameraControls";
 import CameraModeSelector from "@/components/camera/CameraModeSelector";
 import BarcodeOverlay from "@/components/camera/BarcodeOverlay";
 import PhotoOverlay from "@/components/camera/PhotoOverlay";
+import { useSubscriptionContext } from "@/context/SubscriptionContext";
 
 type CameraMode = "photo" | "barcode";
 
 export default function CameraScreen() {
   const router = useRouter();
   const [permission, requestPermission] = useCameraPermissions();
-
+  const { isPro, navigateToPaywall } = useSubscriptionContext();
   const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
   });
@@ -58,6 +59,11 @@ export default function CameraScreen() {
   };
 
   const takePhoto = async () => {
+    if (!isPro) {
+      navigateToPaywall();
+      return;
+    }
+
     if (!cameraRef.current || isBusyRef.current) return;
     if (!checkRateLimit()) return;
 
@@ -79,6 +85,11 @@ export default function CameraScreen() {
   };
 
   const handleUpload = async () => {
+    if (!isPro) {
+      navigateToPaywall();
+      return;
+    }
+
     if (isBusyRef.current) return;
     if (!checkRateLimit()) return;
 
