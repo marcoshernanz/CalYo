@@ -19,6 +19,7 @@ import { useRateLimit } from "@convex-dev/rate-limiter/react";
 import { api } from "@/convex/_generated/api";
 import { Toast } from "../ui/Toast";
 import ProLabel from "../ProLabel";
+import { useSubscriptionContext } from "@/context/SubscriptionContext";
 
 const AnimatedPopoverContent = Animated.createAnimatedComponent(
   PopoverPrimitive.Content
@@ -74,12 +75,24 @@ export default function TabsAddOptions() {
   const router = useRouter();
   const popoverTriggerRef = useRef<TriggerRef>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const { isPro, navigateToPaywall } = useSubscriptionContext();
   const { status } = useRateLimit(api.rateLimit.getAiFeaturesRateLimit, {
     getServerTimeMutation: api.rateLimit.getServerTime,
   });
 
-  const handleOptionPress = (href: Href) => {
+  const handleOptionPress = (option: Option) => {
     popoverTriggerRef.current?.close();
+
+    if (!isPro) {
+      if (Platform.OS === "android") {
+        setTimeout(() => {
+          navigateToPaywall();
+        }, 200);
+      } else {
+        navigateToPaywall();
+      }
+      return;
+    }
 
     if (status && !status.ok) {
       Toast.show({
@@ -91,10 +104,10 @@ export default function TabsAddOptions() {
 
     if (Platform.OS === "android") {
       setTimeout(() => {
-        router.push(href);
+        router.push(option.href);
       }, 200);
     } else {
-      router.push(href);
+      router.push(option.href);
     }
   };
 
@@ -125,7 +138,7 @@ export default function TabsAddOptions() {
                   size="base"
                   style={{ flex: 1, position: "relative" }}
                   onPress={() => {
-                    handleOptionPress(option.href);
+                    handleOptionPress(option);
                   }}
                 >
                   {option.isPro && <ProLabel />}
