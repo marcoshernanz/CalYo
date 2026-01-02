@@ -80,7 +80,7 @@ export default function Paywall() {
       } catch {
         Toast.show({
           variant: "error",
-          text: "Failed to load offerings",
+          text: "Error al cargar las ofertas",
         });
       } finally {
         setIsLoading(false);
@@ -115,9 +115,9 @@ export default function Paywall() {
     setIsPurchasing(true);
     const customerInfo = await restorePurchases();
     if (customerInfo) {
-      Alert.alert("Success", "Purchases restored successfully");
+      Alert.alert("Éxito", "Compras restauradas correctamente");
     } else {
-      Alert.alert("Error", "Failed to restore purchases");
+      Alert.alert("Error", "Error al restaurar las compras");
     }
     setIsPurchasing(false);
   };

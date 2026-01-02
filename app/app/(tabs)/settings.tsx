@@ -28,9 +28,9 @@ export default function SettingsScreen() {
   const handleRestorePurchases = async () => {
     const customerInfo = await restorePurchases();
     if (customerInfo) {
-      Alert.alert("Success", "Purchases restored successfully");
+      Alert.alert("Éxito", "Compras restauradas correctamente");
     } else {
-      Alert.alert("Error", "Failed to restore purchases");
+      Alert.alert("Error", "Error al restaurar las compras");
     }
   };
 
