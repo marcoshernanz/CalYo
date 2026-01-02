@@ -174,9 +174,7 @@ export default function Paywall() {
                       >
                         {currencyMap[pkg.product.currencyCode] ??
                           pkg.product.currencyCode}
-                        {Math.round((pkg.product.pricePerMonth ?? 0) * 100) /
-                          100}{" "}
-                        / mes
+                        {Math.round((pkg.product.price / 12) * 100) / 100} / mes
                       </Text>
                     </View>
                   )}
