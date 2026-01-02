@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Platform } from "react-native";
-import Purchases, { CustomerInfo } from "react-native-purchases";
+import Purchases, { CustomerInfo, LOG_LEVEL } from "react-native-purchases";
 import RevenueCatUI from "react-native-purchases-ui";
 import { revenueCatConfig } from "@/config/revenueCatConfig";
 import { useRouter } from "expo-router";
+import { useAction, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 type SubscriptionContextType = {
   isPro: boolean;
@@ -27,11 +29,31 @@ export function SubscriptionProvider({
   const [isPro, setIsPro] = useState(false);
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const syncSubscriptionStatus = useAction(
+    api.profiles.syncSubscriptionStatus.default
+  );
+  const profile = useQuery(api.profiles.getProfile.default);
+
+  useEffect(() => {
+    if (!isLoading && profile?.userId) {
+      // Identify the user in RevenueCat
+      Purchases.logIn(profile.userId)
+        .then(() => {
+          // Sync status with server
+          return syncSubscriptionStatus();
+        })
+        .catch((error: unknown) => {
+          console.error("Failed to sync subscription status:", error);
+        });
+    }
+  }, [isPro, isLoading, profile?.userId, syncSubscriptionStatus]);
 
   useEffect(() => {
     void (async () => {
       try {
         if (Platform.OS === "android" || Platform.OS === "ios") {
+          await Purchases.setLogLevel(LOG_LEVEL.INFO);
+
           if (revenueCatConfig.apiKey) {
             Purchases.configure({ apiKey: revenueCatConfig.apiKey });
           }
