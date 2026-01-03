@@ -8,6 +8,7 @@
     "prebuild": "APP_VARIANT=development npx expo prebuild",
     "android": "APP_VARIANT=development expo run:android",
     "ios": "APP_VARIANT=development expo run:ios",
+    "env:pull": "eas env:pull --environment development",
     "eas:dev": "eas build --profile development",
     "eas:prod": "eas build --profile production",
     "lint": "npx eslint .",
