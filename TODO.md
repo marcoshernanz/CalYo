@@ -1,5 +1,8 @@
-- [ ] Update meal item grams
+- [ ] Remove OTP sign-in
+- [ ] Add promo code logic
+- [ ] Update testing sign-in instructions
 
+- [ ] Implement OTP sign-in
 - [ ] Navigate to meal item after scanning barcode
 
 - [ ] Meal item grams loading state
