@@ -8,23 +8,13 @@
       "environment": "development",
       "developmentClient": true,
       "distribution": "internal",
-      "env": {
-        "APP_VARIANT": "development",
-        "EXPO_PUBLIC_CONVEX_URL": "https://deafening-dinosaur-607.convex.cloud",
-        "EXPO_PUBLIC_REVENUECAT_API_KEY": "test_ZjhfAkugMURoPeCzmlORRXnWWbX"
-      },
       "ios": {
         "simulator": true
       }
     },
     "production": {
       "environment": "production",
-      "autoIncrement": true,
-      "env": {
-        "APP_VARIANT": "production",
-        "EXPO_PUBLIC_CONVEX_URL": "https://honorable-emu-819.convex.cloud",
-        "EXPO_PUBLIC_REVENUECAT_API_KEY": "" // TODO
-      }
+      "autoIncrement": true
     }
   },
   "submit": {
