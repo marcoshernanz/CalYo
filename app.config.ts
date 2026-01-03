@@ -81,7 +81,7 @@ export default (): ExpoConfig => ({
   extra: {
     APP_VARIANT: appVariant,
     eas: {
-      projectId: "824c3b7e-6700-4f5d-8961-280b98eb9e74",
+      projectId: "1edfee36-bb71-4d61-8b3b-b8a49d6b3184",
     },
   },
 });
