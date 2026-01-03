@@ -26,6 +26,7 @@ import Text from "../ui/Text";
 import getColor from "../../lib/ui/getColor";
 import { CameraIcon, PenLineIcon, SparklesIcon } from "lucide-react-native";
 import { useSubscriptionContext } from "@/context/SubscriptionContext";
+import logError from "@/lib/utils/logError";
 
 const proFeatures = [
   {
@@ -77,7 +78,8 @@ export default function Paywall() {
             );
           }
         }
-      } catch {
+      } catch (e) {
+        logError("Paywall error", e);
         Toast.show({
           variant: "error",
           text: "Error al cargar las ofertas",
@@ -106,6 +108,7 @@ export default function Paywall() {
       if (!error.userCancelled && error.message) {
         Alert.alert("Error", error.message);
       }
+      logError("Paywall error", error);
     } finally {
       setIsPurchasing(false);
     }
