@@ -29,13 +29,14 @@ export function SubscriptionProvider({
   const [isPro, setIsPro] = useState(false);
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isConfigured, setIsConfigured] = useState(false);
   const syncSubscriptionStatus = useAction(
     api.profiles.syncSubscriptionStatus.default
   );
   const profile = useQuery(api.profiles.getProfile.default);
 
   useEffect(() => {
-    if (!isLoading && profile?.userId) {
+    if (!isLoading && isConfigured && profile?.userId) {
       Purchases.logIn(profile.userId)
         .then(() => {
           return syncSubscriptionStatus();
@@ -44,7 +45,7 @@ export function SubscriptionProvider({
           console.error("Failed to sync subscription status:", error);
         });
     }
-  }, [isPro, isLoading, profile?.userId, syncSubscriptionStatus]);
+  }, [isPro, isLoading, isConfigured, profile?.userId, syncSubscriptionStatus]);
 
   useEffect(() => {
     void (async () => {
@@ -54,11 +55,12 @@ export function SubscriptionProvider({
 
           if (revenueCatConfig.apiKey) {
             Purchases.configure({ apiKey: revenueCatConfig.apiKey });
-          }
+            setIsConfigured(true);
 
-          const info = await Purchases.getCustomerInfo();
-          setCustomerInfo(info);
-          checkEntitlement(info);
+            const info = await Purchases.getCustomerInfo();
+            setCustomerInfo(info);
+            checkEntitlement(info);
+          }
         }
       } catch (e) {
         console.error("RevenueCat init error:", e);
@@ -69,6 +71,8 @@ export function SubscriptionProvider({
   }, []);
 
   useEffect(() => {
+    if (!isConfigured) return;
+
     const customerInfoUpdated = (info: CustomerInfo) => {
       setCustomerInfo(info);
       checkEntitlement(info);
@@ -79,7 +83,7 @@ export function SubscriptionProvider({
     return () => {
       Purchases.removeCustomerInfoUpdateListener(customerInfoUpdated);
     };
-  }, []);
+  }, [isConfigured]);
 
   const checkEntitlement = (info: CustomerInfo) => {
     if (
@@ -97,6 +101,7 @@ export function SubscriptionProvider({
   };
 
   const presentCustomerCenter = async () => {
+    if (!isConfigured) return;
     try {
       await RevenueCatUI.presentCustomerCenter();
     } catch (e) {
@@ -105,6 +110,7 @@ export function SubscriptionProvider({
   };
 
   const restorePurchases = async () => {
+    if (!isConfigured) return null;
     try {
       const info = await Purchases.restorePurchases();
       setCustomerInfo(info);
