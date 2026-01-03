@@ -128,7 +128,7 @@ export default function Paywall() {
   if (isLoading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#007AFF" />
+        <ActivityIndicator size="large" color={getColor("foreground")} />
       </View>
     );
   }

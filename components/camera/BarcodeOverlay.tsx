@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     width: "90%",
     aspectRatio: 1.5,
     borderWidth: 2,
-    borderColor: "#FFF",
+    borderColor: "#FFFFFF",
     borderRadius: 16,
     backgroundColor: "transparent",
     boxShadow: [
