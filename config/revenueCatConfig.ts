@@ -1,4 +1,4 @@
 export const revenueCatConfig = {
-  apiKey: process.env.REVENUECAT_API_KEY,
+  apiKey: process.env.EXPO_PUBLIC_REVENUECAT_API_KEY,
   entitlementId: "pro",
 };
