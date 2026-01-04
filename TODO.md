@@ -1,3 +1,4 @@
+- [ ] 15% fee
 - [ ] Remove OTP sign-in
 - [ ] Add promo code logic
 - [ ] Update testing sign-in instructions
