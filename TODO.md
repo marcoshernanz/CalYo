@@ -1,7 +1,11 @@
+- [ ] Test app store and play store subscriptions
 - [ ] 15% fee
 - [ ] Remove OTP sign-in
 - [ ] Add promo code logic
 - [ ] Update testing sign-in instructions
+- [ ] Paywall at the end of onboarding
+- [ ] Google Play Store RevenueCat server notifications
+- [ ] App Store RevenueCat server notifications
 
 - [ ] Implement OTP sign-in
 - [ ] Navigate to meal item after scanning barcode
