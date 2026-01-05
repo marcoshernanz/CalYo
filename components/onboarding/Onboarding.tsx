@@ -197,7 +197,7 @@ const sections: OnboardingSectionType[] = [
       },
       {
         screen: <OnboardingPaywall key="paywall" />,
-        completed: () => true,
+        completed: () => false,
         skip: () => false,
         showHeader: false,
         scrollView: false,
