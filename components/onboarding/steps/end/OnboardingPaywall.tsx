@@ -31,6 +31,10 @@ export default function OnboardingPaywall() {
   };
 
   return (
-    <Paywall type="close" onClose={handleComplete} onSuccess={handleComplete} />
+    <Paywall
+      type="close"
+      onClose={() => void handleComplete()}
+      onSuccess={() => void handleComplete()}
+    />
   );
 }
