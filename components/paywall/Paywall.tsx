@@ -74,7 +74,7 @@ type Props = (BackProps | CloseProps) & {
   onSuccess?: () => void;
 };
 
-export default function Paywall({ type, onClose, onSuccess }: Props) {
+export default function Paywall({ type = "back", onClose, onSuccess }: Props) {
   const router = useRouter();
   const { scrollY, onScroll } = useScrollY();
   const [offering, setOffering] = useState<PurchasesOffering | null>(null);
