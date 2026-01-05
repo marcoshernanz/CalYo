@@ -1,5 +1,3 @@
-- [ ] Update testing sign-in instructions
-- [ ] Paywall at the end of onboarding
 - [ ] Google Play Store RevenueCat server notifications
 - [ ] App Store RevenueCat server notifications
 - [ ] Test app store and play store subscriptions
