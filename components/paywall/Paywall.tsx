@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Alert, ActivityIndicator } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import Purchases, {
   PACKAGE_TYPE,
   PurchasesOffering,
@@ -80,7 +80,6 @@ export default function Paywall({ type = "back", onClose, onSuccess }: Props) {
   const [offering, setOffering] = useState<PurchasesOffering | null>(null);
   const [selectedPackage, setSelectedPackage] =
     useState<PurchasesPackage | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isPurchasing, setIsPurchasing] = useState(false);
   const { restorePurchases } = useSubscriptionContext();
 
@@ -104,8 +103,6 @@ export default function Paywall({ type = "back", onClose, onSuccess }: Props) {
           variant: "error",
           text: "Error al cargar las ofertas",
         });
-      } finally {
-        setIsLoading(false);
       }
     })();
   }, []);
@@ -146,14 +143,6 @@ export default function Paywall({ type = "back", onClose, onSuccess }: Props) {
     }
     setIsPurchasing(false);
   };
-
-  if (isLoading) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color={getColor("foreground")} />
-      </View>
-    );
-  }
 
   return (
     <ScreenMain edges={[]}>
