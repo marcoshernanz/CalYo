@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   isOnboardingDataComplete,
   OnboardingContextValue,
@@ -36,6 +36,7 @@ import { usePreventRemove } from "@react-navigation/native";
 import { Platform } from "react-native";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import OnboardingPaywall from "./steps/end/OnboardingPaywall";
 
 export type OnboardingSectionType = {
   name: string;
@@ -45,6 +46,7 @@ export type OnboardingSectionType = {
     skip: (context: OnboardingContextValue) => boolean;
     showHeader: boolean;
     scrollView: boolean;
+    isFullScreen?: boolean;
   }[];
 };
 
@@ -188,10 +190,18 @@ const sections: OnboardingSectionType[] = [
       },
       {
         screen: <OnboardingCreateAccount key="creating-account" />,
-        completed: () => false,
+        completed: ({ isAuthenticated }) => isAuthenticated,
         skip: ({ isAuthenticated }) => isAuthenticated,
         showHeader: false,
         scrollView: true,
+      },
+      {
+        screen: <OnboardingPaywall key="paywall" />,
+        completed: () => true,
+        skip: () => false,
+        showHeader: false,
+        scrollView: false,
+        isFullScreen: true,
       },
     ],
   },
@@ -218,7 +228,7 @@ export default function Onboarding() {
   const isCurrentStepComplete = currentStep?.completed(context) ?? true;
   const isNextDisabled = !isCurrentStepComplete || isCompletingOnboarding;
 
-  const handleCompleteOnboarding = async () => {
+  const handleCompleteOnboarding = useCallback(async () => {
     if (isCompletingOnboarding) return;
 
     setIsCompletingOnboarding(true);
@@ -227,31 +237,52 @@ export default function Onboarding() {
 
     if (router.canDismiss()) router.dismissAll();
     router.replace("/app");
-  };
+  }, [
+    isCompletingOnboarding,
+    data,
+    targets,
+    completeOnboarding,
+    router,
+    setIsCompletingOnboarding,
+  ]);
 
-  const handleNext = async () => {
+  const handleNext = useCallback(async () => {
     if (isNextDisabled) return;
 
     transitionDirection.value = 1;
 
     let nextStep = step;
     let nextSection = section;
-    do {
-      nextStep += 1;
-      if (nextStep >= sectionSteps.length) {
-        nextSection += 1;
+    let found = false;
+
+    while (!found) {
+      nextStep++;
+      const stepsInCurrentSection = sections[nextSection]?.steps ?? [];
+
+      if (nextStep >= stepsInCurrentSection.length) {
+        nextSection++;
         if (nextSection >= sections.length) {
           await handleCompleteOnboarding();
           return;
         }
-
         nextStep = 0;
       }
-    } while (sections.at(nextSection)?.steps.at(nextStep)?.skip(context));
+
+      if (!sections[nextSection]?.steps[nextStep]?.skip(context)) {
+        found = true;
+      }
+    }
 
     setSection(nextSection);
     setStep(nextStep);
-  };
+  }, [
+    isNextDisabled,
+    step,
+    section,
+    context,
+    transitionDirection,
+    handleCompleteOnboarding,
+  ]);
 
   const handleBack = () => {
     transitionDirection.value = -1;
@@ -308,6 +339,16 @@ export default function Onboarding() {
   usePreventRemove(!isFirstStep && isAndroid, () => {
     handleBack();
   });
+
+  useEffect(() => {
+    if (currentStep?.skip(context)) {
+      void handleNext();
+    }
+  }, [context, currentStep, handleNext]);
+
+  if (currentStep?.isFullScreen) {
+    return currentStep.screen;
+  }
 
   return (
     <OnboardingSectionLayout

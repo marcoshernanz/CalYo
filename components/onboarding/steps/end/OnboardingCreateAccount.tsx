@@ -36,6 +36,7 @@ export default function OnboardingCreateAccount() {
           <SignInButtons
             disabled={!isDataComplete || isSubmitting}
             onSuccess={handleOnboardingComplete}
+            shouldRedirect={false}
           />
         </View>
       </View>

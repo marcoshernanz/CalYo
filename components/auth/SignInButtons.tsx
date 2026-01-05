@@ -16,6 +16,7 @@ type Props = {
   onEmailLogin?: () => void;
   onSuccess?: () => Promise<void>;
   disabled?: boolean;
+  shouldRedirect?: boolean;
 };
 
 const redirectTo = makeRedirectUri();
@@ -24,6 +25,7 @@ export default function SignInButtons({
   onEmailLogin,
   onSuccess,
   disabled = false,
+  shouldRedirect = true,
 }: Props) {
   const { signIn } = useAuthContext();
   const router = useRouter();
@@ -54,8 +56,10 @@ export default function SignInButtons({
         }
         await signIn(provider, { code });
         await onSuccess?.();
-        if (router.canDismiss()) router.dismissAll();
-        router.replace("/app");
+        if (shouldRedirect) {
+          if (router.canDismiss()) router.dismissAll();
+          router.replace("/app");
+        }
       }
     } catch (error) {
       logError("Authentication error", error);

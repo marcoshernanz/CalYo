@@ -70,9 +70,11 @@ type CloseProps = {
   onClose: () => void;
 };
 
-type Props = BackProps | CloseProps;
+type Props = (BackProps | CloseProps) & {
+  onSuccess?: () => void;
+};
 
-export default function Paywall({ type = "back", onClose }: Props) {
+export default function Paywall({ type, onClose, onSuccess }: Props) {
   const router = useRouter();
   const { scrollY, onScroll } = useScrollY();
   const [offering, setOffering] = useState<PurchasesOffering | null>(null);
@@ -117,7 +119,9 @@ export default function Paywall({ type = "back", onClose }: Props) {
           revenueCatConfig.entitlementId
         ] !== "undefined"
       ) {
-        if (router.canGoBack()) {
+        if (onSuccess) {
+          onSuccess();
+        } else if (router.canGoBack()) {
           router.back();
         }
       }
