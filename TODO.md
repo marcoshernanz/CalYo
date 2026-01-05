@@ -1,5 +1,3 @@
-- [ ] Remove OTP sign-in
-- [ ] Add promo code logic
 - [ ] Update testing sign-in instructions
 - [ ] Paywall at the end of onboarding
 - [ ] Google Play Store RevenueCat server notifications
