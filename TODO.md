@@ -1,6 +1,3 @@
-- [ ] Onboarding paywall
-- [ ] Fix onboarding paywall
-- [ ] Secret api key in syncSubscriptionStatus
 - [ ] Remove OTP sign-in
 - [ ] Add promo code logic
 - [ ] Update testing sign-in instructions

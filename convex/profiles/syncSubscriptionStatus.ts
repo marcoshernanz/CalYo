@@ -12,9 +12,8 @@ export const syncSubscriptionStatus = action({
       const userId = await getAuthUserId(ctx);
       if (!userId) throw new Error("Unauthorized");
 
-      const apiKey =
-        process.env.EXPO_PUBLIC_REVENUECAT_APPLE_API_KEY ??
-        process.env.EXPO_PUBLIC_REVENUECAT_GOOGLE_API_KEY;
+      const apiKey = process.env.REVENUECAT_SECRET_KEY;
+      if (!apiKey) throw new Error("REVENUECAT_SECRET_KEY is not set");
 
       const response = await fetch(
         `https://api.revenuecat.com/v1/subscribers/${userId}`,
