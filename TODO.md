@@ -1,11 +1,15 @@
-- [ ] Test app store and play store subscriptions
-- [ ] 15% fee
+- [ ] Onboarding paywall
+- [ ] Fix onboarding paywall
+- [ ] Secret api key in syncSubscriptionStatus
 - [ ] Remove OTP sign-in
 - [ ] Add promo code logic
 - [ ] Update testing sign-in instructions
 - [ ] Paywall at the end of onboarding
 - [ ] Google Play Store RevenueCat server notifications
 - [ ] App Store RevenueCat server notifications
+- [ ] Test app store and play store subscriptions
+- [ ] RevenueCat checklist https://www.revenuecat.com/docs/test-and-launch/launch-checklist
+- [ ] 15% fee
 
 - [ ] Implement OTP sign-in
 - [ ] Navigate to meal item after scanning barcode
