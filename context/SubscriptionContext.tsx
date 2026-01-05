@@ -53,8 +53,13 @@ export function SubscriptionProvider({
         if (Platform.OS === "android" || Platform.OS === "ios") {
           await Purchases.setLogLevel(LOG_LEVEL.INFO);
 
-          if (revenueCatConfig.apiKey) {
-            Purchases.configure({ apiKey: revenueCatConfig.apiKey });
+          const apiKey = Platform.select({
+            ios: process.env.EXPO_PUBLIC_REVENUECAT_APPLE_API_KEY,
+            android: process.env.EXPO_PUBLIC_REVENUECAT_GOOGLE_API_KEY,
+          });
+
+          if (apiKey) {
+            Purchases.configure({ apiKey });
             setIsConfigured(true);
 
             const info = await Purchases.getCustomerInfo();
