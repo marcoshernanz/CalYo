@@ -14,6 +14,7 @@ import {
 import {
   ScreenHeader,
   ScreenHeaderBackButton,
+  ScreenHeaderButton,
   ScreenHeaderTitle,
 } from "../ui/screen/ScreenHeader";
 import useScrollY from "@/lib/hooks/reanimated/useScrollY";
@@ -24,7 +25,12 @@ import Card from "../ui/Card";
 import { revenueCatConfig } from "@/config/revenueCatConfig";
 import Text from "../ui/Text";
 import getColor from "../../lib/ui/getColor";
-import { CameraIcon, PenLineIcon, SparklesIcon } from "lucide-react-native";
+import {
+  CameraIcon,
+  PenLineIcon,
+  SparklesIcon,
+  XIcon,
+} from "lucide-react-native";
 import { useSubscriptionContext } from "@/context/SubscriptionContext";
 import logError from "@/lib/utils/logError";
 
@@ -54,7 +60,19 @@ const currencyMap: Record<string, string> = {
   EUR: "€",
 };
 
-export default function Paywall() {
+type BackProps = {
+  type?: "back";
+  onClose?: undefined;
+};
+
+type CloseProps = {
+  type?: "close";
+  onClose: () => void;
+};
+
+type Props = BackProps | CloseProps;
+
+export default function Paywall({ type = "back", onClose }: Props) {
   const router = useRouter();
   const { scrollY, onScroll } = useScrollY();
   const [offering, setOffering] = useState<PurchasesOffering | null>(null);
@@ -136,8 +154,15 @@ export default function Paywall() {
   return (
     <ScreenMain edges={[]}>
       <ScreenHeader scrollY={scrollY}>
-        <ScreenHeaderBackButton />
+        {type === "back" && <ScreenHeaderBackButton />}
         <ScreenHeaderTitle title="Planes" />
+        {type === "close" && (
+          <ScreenHeaderButton
+            Icon={XIcon}
+            onPress={onClose}
+            style={{ marginLeft: "auto", aspectRatio: 1 }}
+          />
+        )}
       </ScreenHeader>
 
       <ScreenMainScrollView
