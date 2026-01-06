@@ -1,117 +1,32 @@
-- [ ] Update meal item grams
+# CalYo - AI Powered Nutrition Tracker 🍎
 
-- [ ] Navigate to meal item after scanning barcode
+**Scan, Snap, Track.** An intelligent calorie and macro tracker built with React Native and Computer Vision.
 
-- [ ] Meal item grams loading state
-- [ ] Make Convex functions safe
-- [ ] Localized measurement system
-- [ ] Remove TabBarOptions timeout for navigation
-- [ ] Add meal items when creating meal, instead of doing it in 2 steps
-- [ ] OFF nutrients extraction
+<p align="center">
+  <img src="./upload/assets/ios/screenshot-1.png" width="30%" />
+  <img src="./upload/assets/ios/screenshot-2.png" width="30%" />
+  <img src="./upload/assets/ios/screenshot-3.png" width="30%" />
+</p>
 
-- [ ] Showcase bad vs good micros
+### 🚀 Features
+*   **AI Food Recognition:** Snap a photo or describe a meal to get an instant nutritional breakdown (calories, macros, vitamins).
+*   **Barcode Scanner:** Instantly pull data from any packaged food item.
+*   **Real-time Sync:** State managed by **Convex** for a seamless, multi-device experience.
+*   **Native Performance:** Built with **Expo** for a smooth, 60fps user interface.
 
-- [ ] Sodium container overflow with high sodium values
-- [ ] Description context for AI in the fix meal feature
-- [ ] Tabs add button above popover overlay
+### 🛠 Tech Stack
+![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)
+![Convex](https://img.shields.io/badge/Convex-1A1523?style=for-the-badge&logo=convex&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 
-- [ ] Micro-nutrients
-- [ ] Circular progress animation stopping too soon
-- [ ] Nutrients text with target range
-- [ ] Lib functions inside convex folder so it's not shipped to the client?
+### 📲 Download the App
 
-- [ ] Clean replaceMealItems and scaleNutrientsPer100g
-
-- [ ] Fix getMeal
-- [ ] Fix getWeekMeals
-- [ ] Test selectCandidates.tsx/ensureSelection
-
-- [ ] Nutrients screen loading (title & bars)
-- [ ] Personalized nutrient targets
-
-- [ ] Food only nutrients (remove macro-nutrients)
-- [ ] Food nutrients -> nutrientsPer100g
-
-- [ ] Number animation on change
-
-- [ ] Migrate to convex-better-auth for auth
-- [ ] Meal animation prefetch
-- [ ] More colors instead of opacity
-- [ ] react-native-reanimated performance
-- [ ] Sign in screen
-- [ ] Initial screen
-- [ ] Fix convex functions https://stack.convex.dev/argument-validation-without-repetition#handling-partial-updates
-- [ ] Organize routes in folders
-- [ ] Animate home macro summary
-- [ ] Validate upsert foods doc
-
-- [ ] Basic information in settings
-- [ ] Sorter survey to auto generate nutrition plan
-- [ ] Only foundation foods in AI picture?
-- [ ] Character limit in fix-results feature
-
-- [ ] Link prefetch
-- [ ] Photo scanner overlay
-
----
-
-- [ ] Keep long description and category but use a shorter name for foods
-- [ ] Text input animation
-- [ ] Test email sign-in safe
-- [ ] Environment variables for different environments
-- [ ] Email sign in rate limits
-- [ ] calyoapp.com domain
-- [ ] Resend custom domain
-- [ ] Set-up OTP sign-in with custom email address
-
-- [ ] Reanimated error on onboarding screen
-- [ ] Email sign-in
-- [ ] Onboarding data after email sign-in
-- [ ] Dismiss keyboard and blur input when tapping outside
-- [ ] Delete meal smooth
-- [ ] Prefetch
-- [ ] Optimistic updates
-- [ ] Cropped circular progress
-- [ ] Streak 0 when first loading
-- [ ] Meal ingredients inside meal?
-- [ ] getFoodByIdentity argument validator
-- [ ] Parsing convex schemas
-- [ ] Onboarding creating plan
-- [ ] Onboarding create account
-- [ ] Onboarding pickers
-- [ ] Onboarding pickers unit change
-- [ ] Onboarding target weight kg cropped
-- [ ] Onboarding animation only in header on section change
-- [ ] Onboarding going back from a section header steps animation bug
-- [ ] Sign in with email
-- [ ] Fix text input filtering
-- [ ] Android 14 over scroll
-- [ ] Custom icon for Android and iOS https://docs.expo.dev/develop/user-interface/splash-screen-and-app-icon/#custom-configuration-tips-for-android-and-ios
-- [ ] Home screen scroll
-
-- [ ] Settings user card with name and profile picture
-- [ ] Fix results
-- [ ] Micro nutrients
-- [ ] Home no meals text
-- [ ] Screen Footer shadow only when not fully scrolled
-
-- [ ] Fix OTP resend
-
-- [ ] Otp disabled button before entering code
-- [ ] Email disabled button while input is empty
-- [ ] Sign in back button size
-
-- [ ] Optimize FlatList
-  - [ ] Wheel Picker
-  - [ ] Onboarding Height
-
-- [ ] Replace router animations with react-native-reanimated animations
-- [ ] Onboarding pre-render
-
-- [ ] Onboarding section overview animation
-- [ ] Onboarding scroll
-- [ ] Onboarding height smooth measurement system change
-- [ ] Onboarding weight smooth measurement system change
-
-- [ ] Eager loading all data?
-- [ ] Local first?
+<div style="display: flex; align-items: center">
+  <a href="https://apps.apple.com/app/id6752223421" style="display: inline-block; margin-right: 10px;">
+      <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="40">
+  </a>
+  <a href="https://play.google.com/store/apps/details?id=com.marcoshernanz.calyo" style="display: inline-block;">
+      <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="60">
+  </a>
+</div>

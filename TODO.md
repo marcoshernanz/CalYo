@@ -1,4 +1,5 @@
-- [ ] Implement OTP sign-in
+- [ ] Update meal item grams
+
 - [ ] Navigate to meal item after scanning barcode
 
 - [ ] Meal item grams loading state
