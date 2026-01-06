@@ -10,12 +10,12 @@ import GoogleLogo from "@/assets/svg/google-logo.svg";
 import getColor from "@/lib/ui/getColor";
 import { useState } from "react";
 import logError from "@/lib/utils/logError";
-import { MailIcon } from "lucide-react-native";
 
 type Props = {
   onEmailLogin?: () => void;
   onSuccess?: () => Promise<void>;
   disabled?: boolean;
+  shouldRedirect?: boolean;
 };
 
 const redirectTo = makeRedirectUri();
@@ -24,6 +24,7 @@ export default function SignInButtons({
   onEmailLogin,
   onSuccess,
   disabled = false,
+  shouldRedirect = true,
 }: Props) {
   const { signIn } = useAuthContext();
   const router = useRouter();
@@ -54,8 +55,10 @@ export default function SignInButtons({
         }
         await signIn(provider, { code });
         await onSuccess?.();
-        if (router.canDismiss()) router.dismissAll();
-        router.replace("/app");
+        if (shouldRedirect) {
+          if (router.canDismiss()) router.dismissAll();
+          router.replace("/app");
+        }
       }
     } catch (error) {
       logError("Authentication error", error);
@@ -64,10 +67,10 @@ export default function SignInButtons({
     }
   };
 
-  const handleEmailLogin = () => {
-    onEmailLogin?.();
-    router.navigate("/auth/sign-in");
-  };
+  // const handleEmailLogin = () => {
+  //   onEmailLogin?.();
+  //   router.navigate("/auth/sign-in");
+  // };
 
   return (
     <View style={styles.container}>
@@ -106,7 +109,7 @@ export default function SignInButtons({
           Continuar con Google
         </Text>
       </Button>
-      <Button
+      {/* <Button
         size="lg"
         variant="outline"
         style={styles.button}
@@ -117,7 +120,7 @@ export default function SignInButtons({
         <Text size="16" weight="500">
           Continuar con Email
         </Text>
-      </Button>
+      </Button> */}
     </View>
   );
 }

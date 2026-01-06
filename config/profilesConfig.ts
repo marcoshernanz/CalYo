@@ -16,6 +16,7 @@ export const profilesConfig: ProfilesConfig = {
       protein: 150,
       fat: 80,
     },
+    isPro: false,
     hasCompletedOnboarding: false,
   },
   defaultDataValues: {

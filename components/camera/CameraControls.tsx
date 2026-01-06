@@ -76,13 +76,13 @@ const styles = StyleSheet.create({
     width: 72,
     borderRadius: 999,
     borderWidth: 2,
-    borderColor: "#FFF",
+    borderColor: "#FFFFFF",
     backgroundColor: "rgba(0, 0, 0, 0.2)",
     padding: 4,
   },
   shutterInner: {
     flex: 1,
     borderRadius: 999,
-    backgroundColor: "#FFF",
+    backgroundColor: "#FFFFFF",
   },
 });

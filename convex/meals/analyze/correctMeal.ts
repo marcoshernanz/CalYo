@@ -19,6 +19,9 @@ export const correctMeal = action({
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Unauthorized");
 
+    const profile = await ctx.runQuery(api.profiles.getProfile.default);
+    if (!profile?.isPro) throw new Error("Pro subscription required");
+
     await rateLimiter.limit(ctx, "aiFeatures", { key: userId, throws: true });
 
     const result = await ctx.runQuery(api.meals.getMeal.default, { mealId });

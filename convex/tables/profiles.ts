@@ -10,6 +10,7 @@ export const profilesFields = {
     protein: v.number(),
     fat: v.number(),
   }),
+  isPro: v.optional(v.boolean()),
   hasCompletedOnboarding: v.boolean(),
   data: v.optional(
     v.object({

@@ -5,16 +5,11 @@ import {
   isOnboardingDataComplete,
   useOnboardingContext,
 } from "@/context/OnboardingContext";
-import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { useState, useCallback } from "react";
 import sleep from "@/lib/utils/sleep";
 
 export default function OnboardingCreateAccount() {
-  const { data, targets } = useOnboardingContext();
-  const completeOnboarding = useMutation(
-    api.profiles.completeOnboarding.default
-  );
+  const { data } = useOnboardingContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isDataComplete = isOnboardingDataComplete(data);
 
@@ -23,11 +18,10 @@ export default function OnboardingCreateAccount() {
     setIsSubmitting(true);
     try {
       await sleep(1000);
-      await completeOnboarding({ data, targets });
     } finally {
       setIsSubmitting(false);
     }
-  }, [completeOnboarding, data, isSubmitting, targets]);
+  }, [data, isSubmitting]);
 
   return (
     <OnboardingStep title="Crea tu cuenta">
@@ -36,6 +30,7 @@ export default function OnboardingCreateAccount() {
           <SignInButtons
             disabled={!isDataComplete || isSubmitting}
             onSuccess={handleOnboardingComplete}
+            shouldRedirect={false}
           />
         </View>
       </View>

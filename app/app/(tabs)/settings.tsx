@@ -4,16 +4,35 @@ import AlertDialog from "@/components/ui/AlertDialog";
 import SafeArea from "@/components/ui/SafeArea";
 import Title from "@/components/ui/Title";
 import { useAuthContext } from "@/context/AuthContext";
+import { useSubscriptionContext } from "@/context/SubscriptionContext";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { Link, useRouter } from "expo-router";
-import { LogOutIcon, PieChartIcon, UserXIcon } from "lucide-react-native";
-import { ScrollView, StyleSheet } from "react-native";
+import {
+  LogOutIcon,
+  PieChartIcon,
+  UserXIcon,
+  CrownIcon,
+  CreditCardIcon,
+  RefreshCwIcon,
+} from "lucide-react-native";
+import { Alert, ScrollView, StyleSheet } from "react-native";
 
 export default function SettingsScreen() {
   const { signOut } = useAuthContext();
+  const { isPro, navigateToPaywall, presentCustomerCenter, restorePurchases } =
+    useSubscriptionContext();
   const deleteUser = useMutation(api.users.deleteUser.default);
   const router = useRouter();
+
+  const handleRestorePurchases = async () => {
+    const customerInfo = await restorePurchases();
+    if (customerInfo) {
+      Alert.alert("Éxito", "Compras restauradas correctamente");
+    } else {
+      Alert.alert("Error", "Error al restaurar las compras");
+    }
+  };
 
   const handleDeleteAccount = async () => {
     await deleteUser();
@@ -39,6 +58,25 @@ export default function SettingsScreen() {
           <Link href="/app/(settings)/adjustMacroTargets" asChild>
             <SettingsItem text="Ajustar Macronutrientes" Icon={PieChartIcon} />
           </Link>
+        </SettingsGroup>
+        <SettingsGroup>
+          {!isPro && (
+            <SettingsItem
+              text="Hazte Pro"
+              Icon={CrownIcon}
+              onPress={navigateToPaywall}
+            />
+          )}
+          <SettingsItem
+            text="Gestionar suscripción"
+            Icon={CreditCardIcon}
+            onPress={() => void presentCustomerCenter()}
+          />
+          <SettingsItem
+            text="Restaurar compras"
+            Icon={RefreshCwIcon}
+            onPress={() => void handleRestorePurchases()}
+          />
         </SettingsGroup>
         <SettingsGroup>
           <AlertDialog

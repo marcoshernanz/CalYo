@@ -21,7 +21,7 @@ const getAppName = () => {
 
 export default (): ExpoConfig => ({
   name: getAppName(),
-  slug: "CalYo",
+  slug: "Calyo",
   version: "1.1.0",
   orientation: "portrait",
   icon: "./assets/images/icon.png",

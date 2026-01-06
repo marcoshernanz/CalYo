@@ -9,8 +9,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "APP_VARIANT": "development",
-        "EXPO_PUBLIC_CONVEX_URL": "https://deafening-dinosaur-607.convex.cloud"
+        "APP_VARIANT": "development"
       },
       "ios": {
         "simulator": true
@@ -20,8 +19,7 @@
       "environment": "production",
       "autoIncrement": true,
       "env": {
-        "APP_VARIANT": "production",
-        "EXPO_PUBLIC_CONVEX_URL": "https://honorable-emu-819.convex.cloud"
+        "APP_VARIANT": "production"
       }
     }
   },

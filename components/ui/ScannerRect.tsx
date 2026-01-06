@@ -10,7 +10,7 @@ type Props = {
 export default function ScannerRect({
   size = 56,
   borderRadius = 16,
-  borderColor = "#FFF",
+  borderColor = "#FFFFFF",
   borderWidth = 5,
 }: Props) {
   const cornerStyle: ViewStyle = {
