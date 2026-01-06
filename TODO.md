@@ -1,5 +1,3 @@
-- [ ] Google Play Store RevenueCat server notifications
-- [ ] App Store RevenueCat server notifications
 - [ ] Test app store and play store subscriptions
 - [ ] RevenueCat checklist https://www.revenuecat.com/docs/test-and-launch/launch-checklist
 - [ ] 15% fee
