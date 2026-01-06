@@ -1,7 +1,3 @@
-- [ ] Test app store and play store subscriptions
-- [ ] RevenueCat checklist https://www.revenuecat.com/docs/test-and-launch/launch-checklist
-- [ ] 15% fee
-
 - [ ] Implement OTP sign-in
 - [ ] Navigate to meal item after scanning barcode
 
