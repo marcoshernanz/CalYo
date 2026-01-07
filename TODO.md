@@ -1,5 +1,5 @@
-- [ ] Update meal item grams
-
+- [ ] Manage subscription
+- [ ] Implement OTP sign-in
 - [ ] Navigate to meal item after scanning barcode
 
 - [ ] Meal item grams loading state
