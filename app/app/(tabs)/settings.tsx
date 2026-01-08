@@ -20,7 +20,7 @@ import { Alert, ScrollView, StyleSheet } from "react-native";
 
 export default function SettingsScreen() {
   const { signOut } = useAuthContext();
-  const { isPro, navigateToPaywall, presentCustomerCenter, restorePurchases } =
+  const { isPro, navigateToPaywall, manageSubscription, restorePurchases } =
     useSubscriptionContext();
   const deleteUser = useMutation(api.users.deleteUser.default);
   const router = useRouter();
@@ -70,7 +70,7 @@ export default function SettingsScreen() {
           <SettingsItem
             text="Gestionar suscripción"
             Icon={CreditCardIcon}
-            onPress={() => void presentCustomerCenter()}
+            onPress={() => void manageSubscription()}
           />
           <SettingsItem
             text="Restaurar compras"

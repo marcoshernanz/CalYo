@@ -1,18 +1,18 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Platform } from "react-native";
+import { Linking, Platform } from "react-native";
 import Purchases, { CustomerInfo, LOG_LEVEL } from "react-native-purchases";
-import RevenueCatUI from "react-native-purchases-ui";
 import { revenueCatConfig } from "@/config/revenueCatConfig";
 import { useRouter } from "expo-router";
 import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import Constants from "expo-constants";
 
 type SubscriptionContextType = {
   isPro: boolean;
   customerInfo: CustomerInfo | null;
   isLoading: boolean;
   navigateToPaywall: () => void;
-  presentCustomerCenter: () => Promise<void>;
+  manageSubscription: () => Promise<void>;
   restorePurchases: () => Promise<CustomerInfo | null>;
 };
 
@@ -105,12 +105,17 @@ export function SubscriptionProvider({
     router.push("/app/paywall");
   };
 
-  const presentCustomerCenter = async () => {
+  const manageSubscription = async () => {
     if (!isConfigured) return;
-    try {
-      await RevenueCatUI.presentCustomerCenter();
-    } catch (e) {
-      console.error("Present customer center error:", e);
+    if (Platform.OS === "ios") {
+      await Linking.openURL("https://apps.apple.com/account/subscriptions");
+    } else {
+      const packageName =
+        Constants.expoConfig?.android?.package ?? "com.marcoshernanz.calyo";
+
+      await Linking.openURL(
+        `https://play.google.com/store/account/subscriptions?package=${packageName}`
+      );
     }
   };
 
@@ -134,7 +139,7 @@ export function SubscriptionProvider({
         customerInfo,
         isLoading,
         navigateToPaywall,
-        presentCustomerCenter,
+        manageSubscription,
         restorePurchases,
       }}
     >
