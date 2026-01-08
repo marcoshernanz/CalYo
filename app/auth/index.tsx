@@ -33,7 +33,7 @@ export default function AuthScreen() {
         Contar calorías de forma sencilla
       </Title>
       <View style={styles.carouselContainer}>
-        <Carousel>
+        <Carousel showArrows>
           {carouselImages.map((source, index) => (
             <View key={`carousel-image-${index}`} style={styles.imageContainer}>
               <Image
@@ -79,7 +79,7 @@ export default function AuthScreen() {
 const styles = StyleSheet.create({
   carouselContainer: {
     flex: 1,
-    paddingVertical: 20,
+    paddingVertical: 30,
     alignItems: "center",
     justifyContent: "center",
   },
