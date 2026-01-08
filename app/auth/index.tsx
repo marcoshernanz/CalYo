@@ -2,7 +2,12 @@ import Button from "@/components/ui/Button";
 import SafeArea from "@/components/ui/SafeArea";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
-import { Image, StyleSheet, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  View,
+  type ImageSourcePropType,
+} from "react-native";
 import { useRouter } from "expo-router";
 import BottomSheet from "@/components/ui/BottomSheet";
 import SignInButtons from "@/components/auth/SignInButtons";
@@ -12,10 +17,10 @@ import getShadow from "@/lib/ui/getShadow";
 import Carousel from "@/components/ui/Carousel";
 import getColor from "@/lib/ui/getColor";
 
-const carouselImages = [
-  require("@/assets/images/screenshot-1.png"),
-  require("@/assets/images/screenshot-2.png"),
-  require("@/assets/images/screenshot-3.png"),
+const carouselImages: readonly ImageSourcePropType[] = [
+  require("@/assets/images/screenshot-1.png") as ImageSourcePropType,
+  require("@/assets/images/screenshot-2.png") as ImageSourcePropType,
+  require("@/assets/images/screenshot-3.png") as ImageSourcePropType,
 ];
 
 export default function AuthScreen() {
