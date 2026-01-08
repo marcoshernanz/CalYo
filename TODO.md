@@ -1,5 +1,5 @@
-- [ ] Auth screen video / image
-- [ ] Manage subscription with link to App Store or Play Store
+- [ ] Auth screen carousel
+
 - [ ] Congrats screen after buying subscription
 - [ ] Implement OTP sign-in
 - [ ] Navigate to meal item after scanning barcode
