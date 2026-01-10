@@ -1,6 +1,5 @@
 - [ ] Auth screen carousel
 - [ ] Carousel auto scroll
-- [ ] Carousel infinite
 
 - [ ] Congrats screen after buying subscription
 - [ ] Implement OTP sign-in

@@ -16,7 +16,13 @@ import Animated, {
   type SharedValue,
 } from "react-native-reanimated";
 import getColor from "@/lib/ui/getColor";
-import React, { useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Button from "./Button";
 import getShadow from "@/lib/ui/getShadow";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react-native";
@@ -29,6 +35,7 @@ type Props = {
   style?: ViewStyle;
   showArrows?: boolean;
   showIndicators?: boolean;
+  infinite?: boolean;
 };
 
 export default function Carousel({
@@ -36,13 +43,32 @@ export default function Carousel({
   style,
   showArrows = false,
   showIndicators = false,
+  infinite = false,
 }: Props) {
   const dimensions = useWindowDimensions();
   const scrollX = useSharedValue(0);
   const scrollViewRef = useRef<Animated.ScrollView>(null);
-  const numChildren = React.Children.count(children);
+  const childrenArray = useMemo(
+    () => React.Children.toArray(children),
+    [children]
+  );
+  const numChildren = childrenArray.length;
+  const isInfinite = infinite && numChildren > 1;
+  const pages = useMemo(() => {
+    if (!isInfinite) return childrenArray;
+
+    const first = childrenArray[0];
+    const last = childrenArray[numChildren - 1];
+    return [last, ...childrenArray, first];
+  }, [childrenArray, isInfinite, numChildren]);
+  const pageCount = pages.length;
   const insets = useSafeArea();
   const [activeIndex, setActiveIndex] = useState(0);
+  const activeIndexRef = useRef(activeIndex);
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
 
   const onScroll = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -50,23 +76,105 @@ export default function Carousel({
     },
   });
 
+  const clampIndex = useCallback(
+    (index: number) => Math.min(Math.max(index, 0), numChildren - 1),
+    [numChildren]
+  );
+
+  const scrollToPageIndex = useCallback(
+    (pageIndex: number, animated: boolean) => {
+      scrollViewRef.current?.scrollTo({
+        x: pageIndex * dimensions.width,
+        animated,
+      });
+    },
+    [dimensions.width]
+  );
+
   const scrollToIndex = (index: number) => {
-    const clampedIndex = Math.min(Math.max(index, 0), numChildren - 1);
+    if (numChildren <= 0) return;
+
+    const clampedIndex = clampIndex(index);
     setActiveIndex(clampedIndex);
-    scrollViewRef.current?.scrollTo({
-      x: clampedIndex * dimensions.width,
-      animated: true,
-    });
+
+    const pageIndex = isInfinite ? clampedIndex + 1 : clampedIndex;
+    scrollToPageIndex(pageIndex, true);
+  };
+
+  const scrollToPrev = () => {
+    if (numChildren <= 1) return;
+
+    if (!isInfinite) {
+      scrollToIndex(activeIndex - 1);
+      return;
+    }
+
+    if (activeIndex <= 0) {
+      setActiveIndex(numChildren - 1);
+      scrollToPageIndex(0, true);
+      return;
+    }
+
+    scrollToIndex(activeIndex - 1);
+  };
+
+  const scrollToNext = () => {
+    if (numChildren <= 1) return;
+
+    if (!isInfinite) {
+      scrollToIndex(activeIndex + 1);
+      return;
+    }
+
+    if (activeIndex >= numChildren - 1) {
+      setActiveIndex(0);
+      scrollToPageIndex(numChildren + 1, true);
+      return;
+    }
+
+    scrollToIndex(activeIndex + 1);
   };
 
   const handleMomentumScrollEnd = (
     event: NativeSyntheticEvent<NativeScrollEvent>
   ) => {
-    const nextIndex = Math.round(
+    const pageIndex = Math.round(
       event.nativeEvent.contentOffset.x / dimensions.width
     );
-    setActiveIndex(Math.min(Math.max(nextIndex, 0), numChildren - 1));
+
+    if (!isInfinite) {
+      setActiveIndex(clampIndex(pageIndex));
+      return;
+    }
+
+    if (pageIndex === 0) {
+      setActiveIndex(numChildren - 1);
+      scrollToPageIndex(numChildren, false);
+      return;
+    }
+
+    if (pageIndex === numChildren + 1) {
+      setActiveIndex(0);
+      scrollToPageIndex(1, false);
+      return;
+    }
+
+    setActiveIndex(clampIndex(pageIndex - 1));
   };
+
+  useEffect(() => {
+    if (numChildren <= 0) return;
+
+    const currentIndex = clampIndex(activeIndexRef.current);
+    const targetPageIndex = isInfinite ? currentIndex + 1 : currentIndex;
+    scrollToPageIndex(targetPageIndex, false);
+  }, [
+    clampIndex,
+    dimensions.width,
+    isInfinite,
+    numChildren,
+    scrollToPageIndex,
+  ]);
 
   return (
     <View style={[styles.container, style]}>
@@ -77,12 +185,19 @@ export default function Carousel({
           onScroll={onScroll}
           onMomentumScrollEnd={handleMomentumScrollEnd}
           style={[{ width: dimensions.width }, styles.scrollView]}
-          contentContainerStyle={{ width: dimensions.width * numChildren }}
+          contentOffset={
+            isInfinite ? { x: dimensions.width, y: 0 } : { x: 0, y: 0 }
+          }
+          contentContainerStyle={{ width: dimensions.width * pageCount }}
           showsHorizontalScrollIndicator={false}
           overScrollMode={Platform.OS === "android" ? "never" : "auto"}
           pagingEnabled
         >
-          {children}
+          {pages.map((child, pageIndex) => (
+            <React.Fragment key={`carousel-page-${pageIndex}`}>
+              {child}
+            </React.Fragment>
+          ))}
         </Animated.ScrollView>
         {showArrows && numChildren > 1 && (
           <View pointerEvents="box-none" style={StyleSheet.absoluteFillObject}>
@@ -95,10 +210,10 @@ export default function Carousel({
                 size="sm"
                 style={styles.arrowButton}
                 hitSlop={10}
-                disabled={activeIndex <= 0}
+                disabled={!isInfinite && activeIndex <= 0}
                 accessibilityLabel="Previous"
                 onPress={() => {
-                  scrollToIndex(activeIndex - 1);
+                  scrollToPrev();
                 }}
               >
                 <ChevronLeftIcon size={20} color={getColor("foreground")} />
@@ -113,10 +228,10 @@ export default function Carousel({
                 size="sm"
                 style={styles.arrowButton}
                 hitSlop={10}
-                disabled={activeIndex >= numChildren - 1}
+                disabled={!isInfinite && activeIndex >= numChildren - 1}
                 accessibilityLabel="Next"
                 onPress={() => {
-                  scrollToIndex(activeIndex + 1);
+                  scrollToNext();
                 }}
               >
                 <ChevronRightIcon size={20} color={getColor("foreground")} />
@@ -132,6 +247,8 @@ export default function Carousel({
               key={index}
               index={index}
               scrollX={scrollX}
+              activeIndex={activeIndex}
+              useActiveIndex={isInfinite}
               onPress={() => {
                 scrollToIndex(index);
               }}
@@ -146,10 +263,18 @@ export default function Carousel({
 type DotProps = {
   index: number;
   scrollX: SharedValue<number>;
+  activeIndex?: number;
+  useActiveIndex?: boolean;
   onPress: () => void;
 };
 
-function CarouselDot({ index, scrollX, onPress }: DotProps) {
+function CarouselDot({
+  index,
+  scrollX,
+  activeIndex,
+  useActiveIndex,
+  onPress,
+}: DotProps) {
   const activeColor = getColor("mutedForeground");
   const inactiveColor = getColor("secondary");
 
@@ -162,6 +287,22 @@ function CarouselDot({ index, scrollX, onPress }: DotProps) {
       ),
     };
   });
+
+  if (useActiveIndex) {
+    return (
+      <Pressable
+        style={[
+          styles.indicatorDot,
+          {
+            backgroundColor:
+              activeIndex === index ? activeColor : inactiveColor,
+          },
+        ]}
+        hitSlop={3}
+        onPress={onPress}
+      />
+    );
+  }
 
   return (
     <AnimatedPressable
