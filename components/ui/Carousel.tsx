@@ -15,10 +15,11 @@ import Animated, {
   type SharedValue,
 } from "react-native-reanimated";
 import getColor from "@/lib/ui/getColor";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Button from "./Button";
 import getShadow from "@/lib/ui/getShadow";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react-native";
+import { useSafeArea } from "./SafeArea";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -33,7 +34,8 @@ export default function Carousel({ children, style, showArrows }: Props) {
   const scrollX = useSharedValue(0);
   const scrollViewRef = useRef<Animated.ScrollView>(null);
   const numChildren = React.Children.count(children);
-  const [activeIndex, setActiveIndex] = React.useState(0);
+  const insets = useSafeArea();
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const onScroll = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -79,7 +81,7 @@ export default function Carousel({ children, style, showArrows }: Props) {
             <Button
               variant="secondary"
               size="sm"
-              style={[styles.arrowButton, styles.arrowLeft]}
+              style={[styles.arrowButton, { left: insets.left }]}
               hitSlop={10}
               disabled={activeIndex <= 0}
               accessibilityLabel="Previous"
@@ -87,12 +89,12 @@ export default function Carousel({ children, style, showArrows }: Props) {
                 scrollToIndex(activeIndex - 1);
               }}
             >
-              <ChevronLeftIcon size={20} />
+              <ChevronLeftIcon size={20} color={getColor("foreground")} />
             </Button>
             <Button
               variant="secondary"
               size="sm"
-              style={[styles.arrowButton, styles.arrowRight]}
+              style={[styles.arrowButton, { right: insets.right }]}
               hitSlop={10}
               disabled={activeIndex >= numChildren - 1}
               accessibilityLabel="Next"
@@ -100,7 +102,7 @@ export default function Carousel({ children, style, showArrows }: Props) {
                 scrollToIndex(activeIndex + 1);
               }}
             >
-              <ChevronRightIcon size={20} />
+              <ChevronRightIcon size={20} color={getColor("foreground")} />
             </Button>
           </View>
         ) : null}
@@ -167,12 +169,6 @@ const styles = StyleSheet.create({
     transform: [{ translateY: "-50%" }],
     aspectRatio: 1,
     ...getShadow("md"),
-  },
-  arrowLeft: {
-    left: 12,
-  },
-  arrowRight: {
-    right: 12,
   },
   indicatorContainer: {
     flexDirection: "row",

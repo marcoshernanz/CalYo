@@ -2,7 +2,6 @@
 - [ ] Check carousel dots
 - [ ] Option to remove carousel dots
 - [ ] Carousel buttons translateY
-- [ ] Carousel buttons left and right same as SafeArea padding
 
 - [ ] Congrats screen after buying subscription
 - [ ] Implement OTP sign-in
