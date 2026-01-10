@@ -6,6 +6,7 @@ import {
   ViewStyle,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Platform,
 } from "react-native";
 import Animated, {
   interpolateColor,
@@ -78,6 +79,7 @@ export default function Carousel({
           style={[{ width: dimensions.width }, styles.scrollView]}
           contentContainerStyle={{ width: dimensions.width * numChildren }}
           showsHorizontalScrollIndicator={false}
+          overScrollMode={Platform.OS === "android" ? "never" : "auto"}
           pagingEnabled
         >
           {children}

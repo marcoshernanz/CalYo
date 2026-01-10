@@ -79,7 +79,7 @@ export default function AuthScreen() {
 const styles = StyleSheet.create({
   carouselContainer: {
     flex: 1,
-    paddingVertical: 30,
+    paddingVertical: 24,
     alignItems: "center",
     justifyContent: "center",
   },
