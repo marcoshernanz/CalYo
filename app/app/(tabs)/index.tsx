@@ -55,7 +55,7 @@ export default function HomeScreen() {
           setSelectedDay={setSelectedDay}
           weekTotalMacros={weekTotalMacros}
         />
-        <Carousel>
+        <Carousel showIndicators>
           <HomeMacroSummary totalMacros={dayTotals.macros} />
           <HomeMicroSummary
             totalMicros={dayTotals.micros}

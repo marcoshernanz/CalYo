@@ -109,7 +109,7 @@ export default function Meal({
         <SafeArea edges={["left", "right"]} style={{ flex: 0 }}>
           <ScreenMainTitle title={name} loading={loading} />
         </SafeArea>
-        <Carousel style={{ paddingBottom: 32 }}>
+        <Carousel showIndicators style={{ paddingBottom: 32 }}>
           <MealMacros macros={totalMacros} loading={loading} />
           <MealMicros
             source="meal"

@@ -2,12 +2,26 @@ import Button from "@/components/ui/Button";
 import SafeArea from "@/components/ui/SafeArea";
 import Text from "@/components/ui/Text";
 import Title from "@/components/ui/Title";
-import { StyleSheet, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  View,
+  type ImageSourcePropType,
+} from "react-native";
 import { useRouter } from "expo-router";
 import BottomSheet from "@/components/ui/BottomSheet";
 import SignInButtons from "@/components/auth/SignInButtons";
 import { useRef } from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import getShadow from "@/lib/ui/getShadow";
+import Carousel from "@/components/ui/Carousel";
+import getColor from "@/lib/ui/getColor";
+
+const carouselImages: readonly ImageSourcePropType[] = [
+  require("@/assets/images/screenshot-1.png") as ImageSourcePropType,
+  require("@/assets/images/screenshot-2.png") as ImageSourcePropType,
+  require("@/assets/images/screenshot-3.png") as ImageSourcePropType,
+];
 
 export default function AuthScreen() {
   const router = useRouter();
@@ -18,8 +32,18 @@ export default function AuthScreen() {
       <Title style={{ textAlign: "center" }}>
         Contar calorías de forma sencilla
       </Title>
-      <View style={styles.mainContainer}>
-        <View style={styles.image}></View>
+      <View style={styles.carouselContainer}>
+        <Carousel showArrows infinite autoScroll>
+          {carouselImages.map((source, index) => (
+            <View key={`carousel-image-${index}`} style={styles.imageContainer}>
+              <Image
+                source={source}
+                style={styles.image}
+                resizeMode="contain"
+              />
+            </View>
+          ))}
+        </Carousel>
       </View>
       <View style={styles.footerContainer}>
         <Button
@@ -53,15 +77,25 @@ export default function AuthScreen() {
 }
 
 const styles = StyleSheet.create({
-  mainContainer: {
+  carouselContainer: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 40,
+    paddingVertical: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  imageContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
   },
   image: {
-    flex: 1,
-    backgroundColor: "red",
+    height: "100%",
+    aspectRatio: 9 / 19.5,
+    maxWidth: "100%",
     borderRadius: 20,
+    borderColor: getColor("secondary"),
+    borderWidth: 1,
+    ...getShadow("lg"),
   },
   footerContainer: {
     gap: 10,
