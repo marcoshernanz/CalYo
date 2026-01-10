@@ -76,36 +76,46 @@ export default function Carousel({ children, style, showArrows }: Props) {
         >
           {children}
         </Animated.ScrollView>
-        {showArrows && numChildren > 1 ? (
+        {showArrows && numChildren > 1 && (
           <View pointerEvents="box-none" style={StyleSheet.absoluteFillObject}>
-            <Button
-              variant="secondary"
-              size="sm"
-              style={[styles.arrowButton, { left: insets.left }]}
-              hitSlop={10}
-              disabled={activeIndex <= 0}
-              accessibilityLabel="Previous"
-              onPress={() => {
-                scrollToIndex(activeIndex - 1);
-              }}
+            <View
+              pointerEvents="box-none"
+              style={[styles.arrowContainer, { left: insets.left }]}
             >
-              <ChevronLeftIcon size={20} color={getColor("foreground")} />
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              style={[styles.arrowButton, { right: insets.right }]}
-              hitSlop={10}
-              disabled={activeIndex >= numChildren - 1}
-              accessibilityLabel="Next"
-              onPress={() => {
-                scrollToIndex(activeIndex + 1);
-              }}
+              <Button
+                variant="secondary"
+                size="sm"
+                style={styles.arrowButton}
+                hitSlop={10}
+                disabled={activeIndex <= 0}
+                accessibilityLabel="Previous"
+                onPress={() => {
+                  scrollToIndex(activeIndex - 1);
+                }}
+              >
+                <ChevronLeftIcon size={20} color={getColor("foreground")} />
+              </Button>
+            </View>
+            <View
+              pointerEvents="box-none"
+              style={[styles.arrowContainer, { right: insets.right }]}
             >
-              <ChevronRightIcon size={20} color={getColor("foreground")} />
-            </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                style={styles.arrowButton}
+                hitSlop={10}
+                disabled={activeIndex >= numChildren - 1}
+                accessibilityLabel="Next"
+                onPress={() => {
+                  scrollToIndex(activeIndex + 1);
+                }}
+              >
+                <ChevronRightIcon size={20} color={getColor("foreground")} />
+              </Button>
+            </View>
           </View>
-        ) : null}
+        )}
       </View>
       <View style={styles.indicatorContainer}>
         {Array.from({ length: numChildren }).map((_, index) => (
@@ -163,10 +173,13 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     overflow: "visible",
   },
-  arrowButton: {
+  arrowContainer: {
     position: "absolute",
-    top: "50%",
-    transform: [{ translateY: "-50%" }],
+    top: 0,
+    bottom: 0,
+    justifyContent: "center",
+  },
+  arrowButton: {
     aspectRatio: 1,
     ...getShadow("md"),
   },
