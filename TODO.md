@@ -1,6 +1,3 @@
-- [ ] Auth screen carousel
-- [ ] Carousel auto scroll
-
 - [ ] Congrats screen after buying subscription
 - [ ] Implement OTP sign-in
 - [ ] Navigate to meal item after scanning barcode

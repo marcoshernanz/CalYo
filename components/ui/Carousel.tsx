@@ -36,6 +36,8 @@ type Props = {
   showArrows?: boolean;
   showIndicators?: boolean;
   infinite?: boolean;
+  autoScroll?: boolean;
+  autoScrollIntervalMs?: number;
 };
 
 export default function Carousel({
@@ -44,6 +46,8 @@ export default function Carousel({
   showArrows = false,
   showIndicators = false,
   infinite = false,
+  autoScroll = false,
+  autoScrollIntervalMs = 3000,
 }: Props) {
   const dimensions = useWindowDimensions();
   const scrollX = useSharedValue(0);
@@ -65,6 +69,10 @@ export default function Carousel({
   const insets = useSafeArea();
   const [activeIndex, setActiveIndex] = useState(0);
   const activeIndexRef = useRef(activeIndex);
+  const isDraggingRef = useRef(false);
+  const autoScrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
 
   useEffect(() => {
     activeIndexRef.current = activeIndex;
@@ -91,49 +99,79 @@ export default function Carousel({
     [dimensions.width]
   );
 
-  const scrollToIndex = (index: number) => {
-    if (numChildren <= 0) return;
+  const scrollToIndex = useCallback(
+    (index: number) => {
+      if (numChildren <= 0) return;
 
-    const clampedIndex = clampIndex(index);
-    setActiveIndex(clampedIndex);
+      const clampedIndex = clampIndex(index);
+      setActiveIndex(clampedIndex);
 
-    const pageIndex = isInfinite ? clampedIndex + 1 : clampedIndex;
-    scrollToPageIndex(pageIndex, true);
-  };
+      const pageIndex = isInfinite ? clampedIndex + 1 : clampedIndex;
+      scrollToPageIndex(pageIndex, true);
+    },
+    [clampIndex, isInfinite, numChildren, scrollToPageIndex]
+  );
 
-  const scrollToPrev = () => {
+  const scrollToPrev = useCallback(() => {
     if (numChildren <= 1) return;
 
     if (!isInfinite) {
-      scrollToIndex(activeIndex - 1);
+      scrollToIndex(activeIndexRef.current - 1);
       return;
     }
 
-    if (activeIndex <= 0) {
+    if (activeIndexRef.current <= 0) {
       setActiveIndex(numChildren - 1);
       scrollToPageIndex(0, true);
       return;
     }
 
-    scrollToIndex(activeIndex - 1);
-  };
+    scrollToIndex(activeIndexRef.current - 1);
+  }, [isInfinite, numChildren, scrollToIndex, scrollToPageIndex]);
 
-  const scrollToNext = () => {
+  const scrollToNext = useCallback(() => {
     if (numChildren <= 1) return;
 
     if (!isInfinite) {
-      scrollToIndex(activeIndex + 1);
+      scrollToIndex(activeIndexRef.current + 1);
       return;
     }
 
-    if (activeIndex >= numChildren - 1) {
+    if (activeIndexRef.current >= numChildren - 1) {
       setActiveIndex(0);
       scrollToPageIndex(numChildren + 1, true);
       return;
     }
 
-    scrollToIndex(activeIndex + 1);
-  };
+    scrollToIndex(activeIndexRef.current + 1);
+  }, [isInfinite, numChildren, scrollToIndex, scrollToPageIndex]);
+
+  const clearAutoScrollTimeout = useCallback(() => {
+    if (autoScrollTimeoutRef.current) {
+      clearTimeout(autoScrollTimeoutRef.current);
+      autoScrollTimeoutRef.current = null;
+    }
+  }, []);
+
+  const scheduleAutoScroll = useCallback(() => {
+    clearAutoScrollTimeout();
+    if (!autoScroll || numChildren <= 1) return;
+
+    autoScrollTimeoutRef.current = setTimeout(() => {
+      if (isDraggingRef.current) {
+        scheduleAutoScroll();
+        return;
+      }
+
+      scrollToNext();
+    }, autoScrollIntervalMs);
+  }, [
+    autoScroll,
+    autoScrollIntervalMs,
+    clearAutoScrollTimeout,
+    numChildren,
+    scrollToNext,
+  ]);
 
   const handleMomentumScrollEnd = (
     event: NativeSyntheticEvent<NativeScrollEvent>
@@ -144,23 +182,44 @@ export default function Carousel({
 
     if (!isInfinite) {
       setActiveIndex(clampIndex(pageIndex));
+      scheduleAutoScroll();
       return;
     }
 
     if (pageIndex === 0) {
       setActiveIndex(numChildren - 1);
       scrollToPageIndex(numChildren, false);
+      scheduleAutoScroll();
       return;
     }
 
     if (pageIndex === numChildren + 1) {
       setActiveIndex(0);
       scrollToPageIndex(1, false);
+      scheduleAutoScroll();
       return;
     }
 
     setActiveIndex(clampIndex(pageIndex - 1));
+    scheduleAutoScroll();
   };
+
+  const handleScrollBeginDrag = () => {
+    isDraggingRef.current = true;
+    clearAutoScrollTimeout();
+  };
+
+  const handleScrollEndDrag = () => {
+    isDraggingRef.current = false;
+    scheduleAutoScroll();
+  };
+
+  useEffect(() => {
+    scheduleAutoScroll();
+    return () => {
+      clearAutoScrollTimeout();
+    };
+  }, [clearAutoScrollTimeout, scheduleAutoScroll]);
 
   useEffect(() => {
     if (numChildren <= 0) return;
@@ -183,6 +242,8 @@ export default function Carousel({
           horizontal
           ref={scrollViewRef}
           onScroll={onScroll}
+          onScrollBeginDrag={handleScrollBeginDrag}
+          onScrollEndDrag={handleScrollEndDrag}
           onMomentumScrollEnd={handleMomentumScrollEnd}
           style={[{ width: dimensions.width }, styles.scrollView]}
           contentOffset={
