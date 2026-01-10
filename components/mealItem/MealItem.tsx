@@ -105,7 +105,7 @@ export default function MealItem({
             />
           </View>
         </SafeArea>
-        <Carousel style={styles.carousel}>
+        <Carousel showIndicators style={styles.carousel}>
           <MealMacros macros={totalMacros} loading={loading} />
           <MealMicros
             source="mealItem"

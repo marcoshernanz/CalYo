@@ -2,8 +2,6 @@
 - [ ] Carousel auto scroll
 - [ ] Carousel infinite
 - [ ] Carousel shadow
-- [ ] Check carousel dots
-- [ ] Option to remove carousel dots
 
 - [ ] Congrats screen after buying subscription
 - [ ] Implement OTP sign-in

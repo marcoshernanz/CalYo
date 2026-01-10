@@ -27,9 +27,15 @@ type Props = {
   children: React.ReactNode;
   style?: ViewStyle;
   showArrows?: boolean;
+  showIndicators?: boolean;
 };
 
-export default function Carousel({ children, style, showArrows }: Props) {
+export default function Carousel({
+  children,
+  style,
+  showArrows = false,
+  showIndicators = false,
+}: Props) {
   const dimensions = useWindowDimensions();
   const scrollX = useSharedValue(0);
   const scrollViewRef = useRef<Animated.ScrollView>(null);
@@ -117,18 +123,20 @@ export default function Carousel({ children, style, showArrows }: Props) {
           </View>
         )}
       </View>
-      <View style={styles.indicatorContainer}>
-        {Array.from({ length: numChildren }).map((_, index) => (
-          <CarouselDot
-            key={index}
-            index={index}
-            scrollX={scrollX}
-            onPress={() => {
-              scrollToIndex(index);
-            }}
-          />
-        ))}
-      </View>
+      {showIndicators && numChildren > 1 && (
+        <View style={styles.indicatorContainer}>
+          {Array.from({ length: numChildren }).map((_, index) => (
+            <CarouselDot
+              key={index}
+              index={index}
+              scrollX={scrollX}
+              onPress={() => {
+                scrollToIndex(index);
+              }}
+            />
+          ))}
+        </View>
+      )}
     </View>
   );
 }
