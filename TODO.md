@@ -1,6 +1,3 @@
-- [ ] Fix iOS paywall
-- [ ] Test iOS paywall
-
 - [ ] Congrats screen after buying subscription
 - [ ] Implement OTP sign-in
 - [ ] Navigate to meal item after scanning barcode
