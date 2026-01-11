@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, Linking } from "react-native";
 import Purchases, {
   PACKAGE_TYPE,
   PurchasesOffering,
@@ -253,6 +253,40 @@ export default function Paywall({ type = "back", onClose, onSuccess }: Props) {
               );
             })}
           </Card>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            paddingTop: 24,
+            marginTop: "auto",
+          }}
+        >
+          <Text
+            size="14"
+            style={{ textDecorationLine: "underline" }}
+            onPress={() =>
+              void Linking.openURL(
+                "https://docs.google.com/document/d/e/2PACX-1vTyNCLjuAHdtZmdZQpIfOolwZ2nE7pA5kKTH3jrszZEgkSzfJMMBXdawf7yva_GFIoMiJ9vS63IplTy/pub"
+              )
+            }
+          >
+            Privacy Policy
+          </Text>
+          <Text>&middot;</Text>
+          <Text
+            size="14"
+            style={{ textDecorationLine: "underline" }}
+            onPress={() =>
+              void Linking.openURL(
+                "https://docs.google.com/document/d/e/2PACX-1vR-UlE0mpZ5nD3DekvTdch6hxejnJ_wqBGYKb9Fwk5ObEK8vgHpxUjVXWuRUOD40qREZCvoTo6L3PlG/pub"
+              )
+            }
+          >
+            Terms of Use
+          </Text>
         </View>
       </ScreenMainScrollView>
 
