@@ -93,7 +93,7 @@ export default function Paywall({ type = "back", onClose, onSuccess }: Props) {
             setSelectedPackage(
               offerings.current.availablePackages[
                 offerings.current.availablePackages.length - 1
-              ]
+              ],
             );
           }
         }
@@ -269,7 +269,7 @@ export default function Paywall({ type = "back", onClose, onSuccess }: Props) {
             style={{ textDecorationLine: "underline" }}
             onPress={() =>
               void Linking.openURL(
-                "https://docs.google.com/document/d/e/2PACX-1vTyNCLjuAHdtZmdZQpIfOolwZ2nE7pA5kKTH3jrszZEgkSzfJMMBXdawf7yva_GFIoMiJ9vS63IplTy/pub"
+                "https://docs.google.com/document/d/e/2PACX-1vTyNCLjuAHdtZmdZQpIfOolwZ2nE7pA5kKTH3jrszZEgkSzfJMMBXdawf7yva_GFIoMiJ9vS63IplTy/pub",
               )
             }
           >
@@ -281,7 +281,7 @@ export default function Paywall({ type = "back", onClose, onSuccess }: Props) {
             style={{ textDecorationLine: "underline" }}
             onPress={() =>
               void Linking.openURL(
-                "https://docs.google.com/document/d/e/2PACX-1vR-UlE0mpZ5nD3DekvTdch6hxejnJ_wqBGYKb9Fwk5ObEK8vgHpxUjVXWuRUOD40qREZCvoTo6L3PlG/pub"
+                "https://docs.google.com/document/d/e/2PACX-1vR-UlE0mpZ5nD3DekvTdch6hxejnJ_wqBGYKb9Fwk5ObEK8vgHpxUjVXWuRUOD40qREZCvoTo6L3PlG/pub",
               )
             }
           >
