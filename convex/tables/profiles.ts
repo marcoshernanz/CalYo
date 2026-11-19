@@ -23,34 +23,34 @@ export const profilesFields = {
         v.literal("lose"),
         v.literal("maintain"),
         v.literal("gain"),
-        v.literal("unsure")
+        v.literal("unsure"),
       ),
       weeklyWorkouts: v.union(
         v.literal("0-2"),
         v.literal("3-5"),
-        v.literal("6+")
+        v.literal("6+"),
       ),
       activityLevel: v.union(
         v.literal("low"),
         v.literal("medium"),
-        v.literal("high")
+        v.literal("high"),
       ),
       liftingExperience: v.union(
         v.literal("none"),
         v.literal("beginner"),
         v.literal("intermediate"),
-        v.literal("advanced")
+        v.literal("advanced"),
       ),
       cardioExperience: v.union(
         v.literal("none"),
         v.literal("beginner"),
         v.literal("intermediate"),
-        v.literal("advanced")
+        v.literal("advanced"),
       ),
       goal: v.union(
         v.literal("lose"),
         v.literal("maintain"),
-        v.literal("gain")
+        v.literal("gain"),
       ),
       targetWeight: v.number(),
       weightChangeRate: v.number(),
@@ -58,9 +58,9 @@ export const profilesFields = {
         v.literal("none"),
         v.literal("lifting"),
         v.literal("cardio"),
-        v.literal("both")
+        v.literal("both"),
       ),
-    })
+    }),
   ),
 };
 
