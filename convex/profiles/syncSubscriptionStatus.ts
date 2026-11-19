@@ -23,7 +23,7 @@ export const syncSubscriptionStatus = action({
             Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -36,7 +36,7 @@ export const syncSubscriptionStatus = action({
             z.string(),
             z.object({
               expires_date: z.string().nullable(),
-            })
+            }),
           ),
         }),
       });
