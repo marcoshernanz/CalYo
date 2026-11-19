@@ -17,7 +17,7 @@ type SubscriptionContextType = {
 };
 
 const SubscriptionContext = createContext<SubscriptionContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function SubscriptionProvider({
@@ -31,7 +31,7 @@ export function SubscriptionProvider({
   const [isLoading, setIsLoading] = useState(true);
   const [isConfigured, setIsConfigured] = useState(false);
   const syncSubscriptionStatus = useAction(
-    api.profiles.syncSubscriptionStatus.default
+    api.profiles.syncSubscriptionStatus.default,
   );
   const profile = useQuery(api.profiles.getProfile.default);
 
@@ -114,7 +114,7 @@ export function SubscriptionProvider({
         Constants.expoConfig?.android?.package ?? "com.marcoshernanz.calyo";
 
       await Linking.openURL(
-        `https://play.google.com/store/account/subscriptions?package=${packageName}`
+        `https://play.google.com/store/account/subscriptions?package=${packageName}`,
       );
     }
   };
@@ -152,7 +152,7 @@ export function useSubscriptionContext() {
   const context = useContext(SubscriptionContext);
   if (context === undefined) {
     throw new Error(
-      "useSubscriptionContext must be used within a SubscriptionProvider"
+      "useSubscriptionContext must be used within a SubscriptionProvider",
     );
   }
   return context;
