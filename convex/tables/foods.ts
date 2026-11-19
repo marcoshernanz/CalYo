@@ -9,13 +9,13 @@ export const foodsFields = {
       dataType: v.union(
         v.literal("Foundation"),
         v.literal("Legacy"),
-        v.literal("Survey")
+        v.literal("Survey"),
       ),
     }),
     v.object({
       source: v.literal("off"),
       id: v.string(),
-    })
+    }),
   ),
 
   name: v.object({
@@ -23,7 +23,7 @@ export const foodsFields = {
     es: v.optional(v.string()),
   }),
   category: v.optional(
-    v.object({ en: v.string(), es: v.optional(v.string()) })
+    v.object({ en: v.string(), es: v.optional(v.string()) }),
   ),
 
   macroNutrients: v.object({
